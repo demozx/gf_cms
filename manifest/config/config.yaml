@@ -1,0 +1,30 @@
+server:
+  projectName: "gf_cms"
+  adminPrefix: "manage"
+  address: ":8000"
+  openapiPath: "/api.json"
+  swaggerPath: "/swagger"
+  serverRoot: "/usr/local/var/www/go/gf_cms/resource/public"
+
+database:
+  default:
+    type: "mysql"
+    debug: "true"
+    dryRun: 0
+    prefix: "cms_"
+    removePrefix: "cms_"
+    charset: "utf8"
+    host: "127.0.0.1"
+    port: "3306"
+    user: "root"
+    pass: ""
+    name: "gf_cms"
+
+redis:
+  default:
+    address: 127.0.0.1:6379
+    db: 0
+
+logger:
+  level: "all"
+  stdout: true
