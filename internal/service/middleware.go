@@ -25,17 +25,13 @@ func (s *middlewareService) Auth(r *ghttp.Request) {
 	r.Middleware.Next()
 }
 
-func (s *middlewareService) AuthSession(r *ghttp.Request) {
+func (s *middlewareService) AdminAuthSession(r *ghttp.Request) {
 	var adminSession, _ = r.Session.Get(consts.AdminSessionKeyPrefix)
+	AdminPrefix, _ := g.Cfg().Get(r.Context(), "server.adminPrefix", "admin")
 	if adminSession.IsEmpty() {
-		if r.Method == "GET" {
-			AdminPrefix, _ := g.Cfg().Get(r.Context(), "server.adminPrefix", "admin")
-			AdminRoute := "/" + AdminPrefix.String()
-			if r.Router.Uri != AdminRoute {
-				// 如果没有session且是get请求且当前页面不是后台入口，跳转到后台入口
-				r.Response.RedirectTo(AdminRoute)
-			}
-		}
+		AdminRoute := "/" + AdminPrefix.String()
+		// 如果没有session且是get请求且当前页面不是后台入口，跳转到后台入口
+		r.Response.RedirectTo(AdminRoute + "/admin/login")
 	}
 	r.Middleware.Next()
 }

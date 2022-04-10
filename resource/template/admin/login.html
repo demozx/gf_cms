@@ -74,12 +74,7 @@
             var data = $("form").serialize();
             $.post('{{ admin_api_url "/admin/login" }}', data, function (result) {
                 if (!result.code) {
-                    layer.msg(result.message, {
-                        icon: 6
-                        , time: 500
-                    }, function () {
-                        location.href = '{{ admin_url "/" }}'
-                    })
+                    location.href = '{{ admin_url "/" }}'
                 } else {
                     //刷新验证码
                     reloadCaptcha();

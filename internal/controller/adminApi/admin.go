@@ -28,15 +28,15 @@ func (c *cAdmin) Login(ctx context.Context, req *adminApi.AdminLoginReq) (res *a
 	}
 
 	res = &adminApi.AdminLoginRes{}
-	g.Dump(res)
+	//生成token
 	res.Token, res.Expire = service.Auth().LoginHandler(ctx)
+	// 记录session：自己定义的，因为一般后台登录用session
 	g.RequestFromCtx(ctx).Session.Set(consts.AdminSessionKeyPrefix, g.Map{
 		"Token":    res.Token,
 		"Id":       admin.Id,
 		"Username": admin.Username,
 		"name":     admin.Name,
 	})
-	//g.Dump("token", res.Token)
 	g.RequestFromCtx(ctx).Response.WriteJson(g.Map{
 		"code":    0,
 		"message": "登录成功",
@@ -46,7 +46,9 @@ func (c *cAdmin) Login(ctx context.Context, req *adminApi.AdminLoginReq) (res *a
 }
 
 func (c *cAdmin) Logout(ctx context.Context, req *adminApi.AdminLogoutReq) (res *adminApi.AdminLogoutRes, err error) {
+	//清除session
 	g.RequestFromCtx(ctx).Session.Remove(consts.AdminSessionKeyPrefix)
+	//清除token
 	service.Auth().LogoutHandler(ctx)
 	return
 }
