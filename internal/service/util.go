@@ -56,3 +56,9 @@ func (*sUtil) AdminGroup() string {
 func (*sUtil) AdminApiGroup() string {
 	return "/" + Util().AdminPrefix() + "_api"
 }
+
+// GetConfig 获取配置文件的配置信息
+func (*sUtil) GetConfig(node string) string {
+	config, _ := g.Cfg().Get(Ctx, node)
+	return config.String()
+}

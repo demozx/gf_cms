@@ -19,19 +19,23 @@ var (
 		Usage: "main",
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
+
 			// 给模板视图全局绑定方法
 			g.View().BindFuncMap(g.Map{
 				"system_config": service.ViewBindFun().SystemConfig,
 				"admin_url":     service.ViewBindFun().AdminUrl,
 				"admin_api_url": service.ViewBindFun().AdminApiUrl,
 			})
+
 			s := g.Server()
-			//session使用redis
-			s.SetConfigWithMap(g.Map{
+
+			// session使用redis
+			_ = s.SetConfigWithMap(g.Map{
 				// session一天过期
 				"SessionMaxAge":  time.Hour * 24,
 				"SessionStorage": gsession.NewStorageRedis(g.Redis(), service.Util().ProjectName()+":"+consts.AdminSessionKeyPrefix+":"),
 			})
+
 			//路由
 			/*后台view路由分组*/
 			s.Group(service.Util().AdminGroup(), func(group *ghttp.RouterGroup) {
@@ -46,6 +50,7 @@ var (
 				group.Middleware(
 					ghttp.MiddlewareHandlerResponse,
 					service.Middleware().AdminAuthSession,
+					service.Middleware().AdminCheckPolicy,
 				)
 				group.ALLMap(g.Map{
 					"/": admin.Index.Index,

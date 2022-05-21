@@ -4,7 +4,8 @@ server:
   address: ":8000"
   openapiPath: "/api.json"
   swaggerPath: "/swagger"
-  serverRoot: "/usr/local/var/www/go/gf_cms/resource/public"
+  systemRoot: "/usr/local/var/www/go/gf_cms"
+  serverRoot: "./resource/public"
 
 database:
   default:

@@ -69,7 +69,7 @@ func Unauthorized(ctx context.Context, code int, message string) {
 // Authenticator is used to validate login parameters.
 // It must return user data as user identifier, it will be stored in Claim Array.
 // if your identityKey is 'id', your user data must have 'id'
-// Check error (e) to determine the appropriate error message.
+// CheckByRoleId error (e) to determine the appropriate error message.
 func Authenticator(ctx context.Context) (interface{}, error) {
 	var (
 		r  = g.RequestFromCtx(ctx)
