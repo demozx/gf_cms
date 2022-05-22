@@ -18,7 +18,7 @@ var (
 
 type sPolicy struct{}
 
-func Policy() *sPolicy {
+func CasbinPolicy() *sPolicy {
 	return &insPolicy
 }
 

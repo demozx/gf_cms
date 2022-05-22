@@ -1,0 +1,12 @@
+backend:
+  title: 后台权限
+  groups:
+    - title: 栏目管理
+      slug: channel
+      permissions:
+        - title: 栏目分类
+          slug: channel.index
+        - title: 档案列表
+          slug: content.index
+        - title: 内容回收站
+          slug: recycle.index

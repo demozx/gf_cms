@@ -12,9 +12,18 @@ func ViewBindFun() *sViewBindFun {
 
 type sViewBindFun struct{}
 
+// Register 注册视图绑定方法
+func (*sViewBindFun) Register() {
+	g.View().BindFuncMap(g.Map{
+		"system_config": ViewBindFun().SystemConfig,
+		"admin_url":     ViewBindFun().AdminUrl,
+		"admin_api_url": ViewBindFun().AdminApiUrl,
+	})
+}
+
 // SystemConfig 获取系统配置信息
 func (*sViewBindFun) SystemConfig(name string) string {
-	cacheKey := ProjectName.String() + ":system_config:" + name
+	cacheKey := PublicCachePreFix + ":system_config:" + name
 	exists, err := g.Redis().Do(Ctx, "EXISTS", cacheKey)
 	if err != nil {
 		panic(err)

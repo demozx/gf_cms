@@ -52,3 +52,19 @@ func (c *cAdmin) Logout(ctx context.Context, req *adminApi.AdminLogoutReq) (res 
 	service.Auth().LogoutHandler(ctx)
 	return
 }
+
+func (c *cAdmin) ClearCache(ctx context.Context, req *adminApi.AdminClearCacheReq) (res *adminApi.AdminClearCacheRes, err error) {
+	_, err = service.Util().ClearPublicCache()
+	if err != nil {
+		g.RequestFromCtx(ctx).Response.WriteJson(g.Map{
+			"code":    1,
+			"message": err.Error(),
+		})
+	} else {
+		g.RequestFromCtx(ctx).Response.WriteJson(g.Map{
+			"code":    0,
+			"message": "清理成功",
+		})
+	}
+	return
+}

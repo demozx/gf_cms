@@ -21,3 +21,8 @@ type AdminLogoutReq struct {
 	g.Meta `tags:"AdminApi" method:"post" summary:"后台退出"`
 }
 type AdminLogoutRes struct{}
+
+type AdminClearCacheReq struct {
+	g.Meta `tags:"AdminApi" method:"post" summary:"清除缓存"`
+}
+type AdminClearCacheRes struct{}

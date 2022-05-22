@@ -19,14 +19,12 @@ type CmsRoleAccountDao struct {
 
 // CmsRoleAccountColumns defines and stores column names for table cms_role_account.
 type CmsRoleAccountColumns struct {
-	Id        string //
 	AccountId string // 账户id
 	RoleId    string // 角色id
 }
 
 //  cmsRoleAccountColumns holds the columns for table cms_role_account.
 var cmsRoleAccountColumns = CmsRoleAccountColumns{
-	Id:        "id",
 	AccountId: "account_id",
 	RoleId:    "role_id",
 }

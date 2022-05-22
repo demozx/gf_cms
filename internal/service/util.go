@@ -12,13 +12,14 @@ import (
 type sUtil struct{}
 
 var (
-	insUtil        = sUtil{}
-	insViewBindFun = sViewBindFun{}
-	ProjectName    *gvar.Var
-	AdminPrefix    *gvar.Var
-	AdminGroup     string
-	AdminApiGroup  string
-	Ctx            context.Context
+	insUtil           = sUtil{}
+	insViewBindFun    = sViewBindFun{}
+	ProjectName       *gvar.Var
+	AdminPrefix       *gvar.Var
+	AdminGroup        string
+	AdminApiGroup     string
+	Ctx               context.Context
+	PublicCachePreFix string
 )
 
 func init() {
@@ -31,6 +32,8 @@ func init() {
 	AdminGroup = "/" + AdminPrefix.String()
 	//AdminApiGroup 后台api分组
 	AdminApiGroup = "/" + AdminPrefix.String() + "_api" //system_config表根据name获取值
+	//公共缓存前缀
+	PublicCachePreFix = ProjectName.String() + ":public"
 }
 
 func Util() *sUtil {
@@ -61,4 +64,20 @@ func (*sUtil) AdminApiGroup() string {
 func (*sUtil) GetConfig(node string) string {
 	config, _ := g.Cfg().Get(Ctx, node)
 	return config.String()
+}
+
+// ClearPublicCache 清除公共缓存
+func (*sUtil) ClearPublicCache() (*gvar.Var, error) {
+	cacheKey := PublicCachePreFix + ":*"
+	keys, err := g.Redis().Do(Ctx, "KEYS", cacheKey)
+	if err != nil {
+		return nil, err
+	}
+	for _, key := range keys.Array() {
+		_, err := g.Redis().Do(Ctx, "DEL", key)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return nil, err
 }

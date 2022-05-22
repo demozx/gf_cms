@@ -8,6 +8,7 @@ import (
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service/internal/dao"
 	"gf_cms/internal/service/internal/do"
+	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -63,4 +64,13 @@ func passMd5(password string) string {
 	bytePassword := []byte(password)
 	md5Password := fmt.Sprintf("%x", md5.Sum(bytePassword))
 	return md5Password
+}
+
+// GetRoleIdsByAccountId 获取用户的所有角色id
+func GetRoleIdsByAccountId(accountId int) []gdb.Value {
+	roleIds, err := dao.CmsRoleAccount.Ctx(Ctx).Where("account_id", accountId).Fields("role_id").Array()
+	if err != nil {
+		panic(err)
+	}
+	return roleIds
 }

@@ -48,7 +48,7 @@ func (s *middlewareService) AdminCheckPolicy(r *ghttp.Request) {
 	var res = g.Map{
 		"id": admin.Id,
 	}
-	if !Policy().CheckByAccountId(gvar.New(res["id"]).String(), Policy().ObjBackend(), r.Router.Uri) {
+	if !CasbinPolicy().CheckByAccountId(gvar.New(res["id"]).String(), CasbinPolicy().ObjBackend(), r.Router.Uri) {
 		r.Response.WriteExit("没有权限")
 	}
 	r.Middleware.Next()
