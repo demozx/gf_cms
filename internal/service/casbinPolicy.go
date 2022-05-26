@@ -31,7 +31,7 @@ func initCasbin() *casbin.Enforcer {
 	var dbPort = Util().GetConfig("database.default.port")
 	var dbName = Util().GetConfig("database.default.name")
 	var dbPrefix = Util().GetConfig("database.default.prefix")
-	db, err := sql.Open(dbType, dbUser+":"+dbPass+":@tcp("+dbHost+":"+dbPort+")/"+dbName)
+	db, err := sql.Open(dbType, dbUser+":"+dbPass+"@tcp("+dbHost+":"+dbPort+")/"+dbName)
 	if err != nil {
 		panic(err)
 	}
