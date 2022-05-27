@@ -18,6 +18,64 @@
             cursor: pointer;
         }
     </style>
+    <script type="text/javascript">
+
+        layui.extend({
+            admin: '/resource/admin/js/admin'
+        });
+        layui.use(['form', 'admin', 'jquery'], function () {
+            var form = layui.form
+                , admin = layui.admin
+                , $ = layui.$;
+
+            //刷新验证码方法
+            function reloadCaptcha() {
+                $.get('{{ admin_api_url "/captcha/get" }}', {time: new Date().getTime()}, function (res) {
+                    $('#captcha_img').attr('src', res.data['b64s'])
+                    $('#captcha_id').val(res.data['id'])
+                })
+            }
+
+            reloadCaptcha()
+            $('#captcha_img').click(function () {
+                reloadCaptcha();
+            });
+            //监听提交
+            form.on('submit(login)', function (data) {
+                var data = $("form").serialize();
+                $.post('{{ admin_api_url "/admin/login" }}', data, function (result) {
+                    if (!result.code) {
+                        location.href = '{{ admin_url "/" }}'
+                    } else {
+                        //刷新验证码
+                        reloadCaptcha();
+                        layer.msg(result.message, {
+                            icon: 5
+                            , anim: 6
+                            , time: 2000
+                        });
+                    }
+                });
+
+                return false;
+            });
+            //用户名获取焦点
+            $('.layui-form input').eq(0).focus();
+            //回车登录
+            $(window).keydown(function (e) {
+                e = e || event;
+                if (e.keyCode == 13) {
+                    $('.loginin').trigger("click");
+                }
+            });
+            //判断当前页面如果在iframe中,将框架中的页面显示到top.location
+            if (self.frameElement && self.frameElement.tagName == "IFRAME") {
+                var selfUrl = self.location.href;
+                top.location.href = selfUrl;
+            }
+        });
+
+    </script>
 </head>
 <body class="login-bg">
 
@@ -46,66 +104,6 @@
 
     </form>
 </div>
-
-<script type="text/javascript">
-
-    layui.extend({
-        admin: '/resource/admin/js/admin'
-    });
-    layui.use(['form', 'admin', 'jquery'], function () {
-        var form = layui.form
-            , admin = layui.admin
-            , $ = layui.$;
-
-        //刷新验证码方法
-        function reloadCaptcha() {
-            $.get('{{ admin_api_url "/captcha/get" }}', {time: new Date().getTime()}, function (res) {
-                $('#captcha_img').attr('src', res.data['b64s'])
-                $('#captcha_id').val(res.data['id'])
-            })
-        }
-
-        reloadCaptcha()
-        $('#captcha_img').click(function () {
-            reloadCaptcha();
-        });
-        //监听提交
-        form.on('submit(login)', function (data) {
-            var data = $("form").serialize();
-            $.post('{{ admin_api_url "/admin/login" }}', data, function (result) {
-                if (!result.code) {
-                    location.href = '{{ admin_url "/" }}'
-                } else {
-                    //刷新验证码
-                    reloadCaptcha();
-                    layer.msg(result.message, {
-                        icon: 5
-                        , anim: 6
-                        , time: 2000
-                    });
-                }
-            });
-
-            return false;
-        });
-        //用户名获取焦点
-        $('.layui-form input').eq(0).focus();
-        //回车登录
-        $(window).keydown(function (e) {
-            e = e || event;
-            if (e.keyCode == 13) {
-                $('.loginin').trigger("click");
-            }
-        });
-        //判断当前页面如果在iframe中,将框架中的页面显示到top.location
-        if (self.frameElement && self.frameElement.tagName == "IFRAME") {
-            var selfUrl = self.location.href;
-            top.location.href = selfUrl;
-        }
-    });
-
-</script>
-
 <!-- 底部结束 -->
 </body>
 </html>
