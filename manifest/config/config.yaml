@@ -1,7 +1,7 @@
 server:
   projectName: "gf_cms"
   adminPrefix: "admin"
-  address: ":8000"
+  address: ":8001"
   openapiPath: "/api.json"
   swaggerPath: "/swagger"
   systemRoot: "/usr/local/var/www/go/gf_cms"
