@@ -1,6 +1,6 @@
 server:
   projectName: "gf_cms"
-  adminPrefix: "admin"
+  backendPrefix: "backend"
   address: ":8001"
   openapiPath: "/api.json"
   swaggerPath: "/swagger"

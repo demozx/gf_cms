@@ -4,11 +4,11 @@ backend:
     - title: 栏目管理
       children:
         - title: 栏目分类
-          route: channel.index
+          route: /channel/index
           permission: channel.channel.index
         - title: 档案列表
-          route: content.index
+          route: /content/index
           permission: channel.content.index
         - title: 内容回收站
-          route: recycle.index
+          route: /recycle/index
           permission: channel.recycle.index

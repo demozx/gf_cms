@@ -1,4 +1,4 @@
-package adminApi
+package backendApi
 
 import (
 	"context"

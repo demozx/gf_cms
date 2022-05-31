@@ -99,9 +99,9 @@ var layout = [
 //		layui.config({
 //			  base: './static/js/'
 //			  ,version: '101100'
-//			}).use('admin');
+//			}).use('backend');
 layui.extend({
-	admin: '{/}../../static/admin/js/admin',
+	admin: '{/}../../static/backend/js/backend',
 	treeGird: '{/}../../static/lib/layui/lay/treeGird' // {/}的意思即代表采用自有路径，即不跟随 base 路径
 });
 layui.use(['treeGird', 'jquery', 'admin', 'layer'], function() {

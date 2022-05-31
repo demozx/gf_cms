@@ -6,7 +6,7 @@
  * | jqadmin [ jq酷打造的一款懒人后台模板 ]
  * | Copyright (c) 2017 http://jqadmin.jqcool.net All rights reserved.
  * | Licensed ( http://jqadmin.jqcool.net/licenses/ )
- * | Author: Paco <admin@jqcool.net>
+ * | Author: Paco <backend@jqcool.net>
  * +----------------------------------------------------------------------
  */
 

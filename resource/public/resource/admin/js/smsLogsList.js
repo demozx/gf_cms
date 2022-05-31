@@ -1,5 +1,5 @@
 layui.extend({
-	admin: '{/}../../static/admin/js/admin'
+	admin: '{/}../../static/backend/js/backend'
 });
 
 layui.use(['table', 'jquery','form', 'admin'], function() {

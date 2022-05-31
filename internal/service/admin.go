@@ -67,7 +67,7 @@ func passMd5(password string) string {
 }
 
 // GetRoleIdsByAccountId 获取用户的所有角色id
-func GetRoleIdsByAccountId(accountId int) []gdb.Value {
+func GetRoleIdsByAccountId(accountId string) []gdb.Value {
 	roleIds, err := dao.CmsRoleAccount.Ctx(Ctx).Where("account_id", accountId).Fields("role_id").Array()
 	if err != nil {
 		panic(err)

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/gogf/gf/v2/frame/g"
 	"gopkg.in/yaml.v3"
 	"log"
 	"os"
@@ -57,10 +58,51 @@ func (*sMenu) readYaml() *MenuConfig {
 
 // BackendAll Backend 获取全部后台菜单
 func (*sMenu) BackendAll() []MenuGroups {
+	cacheKey := PublicCachePreFix + ":menus:backend_all"
+	result, err := g.Redis().Do(Ctx, "GET", cacheKey)
+	if err != nil {
+		panic(err)
+	}
+	if !result.IsEmpty() {
+		var menuGroups []MenuGroups
+		if err = result.Structs(&menuGroups); err != nil {
+			panic(err)
+		}
+		return menuGroups
+	}
 	backendAll := Menu().readYaml().Backend.Groups
+	_, err = g.Redis().Do(Ctx, "SET", cacheKey, backendAll)
+	if err != nil {
+		panic(err)
+	}
 	return backendAll
 }
 
-func (*sMenu) BackendMy() {
-
+// BackendMy 我的后台菜单
+func (*sMenu) BackendMy(accountId string) []MenuGroups {
+	//accountId := Middleware().GetAdminUserID(r)
+	backendMyPermissions := Permission().BackendMy(accountId)
+	backendAllMenus := Menu().BackendAll()
+	var backendMyMenus []MenuGroups
+	var backendMyMenusChildren []MenuChildren
+	for _, menu := range backendAllMenus {
+		var title = menu.Title
+		var children = menu.Children
+		for _, item := range children {
+			var childrenPermission = item.Permission
+			for _, myPermission := range backendMyPermissions {
+				if myPermission.String() == childrenPermission {
+					backendMyMenusChildren = append(backendMyMenusChildren, item)
+				}
+			}
+		}
+		var backendMyMenu MenuGroups
+		backendMyMenu.Title = title
+		backendMyMenu.Children = backendMyMenusChildren
+		backendMyMenus = append(backendMyMenus, backendMyMenu)
+	}
+	//g.Log().Info(Ctx, "backendAllMenus", backendAllMenus)
+	//g.Log().Info(Ctx, "backendMyMenus", backendMyMenus)
+	//g.Log().Info(Ctx, "backendMyMenusChildren", backendMyMenusChildren)
+	return backendMyMenus
 }

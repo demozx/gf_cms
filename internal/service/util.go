@@ -15,9 +15,9 @@ var (
 	insUtil           = sUtil{}
 	insViewBindFun    = sViewBindFun{}
 	ProjectName       *gvar.Var
-	AdminPrefix       *gvar.Var
-	AdminGroup        string
-	AdminApiGroup     string
+	BackendPrefix     *gvar.Var
+	BackendGroup      string
+	BackendApiGroup   string
 	Ctx               context.Context
 	PublicCachePreFix string
 )
@@ -27,11 +27,11 @@ func init() {
 	// 项目ProjectName
 	ProjectName, _ = g.Cfg().Get(Ctx, "server.projectName", "gf_cms")
 	//后台入口前缀
-	AdminPrefix, _ = g.Config().Get(Ctx, "server.adminPrefix", "admin")
-	//AdminGroup 后台view分组
-	AdminGroup = "/" + AdminPrefix.String()
-	//AdminApiGroup 后台api分组
-	AdminApiGroup = "/" + AdminPrefix.String() + "_api" //system_config表根据name获取值
+	BackendPrefix, _ = g.Config().Get(Ctx, "server.backendPrefix", "admin")
+	//BackendGroup 后台view分组
+	BackendGroup = "/" + BackendPrefix.String()
+	//BackendApiGroup 后台api分组
+	BackendApiGroup = "/" + BackendPrefix.String() + "_api" //system_config表根据name获取值
 	//公共缓存前缀
 	PublicCachePreFix = ProjectName.String() + ":public"
 }
@@ -45,19 +45,19 @@ func (*sUtil) ProjectName() string {
 	return ProjectName.String()
 }
 
-// AdminPrefix 后台入口前缀
-func (*sUtil) AdminPrefix() string {
-	return AdminPrefix.String()
+// BackendPrefix 后台入口前缀
+func (*sUtil) BackendPrefix() string {
+	return BackendPrefix.String()
 }
 
-//AdminGroup 后台view分组
-func (*sUtil) AdminGroup() string {
-	return "/" + Util().AdminPrefix()
+//BackendGroup 后台view分组
+func (*sUtil) BackendGroup() string {
+	return "/" + Util().BackendPrefix()
 }
 
-//AdminApiGroup 后台api分组
-func (*sUtil) AdminApiGroup() string {
-	return "/" + Util().AdminPrefix() + "_api"
+//BackendApiGroup 后台api分组
+func (*sUtil) BackendApiGroup() string {
+	return "/" + Util().BackendPrefix() + "_api"
 }
 
 // GetConfig 获取配置文件的配置信息

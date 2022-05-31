@@ -1,9 +1,9 @@
 package service
 
 import (
-	"fmt"
 	"gf_cms/internal/service/internal/dao"
 	"github.com/gogf/gf/v2/database/gdb"
+	"github.com/gogf/gf/v2/frame/g"
 	"gopkg.in/yaml.v3"
 	"log"
 	"os"
@@ -61,14 +61,32 @@ func (*sPermission) readYaml() *PermissionConfig {
 
 // BackendAll Backend 获取全部后台权限
 func (*sPermission) BackendAll() []PermissionGroups {
+	cacheKey := PublicCachePreFix + ":permissions:backend_all"
+	result, err := g.Redis().Do(Ctx, "GET", cacheKey)
+	if err != nil {
+		panic(err)
+	}
+	if !result.IsEmpty() {
+		var permissionGroups []PermissionGroups
+		if err = result.Structs(&permissionGroups); err != nil {
+			panic(err)
+		}
+		return permissionGroups
+	}
 	backendAll := Permission().readYaml().Backend.Groups
-	//fmt.Println(backendAll)
+	_, err = g.Redis().Do(Ctx, "SET", cacheKey, backendAll)
+	if err != nil {
+		panic(err)
+	}
 	return backendAll
 }
 
 // BackendMy 获取我的所有后台权限
-func (*sPermission) BackendMy(accountId int) []gdb.Value {
+func (*sPermission) BackendMy(accountId string) []gdb.Value {
 	roleIds := GetRoleIdsByAccountId(accountId)
+	if len(roleIds) == 0 {
+		panic("用户无任何角色")
+	}
 	myPermissions, err := dao.CmsRulePermissions.Ctx(Ctx).
 		Where("p_type", "p").
 		WhereIn("v0", roleIds).
@@ -78,6 +96,5 @@ func (*sPermission) BackendMy(accountId int) []gdb.Value {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("myPermissions", myPermissions)
 	return myPermissions
 }

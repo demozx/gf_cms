@@ -9,7 +9,7 @@
  * +----------------------------------------------------------------------
  */
 layui.extend({
-    admin: '{/}../../static/admin/js/admin',
+    admin: '{/}../../static/backend/js/backend',
 });
 layui.use(['jquery', 'admin'], function() {
 	var $ = layui.jquery,

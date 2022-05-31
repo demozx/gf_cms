@@ -44,10 +44,10 @@ func (*sViewBindFun) SystemConfig(name string) string {
 
 // AdminUrl 生成后台view的url
 func (*sViewBindFun) AdminUrl(route string) string {
-	return AdminGroup + route
+	return BackendGroup + route
 }
 
 // AdminApiUrl 生成后台api的url
 func (*sViewBindFun) AdminApiUrl(route string) string {
-	return AdminApiGroup + route
+	return BackendApiGroup + route
 }
