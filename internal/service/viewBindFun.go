@@ -15,9 +15,9 @@ type sViewBindFun struct{}
 // Register 注册视图绑定方法
 func (*sViewBindFun) Register() {
 	g.View().BindFuncMap(g.Map{
-		"system_config": ViewBindFun().SystemConfig,
-		"admin_url":     ViewBindFun().AdminUrl,
-		"admin_api_url": ViewBindFun().AdminApiUrl,
+		"system_config":   ViewBindFun().SystemConfig,
+		"backend_url":     ViewBindFun().BackendUrl,
+		"backend_api_url": ViewBindFun().BackendApiUrl,
 	})
 }
 
@@ -42,12 +42,12 @@ func (*sViewBindFun) SystemConfig(name string) string {
 	return val.String()
 }
 
-// AdminUrl 生成后台view的url
-func (*sViewBindFun) AdminUrl(route string) string {
+// BackendUrl 生成后台view的url
+func (*sViewBindFun) BackendUrl(route string) string {
 	return BackendGroup + route
 }
 
-// AdminApiUrl 生成后台api的url
-func (*sViewBindFun) AdminApiUrl(route string) string {
+// BackendApiUrl 生成后台api的url
+func (*sViewBindFun) BackendApiUrl(route string) string {
 	return BackendApiGroup + route
 }

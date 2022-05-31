@@ -20,7 +20,7 @@
 <!-- 顶部开始 -->
 <div class="container">
     <div class="logo">
-        <a href='{{ admin_url "/"  }}'>{{ system_config "webname" }}</a>
+        <a href='{{ backend_url "/"  }}'>{{ system_config "webname" }}</a>
     </div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
@@ -44,7 +44,7 @@
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd>
-                    <a href="javascript:;" class="logout" data-href='{{ admin_api_url "/admin/logout"  }}'>退出</a>
+                    <a href="javascript:;" class="logout" data-href='{{ backend_api_url "/admin/logout"  }}'>退出</a>
                 </dd>
             </dl>
         </li>
@@ -73,7 +73,7 @@
                 <ul class="sub-menu">
                     {{range $key, $subItem := $item.Children}}
                     <li>
-                        <a _href='{{$subItem.Route | admin_url}}'>
+                        <a _href='{{$subItem.Route | backend_url}}'>
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>{{$subItem.Title}}</cite>
                         </a>
@@ -131,7 +131,7 @@
                 btn: ['确定', '取消']
                 , yes: function () {
                     //ajax清理缓存
-                    $.post('{{ admin_api_url "/admin/clear_cache" }}', function (res) {
+                    $.post('{{ backend_api_url "/admin/clear_cache" }}', function (res) {
                         //console.log(res)
                         if (res['code'] === 0) {
                             layer.msg(res['message'], {
@@ -150,7 +150,7 @@
         });
         //退出登录
         $('.logout').click(function () {
-            $.post('{{ admin_api_url "/admin/logout" }}', function () {
+            $.post('{{ backend_api_url "/admin/logout" }}', function () {
                 top.location.reload()
             })
         });
