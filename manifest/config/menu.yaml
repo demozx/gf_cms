@@ -5,10 +5,10 @@ backend:
       children:
         - title: 栏目分类
           route: /channel/index
-          permission: channel.channel.index
+          permission: channel.channel.manage
         - title: 档案列表
           route: /content/index
-          permission: channel.content.index
+          permission: channel.content.manage
         - title: 内容回收站
           route: /recycle/index
-          permission: channel.recycle.index
+          permission: channel.recycle.manage

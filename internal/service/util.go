@@ -31,7 +31,7 @@ func init() {
 	//BackendGroup 后台view分组
 	BackendGroup = "/" + BackendPrefix.String()
 	//BackendApiGroup 后台api分组
-	BackendApiGroup = "/" + BackendPrefix.String() + "_api" //system_config表根据name获取值
+	BackendApiGroup = "/" + BackendPrefix.String() + "_api"
 	//公共缓存前缀
 	PublicCachePreFix = ProjectName.String() + ":public"
 }

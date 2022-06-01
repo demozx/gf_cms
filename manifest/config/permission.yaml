@@ -5,8 +5,8 @@ backend:
       slug: channel
       permissions:
         - title: 栏目分类
-          slug: channel.index
+          slug: channel.manage
         - title: 档案列表
-          slug: content.index
+          slug: content.manage
         - title: 内容回收站
-          slug: recycle.index
+          slug: recycle.manage
