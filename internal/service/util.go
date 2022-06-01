@@ -24,7 +24,7 @@ var (
 
 func init() {
 	Ctx = gctx.New()
-	// 项目ProjectName
+	//项目ProjectName
 	ProjectName, _ = g.Cfg().Get(Ctx, "server.projectName", "gf_cms")
 	//后台入口前缀
 	BackendPrefix, _ = g.Config().Get(Ctx, "server.backendPrefix", "admin")
