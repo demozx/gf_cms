@@ -1,4 +1,4 @@
-package adminApi
+package backendApi
 
 import "github.com/gogf/gf/v2/frame/g"
 

@@ -10,3 +10,6 @@ backend:
           slug: content.manage
         - title: 内容回收站
           slug: recycle.manage
+backend_api:
+  title: 后台接口权限
+  groups:

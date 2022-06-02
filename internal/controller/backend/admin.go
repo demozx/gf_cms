@@ -2,7 +2,7 @@ package backend
 
 import (
 	"context"
-	"gf_cms/api/admin"
+	"gf_cms/api/backend"
 	"gf_cms/internal/consts"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/frame/g"
@@ -14,7 +14,7 @@ var (
 
 type cAdmin struct{}
 
-func (c *cAdmin) Login(ctx context.Context, req *admin.LoginReq) (res *admin.LoginRes, err error) {
+func (c *cAdmin) Login(ctx context.Context, req *backend.LoginReq) (res *backend.LoginRes, err error) {
 	var adminSession, _ = g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
 	if !adminSession.IsEmpty() {
 		// 有session，已经登录过

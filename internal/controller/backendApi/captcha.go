@@ -2,7 +2,7 @@ package backendApi
 
 import (
 	"context"
-	"gf_cms/api/adminApi"
+	"gf_cms/api/backendApi"
 	"gf_cms/internal/service"
 )
 
@@ -12,9 +12,9 @@ var (
 
 type cCaptcha struct{}
 
-func (c *cCaptcha) Get(ctx context.Context, req *adminApi.CaptchaGetApiReq) (res *adminApi.CaptchaGetApiRes, err error) {
+func (c *cCaptcha) Get(ctx context.Context, req *backendApi.CaptchaGetApiReq) (res *backendApi.CaptchaGetApiRes, err error) {
 	id, b64s := service.Captcha().Get()
-	res = &adminApi.CaptchaGetApiRes{
+	res = &backendApi.CaptchaGetApiRes{
 		Id: id, B64s: b64s,
 	}
 

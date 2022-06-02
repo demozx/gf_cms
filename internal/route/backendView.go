@@ -24,8 +24,9 @@ func backendViewHandle(s *ghttp.Server) {
 			service.Middleware().BackendCheckPolicy,
 		)
 		group.ALLMap(g.Map{
-			"/":             backend.Index.Index,
-			"channel/index": backend.Channel.Index,
+			"/":             backend.Index.Index,   //后台首页
+			"welcome/index": backend.Welcome.Index, //后台欢迎页
+			"channel/index": backend.Channel.Index, //栏目分类
 		})
 	})
 }

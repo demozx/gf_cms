@@ -2,7 +2,7 @@ package backend
 
 import (
 	"context"
-	"gf_cms/api/admin"
+	"gf_cms/api/backend"
 )
 
 var (
@@ -11,6 +11,6 @@ var (
 
 type cChannel struct{}
 
-func (c *cChannel) Index(ctx context.Context, req *admin.LoginReq) (res *admin.LoginRes, err error) {
+func (c *cChannel) Index(ctx context.Context, req *backend.LoginReq) (res *backend.LoginRes, err error) {
 	return
 }

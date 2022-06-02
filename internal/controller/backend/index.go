@@ -2,7 +2,7 @@ package backend
 
 import (
 	"context"
-	"gf_cms/api/admin"
+	"gf_cms/api/backend"
 	"gf_cms/internal/consts"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
@@ -17,7 +17,7 @@ var (
 
 type cIndex struct{}
 
-func (c *cIndex) Index(ctx context.Context, req *admin.IndexReq) (res *admin.IndexRes, err error) {
+func (c *cIndex) Index(ctx context.Context, req *backend.IndexReq) (res *backend.IndexRes, err error) {
 	var adminSession, _ = g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
 	var cmsAdmin *entity.CmsAdmin
 	err = adminSession.Scan(&cmsAdmin)
