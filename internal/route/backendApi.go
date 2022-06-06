@@ -27,6 +27,7 @@ func backendApiHandle(s *ghttp.Server) {
 		group.ALLMap(g.Map{
 			"/admin/logout":      backendApi.Admin.Logout,
 			"/admin/clear_cache": backendApi.Admin.ClearCache,
+			"/welcome/index":     backendApi.Welcome.Index,
 		})
 	})
 }

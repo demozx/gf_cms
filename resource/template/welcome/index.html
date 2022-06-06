@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <script type="text/javascript" src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/resource/backend/lib/raphael-min.js"></script>
+    <script type="text/javascript" src="/resource/backend/lib/justgage.min.js"></script>
+</head>
+<body>
+<div class="dashboard">
+    <div class="layui-row" style="margin-top: 40px;">
+        <div class="layui-col-xs3">
+            <div id="load"></div>
+        </div>
+        <div class="layui-col-xs3">
+            <div id="cpu"></div>
+        </div>
+        <div class="layui-col-xs3">
+            <div id="memory"></div>
+        </div>
+        <div class="layui-col-xs3">
+            <div id="disk"></div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.extend({
+        admin: '/resource/backend/js/admin'
+    });
+    layui.use(['form', 'admin', 'jquery'], function () {
+        var form = layui.form
+            , admin = layui.admin
+            , $ = layui.$;
+        let Load = new JustGage({
+            id: "load",
+            value: 0,
+            min: 0,
+            max: 100,
+            decimals: 2,
+            pointer: true,
+            counter: true,
+            donut: true,
+            gaugeWidthScale: 0.6,
+            symbol: '%',
+            label: "负载"
+        });
+        let Cpu = new JustGage({
+            id: "cpu",
+            value: 0,
+            min: 0,
+            max: 100,
+            decimals: 2,
+            pointer: true,
+            counter: true,
+            donut: true,
+            gaugeWidthScale: 0.6,
+            symbol: '%',
+            labelMinFontSize: 18,
+            minLabelMinFontSize: 18,
+            maxLabelMinFontSize: 18,
+            label: "CPU"
+        });
+        let Memory = new JustGage({
+            id: "memory",
+            value: 0,
+            min: 0,
+            max: 100,
+            decimals: 2,
+            pointer: true,
+            counter: true,
+            donut: true,
+            gaugeWidthScale: 0.6,
+            symbol: '%',
+            label: "内存"
+        });
+        let Disk = new JustGage({
+            id: "disk",
+            value: 0,
+            min: 0,
+            max: 100,
+            decimals: 2,
+            pointer: true,
+            counter: true,
+            donut: true,
+            gaugeWidthScale: 0.6,
+            symbol: '%',
+            label: "磁盘"
+        });
+        setInterval(function () {
+            getRuntimeInfo()
+        }, 3000);
+
+        function getRuntimeInfo(){
+            $.post('{{ backend_api_url "/welcome/index" }}', {}, function (res) {
+                // console.log(res.data);
+                Load.refresh(res.data['load']);
+                Cpu.refresh(res.data['cpu']);
+                Memory.refresh(res.data['mem']);
+                Disk.refresh(res.data['disk']);
+            });
+        }
+        getRuntimeInfo();
+    });
+</script>
+</body>
+</html>

@@ -9,10 +9,10 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="/resource/admin/css/font.css">
-    <link rel="stylesheet" href="/resource/admin/css/weadmin.css">
-    <script src="/resource/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
     <style>
         #captcha {
             cursor: pointer;
@@ -36,7 +36,7 @@
                 <input name="captcha_id" id="captcha_id" type="hidden" class="layui-input">
             </div>
             <div class="layui-col-xs6">
-                <img src="/resource/admin/images/loading.gif" id="captcha_img" style="margin:auto;height:50px;display:table-cell;cursor:pointer;">
+                <img src="/resource/backend/images/loading.gif" id="captcha_img" style="margin:auto;height:50px;display:table-cell;cursor:pointer;">
             </div>
 
         </div>
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 
     layui.extend({
-        admin: '/resource/admin/js/admin'
+        admin: '/resource/backend/js/admin'
     });
     layui.use(['form', 'admin', 'jquery'], function () {
         var form = layui.form
