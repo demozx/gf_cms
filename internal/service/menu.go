@@ -96,10 +96,13 @@ func (*sMenu) BackendMy(accountId string) []MenuGroups {
 				}
 			}
 		}
-		var backendMyMenu MenuGroups
-		backendMyMenu.Title = title
-		backendMyMenu.Children = backendMyMenusChildren
-		backendMyMenus = append(backendMyMenus, backendMyMenu)
+		if backendMyMenusChildren != nil {
+			var backendMyMenu MenuGroups
+			backendMyMenu.Title = title
+			backendMyMenu.Children = backendMyMenusChildren
+			backendMyMenus = append(backendMyMenus, backendMyMenu)
+			//g.Log().Info(Ctx, "backendMyMenu", backendMyMenu)
+		}
 	}
 	//g.Log().Info(Ctx, "backendAllMenus", backendAllMenus)
 	//g.Log().Info(Ctx, "backendMyMenus", backendMyMenus)
