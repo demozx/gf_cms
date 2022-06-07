@@ -97,7 +97,7 @@
         });
         setInterval(function () {
             getRuntimeInfo()
-        }, 3000);
+        }, 5000);
 
         function getRuntimeInfo(){
             $.post('{{ backend_api_url "/welcome/index" }}', {}, function (res) {

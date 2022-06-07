@@ -2,6 +2,7 @@ package backendApi
 
 import (
 	"context"
+	"fmt"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
@@ -18,6 +19,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 	var load = service.Runtime().GetLoadInfo()
 	var mem = service.Runtime().GetMemInfo()
 	var desk = service.Runtime().GetDiskInfo()
+	fmt.Println("desk", desk)
 
 	res = &backendApi.GetRuntimeInfoApiRes{
 		Load: gvar.New(load.Load1).String(),
