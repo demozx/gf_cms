@@ -9,7 +9,8 @@ import (
 
 //后台view路由分组
 func backendViewHandle(s *ghttp.Server) {
-	s.Group(service.Util().BackendGroup(), func(group *ghttp.RouterGroup) {
+	var backendGroup = service.Util().BackendGroup()
+	s.Group(backendGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 		)
@@ -17,7 +18,7 @@ func backendViewHandle(s *ghttp.Server) {
 			"/admin/login": backend.Admin.Login,
 		})
 	})
-	s.Group(service.Util().BackendGroup(), func(group *ghttp.RouterGroup) {
+	s.Group(backendGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 			service.Middleware().BackendAuthSession,

@@ -9,7 +9,8 @@ import (
 
 //后台api路由分组
 func backendApiHandle(s *ghttp.Server) {
-	s.Group(service.Util().BackendApiGroup(), func(group *ghttp.RouterGroup) {
+	var backendApiGroup = service.Util().BackendApiGroup()
+	s.Group(backendApiGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 			service.Middleware().CORS,
@@ -19,7 +20,7 @@ func backendApiHandle(s *ghttp.Server) {
 			"/admin/login": backendApi.Admin.Login,
 		})
 	})
-	s.Group(service.Util().BackendApiGroup(), func(group *ghttp.RouterGroup) {
+	s.Group(backendApiGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 			service.Middleware().BackendAuthSession,

@@ -16,22 +16,32 @@
     <script type="text/javascript" src="/resource/backend/lib/justgage.min.js"></script>
 </head>
 <body>
-<div class="dashboard">
-    <div class="layui-row" style="margin-top: 40px;">
-        <div class="layui-col-xs3">
-            <div id="load"></div>
-        </div>
-        <div class="layui-col-xs3">
-            <div id="cpu"></div>
-        </div>
-        <div class="layui-col-xs3">
-            <div id="memory"></div>
-        </div>
-        <div class="layui-col-xs3">
-            <div id="disk"></div>
+<div class="weadmin-body">
+
+    <div class="layui-col-lg12 layui-collapse" style="border: none;">
+        <div class="layui-col-lg12 layui-col-md12">
+            <fieldset class="layui-elem-field" style="padding: 10px;">
+                <div class="dashboard">
+                    <div class="layui-row">
+                        <div class="layui-col-xs3">
+                            <div id="load"></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div id="cpu"></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div id="memory"></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div id="disk"></div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
         </div>
     </div>
 </div>
+
 <script>
     layui.extend({
         admin: '/resource/backend/js/admin'
@@ -99,7 +109,7 @@
             getRuntimeInfo()
         }, 3000);
 
-        function getRuntimeInfo(){
+        function getRuntimeInfo() {
             $.post('{{ backend_api_url "/welcome/index" }}', {}, function (res) {
                 // console.log(res.data);
                 Load.refresh(res.data['load']['Load1']);
@@ -108,6 +118,7 @@
                 Disk.refresh(res.data['disk']['Usage']);
             });
         }
+
         getRuntimeInfo();
     });
 </script>
