@@ -1,4 +1,4 @@
-manifest/config/config.yaml
+manifest/config/env.yaml
 .buildpath
 .hgignore.swp
 .project
