@@ -2,10 +2,8 @@ package backendApi
 
 import (
 	"context"
-	"fmt"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/service"
-	"github.com/gogf/gf/v2/container/gvar"
 )
 
 type cWelcome struct{}
@@ -15,17 +13,19 @@ var (
 )
 
 func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiReq) (res *backendApi.GetRuntimeInfoApiRes, err error) {
-	var cpu = service.Runtime().GetCpuInfo()[0]
+	var cpu = service.Runtime().GetCpuInfo()
 	var load = service.Runtime().GetLoadInfo()
 	var mem = service.Runtime().GetMemInfo()
 	var desk = service.Runtime().GetDiskInfo()
-	fmt.Println("desk", desk)
-
+	//g.Log().Info(ctx, "cpu", cpu)
+	//g.Log().Info(ctx, "load", load)
+	//g.Log().Info(ctx, "mem", mem)
+	//g.Log().Info(ctx, "disk", desk)
 	res = &backendApi.GetRuntimeInfoApiRes{
-		Load: gvar.New(load.Load1).String(),
-		Cpu:  gvar.New(cpu).String(),
-		Mem:  gvar.New(mem.UsedPercent).String(),
-		Disk: gvar.New(desk.UsedPercent).String(),
+		Load: load,
+		Cpu:  cpu,
+		Mem:  mem,
+		Disk: desk,
 	}
 	return
 }

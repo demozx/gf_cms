@@ -97,15 +97,15 @@
         });
         setInterval(function () {
             getRuntimeInfo()
-        }, 5000);
+        }, 3000);
 
         function getRuntimeInfo(){
             $.post('{{ backend_api_url "/welcome/index" }}', {}, function (res) {
                 // console.log(res.data);
-                Load.refresh(res.data['load']);
-                Cpu.refresh(res.data['cpu']);
-                Memory.refresh(res.data['mem']);
-                Disk.refresh(res.data['disk']);
+                Load.refresh(res.data['load']['Load1']);
+                Cpu.refresh(res.data['cpu']['UsedPercent']);
+                Memory.refresh(res.data['mem']['UsedPercent']);
+                Disk.refresh(res.data['disk']['Usage']);
             });
         }
         getRuntimeInfo();
