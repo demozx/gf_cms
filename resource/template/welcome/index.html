@@ -203,8 +203,12 @@
                 $('#CpuCores').html(res.data['cpu']['Cores']);
                 Load.refresh(res.data['load']['Load1']);
                 Cpu.refresh(res.data['cpu']['UsedPercent']);
-                Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, '内存:'+Math.ceil(res.data['mem']['Used']/1024/1024/1024)+'G/'+Math.ceil(res.data['mem']['Total']/1024/1024/1024)+'G');
-                Disk.refresh(res.data['disk']['Usage'], 100, 0, '磁盘:'+Math.ceil(res.data['disk']['Used']/1024)+'G/'+Math.ceil(res.data['disk']['All']/1024)+'G');
+                let memTotal = (res.data['mem']['Total'] / 1024 / 1024 / 1024).toFixed(2)
+                let memUsed = (res.data['mem']['Used'] / 1024 / 1024 / 1024).toFixed(2)
+                let diskUsed = (res.data['disk']['Used'] / 1024).toFixed(2)
+                let diskTotal = (res.data['disk']['All'] / 1024).toFixed(2)
+                Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, "内存\n" + memUsed + 'G/' + memTotal + 'G');
+                Disk.refresh(res.data['disk']['Usage'], 100, 0, "磁盘\n" + diskUsed + 'G/' + diskTotal + 'G');
             });
         }
 
