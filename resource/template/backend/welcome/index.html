@@ -73,7 +73,7 @@
                         </tr>
                         <tr>
                             <td>服务器IP</td>
-                            <td></td>
+                            <td>{{ .ip }}</td>
                         </tr>
                         <tr>
                             <td>操作系统</td>
@@ -95,10 +95,10 @@
                             <td>内核版本</td>
                             <td>{{ .host_info.KernelVersion }}</td>
                         </tr>
-                        <tr>
-                            <td>虚拟化系统</td>
-                            <td>{{ .host_info.VirtualizationSystem }}</td>
-                        </tr>
+<!--                        <tr>-->
+<!--                            <td>虚拟化系统</td>-->
+<!--                            <td>{{ .host_info.VirtualizationSystem }}</td>-->
+<!--                        </tr>-->
                         <tr>
                             <td>处理器型号</td>
                             <td>{{ .cpu_info.ModelName }}</td>

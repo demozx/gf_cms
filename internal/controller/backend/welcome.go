@@ -15,6 +15,7 @@ var (
 type cWelcome struct{}
 
 func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *backend.WelcomeRes, err error) {
+	ip, _ := service.Util().GetLocalIP()
 	_ = g.RequestFromCtx(ctx).Response.WriteTpl("backend/welcome/index.html", g.Map{
 		"project_name": service.ProjectName,
 		"system_root":  service.SystemRoot,
@@ -23,6 +24,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 		"go_version":   runtime.Version(),
 		"go_root":      runtime.GOROOT(),
 		"CPU_num":      runtime.NumCPU(),
+		"ip":           ip,
 	})
 	return
 }
