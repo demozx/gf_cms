@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"github.com/gogf/gf/v2/container/gvar"
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/load"
@@ -116,6 +117,7 @@ func (*sRuntime) GetHostInfo() Host {
 	if err != nil {
 		fmt.Println("host.Info() failed: ", err)
 	}
+	g.Log().Info(Ctx, "hostInfo", hostInfo)
 	var hostIn Host
 	hostIn.Hostname = hostInfo.Hostname
 	hostIn.OS = hostInfo.OS

@@ -31,6 +31,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 		"mem_info":     memInfo,
 		"go_version":   runtime.Version(),
 		"go_root":      runtime.GOROOT(),
+		"CPU_num":      runtime.NumCPU(),
 	})
 	return
 }

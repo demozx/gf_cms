@@ -83,7 +83,7 @@
                         </tr>
                         <tr>
                             <td>处理器核心</td>
-                            <td>{{ .cpu_info.Cores }}</td>
+                            <td>{{ .CPU_num }}</td>
                         </tr>
                         <tr>
                             <td>GO版本</td>
@@ -148,7 +148,7 @@
             labelMinFontSize: 18,
             minLabelMinFontSize: 18,
             maxLabelMinFontSize: 18,
-            label: "CPU:{{ .cpu_info.Cores }}核"
+            label: "CPU:{{ .CPU_num }}核"
         });
         var Memory = new JustGage({
             id: "memory",
