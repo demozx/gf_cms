@@ -26,7 +26,7 @@ func (c *cIndex) Index(ctx context.Context, req *backend.IndexReq) (res *backend
 	}
 	accountId := gvar.New(cmsAdmin.Id).String()
 	var backendMenu = service.Menu().BackendMy(accountId)
-	_ = g.RequestFromCtx(ctx).Response.WriteTpl("index/index.html", g.Map{
+	_ = g.RequestFromCtx(ctx).Response.WriteTpl("backend/index/index.html", g.Map{
 		"admin_session": gconv.Map(adminSession),
 		"backend_menu":  backendMenu,
 	})

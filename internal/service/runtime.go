@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"github.com/gogf/gf/v2/container/gvar"
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/load"
@@ -10,6 +11,7 @@ import (
 	"github.com/shirou/gopsutil/net"
 	"gitlab.com/tingshuo/go-diskstate/diskstate"
 	"strings"
+	"time"
 )
 
 type sRuntime struct{}
@@ -184,16 +186,40 @@ func (*sRuntime) GetNetInfo() Net {
 		kbsSent = 0
 		kbsRecv = 0
 	)
+	//fmt.Printf("%v", netIOs)
 	for _, netIO := range netIOs {
 		if strings.HasPrefix(netIO.Name, "en") {
-			fmt.Println(netIO.Name, netIO.BytesSent/1024/1024, netIO.BytesRecv/1024/1024) // 打印每张网卡信息
-			kbsSent = int(netIO.BytesSent/1024/1024) + kbsSent
-			kbsRecv = int(netIO.BytesRecv/1024/1024) + kbsRecv
+			//fmt.Println(netIO) // 打印每张网卡信息
+			kbsSent = int(netIO.BytesSent/1024) + kbsSent
+			kbsRecv = int(netIO.BytesRecv/1024) + kbsRecv
 		}
 	}
-	fmt.Println(kbsSent, kbsRecv)
+	//fmt.Println(kbsSent, kbsRecv)
+
+	var kbsSentCacheKey = Util().ProjectName() + ":net_info:kbs_sent"
+	var kbsRecvCacheKey = Util().ProjectName() + ":net_info:kbs_recv"
+	var kbsTimeCacheKey = Util().ProjectName() + ":net_info:kbs_time"
+	conn, err := g.Redis().Conn(Ctx)
+	kbsSentCached, _ := conn.Do(Ctx, "GET", kbsSentCacheKey)
+	kbsRecvCached, _ := conn.Do(Ctx, "GET", kbsRecvCacheKey)
+	kbsTimeCached, _ := conn.Do(Ctx, "GET", kbsTimeCacheKey)
+
+	//fmt.Println("kbsSentCached", kbsSentCached)
+	//fmt.Println("kbsRecvCached", kbsRecvCached)
+	//fmt.Println("kbsTimeCached", kbsTimeCached)
+
+	conn.Do(Ctx, "SET", kbsSentCacheKey, kbsSent)
+	conn.Do(Ctx, "SET", kbsRecvCacheKey, kbsRecv)
+	conn.Do(Ctx, "SET", kbsTimeCacheKey, time.Now().Unix())
+	defer conn.Close(Ctx)
 	var netInfo Net
-	netInfo.KbsSent = kbsSent
-	netInfo.KbsRecv = kbsRecv
+	var seconds = gvar.New(time.Now().Unix()).Int() - kbsTimeCached.Int()
+	if seconds > 0 {
+		netInfo.KbsSent = (kbsSent - kbsSentCached.Int()) / seconds
+		netInfo.KbsRecv = (kbsRecv - kbsRecvCached.Int()) / seconds
+	} else {
+		netInfo.KbsSent = kbsSent
+		netInfo.KbsRecv = kbsRecv
+	}
 	return netInfo
 }

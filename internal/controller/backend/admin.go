@@ -22,6 +22,6 @@ func (c *cAdmin) Login(ctx context.Context, req *backend.LoginReq) (res *backend
 		g.RequestFromCtx(ctx).Response.RedirectTo("/" + backendPrefix)
 	}
 
-	g.RequestFromCtx(ctx).Response.WriteTpl("admin/login.html")
+	g.RequestFromCtx(ctx).Response.WriteTpl("backend/admin/login.html")
 	return
 }

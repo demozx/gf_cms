@@ -203,13 +203,13 @@
             value: 0,
             min: 0,
             max: 10000,
-            decimals: 2,
+            decimals: 0,
             pointer: true,
             counter: true,
             donut: true,
             gaugeWidthScale: 0.6,
-            symbol: 'Kb/s',
-            label: "发送网速"
+            symbol: 'Kb',
+            label: "网速\n发送"
         });
         var KbsRecv = new JustGage({
             id: "kbsRecv",
@@ -221,8 +221,8 @@
             counter: true,
             donut: true,
             gaugeWidthScale: 0.6,
-            symbol: 'Kb/s',
-            label: "接收网速"
+            symbol: 'Kb',
+            label: "网速\n接收"
         });
         setInterval(function () {
             getRuntimeInfo()
@@ -241,8 +241,8 @@
                 let diskTotal = (res.data['disk']['All'] / 1024).toFixed(2)
                 Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, "内存\n" + memUsed + 'G/' + memTotal + 'G');
                 Disk.refresh(res.data['disk']['Usage'], 100, 0, "磁盘\n" + diskUsed + 'G/' + diskTotal + 'G');
-                KbsSent.refresh(res.data['net']['KbsSent'], 10000, 0, "发送网速\n" + res.data['net']['KbsSent'] + 'Kb/s');
-                KbsRecv.refresh(res.data['net']['KbsRecv'], 10000, 0, "接收网速\n" + res.data['net']['KbsRecv'] + 'Kb/s');
+                KbsSent.refresh(res.data['net']['KbsSent'], 10000, 0, "网速\n发送");
+                KbsRecv.refresh(res.data['net']['KbsRecv'], 10000, 0, "网速\n接收");
             });
         }
 
