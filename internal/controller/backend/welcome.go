@@ -15,7 +15,6 @@ var (
 type cWelcome struct{}
 
 func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *backend.WelcomeRes, err error) {
-	service.Runtime().GetNetInfo()
 	_ = g.RequestFromCtx(ctx).Response.WriteTpl("welcome/index.html", g.Map{
 		"project_name": service.ProjectName,
 		"system_root":  service.SystemRoot,

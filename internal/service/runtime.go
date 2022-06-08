@@ -9,6 +9,7 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
 	"gitlab.com/tingshuo/go-diskstate/diskstate"
+	"strings"
 )
 
 type sRuntime struct{}
@@ -59,6 +60,11 @@ type Host struct {
 	VirtualizationSystem string
 	VirtualizationRole   string
 	HostID               string
+}
+
+type Net struct {
+	KbsSent int
+	KbsRecv int
 }
 
 var (
@@ -169,14 +175,25 @@ func (*sRuntime) GetDiskInfo() Disk {
 }
 
 // GetNetInfo 网络信息
-func (*sRuntime) GetNetInfo() {
+func (*sRuntime) GetNetInfo() Net {
 	netIOs, err := net.IOCounters(true)
 	if err != nil {
 		fmt.Println("get net io counters failed: ", err)
-		return
 	}
-
+	var (
+		kbsSent = 0
+		kbsRecv = 0
+	)
 	for _, netIO := range netIOs {
-		fmt.Println(netIO.Name, netIO.BytesSent/1024/1024, netIO.BytesRecv/1024/1024) // 打印每张网卡信息
+		if strings.HasPrefix(netIO.Name, "en") {
+			fmt.Println(netIO.Name, netIO.BytesSent/1024/1024, netIO.BytesRecv/1024/1024) // 打印每张网卡信息
+			kbsSent = int(netIO.BytesSent/1024/1024) + kbsSent
+			kbsRecv = int(netIO.BytesRecv/1024/1024) + kbsRecv
+		}
 	}
+	fmt.Println(kbsSent, kbsRecv)
+	var netInfo Net
+	netInfo.KbsSent = kbsSent
+	netInfo.KbsRecv = kbsRecv
+	return netInfo
 }

@@ -17,6 +17,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 	var load = service.Runtime().GetLoadInfo()
 	var mem = service.Runtime().GetMemInfo()
 	var desk = service.Runtime().GetDiskInfo()
+	var net = service.Runtime().GetNetInfo()
 	//g.Log().Info(ctx, "cpu", cpu)
 	//g.Log().Info(ctx, "load", load)
 	//g.Log().Info(ctx, "mem", mem)
@@ -26,6 +27,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 		Cpu:  cpu,
 		Mem:  mem,
 		Disk: desk,
+		Net:  net,
 	}
 	return
 }
