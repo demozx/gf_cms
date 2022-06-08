@@ -177,6 +177,6 @@ func (*sRuntime) GetNetInfo() {
 	}
 
 	for _, netIO := range netIOs {
-		fmt.Println(netIO) // 打印每张网卡信息
+		fmt.Println(netIO.Name, netIO.BytesSent/1024/1024, netIO.BytesRecv/1024/1024) // 打印每张网卡信息
 	}
 }
