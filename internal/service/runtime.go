@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"github.com/gogf/gf/v2/container/gvar"
-	"github.com/gogf/gf/v2/frame/g"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/load"
@@ -47,10 +46,19 @@ type Disk struct {
 }
 
 type Host struct {
-	Hostname   string
-	OS         string
-	Platform   string
-	KernelArch string
+	Hostname             string
+	Uptime               string
+	BootTime             string
+	Procs                string
+	OS                   string
+	Platform             string
+	PlatformFamily       string
+	PlatformVersion      string
+	KernelVersion        string
+	KernelArch           string
+	VirtualizationSystem string
+	VirtualizationRole   string
+	HostID               string
 }
 
 var (
@@ -117,12 +125,20 @@ func (*sRuntime) GetHostInfo() Host {
 	if err != nil {
 		fmt.Println("host.Info() failed: ", err)
 	}
-	g.Log().Info(Ctx, "hostInfo", hostInfo)
 	var hostIn Host
 	hostIn.Hostname = hostInfo.Hostname
+	hostIn.Uptime = gvar.New(hostInfo.Uptime).String()
+	hostIn.BootTime = gvar.New(hostInfo.BootTime).String()
+	hostIn.Procs = gvar.New(hostInfo.Procs).String()
 	hostIn.OS = hostInfo.OS
 	hostIn.Platform = hostInfo.Platform
+	hostIn.PlatformFamily = hostInfo.PlatformFamily
+	hostIn.PlatformVersion = hostInfo.PlatformVersion
+	hostIn.KernelVersion = hostInfo.KernelVersion
 	hostIn.KernelArch = hostInfo.KernelArch
+	hostIn.VirtualizationSystem = hostInfo.VirtualizationSystem
+	hostIn.VirtualizationRole = hostInfo.VirtualizationRole
+	hostIn.HostID = hostInfo.HostID
 
 	return hostIn
 }

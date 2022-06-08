@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>欢迎页面</title>
+    <title>系统信息</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -78,6 +78,22 @@
                             <td>{{ .host_info.KernelArch }}</td>
                         </tr>
                         <tr>
+                            <td>平台</td>
+                            <td>{{ .host_info.Platform }}</td>
+                        </tr>
+                        <tr>
+                            <td>平台版本</td>
+                            <td>{{ .host_info.PlatformVersion }}</td>
+                        </tr>
+                        <tr>
+                            <td>内核版本</td>
+                            <td>{{ .host_info.KernelVersion }}</td>
+                        </tr>
+                        <tr>
+                            <td>虚拟化系统</td>
+                            <td>{{ .host_info.VirtualizationSystem }}</td>
+                        </tr>
+                        <tr>
                             <td>处理器型号</td>
                             <td>{{ .cpu_info.ModelName }}</td>
                         </tr>
@@ -99,11 +115,11 @@
                         </tr>
                         <tr>
                             <td>启动时间</td>
-                            <td></td>
+                            <td>{{ .host_info.BootTime|date "Y-m-d H:i:s" }}</td>
                         </tr>
                         <tr>
                             <td>运行时长</td>
-                            <td></td>
+                            <td>{{ .host_info.Uptime }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -161,7 +177,7 @@
             donut: true,
             gaugeWidthScale: 0.6,
             symbol: '%',
-            label: "内存:使用{{ .mem_info.Used }}G/共{{ .mem_info.Total }}G"
+            label: "内存:{{ .mem_info.Used }}G/{{ .mem_info.Total }}G"
         });
         var Disk = new JustGage({
             id: "disk",
@@ -174,7 +190,7 @@
             donut: true,
             gaugeWidthScale: 0.6,
             symbol: '%',
-            label: "磁盘:使用{{ .disk_info.Used }}G/共{{ .disk_info.All }}G"
+            label: "磁盘:{{ .disk_info.Used }}G/{{ .disk_info.All }}G"
         });
         setInterval(function () {
             getRuntimeInfo()
@@ -187,8 +203,8 @@
                 $('#CpuCores').html(res.data['cpu']['Cores']);
                 Load.refresh(res.data['load']['Load1']);
                 Cpu.refresh(res.data['cpu']['UsedPercent']);
-                Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, '内存:使用'+parseInt(res.data['mem']['Used']/1024/1024/1024)+'G/共'+parseInt(res.data['mem']['Total']/1024/1024/1024)+'G');
-                Disk.refresh(res.data['disk']['Usage'], 100, 0, '磁盘:使用'+parseInt(res.data['disk']['Used']/1024)+'G/共'+parseInt(res.data['disk']['All']/1024)+'G');
+                Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, '内存:'+parseInt(res.data['mem']['Used']/1024/1024/1024)+'G/'+parseInt(res.data['mem']['Total']/1024/1024/1024)+'G');
+                Disk.refresh(res.data['disk']['Usage'], 100, 0, '磁盘:'+parseInt(res.data['disk']['Used']/1024)+'G/'+parseInt(res.data['disk']['All']/1024)+'G');
             });
         }
 
