@@ -10,6 +10,15 @@ backend:
           slug: content.manage
         - title: 内容回收站
           slug: recycle.manage
+    - title: 系统设置
+      slug: setting
+      permissions:
+        - title: 快捷方式
+          slug: quick.manage
+        - title: 友情链接
+          slug: link.manage
+        - title: 站点配置
+          slug: setting.manage
 backend_api:
   title: 后台接口权限
   groups:

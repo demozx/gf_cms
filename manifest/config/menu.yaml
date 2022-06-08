@@ -12,3 +12,14 @@ backend:
         - title: 内容回收站
           route: /recycle/index
           permission: channel.recycle.manage
+    - title: 系统设置
+      children:
+        - title: 快捷方式
+          route: /quick/index
+          permission: setting.quick.manage
+        - title: 友情链接
+          route: /link/index
+          permission: setting.link.manage
+        - title: 站点配置
+          route: /setting/index
+          permission: setting.setting.manage

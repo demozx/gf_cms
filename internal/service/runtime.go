@@ -45,6 +45,13 @@ type Disk struct {
 	Usage     string
 }
 
+type Host struct {
+	Hostname   string
+	OS         string
+	Platform   string
+	KernelArch string
+}
+
 var (
 	insRuntime = sRuntime{}
 )
@@ -104,14 +111,18 @@ func (*sRuntime) GetMemInfo() Mem {
 }
 
 // GetHostInfo 主机信息
-func (*sRuntime) GetHostInfo() *host.InfoStat {
+func (*sRuntime) GetHostInfo() Host {
 	hostInfo, err := host.Info()
 	if err != nil {
 		fmt.Println("host.Info() failed: ", err)
-		return nil
 	}
+	var hostIn Host
+	hostIn.Hostname = hostInfo.Hostname
+	hostIn.OS = hostInfo.OS
+	hostIn.Platform = hostInfo.Platform
+	hostIn.KernelArch = hostInfo.KernelArch
 
-	return hostInfo
+	return hostIn
 }
 
 // GetDiskInfo 磁盘信息
@@ -131,10 +142,10 @@ func (*sRuntime) GetDiskInfo() Disk {
 	//return nil
 	state := diskstate.DiskUsage("/")
 	var disk Disk
-	disk.All = gvar.New(state.All/diskstate.MB).String() + "Mb"
-	disk.Free = gvar.New(state.Free/diskstate.MB).String() + "Mb"
-	disk.Available = gvar.New(state.Available/diskstate.MB).String() + "Mb"
-	disk.Used = gvar.New(state.Used/diskstate.MB).String() + "Mb"
+	disk.All = gvar.New(state.All / diskstate.MB).String()
+	disk.Free = gvar.New(state.Free / diskstate.MB).String()
+	disk.Available = gvar.New(state.Available / diskstate.MB).String()
+	disk.Used = gvar.New(state.Used / diskstate.MB).String()
 	disk.Usage = gvar.New(100 * state.Used / state.All).String()
 	return disk
 }

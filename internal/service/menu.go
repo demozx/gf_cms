@@ -82,20 +82,25 @@ func (*sMenu) BackendAll() []MenuGroups {
 func (*sMenu) BackendMy(accountId string) []MenuGroups {
 	//accountId := Middleware().GetAdminUserID(r)
 	backendMyPermissions := Permission().BackendMy(accountId)
+	//g.Log().Info(Ctx, "backendMyPermissions", backendMyPermissions)
 	backendAllMenus := Menu().BackendAll()
 	var backendMyMenus []MenuGroups
-	var backendMyMenusChildren []MenuChildren
+
 	for _, menu := range backendAllMenus {
 		var title = menu.Title
 		var children = menu.Children
+		var backendMyMenusChildren []MenuChildren
 		for _, item := range children {
 			var childrenPermission = item.Permission
+			//g.Log().Info(Ctx, "childrenPermission", childrenPermission)
 			for _, myPermission := range backendMyPermissions {
+				//g.Log().Info(Ctx, "myPermission.String()", myPermission.String(), childrenPermission, myPermission.String() == childrenPermission)
 				if myPermission.String() == childrenPermission {
 					backendMyMenusChildren = append(backendMyMenusChildren, item)
 				}
 			}
 		}
+		//g.Log().Info(Ctx, "backendMyMenusChildren", backendMyMenusChildren)
 		if backendMyMenusChildren != nil {
 			var backendMyMenu MenuGroups
 			backendMyMenu.Title = title
@@ -106,6 +111,5 @@ func (*sMenu) BackendMy(accountId string) []MenuGroups {
 	}
 	//g.Log().Info(Ctx, "backendAllMenus", backendAllMenus)
 	//g.Log().Info(Ctx, "backendMyMenus", backendMyMenus)
-	//g.Log().Info(Ctx, "backendMyMenusChildren", backendMyMenusChildren)
 	return backendMyMenus
 }

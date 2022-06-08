@@ -14,11 +14,12 @@ type sUtil struct{}
 var (
 	insUtil           = sUtil{}
 	insViewBindFun    = sViewBindFun{}
+	Ctx               context.Context
 	ProjectName       *gvar.Var
 	BackendPrefix     *gvar.Var
+	SystemRoot        *gvar.Var
 	BackendGroup      string
 	BackendApiGroup   string
-	Ctx               context.Context
 	PublicCachePreFix string
 )
 
@@ -27,13 +28,15 @@ func init() {
 	//项目ProjectName
 	ProjectName, _ = g.Cfg().Get(Ctx, "server.projectName", "gf_cms")
 	//后台入口前缀
-	BackendPrefix, _ = g.Config().Get(Ctx, "server.backendPrefix", "admin")
+	BackendPrefix, _ = g.Config().Get(Ctx, "server.backendPrefix", "backend")
 	//BackendGroup 后台view分组
 	BackendGroup = "/" + BackendPrefix.String()
 	//BackendApiGroup 后台api分组
 	BackendApiGroup = "/" + BackendPrefix.String() + "_api"
 	//公共缓存前缀
 	PublicCachePreFix = ProjectName.String() + ":public"
+	//项目目录
+	SystemRoot, _ = g.Cfg().Get(Ctx, "server.systemRoot", "")
 }
 
 func Util() *sUtil {
