@@ -177,7 +177,7 @@
             donut: true,
             gaugeWidthScale: 0.6,
             symbol: '%',
-            label: "内存:{{ .mem_info.Used }}G/{{ .mem_info.Total }}G"
+            label: "内存:"
         });
         var Disk = new JustGage({
             id: "disk",
@@ -190,7 +190,7 @@
             donut: true,
             gaugeWidthScale: 0.6,
             symbol: '%',
-            label: "磁盘:{{ .disk_info.Used }}G/{{ .disk_info.All }}G"
+            label: "磁盘:"
         });
         setInterval(function () {
             getRuntimeInfo()
@@ -203,8 +203,8 @@
                 $('#CpuCores').html(res.data['cpu']['Cores']);
                 Load.refresh(res.data['load']['Load1']);
                 Cpu.refresh(res.data['cpu']['UsedPercent']);
-                Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, '内存:'+parseInt(res.data['mem']['Used']/1024/1024/1024)+'G/'+parseInt(res.data['mem']['Total']/1024/1024/1024)+'G');
-                Disk.refresh(res.data['disk']['Usage'], 100, 0, '磁盘:'+parseInt(res.data['disk']['Used']/1024)+'G/'+parseInt(res.data['disk']['All']/1024)+'G');
+                Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, '内存:'+Math.ceil(res.data['mem']['Used']/1024/1024/1024)+'G/'+Math.ceil(res.data['mem']['Total']/1024/1024/1024)+'G');
+                Disk.refresh(res.data['disk']['Usage'], 100, 0, '磁盘:'+Math.ceil(res.data['disk']['Used']/1024)+'G/'+Math.ceil(res.data['disk']['All']/1024)+'G');
             });
         }
 
