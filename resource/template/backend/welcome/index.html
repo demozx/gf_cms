@@ -72,20 +72,20 @@
                             <td>{{ .ip }}</td>
                         </tr>
                         <tr>
-                            <td>操作系统</td>
+                            <td>系统内核</td>
                             <td>{{ .host_info.OS }}</td>
                         </tr>
                         <tr>
-                            <td>平台</td>
+                            <td>内核版本</td>
+                            <td>{{ .host_info.KernelVersion }}</td>
+                        </tr>
+                        <tr>
+                            <td>系统平台</td>
                             <td>{{ .host_info.Platform }}</td>
                         </tr>
                         <tr>
                             <td>平台版本</td>
                             <td>{{ .host_info.PlatformVersion }}</td>
-                        </tr>
-                        <tr>
-                            <td>内核版本</td>
-                            <td>{{ .host_info.KernelVersion }}</td>
                         </tr>
                         <tr>
                             <td>系统架构</td>
