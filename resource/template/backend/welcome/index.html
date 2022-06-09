@@ -56,15 +56,11 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>系统名称</td>
-                            <td>{{ system_config "web_name" }}</td>
-                        </tr>
-                        <tr>
                             <td>系统端口</td>
                             <td>{{ .server_address }}</td>
                         </tr>
                         <tr>
-                            <td>项目名称</td>
+                            <td>项目标识</td>
                             <td>{{ .project_name }}</td>
                         </tr>
                         <tr>
@@ -80,10 +76,6 @@
                             <td>{{ .host_info.OS }}</td>
                         </tr>
                         <tr>
-                            <td>系统架构</td>
-                            <td>{{ .host_info.KernelArch }}</td>
-                        </tr>
-                        <tr>
                             <td>平台</td>
                             <td>{{ .host_info.Platform }}</td>
                         </tr>
@@ -95,17 +87,13 @@
                             <td>内核版本</td>
                             <td>{{ .host_info.KernelVersion }}</td>
                         </tr>
-<!--                        <tr>-->
-<!--                            <td>虚拟化系统</td>-->
-<!--                            <td>{{ .host_info.VirtualizationSystem }}</td>-->
-<!--                        </tr>-->
                         <tr>
-                            <td>处理器型号</td>
-                            <td>{{ .cpu_info.ModelName }}</td>
+                            <td>系统架构</td>
+                            <td>{{ .host_info.KernelArch }}</td>
                         </tr>
                         <tr>
-                            <td>处理器核心</td>
-                            <td>{{ .CPU_num }}</td>
+                            <td>处理器信息</td>
+                            <td>{{ .cpu_info.ModelName }}&nbsp;&nbsp;{{ .CPU_num }}核</td>
                         </tr>
                         <tr>
                             <td>GO版本</td>
