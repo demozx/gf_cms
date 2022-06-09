@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/load"
@@ -72,6 +73,9 @@ type Net struct {
 var (
 	insRuntime = sRuntime{}
 )
+
+//服务启动时间缓存key
+var serverStartAtCacheKey = "serverStartAt"
 
 func Runtime() *sRuntime {
 	return &insRuntime
@@ -211,7 +215,6 @@ func (*sRuntime) GetNetInfo() Net {
 	conn.Do(Ctx, "SET", kbsSentCacheKey, kbsSent)
 	conn.Do(Ctx, "SET", kbsRecvCacheKey, kbsRecv)
 	conn.Do(Ctx, "SET", kbsTimeCacheKey, time.Now().Unix())
-	defer conn.Close(Ctx)
 	var netInfo Net
 	var seconds = gvar.New(time.Now().Unix()).Int() - kbsTimeCached.Int()
 	if seconds > 0 {
@@ -221,5 +224,18 @@ func (*sRuntime) GetNetInfo() Net {
 		netInfo.KbsSent = kbsSent
 		netInfo.KbsRecv = kbsRecv
 	}
+	defer conn.Close(Ctx)
 	return netInfo
+}
+
+// SetServerStartAt 设置服务启动时间
+func (*sRuntime) SetServerStartAt() bool {
+	gcache.Set(Ctx, serverStartAtCacheKey, time.Now().Unix(), 0)
+	return true
+}
+
+// GetServerStartAt 获取服务启动时间
+func (*sRuntime) GetServerStartAt() *gvar.Var {
+	get, _ := gcache.Get(Ctx, serverStartAtCacheKey)
+	return get
 }

@@ -19,7 +19,7 @@ require (
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
-	gitlab.com/tingshuo/go-diskstate v0.0.0-20191211131809-ee5e7223d03c // indirect
+	gitlab.com/tingshuo/go-diskstate v0.0.0-20191211131809-ee5e7223d03c
 	go.opentelemetry.io/otel/sdk v1.7.0 // indirect
 	golang.org/x/image v0.0.0-20220413100746-70e8d0d3baa9 // indirect
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect

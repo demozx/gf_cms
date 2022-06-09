@@ -121,11 +121,11 @@
                         </tr>
                         <tr>
                             <td>启动时间</td>
-                            <td>{{ .host_info.BootTime|date "Y-m-d H:i:s" }}</td>
+                            <td>{{ .server_start_at|date "Y-m-d H:i:s" }}</td>
                         </tr>
                         <tr>
                             <td>运行时长</td>
-                            <td>{{ .host_info.Uptime }}</td>
+                            <td id="server_start_duration">{{ .server_start_duration }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -231,8 +231,6 @@
         function getRuntimeInfo() {
             $.post('{{ backend_api_url "/welcome/index" }}', {}, function (res) {
                 // console.log(res.data);
-                $('#CpuModelName').html(res.data['cpu']['ModelName']);
-                $('#CpuCores').html(res.data['cpu']['Cores']);
                 Load.refresh(res.data['load']['Load1']);
                 Cpu.refresh(res.data['cpu']['UsedPercent']);
                 let memTotal = (res.data['mem']['Total'] / 1024 / 1024 / 1024).toFixed(2)
@@ -243,6 +241,7 @@
                 Disk.refresh(res.data['disk']['Usage'], 100, 0, "磁盘\n" + diskUsed + 'G/' + diskTotal + 'G');
                 KbsSent.refresh(res.data['net']['KbsSent'], 10000, 0, "网速\n发送");
                 KbsRecv.refresh(res.data['net']['KbsRecv'], 10000, 0, "网速\n接收");
+                $('#server_start_duration').text(res.data['serverStartDuration']);
             });
         }
 

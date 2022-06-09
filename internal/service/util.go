@@ -2,10 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gctx"
+	"math"
 	"net"
+	"time"
 )
 
 // Util
@@ -106,4 +109,35 @@ func (*sUtil) GetLocalIP() (ip string, err error) {
 		return ipAddr.IP.String(), nil
 	}
 	return
+}
+
+// FriendyTimeFormat 计算时间差，并以"XXd XXh XXm XXs"返回
+func (*sUtil) FriendyTimeFormat(TimeCreate time.Time, TimeEnd time.Time) string {
+	SubTime := int(TimeEnd.Sub(TimeCreate).Seconds())
+	// 秒
+	if SubTime < 60 {
+		return fmt.Sprintf("%d秒", SubTime)
+	}
+	// 分钟
+	if SubTime < 60*60 {
+		minute := int(math.Floor(float64(SubTime / 60)))
+		second := SubTime % 60
+		return fmt.Sprintf("%d分%d秒", minute, second)
+	}
+	// 小时
+	if SubTime < 60*60*24 {
+		hour := int(math.Floor(float64(SubTime / (60 * 60))))
+		tail := SubTime % (60 * 60)
+		minute := int(math.Floor(float64(tail / 60)))
+		second := tail % 60
+		return fmt.Sprintf("%d小时%d分%d秒", hour, minute, second)
+	}
+	// 天
+	day := int(math.Floor(float64(SubTime / (60 * 60 * 24))))
+	tail := SubTime % (60 * 60 * 24)
+	hour := int(math.Floor(float64(tail / (60 * 60))))
+	tail = SubTime % (60 * 60)
+	minute := int(math.Floor(float64(tail / 60)))
+	second := tail % 60
+	return fmt.Sprintf("%d天%d小时%d分%d秒", day, hour, minute, second)
 }

@@ -17,6 +17,9 @@ var (
 		Usage: "main",
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
+			//设置服务启动时间
+			service.Runtime().SetServerStartAt()
+
 			s := g.Server()
 
 			//session使用redis
