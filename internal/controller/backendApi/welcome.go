@@ -4,6 +4,7 @@ import (
 	"context"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/service"
+	"runtime"
 	"time"
 )
 
@@ -25,9 +26,11 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 	//g.Log().Info(ctx, "load", load)
 	//g.Log().Info(ctx, "mem", mem)
 	//g.Log().Info(ctx, "disk", desk)
+	cPUNum := runtime.NumCPU()
 	res = &backendApi.GetRuntimeInfoApiRes{
 		Load:                load,
 		Cpu:                 cpu,
+		CPUNum:              cPUNum,
 		Mem:                 mem,
 		Disk:                desk,
 		Net:                 net,

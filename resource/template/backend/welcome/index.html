@@ -219,7 +219,9 @@
         function getRuntimeInfo() {
             $.post('{{ backend_api_url "/welcome/index" }}', {}, function (res) {
                 // console.log(res.data);
-                Load.refresh(res.data['load']['Load1']);
+                let load1 = parseFloat(res.data['load']['Load1']).toFixed(2);
+                let cpu_num = res.data['cpu_num'];
+                Load.refresh(res.data['load']['Load1'] * cpu_num * 0.7, 100, 0, "负载\n1分钟：" + load1);
                 Cpu.refresh(res.data['cpu']['UsedPercent']);
                 let memTotal = (res.data['mem']['Total'] / 1024 / 1024 / 1024).toFixed(2)
                 let memUsed = (res.data['mem']['Used'] / 1024 / 1024 / 1024).toFixed(2)
