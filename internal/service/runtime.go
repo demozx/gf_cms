@@ -221,8 +221,8 @@ func (*sRuntime) GetNetInfo() Net {
 		netInfo.KbsSent = (kbsSent - kbsSentCached.Int()) / seconds
 		netInfo.KbsRecv = (kbsRecv - kbsRecvCached.Int()) / seconds
 	} else {
-		netInfo.KbsSent = kbsSent
-		netInfo.KbsRecv = kbsRecv
+		netInfo.KbsSent = 0
+		netInfo.KbsRecv = 0
 	}
 	defer conn.Close(Ctx)
 	return netInfo
