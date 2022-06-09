@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// CmsSystemConfig is the golang structure for table cms_system_config.
-type CmsSystemConfig struct {
+// CmsSystemSetting is the golang structure for table cms_system_setting.
+type CmsSystemSetting struct {
 	Id        uint        `json:"id"        ` //
 	Cid       int         `json:"cid"       ` // 分类id
 	Sort      int         `json:"sort"      ` // 排序

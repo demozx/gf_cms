@@ -10,15 +10,15 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// CmsSystemConfigDao is the data access object for table cms_system_config.
-type CmsSystemConfigDao struct {
-	table   string                 // table is the underlying table name of the DAO.
-	group   string                 // group is the database configuration group name of current DAO.
-	columns CmsSystemConfigColumns // columns contains all the column names of Table for convenient usage.
+// CmsSystemSettingDao is the data access object for table cms_system_setting.
+type CmsSystemSettingDao struct {
+	table   string                  // table is the underlying table name of the DAO.
+	group   string                  // group is the database configuration group name of current DAO.
+	columns CmsSystemSettingColumns // columns contains all the column names of Table for convenient usage.
 }
 
-// CmsSystemConfigColumns defines and stores column names for table cms_system_config.
-type CmsSystemConfigColumns struct {
+// CmsSystemSettingColumns defines and stores column names for table cms_system_setting.
+type CmsSystemSettingColumns struct {
 	Id        string //
 	Cid       string // 分类id
 	Sort      string // 排序
@@ -31,8 +31,8 @@ type CmsSystemConfigColumns struct {
 	UpdatedAt string //
 }
 
-//  cmsSystemConfigColumns holds the columns for table cms_system_config.
-var cmsSystemConfigColumns = CmsSystemConfigColumns{
+//  cmsSystemSettingColumns holds the columns for table cms_system_setting.
+var cmsSystemSettingColumns = CmsSystemSettingColumns{
 	Id:        "id",
 	Cid:       "cid",
 	Sort:      "sort",
@@ -45,37 +45,37 @@ var cmsSystemConfigColumns = CmsSystemConfigColumns{
 	UpdatedAt: "updated_at",
 }
 
-// NewCmsSystemConfigDao creates and returns a new DAO object for table data access.
-func NewCmsSystemConfigDao() *CmsSystemConfigDao {
-	return &CmsSystemConfigDao{
+// NewCmsSystemSettingDao creates and returns a new DAO object for table data access.
+func NewCmsSystemSettingDao() *CmsSystemSettingDao {
+	return &CmsSystemSettingDao{
 		group:   "default",
-		table:   "cms_system_config",
-		columns: cmsSystemConfigColumns,
+		table:   "cms_system_setting",
+		columns: cmsSystemSettingColumns,
 	}
 }
 
 // DB retrieves and returns the underlying raw database management object of current DAO.
-func (dao *CmsSystemConfigDao) DB() gdb.DB {
+func (dao *CmsSystemSettingDao) DB() gdb.DB {
 	return g.DB(dao.group)
 }
 
 // Table returns the table name of current dao.
-func (dao *CmsSystemConfigDao) Table() string {
+func (dao *CmsSystemSettingDao) Table() string {
 	return dao.table
 }
 
 // Columns returns all column names of current dao.
-func (dao *CmsSystemConfigDao) Columns() CmsSystemConfigColumns {
+func (dao *CmsSystemSettingDao) Columns() CmsSystemSettingColumns {
 	return dao.columns
 }
 
 // Group returns the configuration group name of database of current dao.
-func (dao *CmsSystemConfigDao) Group() string {
+func (dao *CmsSystemSettingDao) Group() string {
 	return dao.group
 }
 
 // Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
-func (dao *CmsSystemConfigDao) Ctx(ctx context.Context) *gdb.Model {
+func (dao *CmsSystemSettingDao) Ctx(ctx context.Context) *gdb.Model {
 	return dao.DB().Model(dao.table).Safe().Ctx(ctx)
 }
 
@@ -85,6 +85,6 @@ func (dao *CmsSystemConfigDao) Ctx(ctx context.Context) *gdb.Model {
 //
 // Note that, you should not Commit or Rollback the transaction in function f
 // as it is automatically handled by this function.
-func (dao *CmsSystemConfigDao) Transaction(ctx context.Context, f func(ctx context.Context, tx *gdb.TX) error) (err error) {
+func (dao *CmsSystemSettingDao) Transaction(ctx context.Context, f func(ctx context.Context, tx *gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)
 }

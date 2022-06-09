@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// CmsSystemConfig is the golang structure of table cms_system_config for DAO operations like Where/Data.
-type CmsSystemConfig struct {
-	g.Meta    `orm:"table:cms_system_config, do:true"`
+// CmsSystemSetting is the golang structure of table cms_system_setting for DAO operations like Where/Data.
+type CmsSystemSetting struct {
+	g.Meta    `orm:"table:cms_system_setting, do:true"`
 	Id        interface{} //
 	Cid       interface{} // 分类id
 	Sort      interface{} // 排序

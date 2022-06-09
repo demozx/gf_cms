@@ -15,15 +15,15 @@ type sViewBindFun struct{}
 // Register 注册视图绑定方法
 func (*sViewBindFun) Register() {
 	g.View().BindFuncMap(g.Map{
-		"system_config":   ViewBindFun().SystemConfig,
+		"system_setting":  ViewBindFun().SystemSetting,
 		"backend_url":     ViewBindFun().BackendUrl,
 		"backend_api_url": ViewBindFun().BackendApiUrl,
 	})
 }
 
-// SystemConfig 获取系统配置信息
-func (*sViewBindFun) SystemConfig(name string) string {
-	cacheKey := PublicCachePreFix + ":system_config:" + name
+// SystemSetting 获取系统配置信息
+func (*sViewBindFun) SystemSetting(name string) string {
+	cacheKey := PublicCachePreFix + ":system_setting:" + name
 	exists, err := g.Redis().Do(Ctx, "EXISTS", cacheKey)
 	if err != nil {
 		panic(err)
@@ -37,7 +37,7 @@ func (*sViewBindFun) SystemConfig(name string) string {
 		return value.String()
 	}
 	//不存在缓存key，从数据库读取
-	val, _ := g.Model("system_config").Where("name", name).Value("value")
+	val, _ := g.Model("system_setting").Where("name", name).Value("value")
 	g.Redis().Do(Ctx, "SET", cacheKey, val.String())
 	return val.String()
 }
