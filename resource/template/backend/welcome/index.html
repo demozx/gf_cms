@@ -93,7 +93,7 @@
                         </tr>
                         <tr>
                             <td>处理器信息</td>
-                            <td>{{ .cpu_info.ModelName }}&nbsp;&nbsp;{{ .CPU_num }}核</td>
+                            <td>{{ .cpu_info.ModelName }}&nbsp;&nbsp;{{ .cpu_num }}核</td>
                         </tr>
                         <tr>
                             <td>GO版本</td>
@@ -221,10 +221,7 @@
                 // console.log(res.data);
                 let load1 = parseFloat(res.data['load']['Load1']).toFixed(2);
                 let cpu_num = res.data['cpu_num'];
-                let loadPercent = load1 *100/cpu_num*0.5;
-                if (loadPercent > 100) {
-                    loadPercent = 100
-                }
+                let loadPercent = res.data['loadPercent'];
                 Load.refresh(loadPercent, 100, 0, "负载\n1分钟：" + load1);
                 Cpu.refresh(res.data['cpu']['UsedPercent']);
                 let memTotal = (res.data['mem']['Total'] / 1024 / 1024 / 1024).toFixed(2)

@@ -27,7 +27,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 		"cpu_info":              service.Runtime().GetCpuInfo(),
 		"go_version":            runtime.Version(),
 		"go_root":               runtime.GOROOT(),
-		"CPU_num":               runtime.NumCPU(),
+		"cpu_num":               runtime.NumCPU(),
 		"ip":                    ip,
 		"server_address":        serverAddress,
 		"server_start_at":       serverStartAt,

@@ -10,8 +10,9 @@ type GetRuntimeInfoApiReq struct {
 }
 type GetRuntimeInfoApiRes struct {
 	Load                service.Load `json:"load" "dc": "负载"`
+	LoadPercent         float32      `json:"loadPercent" "dc": "负载"`
 	Cpu                 service.Cpu  `json:"cpu" "dc": "CPU"`
-	CPUNum              int          `json:"cpu_num" "dc": "CPU核心数"`
+	CPUNum              int          `json:"CPUNum" "dc": "CPU核心数"`
 	Mem                 service.Mem  `json:"mem" "dc": "内存"`
 	Disk                service.Disk `json:"disk" "dc": "磁盘"`
 	Net                 service.Net  `json:"net" "dc": "网络"`
