@@ -221,7 +221,7 @@
                 // console.log(res.data);
                 let load1 = parseFloat(res.data['load']['Load1']).toFixed(2);
                 let cpu_num = res.data['cpu_num'];
-                let loadPercent = load1 *100/cpu_num*0.6;
+                let loadPercent = load1 *100/cpu_num*0.5;
                 if (loadPercent > 100) {
                     loadPercent = 100
                 }
