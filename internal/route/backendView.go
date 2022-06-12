@@ -28,6 +28,7 @@ func backendViewHandle(s *ghttp.Server) {
 			"/":             backend.Index.Index,   //后台首页
 			"welcome/index": backend.Welcome.Index, //后台欢迎页
 			"channel/index": backend.Channel.Index, //栏目分类
+			"setting/index": backend.Setting.Index, //后台设置
 		})
 	})
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/gogf/gf/v2/os/gctx"
 	"math"
 	"net"
+	"os"
 	"time"
 )
 
@@ -21,7 +22,7 @@ var (
 	Ctx               context.Context
 	ProjectName       *gvar.Var
 	BackendPrefix     *gvar.Var
-	SystemRoot        *gvar.Var
+	SystemRoot        string
 	BackendGroup      string
 	BackendApiGroup   string
 	PublicCachePreFix string
@@ -40,7 +41,7 @@ func init() {
 	//公共缓存前缀
 	PublicCachePreFix = ProjectName.String() + ":public"
 	//项目目录
-	SystemRoot, _ = g.Cfg().Get(Ctx, "server.systemRoot", "")
+	SystemRoot, _ = os.Getwd()
 }
 
 func Util() *sUtil {
@@ -50,6 +51,11 @@ func Util() *sUtil {
 // ProjectName 获取ProjectName
 func (*sUtil) ProjectName() string {
 	return ProjectName.String()
+}
+
+// SystemRoot 获取SystemRoot
+func (*sUtil) SystemRoot() string {
+	return SystemRoot
 }
 
 // BackendPrefix 后台入口前缀

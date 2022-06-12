@@ -8,7 +8,6 @@ import (
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
 	"log"
-	"time"
 )
 
 var (
@@ -38,15 +37,14 @@ func initCasbin() *casbin.Enforcer {
 	if err = db.Ping(); err != nil {
 		panic(err)
 	}
-	db.SetMaxOpenConns(20)
-	db.SetMaxIdleConns(10)
-	db.SetConnMaxLifetime(time.Minute * 10)
+	//db.SetMaxOpenConns(20)
+	//db.SetMaxIdleConns(10)
+	//db.SetConnMaxLifetime(time.Minute * 10)
 	a, err := sqladapter.NewAdapter(db, dbType, dbPrefix+"rule_permissions")
 	if err != nil {
 		panic(err)
 	}
-	var SystemRoot = Util().GetConfig("server.systemRoot")
-	e, err := casbin.NewEnforcer(SystemRoot+"/manifest/config/rbac_model.conf", a)
+	e, err := casbin.NewEnforcer(Util().SystemRoot()+"/manifest/config/rbac_model.conf", a)
 	if err != nil {
 		log.Fatalf("NewEnforecer failed:%v\n", err)
 	}

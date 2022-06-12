@@ -48,8 +48,7 @@ func (*sMenu) readYamlConfig(path string) (*MenuConfig, error) {
 }
 
 func (*sMenu) readYaml() *MenuConfig {
-	var SystemRoot = Util().GetConfig("server.systemRoot")
-	conf, err := Menu().readYamlConfig(SystemRoot + "/manifest/config/menu.yaml")
+	conf, err := Menu().readYamlConfig(Util().SystemRoot() + "/manifest/config/menu.yaml")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -82,7 +82,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 				$(".layui-tab-title li").eq(0).addClass('layui-this'); //未生效
 				$('.layui-tab-content iframe').eq(0).parent().addClass('layui-show');
 			}
-		}, 100);
+		}, 500);
 		//点击tab标题时，触发reloadTab函数
 		$('#tabName').on('click','li',function(){
 			reloadTab(this);

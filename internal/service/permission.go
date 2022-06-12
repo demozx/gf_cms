@@ -50,8 +50,7 @@ func (*sPermission) readYamlConfig(path string) (*PermissionConfig, error) {
 }
 
 func (*sPermission) readYaml() *PermissionConfig {
-	var SystemRoot = Util().GetConfig("server.systemRoot")
-	conf, err := Permission().readYamlConfig(SystemRoot + "/manifest/config/permission.yaml")
+	conf, err := Permission().readYamlConfig(Util().SystemRoot() + "/manifest/config/permission.yaml")
 	//fmt.Println(conf)
 	if err != nil {
 		log.Fatal(err)

@@ -89,9 +89,9 @@
 <!-- 左侧菜单结束 -->
 <!-- 右侧主体开始 -->
 <div class="page-content">
-    <div class="layui-tab tab" lay-filter="wenav_tab" id="WeTabTip" lay-allowclose="true">
+    <div class="layui-tab tab layui-this" lay-filter="wenav_tab" id="WeTabTip" lay-allowclose="true">
         <ul class="layui-tab-title" id="tabName">
-            <li>我的桌面</li>
+            <li id="welcome">系统信息</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -203,14 +203,14 @@
 
         }
 
-        getUntreated();
-        //1分钟查询一次留言
-        setInterval(function () {
-            getUntreated();
-        }, 60000);
+        // getUntreated();
+        // //1分钟查询一次留言
+        // setInterval(function () {
+        //     getUntreated();
+        // }, 60000);
+
     });
 </script>
-
 </body>
 <!--Tab菜单右键弹出菜单-->
 <ul class="rightMenu" id="rightMenu">
