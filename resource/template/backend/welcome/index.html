@@ -229,8 +229,16 @@
                 let diskTotal = (res.data['disk']['All'] / 1024).toFixed(2)
                 Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, "内存\n" + memUsed + 'G/' + memTotal + 'G');
                 Disk.refresh(res.data['disk']['Usage'], 100, 0, "磁盘\n" + diskUsed + 'G/' + diskTotal + 'G');
-                KbsSent.refresh(res.data['net']['KbsSent'], 10000, 0, "网速\n发送");
-                KbsRecv.refresh(res.data['net']['KbsRecv'], 10000, 0, "网速\n接收");
+                let maxKbsSent = 10000;
+                let maxKbsRecv = 10000;
+                if (res.data['net']['KbsSent'] > maxKbsSent) {
+                    maxKbsSent = res.data['net']['KbsSent']
+                }
+                KbsSent.refresh(res.data['net']['KbsSent'], maxKbsSent, 0, "网速\n发送");
+                if (res.data['net']['KbsRecv'] > maxKbsRecv) {
+                    maxKbsRecv = res.data['net']['KbsRecv']
+                }
+                KbsRecv.refresh(res.data['net']['KbsRecv'], maxKbsRecv, 0, "网速\n接收");
                 $('#server_start_duration').text(res.data['serverStartDuration']);
             });
         }
