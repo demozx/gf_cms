@@ -43,7 +43,6 @@ func (*sMenu) readYamlConfig(path string) (*MenuConfig, error) {
 	} else {
 		yaml.NewDecoder(f).Decode(conf)
 	}
-	//fmt.Println("conf: ", conf)
 	return conf, nil
 }
 

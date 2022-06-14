@@ -1,8 +1,9 @@
 package main
 
 import (
-	"gf_cms/internal/cmd"
 	_ "gf_cms/internal/packed"
+
+	"gf_cms/internal/cmd"
 	"github.com/gogf/gf/v2/os/gctx"
 )
 

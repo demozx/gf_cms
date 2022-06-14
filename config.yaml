@@ -1,10 +1,10 @@
 server:
   projectName: "gf_cms"
   backendPrefix: "admin"
-  address: ":8002"
+  address: ":8001"
   openapiPath: "/api.json"
   swaggerPath: "/swagger"
-  serverRoot: "./resource/public"
+  serverRoot: "resource/public"
 
 database:
   default:
@@ -30,15 +30,6 @@ logger:
   stdout: true
 
 gfcli:
-#  build:
-#    name: "gfCms"
-#    arch: "amd64"
-#    system: "linux"
-#    mod: "none"
-#    cgo: 0
-#    pack: "resource/public,resource/template"
-#    version: "v1.0.0"
-#    extra: ""
   build:
     name: "gfCms"
     arch: "amd64"
@@ -47,4 +38,5 @@ gfcli:
     cgo: 0
     pack: "resource/public,resource/template"
     version: ""
+    output: "./bin"
     extra: ""

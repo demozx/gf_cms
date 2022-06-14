@@ -1,0 +1,25 @@
+backend:
+  title: 后台设置
+  groups:
+    - title: 网站信息
+      children:
+        - title: 网站名称
+          type: text
+          name: web_name
+          default:
+          tip: 请输入网站信息
+          description: 网站显示的名称
+        - title: 网站关键词
+          type: text
+          name: keywords
+          default:
+          tip: 请输入网站关键词
+          description: 网站显示的关键词
+    - title: 文章设置
+      children:
+    - title: 留言设置
+      children:
+    - title: 邮件设置
+      children:
+    - title: 短信设置
+      children:
