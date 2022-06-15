@@ -95,6 +95,22 @@ func (*sUtil) ClearPublicCache() (*gvar.Var, error) {
 	return nil, err
 }
 
+// ClearSystemSettingCache 清除后台设置缓存
+func (*sUtil) ClearSystemSettingCache() (*gvar.Var, error) {
+	cacheKey := PublicCachePreFix + ":system_setting:*"
+	keys, err := g.Redis().Do(Ctx, "KEYS", cacheKey)
+	if err != nil {
+		return nil, err
+	}
+	for _, key := range keys.Array() {
+		_, err := g.Redis().Do(Ctx, "DEL", key)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return nil, err
+}
+
 // GetLocalIP 获取ip
 func (*sUtil) GetLocalIP() (ip string, err error) {
 	addrs, err := net.InterfaceAddrs()

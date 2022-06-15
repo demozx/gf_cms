@@ -6,299 +6,137 @@
     <title>系统设置-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/resource/backend/css/font.css">
     <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <script type="text/javascript" src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
 </head>
 <body>
 <div class="weadmin-body">
     <form class="layui-form layui-form-pane" action="">
         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
             <ul class="layui-tab-title">
-                <li class="layui-this">网站信息</li>
-                <li >文章设置</li>
-                <li >留言设置</li>
-                <li >邮件服务器配置</li>
-                <li >阿里云短信配置</li>
-                <li >员工系统配置</li>
+                {{ range $key, $groups := .settings }}
+                <li {{ if not $key }}class="layui-this" {{ end }}>{{ $groups.Title }}</li>
+                {{ end }}
             </ul>
             <div class="layui-tab-content" style="height: 100px;">
-                <div class="layui-tab-item layui-show">
-                    <!--网站信息设置start-->
-                    <!--文本框-->
+                {{ range $key, $groups := .settings }}
+                <div class="layui-tab-item {{ if not $key }}layui-show{{ end }}">
+                    {{ range $config := $groups.Children }}
+
+                    {{ if eq $config.Type "text" }}
+                    <!-- 文本框开始 -->
                     <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">网站名称</label>
+                        <label class="layui-form-label" style="width: 160px;">{{ $config.Title }}</label>
                         <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="webname" data-id="1" value="山东华梦律师事务所【官网】" autocomplete="off" placeholder="请输入网站名称" class="layui-input">
+                            <input type="text"
+                                   name="{{ $config.Name }}"
+                                   value="{{system_setting $config.Name}}"
+                                   autocomplete="off"
+                                   placeholder="{{ $config.Tip }}"
+                                   class="layui-input">
                         </div>
                     </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">网站关键词</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="keywords" data-id="2" value="山东华梦律师事务所|山东律师事务所|济南律师事务所" autocomplete="off" placeholder="请输入网站关键词" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本域-->
+                    <!-- 文本框结束 -->
+                    {{ end }}
+
+                    {{ if eq $config.Type "textarea" }}
+                    <!-- 文本域开始 -->
                     <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">网站描述</label>
+                        <label class="layui-form-label">{{ $config.Title }}</label>
                         <div class="layui-input-block">
-                            <textarea placeholder="请输入网站描述" class="layui-textarea" name="description" data-id="3">山东华梦律师事务所成立于2015年，是一家为国内外客户提供全方位法律服务的综合性、专业化、现代化律师事务所。律所在民事诉讼、商事合同、行政诉讼、刑事辩护等诉讼领域完成数千起案件的处理；完成大量关于公司改制、不良资产处置、尽职调查、发行债券、合同审查等非诉讼业务，是一家综合性合伙制律师事务所。</textarea>
+                            <textarea placeholder="{{ $config.Tip }}"
+                                      class="layui-textarea"
+                                      name="{{ $config.Name }}">{{system_setting $config.Name}}</textarea>
                         </div>
                     </div>
-                    <!--文本域-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">电话号码</label>
+                    <!-- 文本域结束 -->
+                    {{ end }}
+                    {{ if eq $config.Type "radio" }}
+                    <!-- radio开始 -->
+                    <div class="layui-form-item" pane="">
+                        <label class="layui-form-label" style="width: 160px;">{{ $config.Title }}</label>
                         <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="tel" data-id="4" value="0531-86076783" autocomplete="off" placeholder="请输入电话号码" class="layui-input">
+                            {{ range $option := $config.Options }}
+                            <input type="radio"
+                                   name="{{ $config.Name }}"
+                                   value="{{ $option.Value }}"
+                                   title="{{ $option.Title }}"
+                                   {{ if eq (system_setting $config.Name) $option.Value }} checked {{ end }}>
+                            {{ end }}
                         </div>
                     </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
+                    <!-- radio结束 -->
+                    {{ end }}
+                    {{ if eq $config.Type "image" }}
+                    <!-- 图片开始 -->
                     <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">电子邮箱</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="email" data-id="5" value="ryxtdyf@126.com" autocomplete="off" placeholder="请输入电子邮箱" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">公司名称</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="corporate_name" data-id="20" value="山东华梦律师事务所" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">公司地址</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="address" data-id="6" value="济南市历下区历山路157号山东行业协会大楼3层301-305室" autocomplete="off" placeholder="请输入公司地址" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">版权信息</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="powerby" data-id="7" value="Copyright &copy; 山东华梦律师事务所" autocomplete="off" placeholder="请输入版权信息" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">备案号</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="beian" data-id="8" value="鲁ICP备2022005628号-1" autocomplete="off" placeholder="请输入备案号" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本域-->
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">电脑版统计代码</label>
+                        <label class="layui-form-label" style="width: 160px;">{{ $config.Title }}</label>
                         <div class="layui-input-block">
-                            <textarea placeholder="请输入电脑版统计代码" class="layui-textarea" name="tongji_pc" data-id="9"></textarea>
+                            <input style="width: 60%;display: inline;" type="text" id="{{ $config.Name }}_text" name="{{ $config.Name }}" placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off" class="layui-input" value="{{ system_setting $config.Name }}">
+                            <button style="margin-left: -5px;margin-bottom: 3px;" type="button" class="layui-btn" id="{{ $config.Name }}_button">
+                                <i class="layui-icon"></i>
+                                上传图片
+                            </button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                            {{ if system_setting $config.Name  }}
+                            <div class="layui-upload-list" style="margin-left: 50px;">
+                                <img class="layui-upload-img" id="weixin_qr_code" src="{{ system_setting $config.Name }}" style="width: 100px;">
+                            </div>
+                            {{ end }}
                         </div>
+                        <script>
+                            layui.use(['upload', 'jquery'], function() {
+                                var upload = layui.upload;
+                                var $ = layui.$;
+                                //执行实例
+                                var uploadInst = upload.render({
+                                    elem    : '#{{ $config.Name }}_button' //绑定元素
+                                    , url   : '/mgr-page.php/article/litpic.html' //上传接口
+                                    , done  : function(res) {
+                                        //上传完毕回调
+                                        if (res['code'] == 0) {
+                                            $('#{{ $config.Name }}_code').attr('src', res['path']);
+                                            $('#{{ $config.Name }}_text').val(res['path']);
+                                        } else {
+                                            layer.msg(res['error'], {
+                                                time : 3000,
+                                                icon : 5
+                                            });
+                                        }
+                                    }
+                                    , error : function() {
+                                        //请求异常回调
+                                    }
+                                });
+                                /*图片放大预览*/
+                                $('body').on('mouseenter','.layui-upload-img',function () {
+                                    //console.log('显示大图');
+                                    var index = layer.open({
+                                        type: 1,
+                                        title: false,
+                                        closeBtn: 0,
+                                        area: '100',
+                                        skin: 'layui-layer-nobg', //没有背景色
+                                        shade: false,
+                                        shadeClose: true,
+                                        content: "<img style='max-width:600px;' src='"+$(this).prop('src')+"'>"
+                                    });
+                                });
+                                $('body').on('mouseleave','.layui-upload-img',function () {
+                                    //console.log('取消显示大图');
+                                    layer.close(layer.index);
+                                });
+                            });
+                        </script>
                     </div>
-                    <!--文本域-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本域-->
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">手机版统计代码</label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入手机版统计代码" class="layui-textarea" name="tongji_m" data-id="10"></textarea>
-                        </div>
-                    </div>
-                    <!--文本域-->
-                    <!--网站信息设置end-->
+                    <!-- 图片结束 -->
+                    {{ end }}
+
+                    {{ end }}
                 </div>
-                <div class="layui-tab-item ">
-                    <!--网站信息设置start-->
-                    <!--radio-->
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label" style="width: 160px;">文章回收站</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="radio" name="recycle_bin" value="1" title="开启" checked>
-                            <input type="radio" name="recycle_bin" value="0" title="关闭" >
-                        </div>
-                    </div>
-                    <!--radio-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--radio-->
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label" style="width: 160px;">自动获取文章缩略图</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="radio" name="auto_art_pic" value="1" title="开启" checked>
-                            <input type="radio" name="auto_art_pic" value="0" title="关闭" >
-                        </div>
-                    </div>
-                    <!--radio-->
-                    <!--网站信息设置end-->
-                </div>
-                <div class="layui-tab-item ">
-                    <!--网站信息设置start-->
-                    <!--radio-->
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label" style="width: 160px;">留言邮件提醒管理员</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="radio" name="guestbook_email_notice" value="1" title="开启" >
-                            <input type="radio" name="guestbook_email_notice" value="0" title="关闭" checked>
-                        </div>
-                    </div>
-                    <!--radio-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">管理员邮箱</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="admin_emails" data-id="22" value="" autocomplete="off" placeholder="请输入管理员邮箱(多个用&lsquo;|&rsquo;隔开)" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                </div>
-                <div class="layui-tab-item ">
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">smtp服务器</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="smtp_server" data-id="11" value="" autocomplete="off" placeholder="请输入smtp服务器地址" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">服务器端口</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="smtp_port" data-id="13" value="" autocomplete="off" placeholder="请输入服务器端口" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">邮箱账号</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="smtp_user" data-id="14" value="" autocomplete="off" placeholder="请输入邮箱账号" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">邮箱密码</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="smtp_pass" data-id="15" value="" autocomplete="off" placeholder="请输入邮箱密码" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">发送人地址</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="smtp_email_from" data-id="16" value="" autocomplete="off" placeholder="请输入发送人地址" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">发送人昵称</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="smtp_email_from_name" data-id="17" value="" autocomplete="off" placeholder="请输入发送人昵称" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--radio-->
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label" style="width: 160px;">员工查询邮件提醒</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="radio" name="employee_reminding" value="1" title="开启" >
-                            <input type="radio" name="employee_reminding" value="0" title="关闭" checked>
-                        </div>
-                    </div>
-                    <!--radio-->
-                    <!--网站信息设置end-->
-                </div>
-                <div class="layui-tab-item ">
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">accessKeyId</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="sms_accessKeyId" data-id="25" value="" autocomplete="off" placeholder="请输入accessKeyId" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">accessKeySecret</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="sms_accessKeySecret" data-id="26" value="" autocomplete="off" placeholder="请输入accessKeySecret" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                </div>
-                <div class="layui-tab-item ">
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">ip白名单</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="ygxt_ips" data-id="23" value="" autocomplete="off" placeholder="可以访问员工系统的ip(多个用&lsquo;|&rsquo;隔开)" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                    <!--网站信息设置start-->
-                    <!--文本框-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">初始密码</label>
-                        <div class="layui-input-block" style="margin-left: 160px;">
-                            <input type="text" name="yg_pass_default" data-id="24" value="" autocomplete="off" placeholder="添加员工时默认的初始密码" class="layui-input">
-                        </div>
-                    </div>
-                    <!--文本框-->
-                    <!--网站信息设置end-->
-                </div>
+                {{ end }}
                 <!--公共提交按钮-->
                 <div class="layui-form-item">
                     <button class="layui-btn" lay-submit="" lay-filter="submit">提交</button>
@@ -309,12 +147,11 @@
     </form>
 </div>
 </body>
-<script type="text/javascript" src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript">
     layui.extend({
         admin: '{/}/resource/backend/js/admin',
     });
-    layui.use(['jquery', 'element', 'form', 'util', 'admin', 'carousel'], function() {
+    layui.use(['jquery', 'element', 'form', 'util', 'admin', 'carousel'], function () {
         var element = layui.element,
             $ = layui.jquery,
             form = layui.form,
@@ -324,36 +161,36 @@
         //建造实例
         carousel.render({
             elem: '.weadmin-shortcut'
-            ,width: '100%' //设置容器宽度
-            ,arrow: 'none' //始终显示箭头
-            ,trigger: 'hover'
-            ,autoplay:false
+            , width: '100%' //设置容器宽度
+            , arrow: 'none' //始终显示箭头
+            , trigger: 'hover'
+            , autoplay: false
         });
 
         carousel.render({
             elem: '.weadmin-notice'
-            ,width: '100%' //设置容器宽度
-            ,arrow: 'none' //始终显示箭头
-            ,trigger: 'hover'
-            ,autoplay:true
+            , width: '100%' //设置容器宽度
+            , arrow: 'none' //始终显示箭头
+            , trigger: 'hover'
+            , autoplay: true
         });
 
-        form.on('submit(submit)', function(data){
+        form.on('submit(submit)', function (data) {
             //console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
             //console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             //console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             //console.log(data.id)
-            $.post('index.html',data.field,function (res) {
+            $.post('{{ backend_api_url "/setting/save" }}', data.field, function (res) {
                 console.log(res);
-                if(res['code'] == 1){
-                    layer.msg(res['msg'], {
+                if (res['code'] === 0) {
+                    layer.msg(res['message'], {
                         icon: 6
-                        ,time: 1000
+                        , time: 1000
                     });
-                }else{
-                    layer.msg(res['msg'], {
+                } else {
+                    layer.msg(res['message'], {
                         icon: 5
-                        ,time: 2000
+                        , time: 2000
                     });
                 }
             });
@@ -362,5 +199,4 @@
 
     });
 </script>
-
 </html>

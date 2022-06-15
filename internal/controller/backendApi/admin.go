@@ -37,7 +37,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 		"Username": admin.Username,
 		"name":     admin.Name,
 	})
-	g.RequestFromCtx(ctx).Response.WriteJson(g.Map{
+	g.RequestFromCtx(ctx).Response.WriteJsonExit(g.Map{
 		"code":    0,
 		"message": "登录成功",
 		"data":    res,

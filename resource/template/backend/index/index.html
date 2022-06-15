@@ -105,7 +105,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Copyright ©{:date('Y')} All Rights Reserved &emsp;{:config('systemConfig.system_name')}{:config('systemConfig.system_version')}</div>
+    <div class="copyright">Copyright ©{{ .|date "Y" }} All Rights Reserved &emsp;{{ system_setting "web_name" }}</div>
 </div>
 <!-- 底部结束 -->
 <script type="text/javascript">

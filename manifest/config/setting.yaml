@@ -6,17 +6,80 @@ backend:
         - title: 网站名称
           type: text
           name: web_name
-          default:
           tip: 请输入网站信息
-          description: 网站显示的名称
+
         - title: 网站关键词
           type: text
           name: keywords
-          default:
           tip: 请输入网站关键词
-          description: 网站显示的关键词
+
+        - title: 网站描述
+          type: textarea
+          name: description
+          tip: 请输入网站描述
+
+        - title: 电话号码
+          type: text
+          name: tel
+          tip: 请输入电话号码
+
+        - title: 电子邮箱
+          type: text
+          name: email
+          tip: 请输入电子邮箱
+
+        - title: 公司名称
+          type: text
+          name: corporate_name
+          tip: 请输入公司名称
+
+        - title: 公司地址
+          type: text
+          name: address
+          tip: 请输入公司地址
+
+        - title: 版权信息
+          type: text
+          name: power_by
+          tip: 请输入版权信息
+
+        - title: 备案号
+          type: text
+          name: bei_an
+          tip: 请输入备案号
+
+        - title: 电脑版统计代码
+          type: textarea
+          name: tongji_pc
+          tip: 请输入电脑版统计代码
+
+        - title: 手机版统计代码
+          type: textarea
+          name: tongji_m
+          tip: 请输入手机版统计代码
+
     - title: 文章设置
       children:
+        - title: 文章回收站
+          type: radio
+          name: recycle_bin
+          tip: 是否开启文章回收站
+          options:
+            - title: 开启
+              value: 1
+            - title: 关闭
+              value: 0
+
+        - title: 自动获取文章缩略图
+          type: radio
+          name: auto_art_pic
+          tip: 是否自动获取文章缩略图
+          options:
+            - title: 开启
+              value: 1
+            - title: 关闭
+              value: 0
+
     - title: 留言设置
       children:
     - title: 邮件设置

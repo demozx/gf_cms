@@ -29,6 +29,7 @@ func backendApiHandle(s *ghttp.Server) {
 			"/admin/logout":      backendApi.Admin.Logout,
 			"/admin/clear_cache": backendApi.Admin.ClearCache,
 			"/welcome/index":     backendApi.Welcome.Index,
+			"/setting/save":      backendApi.Setting.Save,
 		})
 	})
 }

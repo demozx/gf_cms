@@ -55,6 +55,7 @@ func initCasbin() *casbin.Enforcer {
 	if err = e.LoadPolicy(); err != nil {
 		log.Println("LoadPolicy failed, err: ", err)
 	}
+	defer db.Close()
 	return e
 }
 

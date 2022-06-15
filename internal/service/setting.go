@@ -4,6 +4,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"gopkg.in/yaml.v3"
 	"log"
+	"net/url"
 	"os"
 )
 
@@ -23,12 +24,13 @@ type SettingGroups struct {
 	Children []SettingChildren `yaml:"children"`
 }
 type SettingChildren struct {
-	Title       string `yaml:"title"`
-	Type        string `yaml:"type"`
-	Name        string `yaml:"name"`
-	Default     string `yaml:"default"`
-	Tip         string `yaml:"tip"`
-	Description string `yaml:"description"`
+	Title       string           `yaml:"title"`
+	Type        string           `yaml:"type"`
+	Name        string           `yaml:"name"`
+	Default     string           `yaml:"default"`
+	Tip         string           `yaml:"tip"`
+	Description string           `yaml:"description"`
+	Options     []SettingOptions `yaml:"options"`
 }
 type SettingConfig struct {
 	Backend Settings `yaml:"backend"`
@@ -37,6 +39,14 @@ type SettingConfig struct {
 type Settings struct {
 	Title  string          `yaml:"title"`
 	Groups []SettingGroups `yaml:"groups"`
+}
+
+type SettingOptions struct {
+	Title string `yaml:"title"`
+	Value string `yaml:"value"`
+}
+
+type SettingNames struct {
 }
 
 func (*sSetting) readYamlConfig(path string) (*SettingConfig, error) {
@@ -79,4 +89,33 @@ func (*sSetting) BackendAll() []SettingGroups {
 		panic(err)
 	}
 	return backendAll
+}
+
+// Save 保存设置
+func (*sSetting) Save(forms url.Values) bool {
+	group := "backend"
+	model := "system_setting"
+	names := g.Slice{}
+	for name, value := range forms {
+		names = append(names, name)
+		one, err := g.Model(model).Where("group", group).Where("name", name).One()
+		if err != nil {
+			panic(err)
+		}
+		if one.IsEmpty() {
+			go g.Model(model).Data(g.Map{
+				"group": group,
+				"name":  name,
+				"value": value[0],
+			}).Insert()
+		} else {
+			go g.Model(model).Data(g.Map{
+				"name":  name,
+				"value": value[0],
+			}).Where("group", group).Where("name", name).Update()
+		}
+	}
+	go g.Model(model).Where("group", group).WhereNotIn("name", names).Delete()
+	go Util().ClearSystemSettingCache()
+	return true
 }
