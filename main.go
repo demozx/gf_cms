@@ -3,6 +3,8 @@ package main
 import (
 	_ "gf_cms/internal/packed"
 
+	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
+
 	"gf_cms/internal/cmd"
 	"github.com/gogf/gf/v2/os/gctx"
 )
