@@ -5,7 +5,7 @@
 package dao
 
 import (
-	"gf_cms/internal/service/internal/dao/internal"
+	"gf_cms/internal/dao/internal"
 )
 
 // internalCmsRoleDao is internal type for wrapping internal DAO implements.

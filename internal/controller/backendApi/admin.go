@@ -4,8 +4,10 @@ import (
 	"context"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/consts"
+	"gf_cms/internal/logic/admin"
+	"gf_cms/internal/logic/auth"
+	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
-	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -16,7 +18,7 @@ var (
 type cAdmin struct{}
 
 func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res *backendApi.AdminLoginRes, err error) {
-	admin, err := service.Admin().LoginVerify(ctx, model.AdminLoginInput{
+	admin, err := admin.Admin().LoginVerify(ctx, model.AdminLoginInput{
 		Username:   req.Username,
 		Password:   req.Password,
 		CaptchaStr: req.CaptchaStr,
@@ -29,7 +31,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 
 	res = &backendApi.AdminLoginRes{}
 	//生成token
-	res.Token, res.Expire = service.Auth().LoginHandler(ctx)
+	res.Token, res.Expire = auth.Auth().JWTAuth().LoginHandler(ctx)
 	// 记录session：自己定义的，因为一般后台登录用session
 	g.RequestFromCtx(ctx).Session.Set(consts.AdminSessionKeyPrefix, g.Map{
 		"Token":    res.Token,
@@ -49,12 +51,12 @@ func (c *cAdmin) Logout(ctx context.Context, req *backendApi.AdminLogoutReq) (re
 	//清除session
 	g.RequestFromCtx(ctx).Session.Remove(consts.AdminSessionKeyPrefix)
 	//清除token
-	service.Auth().LogoutHandler(ctx)
+	auth.Auth().JWTAuth().LogoutHandler(ctx)
 	return
 }
 
 func (c *cAdmin) ClearCache(ctx context.Context, req *backendApi.AdminClearCacheReq) (res *backendApi.AdminClearCacheRes, err error) {
-	_, err = service.Util().ClearPublicCache()
+	_, err = util.Util().ClearPublicCache()
 	if err != nil {
 		g.RequestFromCtx(ctx).Response.WriteJson(g.Map{
 			"code":    1,

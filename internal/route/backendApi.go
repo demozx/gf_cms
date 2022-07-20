@@ -2,18 +2,19 @@ package route
 
 import (
 	"gf_cms/internal/controller/backendApi"
-	"gf_cms/internal/service"
+	"gf_cms/internal/logic/middleware"
+	"gf_cms/internal/logic/util"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 )
 
 //后台api路由分组
 func backendApiHandle(s *ghttp.Server) {
-	var backendApiGroup = service.Util().BackendApiGroup()
+	var backendApiGroup = util.Util().BackendApiGroup()
 	s.Group(backendApiGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
-			service.Middleware().CORS,
+			middleware.Middleware().CORS,
 		)
 		group.ALLMap(g.Map{
 			"/captcha/get": backendApi.Captcha.Get,
@@ -23,7 +24,7 @@ func backendApiHandle(s *ghttp.Server) {
 	s.Group(backendApiGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
-			service.Middleware().BackendAuthSession,
+			middleware.Middleware().BackendAuthSession,
 		)
 		group.ALLMap(g.Map{
 			"/admin/logout":      backendApi.Admin.Logout,

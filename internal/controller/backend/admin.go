@@ -4,7 +4,7 @@ import (
 	"context"
 	"gf_cms/api/backend"
 	"gf_cms/internal/consts"
-	"gf_cms/internal/service"
+	"gf_cms/internal/logic/util"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -18,7 +18,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backend.LoginReq) (res *backend
 	var adminSession, _ = g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
 	if !adminSession.IsEmpty() {
 		// 有session，已经登录过
-		var backendPrefix = service.Util().BackendPrefix()
+		var backendPrefix = util.Util().BackendPrefix()
 		g.RequestFromCtx(ctx).Response.RedirectTo("/" + backendPrefix)
 	}
 

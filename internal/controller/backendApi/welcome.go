@@ -3,7 +3,8 @@ package backendApi
 import (
 	"context"
 	"gf_cms/api/backendApi"
-	"gf_cms/internal/service"
+	runtime2 "gf_cms/internal/logic/runtime"
+	"gf_cms/internal/logic/util"
 	"github.com/gogf/gf/v2/util/gconv"
 	"runtime"
 	"time"
@@ -16,13 +17,13 @@ var (
 )
 
 func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiReq) (res *backendApi.GetRuntimeInfoApiRes, err error) {
-	var cpu = service.Runtime().GetCpuInfo()
-	var load = service.Runtime().GetLoadInfo()
-	var mem = service.Runtime().GetMemInfo()
-	var desk = service.Runtime().GetDiskInfo()
-	var net = service.Runtime().GetNetInfo()
-	serverStartAt := service.Runtime().GetServerStartAt()
-	serverStartDuration := service.Util().FriendyTimeFormat(serverStartAt.Time(), time.Now())
+	var cpu = runtime2.Runtime().GetCpuInfo()
+	var load = runtime2.Runtime().GetLoadInfo()
+	var mem = runtime2.Runtime().GetMemInfo()
+	var desk = runtime2.Runtime().GetDiskInfo()
+	var net = runtime2.Runtime().GetNetInfo()
+	serverStartAt := runtime2.Runtime().GetServerStartAt()
+	serverStartDuration := util.Util().FriendyTimeFormat(serverStartAt.Time(), time.Now())
 	cpuNum := runtime.NumCPU()
 	var loadPercent = gconv.Float32(load.Load1) * 100 / gconv.Float32(cpuNum) * gconv.Float32(0.5)
 	if loadPercent > 100 {

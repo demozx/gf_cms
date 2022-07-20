@@ -3,7 +3,8 @@ package backend
 import (
 	"context"
 	"gf_cms/api/backend"
-	"gf_cms/internal/service"
+	runtime2 "gf_cms/internal/logic/runtime"
+	"gf_cms/internal/logic/util"
 	"github.com/gogf/gf/v2/frame/g"
 	"runtime"
 	"time"
@@ -16,15 +17,15 @@ var (
 type cWelcome struct{}
 
 func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *backend.WelcomeRes, err error) {
-	ip, _ := service.Util().GetLocalIP()
+	ip, _ := util.Util().GetLocalIP()
 	serverAddress, _ := g.Config().Get(ctx, "server.address")
-	serverStartAt := service.Runtime().GetServerStartAt()
-	serverStartDuration := service.Util().FriendyTimeFormat(serverStartAt.Time(), time.Now())
+	serverStartAt := runtime2.Runtime().GetServerStartAt()
+	serverStartDuration := util.Util().FriendyTimeFormat(serverStartAt.Time(), time.Now())
 	_ = g.RequestFromCtx(ctx).Response.WriteTpl("backend/welcome/index.html", g.Map{
-		"project_name":          service.ProjectName,
-		"system_root":           service.SystemRoot,
-		"host_info":             service.Runtime().GetHostInfo(),
-		"cpu_info":              service.Runtime().GetCpuInfo(),
+		"project_name":          util.ProjectName,
+		"system_root":           util.SystemRoot,
+		"host_info":             runtime2.Runtime().GetHostInfo(),
+		"cpu_info":              runtime2.Runtime().GetCpuInfo(),
 		"go_version":            runtime.Version(),
 		"go_root":               runtime.GOROOT(),
 		"cpu_num":               runtime.NumCPU(),

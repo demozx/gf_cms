@@ -11,13 +11,9 @@ import (
 // CmsSystemSetting is the golang structure for table cms_system_setting.
 type CmsSystemSetting struct {
 	Id        uint        `json:"id"        ` //
-	Cid       int         `json:"cid"       ` // 分类id
-	Sort      int         `json:"sort"      ` // 排序
+	Group     string      `json:"group"     ` //
 	Name      string      `json:"name"      ` // 名称
-	Title     string      `json:"title"     ` // 标题
 	Value     string      `json:"value"     ` // 值
-	Type      string      `json:"type"      ` // 文本类型
-	Remarks   string      `json:"remarks"   ` // 备注
 	CreatedAt *gtime.Time `json:"createdAt" ` //
 	UpdatedAt *gtime.Time `json:"updatedAt" ` //
 }

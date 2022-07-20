@@ -3,7 +3,7 @@ package backendApi
 import (
 	"context"
 	"gf_cms/api/backendApi"
-	"gf_cms/internal/service"
+	"gf_cms/internal/logic/setting"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -15,7 +15,7 @@ var (
 
 func (c *cSetting) Save(ctx context.Context, req *backendApi.SettingSaveApiReq) (res *backendApi.SettingSaveApiRes, err error) {
 	form := g.RequestFromCtx(ctx).Request.Form
-	service.Setting().Save(form)
+	setting.Setting().Save(form)
 	g.RequestFromCtx(ctx).Response.WriteJsonExit(g.Map{
 		"code":    0,
 		"message": "保存成功",

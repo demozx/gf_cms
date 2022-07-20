@@ -13,13 +13,9 @@ import (
 type CmsSystemSetting struct {
 	g.Meta    `orm:"table:cms_system_setting, do:true"`
 	Id        interface{} //
-	Cid       interface{} // 分类id
-	Sort      interface{} // 排序
+	Group     interface{} //
 	Name      interface{} // 名称
-	Title     interface{} // 标题
 	Value     interface{} // 值
-	Type      interface{} // 文本类型
-	Remarks   interface{} // 备注
 	CreatedAt *gtime.Time //
 	UpdatedAt *gtime.Time //
 }

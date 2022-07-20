@@ -2,14 +2,15 @@ package route
 
 import (
 	"gf_cms/internal/controller/backend"
-	"gf_cms/internal/service"
+	"gf_cms/internal/logic/middleware"
+	"gf_cms/internal/logic/util"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 )
 
 //后台view路由分组
 func backendViewHandle(s *ghttp.Server) {
-	var backendGroup = service.Util().BackendGroup()
+	var backendGroup = util.Util().BackendGroup()
 	s.Group(backendGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
@@ -21,8 +22,8 @@ func backendViewHandle(s *ghttp.Server) {
 	s.Group(backendGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
-			service.Middleware().BackendAuthSession,
-			service.Middleware().BackendCheckPolicy,
+			middleware.Middleware().BackendAuthSession,
+			middleware.Middleware().BackendCheckPolicy,
 		)
 		group.ALLMap(g.Map{
 			"/":             backend.Index.Index,   //后台首页
