@@ -6,6 +6,7 @@ package entity
 
 // CmsRoleAccount is the golang structure for table cms_role_account.
 type CmsRoleAccount struct {
-	AccountId uint `json:"accountId" ` // 账户id
-	RoleId    uint `json:"roleId"    ` // 角色id
+	Id        uint64 `json:"id"        ` // ID
+	AccountId uint64 `json:"accountId" ` // 账户id
+	RoleId    uint   `json:"roleId"    ` // 角色id
 }
