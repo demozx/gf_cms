@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">管理员管理</a>
+        <a>
+          <cite>管理员列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="weadmin-body">
+
+    <div class="weadmin-block">
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html')"><i class="layui-icon"></i>添加</button>
+
+    </div>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>
+                <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
+                        class="layui-icon">&#xe605;</i></div>
+            </th>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>姓名</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>角色</th>
+            <th>加入时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        {{range $key, $item := .list.List }}
+        <tr>
+            <td>
+                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$item.Id}}'><i
+                        class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>{{$item.Id}}</td>
+            <td>{{$item.Username}}</td>
+            <td>{{$item.Name}}</td>
+            <td>{{$item.Tel}}</td>
+            <td>{{$item.Email}}</td>
+            <td>
+                {{range $key, $_item:=$item.RoleAccount}}
+                <span class="layui-btn layui-btn-normal layui-btn-xs ">{{$_item.Title}}</span>
+                {{end}}
+            </td>
+            <td>{{$item.CreatedAt}}</td>
+            <td class="td-status">
+                <span class="layui-btn layui-btn-normal layui-btn-xs {{if eq $item.Status 0}}layui-btn-disabled{{end}}">{{if eq $item.Status 1}}已启用{{else}}已停用{{end}}</span>
+            </td>
+            <td class="td-manage">
+                <a onclick="member_stop(this,'{$admin.id}')" href="javascript:;"
+                   title="{{if eq $item.Status 1}}停用{{else}}启用{{end}}">
+                    <i class="layui-icon">{{if eq $item.Status 1}}&#xe601;{{else}}&#xe62f;{{end}}</i>
+                </a>
+                <a title="编辑" onclick="WeAdminShow('编辑','{:url(\'admin/admin/edit\',[\'admid\'=>$admin.id])}')"
+                   href="javascript:;">
+                    <i class="layui-icon">&#xe642;</i>
+                </a>
+                <a title="删除" onclick="member_del(this,'{$admin.id}')" href="javascript:;">
+                    <i class="layui-icon">&#xe640;</i>
+                </a>
+            </td>
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+    <div class="page">
+        <div>
+            <ul class="pagination">
+                {{.pageInfo}}
+            </ul>
+        </div>
+    </div>
+
+</div>
+<script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+<script src="/resource/backend/js/_admin.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

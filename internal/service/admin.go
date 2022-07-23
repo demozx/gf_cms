@@ -17,6 +17,7 @@ type IAdmin interface {
 	LoginVerify(ctx context.Context, in model.AdminLoginInput) (admin *entity.CmsAdmin, err error)
 	GetUserByUserNamePassword(ctx context.Context, in model.AdminLoginInput) g.Map
 	GetRoleIdsByAccountId(accountId string) []gdb.Value
+	BackendAdminGetList(ctx context.Context, in model.AdminGetListInput) (out *model.AdminGetListOutput, err error)
 }
 
 var localAdmin IAdmin

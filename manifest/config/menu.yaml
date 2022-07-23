@@ -12,6 +12,20 @@ backend:
         - title: 内容回收站
           route: /recycle/index
           permission: channel.recycle.manage
+    - title: 管理员管理
+      children:
+        - title: 管理员列表
+          route: /admin/index
+          permission: admin.admin.manage
+        - title: 角色列表
+          route: /role/index
+          permission: admin.role.manage
+        - title: 权限分类
+          route: /rule_channel/index
+          permission: admin.rule_channel.manage
+        - title: 权限列表
+          route: /rule/index
+          permission: admin.rule.manage
     - title: 系统设置
       children:
         - title: 快捷方式

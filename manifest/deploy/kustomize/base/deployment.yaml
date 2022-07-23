@@ -15,7 +15,7 @@ spec:
         app: template-single
     spec:
       containers:
-        - name : main
+        - name: main
           image: template-single
           imagePullPolicy: Always
 

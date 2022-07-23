@@ -9,7 +9,7 @@
  * +----------------------------------------------------------------------
  */
 layui.extend({
-    admin: '{/}../../static/backend/js/backend',
+    admin: '{/}../../resource/backend/js/admin',
 });
 layui.use(['laydate', 'jquery', 'admin'], function() {
 	var laydate = layui.laydate,

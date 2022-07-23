@@ -11,6 +11,6 @@ var (
 
 type cChannel struct{}
 
-func (c *cChannel) Index(ctx context.Context, req *backend.LoginReq) (res *backend.LoginRes, err error) {
+func (c *cChannel) Index(ctx context.Context, req *backend.AdminLoginReq) (res *backend.AdminLoginRes, err error) {
 	return
 }

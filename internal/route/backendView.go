@@ -30,6 +30,7 @@ func backendViewHandle(s *ghttp.Server) {
 			"welcome/index": backend.Welcome.Index, //后台欢迎页
 			"channel/index": backend.Channel.Index, //栏目分类
 			"setting/index": backend.Setting.Index, //后台设置
+			"admin/index":   backend.Admin.Index,   // 管理员列表
 		})
 	})
 }

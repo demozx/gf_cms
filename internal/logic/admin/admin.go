@@ -54,6 +54,10 @@ func (s *sAdmin) LoginVerify(ctx context.Context, in model.AdminLoginInput) (adm
 		return admin, gerror.New(`用户名或密码错误`)
 	}
 
+	if admin.Status == 0 {
+		return admin, gerror.New(`用户已被封禁`)
+	}
+
 	return admin, nil
 }
 
@@ -84,4 +88,38 @@ func (s *sAdmin) GetRoleIdsByAccountId(accountId string) []gdb.Value {
 		panic(err)
 	}
 	return roleIds
+}
+
+// BackendAdminGetList 后台获取管理员列表
+func (s *sAdmin) BackendAdminGetList(ctx context.Context, in model.AdminGetListInput) (out *model.AdminGetListOutput, err error) {
+	var (
+		m = dao.CmsAdmin.Ctx(ctx).OrderDesc(dao.CmsAdmin.Columns().Id)
+	)
+	out = &model.AdminGetListOutput{
+		Page: in.Page,
+		Size: in.Size,
+	}
+
+	// 分配查询
+	listModel := m.Page(in.Page, in.Size)
+
+	var list []*entity.CmsAdmin
+
+	err = listModel.Scan(&list)
+	if err != nil {
+		return nil, err
+	}
+	// 没有数据
+	if len(list) == 0 {
+		return out, nil
+	}
+	out.Total, err = m.Count()
+	if err != nil {
+		return out, err
+	}
+	if err := listModel.WithAll().Scan(&out.List); err != nil {
+		return out, err
+	}
+
+	return
 }

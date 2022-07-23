@@ -11,6 +11,7 @@ import (
 	_ "gf_cms/internal/logic/casbinPolicy"
 	_ "gf_cms/internal/logic/menu"
 	_ "gf_cms/internal/logic/middleware"
+	_ "gf_cms/internal/logic/pageInfo"
 	_ "gf_cms/internal/logic/permission"
 	_ "gf_cms/internal/logic/runtime"
 	_ "gf_cms/internal/logic/setting"

@@ -10,6 +10,17 @@ backend:
           slug: content.manage
         - title: 内容回收站
           slug: recycle.manage
+    - title: 管理员管理
+      slug: admin
+      permissions:
+        - title: 管理员列表
+          slug: admin.manage
+        - title: 角色列表
+          slug: role.manage
+        - title: 权限分类
+          slug: rule_channel.manage
+        - title: 权限列表
+          slug: rule.manage
     - title: 系统设置
       slug: setting
       permissions:
