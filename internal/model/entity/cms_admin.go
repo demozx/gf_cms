@@ -17,6 +17,7 @@ type CmsAdmin struct {
 	Tel       string      `json:"tel"       ` // 手机号
 	Email     string      `json:"email"     ` // 邮箱
 	Status    int         `json:"status"    ` // 状态
+	IsSystem  int         `json:"isSystem"  ` // 是否系统用户
 	CreatedAt *gtime.Time `json:"createdAt" ` //
 	UpdatedAt *gtime.Time `json:"updatedAt" ` //
 }

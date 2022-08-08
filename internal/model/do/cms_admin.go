@@ -19,6 +19,7 @@ type CmsAdmin struct {
 	Tel       interface{} // 手机号
 	Email     interface{} // 邮箱
 	Status    interface{} // 状态
+	IsSystem  interface{} // 是否系统用户
 	CreatedAt *gtime.Time //
 	UpdatedAt *gtime.Time //
 }

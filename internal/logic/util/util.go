@@ -3,6 +3,7 @@ package util
 import (
 	"context"
 	"fmt"
+	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gctx"
@@ -28,7 +29,7 @@ var (
 )
 
 func init() {
-	//service.RegisterUtil(New())
+	service.RegisterUtil(New())
 	Ctx = gctx.New()
 	//项目ProjectName
 	ProjectName, _ = g.Cfg().Get(Ctx, "server.projectName", "gf_cms")

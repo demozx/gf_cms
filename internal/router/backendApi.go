@@ -1,4 +1,4 @@
-package route
+package router
 
 import (
 	"gf_cms/internal/controller/backendApi"
@@ -27,10 +27,16 @@ func backendApiHandle(s *ghttp.Server) {
 			middleware.Middleware().BackendAuthSession,
 		)
 		group.ALLMap(g.Map{
-			"/admin/logout":      backendApi.Admin.Logout,
-			"/admin/clear_cache": backendApi.Admin.ClearCache,
-			"/welcome/index":     backendApi.Welcome.Index,
-			"/setting/save":      backendApi.Setting.Save,
+			"/welcome/index": backendApi.Welcome.Index, //欢迎页面
+			"/setting/save":  backendApi.Setting.Save,  //保存系统设置
+			/*管理员*/
+			"/admin/logout":       backendApi.Admin.Logout,      //退出登录
+			"/admin/clear_cache":  backendApi.Admin.ClearCache,  //清理缓存
+			"/admin/add":          backendApi.Admin.Add,         //添加管理员
+			"/admin/edit":         backendApi.Admin.Edit,        //编辑管理员
+			"/admin/status":       backendApi.Admin.Status,      //启动禁用
+			"/admin/delete":       backendApi.Admin.Delete,      //删除
+			"/admin/delete_batch": backendApi.Admin.DeleteBatch, //批量删除
 		})
 	})
 }

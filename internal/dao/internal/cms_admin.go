@@ -27,6 +27,7 @@ type CmsAdminColumns struct {
 	Tel       string // 手机号
 	Email     string // 邮箱
 	Status    string // 状态
+	IsSystem  string // 是否系统用户
 	CreatedAt string //
 	UpdatedAt string //
 }
@@ -40,6 +41,7 @@ var cmsAdminColumns = CmsAdminColumns{
 	Tel:       "tel",
 	Email:     "email",
 	Status:    "status",
+	IsSystem:  "is_system",
 	CreatedAt: "created_at",
 	UpdatedAt: "updated_at",
 }

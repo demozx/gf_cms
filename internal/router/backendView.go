@@ -1,4 +1,4 @@
-package route
+package router
 
 import (
 	"gf_cms/internal/controller/backend"
@@ -26,11 +26,18 @@ func backendViewHandle(s *ghttp.Server) {
 			middleware.Middleware().BackendCheckPolicy,
 		)
 		group.ALLMap(g.Map{
-			"/":             backend.Index.Index,   //后台首页
-			"welcome/index": backend.Welcome.Index, //后台欢迎页
-			"channel/index": backend.Channel.Index, //栏目分类
-			"setting/index": backend.Setting.Index, //后台设置
-			"admin/index":   backend.Admin.Index,   // 管理员列表
+			/*后台首页*/
+			"/": backend.Index.Index,
+			/*后台欢迎页*/
+			"welcome/index": backend.Welcome.Index,
+			/*栏目分类*/
+			"channel/index": backend.Channel.Index,
+			/*后台设置*/
+			"setting/index": backend.Setting.Index,
+			/*管理员列表*/
+			"admin/index": backend.Admin.Index, //管理员列表
+			"admin/add":   backend.Admin.Add,   //添加
+			"admin/edit":  backend.Admin.Edit,  //编辑
 		})
 	})
 }

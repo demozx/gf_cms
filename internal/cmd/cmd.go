@@ -6,7 +6,7 @@ import (
 	"gf_cms/internal/logic/runtime"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/logic/viewBindFun"
-	"gf_cms/internal/route"
+	"gf_cms/internal/router"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcmd"
 	"github.com/gogf/gf/v2/os/gsession"
@@ -34,7 +34,7 @@ var (
 			viewBindFun.ViewBindFun().Register()
 
 			//路由
-			route.Register(s)
+			router.Register(s)
 
 			s.Run()
 
