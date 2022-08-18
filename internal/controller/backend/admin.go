@@ -9,6 +9,7 @@ import (
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -68,20 +69,31 @@ func (c *cAdmin) Add(ctx context.Context, req *backend.AdminAddReq) (res *backen
 
 // Edit 编辑管理员
 func (c *cAdmin) Edit(ctx context.Context, req *backend.AdminEditReq) (res *backend.AdminEditRes, err error) {
-	var roleIdTitleArr []*model.RoleTitle
-	err = dao.CmsRole.Ctx(ctx).Where(dao.CmsRole.Columns().Type, "backend").Where(dao.CmsRole.Columns().IsEnable, 1).Scan(&roleIdTitleArr)
-	if err != nil {
-		return nil, err
-	}
 	var admin *entity.CmsAdmin
 	err = dao.CmsAdmin.Ctx(ctx).Where(dao.CmsAdmin.Columns().Id, req.Id).Scan(&admin)
 	if err != nil {
 		return nil, err
 	}
-	g.Dump(admin, roleIdTitleArr)
-	err = g.RequestFromCtx(ctx).Response.WriteTpl("backend/admin/add.html", g.Map{
+	if admin == nil {
+		return nil, gerror.New("数据不存在")
+	}
+	var roleIdTitleArr []*model.RoleTitle
+	err = dao.CmsRole.Ctx(ctx).Where(dao.CmsRole.Columns().Type, "backend").Where(dao.CmsRole.Columns().IsEnable, 1).Scan(&roleIdTitleArr)
+	if err != nil {
+		return nil, err
+	}
+	var roleAccounts []*entity.CmsRoleAccount
+	err = dao.CmsRoleAccount.Ctx(ctx).Where(dao.CmsRoleAccount.Columns().AccountId, req.Id).Scan(&roleAccounts)
+	if err != nil {
+		return nil, err
+	}
+	if err != nil {
+		return nil, err
+	}
+	err = g.RequestFromCtx(ctx).Response.WriteTpl("backend/admin/edit.html", g.Map{
 		"roleIdTitleArr": roleIdTitleArr,
 		"admin":          admin,
+		"roleAccounts":   roleAccounts,
 	})
 	return
 }

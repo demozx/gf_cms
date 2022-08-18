@@ -84,19 +84,21 @@ func (*sSetting) Save(forms url.Values) bool {
 			panic(err)
 		}
 		if one.IsEmpty() {
-			go g.Model(model).Data(g.Map{
+			g.Model(model).Data(g.Map{
 				"group": group,
 				"name":  name,
 				"value": value[0],
 			}).Insert()
 		} else {
-			go g.Model(model).Data(g.Map{
+			g.Model(model).Data(g.Map{
 				"name":  name,
 				"value": value[0],
 			}).Where("group", group).Where("name", name).Update()
 		}
+
 	}
-	go g.Model(model).Where("group", group).WhereNotIn("name", names).Delete()
-	go util.Util().ClearSystemSettingCache()
+	g.Model(model).Where("group", group).WhereNotIn("name", names).Delete()
+	util.Util().ClearSystemSettingCache()
+
 	return true
 }

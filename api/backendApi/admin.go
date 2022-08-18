@@ -51,8 +51,8 @@ type AdminEditReq struct {
 	Email      string `p:"email" name:"email" brief:"邮箱" des:"邮箱"  arg:"true" v:"required|email#请输入邮箱|邮箱格式错误"`
 	Role       g.Map  `p:"role_ids" name:"role_ids" brief:"角色ids" des:"角色ids"  arg:"true" v:"required#请选择角色"`
 	Status     int    `p:"status" name:"status" brief:"状态" des:"状态"  arg:"true" v:"in:0,1#状态不合法"`
-	Password   string `p:"password" name:"password" brief:"密码" des:"密码"  arg:"true" v:"required|length:6,16#请输入密码|密码必须是6-16位"`
-	RePassword string `p:"re_password" name:"re_password" brief:"确认密码" des:"确认密码"  arg:"true" v:"required|same:Password#请输入确认密码|确认密码错误"`
+	Password   string `p:"password" name:"password" brief:"密码" des:"密码"  arg:"true" v:"length:6,16#密码必须是6-16位"`
+	RePassword string `p:"re_password" name:"re_password" brief:"确认密码" des:"确认密码"  arg:"true" v:"same:Password#确认密码错误"`
 }
 type AdminEditRes struct{}
 

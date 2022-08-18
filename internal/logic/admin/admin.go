@@ -186,7 +186,58 @@ func (s *sAdmin) BackendApiAdminEdit(ctx context.Context, in *backendApi.AdminEd
 	if err != nil {
 		return nil, err
 	}
-	g.Dump(admin)
+	if admin == nil {
+		return nil, gerror.New("管理员不存在")
+	}
+	if admin.IsSystem == 1 && in.Status == 0 {
+		return nil, gerror.New("系统管理员无法被禁用")
+	}
+	count, err := dao.CmsAdmin.Ctx(ctx).Where(dao.CmsAdmin.Columns().Username, in.Username).WhereNot(dao.CmsAdmin.Columns().Id, in.Id).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, gerror.New("用户名已存在")
+	}
+	count, err = dao.CmsAdmin.Ctx(ctx).Where(dao.CmsAdmin.Columns().Tel, in.Tel).WhereNot(dao.CmsAdmin.Columns().Id, in.Id).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, gerror.New("手机号已存在")
+	}
+	count, err = dao.CmsAdmin.Ctx(ctx).Where(dao.CmsAdmin.Columns().Email, in.Email).WhereNot(dao.CmsAdmin.Columns().Id, in.Id).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, gerror.New("邮箱号已存在")
+	}
+	adminData := g.Map{
+		"username": in.Username,
+		"name":     in.Name,
+		"tel":      in.Tel,
+		"email":    in.Email,
+		"status":   in.Status,
+	}
+	if len(in.Password) > 0 {
+		adminData["password"] = Admin().passMd5(in.Password)
+	}
+	_, err = dao.CmsAdmin.Ctx(ctx).Where(dao.CmsAdmin.Columns().Id, in.Id).Data(adminData).Update()
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsRoleAccount.Ctx(ctx).Where(dao.CmsRoleAccount.Columns().AccountId, in.Id).Delete()
+	if err != nil {
+		return nil, err
+	}
+	for _, roleId := range in.Role {
+		roleData := g.Map{
+			"account_id": in.Id,
+			"role_id":    roleId,
+		}
+		_, err = dao.CmsRoleAccount.Ctx(ctx).Where(dao.CmsRoleAccount.Columns().AccountId, in.Id).Data(roleData).Insert()
+	}
 	return
 }
 
