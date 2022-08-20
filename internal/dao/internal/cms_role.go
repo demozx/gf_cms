@@ -21,7 +21,6 @@ type CmsRoleDao struct {
 // CmsRoleColumns defines and stores column names for table cms_role.
 type CmsRoleColumns struct {
 	Id          string //
-	Name        string // 角色组名称
 	Title       string // 中文名称
 	Description string //
 	Type        string // 账户类型
@@ -32,7 +31,6 @@ type CmsRoleColumns struct {
 //  cmsRoleColumns holds the columns for table cms_role.
 var cmsRoleColumns = CmsRoleColumns{
 	Id:          "id",
-	Name:        "name",
 	Title:       "title",
 	Description: "description",
 	Type:        "type",

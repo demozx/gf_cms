@@ -97,8 +97,13 @@ func (s *sRole) BackendApiRoleDelete(ctx context.Context, in *backendApi.RoleDel
 	if err != nil {
 		return nil, err
 	}
-	//删除拥有该角色的用户
+	//删除拥有该角色的用户映射
 	_, err = dao.CmsRoleAccount.Ctx(ctx).Where(dao.CmsRoleAccount.Columns().RoleId, in.Id).Delete()
+	if err != nil {
+		return nil, err
+	}
+	//删除该角色的权限
+	_, err = dao.CmsRulePermissions.Ctx(ctx).Where(dao.CmsRulePermissions.Columns().V0, in.Id).Delete()
 	if err != nil {
 		return nil, err
 	}
@@ -122,14 +127,55 @@ func (s *sRole) BackendApiRoleDeleteBatch(ctx context.Context, in *backendApi.Ro
 			if err != nil {
 				return err
 			}
-			//删除拥有该角色的用户
+			//删除拥有该角色的用户映射
 			_, err = tx.Ctx(ctx).Model(entity.CmsRoleAccount{}).Where(dao.CmsRoleAccount.Columns().RoleId, id).Delete()
+			if err != nil {
+				return err
+			}
+			//删除该角色的权限
+			_, err = tx.Ctx(ctx).Model(entity.CmsRulePermissions{}).Where(dao.CmsRulePermissions.Columns().V0, id).Delete()
 			if err != nil {
 				return err
 			}
 		}
 		return err
 	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// BackendApiRoleAdd 添加角色
+func (s *sRole) BackendApiRoleAdd(ctx context.Context, in *backendApi.RoleAddReq) (out interface{}, err error) {
+	var role *entity.CmsRole
+	err = dao.CmsRole.Ctx(ctx).Where(dao.CmsRole.Columns().Title, in.Title).Scan(&role)
+	if err != nil {
+		return nil, err
+	}
+	if role != nil {
+		return nil, gerror.New("角色名已存在")
+	}
+	//写入角色
+	roleId, err := dao.CmsRole.Ctx(ctx).InsertAndGetId(g.Map{
+		dao.CmsRole.Columns().Title:       in.Title,
+		dao.CmsRole.Columns().Description: in.Description,
+		dao.CmsRole.Columns().IsEnable:    in.Status,
+		dao.CmsRole.Columns().Type:        "backend",
+	})
+	if err != nil {
+		return nil, err
+	}
+	var rulePermissions []interface{}
+	for _, rule := range in.Rules {
+		var rulePermission = g.Map{}
+		rulePermission["p_type"] = "p"
+		rulePermission["v0"] = roleId
+		rulePermission["v1"] = "backend"
+		rulePermission["v2"] = rule
+		rulePermissions = append(rulePermissions, rulePermission)
+	}
+	_, err = dao.CmsRulePermissions.Ctx(ctx).Insert(rulePermissions)
 	if err != nil {
 		return nil, err
 	}

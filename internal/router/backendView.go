@@ -29,17 +29,18 @@ func backendViewHandle(s *ghttp.Server) {
 			/*后台首页*/
 			"/": backend.Index.Index,
 			/*后台欢迎页*/
-			"welcome/index": backend.Welcome.Index,
+			"/welcome/index": backend.Welcome.Index,
 			/*栏目分类*/
-			"channel/index": backend.Channel.Index,
+			"/channel/index": backend.Channel.Index,
 			/*后台设置*/
-			"setting/index": backend.Setting.Index,
+			"/setting/index": backend.Setting.Index,
 			/*管理员列表*/
-			"admin/index": backend.Admin.Index, //管理员列表
-			"admin/add":   backend.Admin.Add,   //添加
-			"admin/edit":  backend.Admin.Edit,  //编辑
+			"/admin/index": backend.Admin.Index, //管理员列表
+			"/admin/add":   backend.Admin.Add,   //添加
+			"/admin/edit":  backend.Admin.Edit,  //编辑
 			/*角色*/
-			"role/index": backend.Role.Index, //角色列表
+			"/role/index": backend.Role.Index, //角色列表
+			"/role/add":   backend.Role.Add,   //添加角色
 		})
 	})
 }

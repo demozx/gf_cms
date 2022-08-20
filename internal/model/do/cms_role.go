@@ -12,7 +12,6 @@ import (
 type CmsRole struct {
 	g.Meta      `orm:"table:cms_role, do:true"`
 	Id          interface{} //
-	Name        interface{} // 角色组名称
 	Title       interface{} // 中文名称
 	Description interface{} //
 	Type        interface{} // 账户类型

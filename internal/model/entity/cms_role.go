@@ -7,7 +7,6 @@ package entity
 // CmsRole is the golang structure for table cms_role.
 type CmsRole struct {
 	Id          uint64 `json:"id"          ` //
-	Name        string `json:"name"        ` // 角色组名称
 	Title       string `json:"title"       ` // 中文名称
 	Description string `json:"description" ` //
 	Type        string `json:"type"        ` // 账户类型

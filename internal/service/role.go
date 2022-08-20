@@ -15,6 +15,7 @@ type IRole interface {
 	BackendApiRoleStatus(ctx context.Context, in *backendApi.RoleStatusReq) (out interface{}, err error)
 	BackendApiRoleDelete(ctx context.Context, in *backendApi.RoleDeleteReq) (out interface{}, err error)
 	BackendApiRoleDeleteBatch(ctx context.Context, in *backendApi.RoleDeleteBatchReq) (out interface{}, err error)
+	BackendApiRoleAdd(ctx context.Context, in *backendApi.RoleAddReq) (out interface{}, err error)
 }
 
 var localRole IRole

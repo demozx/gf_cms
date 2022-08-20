@@ -30,8 +30,19 @@ func (c *cRole) Delete(ctx context.Context, req *backendApi.RoleDeleteReq) (res 
 	return
 }
 
+// DeleteBatch 角色批量删除
 func (c *cRole) DeleteBatch(ctx context.Context, req *backendApi.RoleDeleteBatchReq) (res *backendApi.RoleDeleteBatchRes, err error) {
 	_, err = service.Role().BackendApiRoleDeleteBatch(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefault(ctx)
+	return
+}
+
+// Add 增加角色
+func (c *cRole) Add(ctx context.Context, req *backendApi.RoleAddReq) (res *backendApi.RoleAddRes, err error) {
+	_, err = service.Role().BackendApiRoleAdd(ctx, req)
 	if err != nil {
 		return nil, err
 	}

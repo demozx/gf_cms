@@ -16,6 +16,7 @@ var (
 
 type cRole struct{}
 
+// Index 角色列表
 func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *backend.RoleIndexRes, err error) {
 	list, err := service.Role().BackendRoleGetList(ctx, model.RoleGetListInput{
 		Page: req.Page,
@@ -48,6 +49,18 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 	err = service.Response().View(ctx, "backend/role/index.html", g.Map{
 		"list":     list,
 		"pageInfo": service.PageInfo().LayUiPageInfo(ctx, list.Total, list.Size),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// Add 添加角色
+func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.RoleAddRes, err error) {
+	backendAllPermission := service.Permission().BackendAll()
+	err = service.Response().View(ctx, "backend/role/add.html", g.Map{
+		"backendAllPermission": backendAllPermission,
 	})
 	if err != nil {
 		return nil, err

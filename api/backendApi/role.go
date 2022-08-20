@@ -22,3 +22,13 @@ type RoleDeleteBatchReq struct {
 }
 type RoleDeleteBatchRes struct {
 }
+
+type RoleAddReq struct {
+	g.Meta      `tags:"Backend" method:"all" summary:"增加角色"`
+	Title       string                 `p:"title" name:"title" brief:"角色名称" des:"角色名称"  arg:"true" v:"required#请输入角色名称"`
+	Description string                 `p:"description" name:"description" brief:"角色描述" des:"角色描述"  arg:"true" v:"required#请输入角色描述"`
+	Status      int                    `p:"status" name:"status" brief:"状态" des:"状态"  arg:"true" v:"in:0,1#状态不合法"`
+	Rules       map[string]interface{} `p:"rules" name:"rules" brief:"权限ID们" des:"权限ID们"  arg:"true" v:"required#请输入权限ID们"`
+}
+type RoleAddRes struct {
+}

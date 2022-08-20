@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>角色管理-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-body">
+    <form action="" method="post" class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red">*</span>角色名
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="title" required="" lay-verify="required" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red">*</span>角色描述
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="description" name="description" required="" lay-verify="required" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red">*</span>状态
+            </label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="status" lay-skin="switch" value="1" checked lay-text="启用|停用">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">
+                拥有权限
+            </label>
+            <table class="layui-table layui-input-block work">
+                <tbody>
+                {{range $key, $item := .backendAllPermission}}
+                <tr>
+                    <td class="row_all" style="width: 130px">
+                        {{$item.Title}}
+                        <input type="checkbox" lay-filter="row_all">
+                    </td>
+                    <td>
+                        <div class="layui-input-block layui-row">
+                            {{range $_key, $_permission := $item.Permissions}}
+                            <div class="layui-col-md4">
+                                <input name="rules[]" type="checkbox" class="checkbox" lay-filter="checkbox"
+                                       value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
+                            </div>
+                            {{end}}
+                        </div>
+                    </td>
+                </tr>
+                {{end}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit="" lay-filter="add">增加</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.jquery;
+        //权限整行全选
+        form.on('checkbox(row_all)', function (data) {
+            if (data.elem.checked) {
+                //选中当前行的所有checkedbox
+                $(this).parent().next().find('input:checkbox').prop('checked', true);
+            } else {
+                //取消选中当前行的所有checkedbox
+                $(this).parent().next().find('input:checkbox').prop('checked', false);
+            }
+            form.render('checkbox');
+        });
+        //监听checkbox，当当前行的checkbox全部选中的时候，勾选最前边的全选checkbox
+        form.on('checkbox(checkbox)', function (data) {
+            //console.log('当前行：'+ $(this).parents('td').find('input:checkbox').length );
+            //console.log('当前行：'+ $(this).parents('td').find('input:checked').length );
+            if ($(this).parents('td').find('input:checkbox').length == $(this).parents('td').find('input:checked').length) {
+                $(this).parents('td').prev().find('input:checkbox').prop('checked', true);
+            } else {
+                $(this).parents('td').prev().find('input:checkbox').prop('checked', false);
+            }
+            form.render('checkbox');
+        });
+        //监听提交
+        form.on('submit(add)', function (data) {
+            //console.log($('input:checked').length);
+            //console.log(data.field);
+            if ($('.work input:checked').length === 0) {
+                layer.msg('至少要给一个权限', {icon: 5, anim: 6});
+                return false;
+            }
+            $.post('{{backend_api_url `/role/add`}}', data.field, function (res) {
+                if (res.code === 0) {
+                    //添加成功
+                    layer.msg("增加成功", {
+                        icon: 6
+                        , time: 1000
+                    }, function () {
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭当前frame
+                        parent.layer.close(index);
+                        //刷新父级页面
+                        parent.location.reload();
+                    });
+                } else {
+                    //添加失败
+                    layer.msg(res.message, {
+                            'icon': 5
+                        }
+                    );
+                }
+            });
+            return false;
+        });
+
+    });
+
+</script>
+</body>
+
+</html>

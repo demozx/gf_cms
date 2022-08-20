@@ -10,3 +10,10 @@ type RoleIndexReq struct {
 type RoleIndexRes struct {
 	g.Meta `mime:"text/html" example:"string"`
 }
+
+type RoleAddReq struct {
+	g.Meta `tags:"Backend" method:"get" summary:"增加角色"`
+}
+type RoleAddRes struct {
+	g.Meta `mime:"text/html" example:"string"`
+}
