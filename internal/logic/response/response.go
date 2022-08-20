@@ -50,3 +50,12 @@ func (s *sResponse) SuccessCodeDefault() int {
 func (s *sResponse) SuccessMessageDefault() string {
 	return MessageSuccessDefault
 }
+
+// View 模板渲染
+func (s *sResponse) View(ctx context.Context, template string, data g.Map) (err error) {
+	err = g.RequestFromCtx(ctx).Response.WriteTpl(template, data)
+	if err != nil {
+		return err
+	}
+	return
+}

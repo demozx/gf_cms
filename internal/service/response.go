@@ -15,6 +15,7 @@ type IResponse interface {
 	SuccessJsonDefault(ctx context.Context)
 	SuccessCodeDefault() int
 	SuccessMessageDefault() string
+	View(ctx context.Context, template string, data g.Map) (err error)
 }
 
 var localResponse IResponse

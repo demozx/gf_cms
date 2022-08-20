@@ -1,0 +1,56 @@
+package backend
+
+import (
+	"context"
+	"gf_cms/api/backend"
+	"gf_cms/internal/model"
+	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/frame/g"
+	"strings"
+)
+
+var (
+	Role = cRole{}
+)
+
+type cRole struct{}
+
+func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *backend.RoleIndexRes, err error) {
+	list, err := service.Role().BackendRoleGetList(ctx, model.RoleGetListInput{
+		Page: req.Page,
+		Size: req.Size,
+	})
+	backendAllPermissions := service.Permission().BackendAll()
+
+	listData := list.List
+	for key, item := range listData {
+		for _key, permission := range item.Permissions {
+			v2 := permission.V2 // 权限表中的权限字段
+			ruleArr := strings.Split(v2, ".")
+			if len(ruleArr) != 3 {
+				return nil, gerror.New("权限表中v2字段格式错误")
+			}
+			for _, _item := range backendAllPermissions {
+				if ruleArr[0] == _item.Slug {
+					for _, _permission := range _item.Permissions {
+						if _permission.Slug == ruleArr[1]+"."+ruleArr[2] {
+							listData[key].Permissions[_key].Title = _permission.Title
+						}
+					}
+				}
+			}
+		}
+	}
+	if err != nil {
+		return nil, err
+	}
+	err = service.Response().View(ctx, "backend/role/index.html", g.Map{
+		"list":     list,
+		"pageInfo": service.PageInfo().LayUiPageInfo(ctx, list.Total, list.Size),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}

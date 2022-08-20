@@ -38,6 +38,8 @@ func backendViewHandle(s *ghttp.Server) {
 			"admin/index": backend.Admin.Index, //管理员列表
 			"admin/add":   backend.Admin.Add,   //添加
 			"admin/edit":  backend.Admin.Edit,  //编辑
+			/*角色*/
+			"role/index": backend.Role.Index, //角色列表
 		})
 	})
 }

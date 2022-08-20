@@ -37,6 +37,10 @@ func backendApiHandle(s *ghttp.Server) {
 			"/admin/status":       backendApi.Admin.Status,      //启动禁用
 			"/admin/delete":       backendApi.Admin.Delete,      //删除
 			"/admin/delete_batch": backendApi.Admin.DeleteBatch, //批量删除
+			/*角色*/
+			"/role/status":       backendApi.Role.Status,      //启用禁用
+			"/role/delete":       backendApi.Role.Delete,      //删除
+			"/role/delete_batch": backendApi.Role.DeleteBatch, //批量删除
 		})
 	})
 }

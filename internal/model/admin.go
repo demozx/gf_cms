@@ -15,7 +15,7 @@ type AdminGetListInput struct {
 }
 
 type AdminListItem struct {
-	gmeta.Meta  `orm:"table:cms_admin"`
+	gmeta.Meta  `orm:"table:admin"`
 	Id          int               `json:"id"`                //ID
 	Username    string            `json:"username"`          //用户名
 	Name        string            `json:"Name"`              //姓名

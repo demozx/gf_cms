@@ -278,9 +278,15 @@ func (s *sAdmin) BackendApiAdminDelete(ctx context.Context, in *backendApi.Admin
 	if err != nil {
 		return nil, err
 	}
+	//删除当前管理员的角色id
+	_, err = dao.CmsRoleAccount.Ctx(ctx).Where(dao.CmsRoleAccount.Columns().AccountId, in.Id).Delete()
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 
+// BackendApiAdminDeleteBatch 批量删除
 func (s *sAdmin) BackendApiAdminDeleteBatch(ctx context.Context, in *backendApi.AdminDeleteBatchReq) (out interface{}, err error) {
 	err = dao.CmsAdmin.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		var err error
@@ -294,6 +300,11 @@ func (s *sAdmin) BackendApiAdminDeleteBatch(ctx context.Context, in *backendApi.
 				return gerror.New("删除失败，存在无法被删除的系统管理员：" + gvar.New(admin.Id).String())
 			}
 			_, err = tx.Ctx(ctx).Model(entity.CmsAdmin{}).Where(dao.CmsAdmin.Columns().Id, id).Delete()
+			if err != nil {
+				return err
+			}
+			//删除当前管理员的角色id
+			_, err = tx.Ctx(ctx).Model(entity.CmsRoleAccount{}).Where(dao.CmsRoleAccount.Columns().AccountId, id).Delete()
 			if err != nil {
 				return err
 			}

@@ -71,7 +71,7 @@ type AdminDeleteRes struct {
 }
 
 type AdminDeleteBatchReq struct {
-	g.Meta `tags:"Backend" method:"all" summary:"删除管理员"`
+	g.Meta `tags:"Backend" method:"all" summary:"批量删除管理员"`
 	Ids    []string `p:"ids" name:"ids" brief:"管理员ID们" des:"管理员ID们"  arg:"true" v:"required#请输入管理员ID们"`
 }
 type AdminDeleteBatchRes struct {
