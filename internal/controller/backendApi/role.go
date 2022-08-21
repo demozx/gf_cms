@@ -49,3 +49,13 @@ func (c *cRole) Add(ctx context.Context, req *backendApi.RoleAddReq) (res *backe
 	service.Response().SuccessJsonDefault(ctx)
 	return
 }
+
+// Edit 编辑角色
+func (c *cRole) Edit(ctx context.Context, req *backendApi.RoleEditReq) (res *backendApi.RoleEditRes, err error) {
+	_, err = service.Role().BackendApiRoleEdit(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefault(ctx)
+	return
+}

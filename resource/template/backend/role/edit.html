@@ -27,6 +27,7 @@
             </label>
             <div class="layui-input-block">
                 <input type="text" id="name" name="title" required="" lay-verify="required" autocomplete="off"
+                       value="{{.role.Title}}"
                        class="layui-input">
             </div>
         </div>
@@ -37,7 +38,7 @@
             <div class="layui-input-block">
                 <textarea id="description" name="description" required="" lay-verify="required"
                           autocomplete="off"
-                          class="layui-textarea"></textarea>
+                          class="layui-textarea">{{.role.Description}}</textarea>
             </div>
         </div>
         <div class="layui-form-item">
@@ -45,13 +46,18 @@
                 <span class="we-red">*</span>状态
             </label>
             <div class="layui-input-block">
-                <input type="checkbox" name="status" lay-skin="switch" value="1" checked lay-text="启用|停用">
+                <input type="checkbox" name="status" lay-skin="switch"
+                       value="1"
+                       {{if eq .role.IsEnable 1}}checked{{end}}
+                       {{if eq $.role.IsSystem 1}}disabled=""{{end}}
+                       lay-text="启用|停用">
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">
                 <span class="we-red">*</span>拥有权限
+                {{if eq $.role.IsSystem 1}}<span style="color: red">系统角色拥有所有权限且无法取消</span>{{end}}
             </label>
             <table class="layui-table layui-input-block work">
                 <tbody>
@@ -59,13 +65,17 @@
                 <tr>
                     <td class="row_all" style="width: 130px">
                         {{$item.Title}}
-                        <input type="checkbox" lay-filter="row_all">
+                        <input type="checkbox" lay-filter="row_all"
+                               {{if eq $.role.IsSystem 1}}disabled=""{{end}}
+                        >
                     </td>
                     <td>
                         <div class="layui-input-block layui-row">
                             {{range $_key, $_permission := $item.Permissions}}
                             <div class="layui-col-md4">
                                 <input name="rules[]" type="checkbox" class="checkbox" lay-filter="checkbox"
+                                       {{if eq $_permission.HasPermission true}}checked{{end}}
+                                       {{if eq $.role.IsSystem 1}}disabled=""{{end}}
                                        value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
                             </div>
                             {{end}}
@@ -78,7 +88,8 @@
         </div>
 
         <div class="layui-form-item">
-            <button class="layui-btn" lay-submit="" lay-filter="add">增加</button>
+            <input name="id" value="{{.role.Id}}" type="hidden">
+            <button class="layui-btn" lay-submit="" lay-filter="edit">修改</button>
         </div>
     </form>
 </div>
@@ -111,17 +122,17 @@
             form.render('checkbox');
         });
         //监听提交
-        form.on('submit(add)', function (data) {
+        form.on('submit(edit)', function (data) {
             //console.log($('input:checked').length);
             //console.log(data.field);
             if ($('.work input:checked').length === 0) {
                 layer.msg('至少要给一个权限', {icon: 5, anim: 6});
                 return false;
             }
-            $.post('{{backend_api_url `/role/add`}}', data.field, function (res) {
+            $.post('{{backend_api_url `/role/edit`}}', data.field, function (res) {
                 if (res.code === 0) {
-                    //添加成功
-                    layer.msg("增加成功", {
+                    //编辑成功
+                    layer.msg("编辑成功", {
                         icon: 6
                         , time: 1000
                     }, function () {
@@ -143,6 +154,15 @@
             return false;
         });
 
+        // 判断如果当前行全部勾选，自动勾选第一列
+        $('.work tr').each(function (index, tr) {
+            let len = $(tr).find('td').eq(1).find('input').length;
+            let len_checked = $(tr).find('td').eq(1).find('input:checked').length;
+            if (len === len_checked) {
+                $(tr).find('td').eq(0).find('input').prop('checked', true);
+            }
+            form.render('checkbox');
+        })
     });
 
 </script>

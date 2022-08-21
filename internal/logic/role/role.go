@@ -2,6 +2,7 @@ package role
 
 import (
 	"context"
+	"gf_cms/api/backend"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
@@ -33,6 +34,7 @@ func Role() *sRole {
 	return &insRole
 }
 
+// BackendRoleGetList 获取角色列表
 func (s *sRole) BackendRoleGetList(ctx context.Context, in model.RoleGetListInput) (out *model.RoleGetListOutput, err error) {
 	var (
 		m    = dao.CmsRole.Ctx(ctx).OrderAsc(dao.CmsRole.Columns().Id)
@@ -58,6 +60,19 @@ func (s *sRole) BackendRoleGetList(ctx context.Context, in model.RoleGetListInpu
 		return out, err
 	}
 	return
+}
+
+// BackendRoleGetOne 获取单个角色
+func (s *sRole) BackendRoleGetOne(ctx context.Context, in *backend.RoleEditReq) (out *model.RoleItem, err error) {
+	var role *model.RoleItem
+	err = dao.CmsRole.Ctx(ctx).Where(dao.CmsRole.Columns().Id, in.Id).WithAll().Scan(&role)
+	if err != nil {
+		return nil, err
+	}
+	if role == nil {
+		return nil, gerror.New("角色数据不存在")
+	}
+	return role, nil
 }
 
 // BackendApiRoleStatus 修改角色状态
@@ -176,6 +191,63 @@ func (s *sRole) BackendApiRoleAdd(ctx context.Context, in *backendApi.RoleAddReq
 		rulePermissions = append(rulePermissions, rulePermission)
 	}
 	_, err = dao.CmsRulePermissions.Ctx(ctx).Insert(rulePermissions)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// BackendApiRoleEdit 编辑角色
+func (s *sRole) BackendApiRoleEdit(ctx context.Context, in *backendApi.RoleEditReq) (out interface{}, err error) {
+	var role *entity.CmsRole
+	err = dao.CmsRole.Ctx(ctx).Where(dao.CmsRole.Columns().Id, in.Id).WithAll().Scan(&role)
+	if err != nil {
+		return nil, err
+	}
+	if role == nil {
+		return nil, gerror.New("角色不存在")
+	}
+	count, err := dao.CmsRole.Ctx(ctx).Where(dao.CmsRole.Columns().Title, in.Title).WhereNot(dao.CmsRole.Columns().Id, in.Id).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, gerror.New("角色名已存在")
+	}
+	if role.IsSystem == 1 && in.Status == 0 {
+		return nil, gerror.New("系统角色无法被停用")
+	}
+	//修改角色信息
+	roleData := g.Map{
+		dao.CmsRole.Columns().Title:       in.Title,
+		dao.CmsRole.Columns().Description: in.Description,
+		dao.CmsRole.Columns().IsEnable:    in.Status,
+	}
+	_, err = dao.CmsRole.Ctx(ctx).Where(dao.CmsRole.Columns().Id, in.Id).Data(roleData).Update()
+	if err != nil {
+		return nil, err
+	}
+	//删除原有权限
+	_, err = dao.CmsRulePermissions.Ctx(ctx).
+		Where(dao.CmsRulePermissions.Columns().PType, "p").
+		Where(dao.CmsRulePermissions.Columns().V0, in.Id).
+		Where(dao.CmsRulePermissions.Columns().V1, "backend").
+		Delete()
+	if err != nil {
+		return nil, err
+	}
+	//添加新的权限
+	var permissionsData []interface{}
+	for _, rule := range in.Rules {
+		permission := g.Map{
+			dao.CmsRulePermissions.Columns().PType: "p",
+			dao.CmsRulePermissions.Columns().V0:    in.Id,
+			dao.CmsRulePermissions.Columns().V1:    "backend",
+			dao.CmsRulePermissions.Columns().V2:    rule,
+		}
+		permissionsData = append(permissionsData, permission)
+	}
+	_, err = dao.CmsRulePermissions.Ctx(ctx).Data(permissionsData).Insert()
 	if err != nil {
 		return nil, err
 	}

@@ -17,3 +17,11 @@ type RoleAddReq struct {
 type RoleAddRes struct {
 	g.Meta `mime:"text/html" example:"string"`
 }
+
+type RoleEditReq struct {
+	g.Meta `tags:"Backend" method:"get" summary:"编辑角色"`
+	Id     int `json:"id" in:"query" d:"0"  v:"min:0#id错误"     dc:"id，默认0"`
+}
+type RoleEditRes struct {
+	g.Meta `mime:"text/html" example:"string"`
+}

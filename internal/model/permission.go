@@ -6,8 +6,9 @@ type PermissionGroups struct {
 	Permissions []PermissionPermissions `yaml:"permissions"`
 }
 type PermissionPermissions struct {
-	Title string `yaml:"title"`
-	Slug  string `yaml:"slug"`
+	Title         string `yaml:"title"`
+	Slug          string `yaml:"slug"`
+	HasPermission bool   `yaml:"has_permission"`
 }
 type Permissions struct {
 	Title  string             `yaml:"title"`

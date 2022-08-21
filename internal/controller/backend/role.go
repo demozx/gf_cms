@@ -67,3 +67,30 @@ func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.
 	}
 	return
 }
+
+// Edit 编辑角色
+func (c *cRole) Edit(ctx context.Context, req *backend.RoleEditReq) (res *backend.RoleEditRes, err error) {
+	backendAllPermission := service.Permission().BackendAll()
+	role, err := service.Role().BackendRoleGetOne(ctx, req)
+	//g.Dump(role, backendAllPermission)
+	if err != nil {
+		return nil, err
+	}
+	for key, item := range backendAllPermission {
+		for _key, permission := range item.Permissions {
+			for _, rolePermission := range role.Permissions {
+				if item.Slug+"."+permission.Slug == rolePermission.V2 {
+					backendAllPermission[key].Permissions[_key].HasPermission = true
+				}
+			}
+		}
+	}
+	err = service.Response().View(ctx, "backend/role/edit.html", g.Map{
+		"backendAllPermission": backendAllPermission,
+		"role":                 role,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}

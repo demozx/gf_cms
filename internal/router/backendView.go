@@ -41,6 +41,7 @@ func backendViewHandle(s *ghttp.Server) {
 			/*角色*/
 			"/role/index": backend.Role.Index, //角色列表
 			"/role/add":   backend.Role.Add,   //添加角色
+			"/role/edit":  backend.Role.Edit,  //编辑角色
 		})
 	})
 }

@@ -71,7 +71,7 @@
                    title="{{if eq $item.IsEnable 1}}停用{{else}}启用{{end}}">
                     <i class="layui-icon">{{if eq $item.IsEnable 1}}&#xe601;{{else}}&#xe62f;{{end}}</i>
                 </a>
-                <a title="编辑" onclick="WeAdminShow('编辑','{:url(\'admin/role/edit\',[\'roleid\'=>$data.id])}')"
+                <a title="编辑" onclick="WeAdminShow('编辑','{{backend_url `/role/edit`}}?id={{$item.Id}}')"
                    href="javascript:;">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
@@ -174,7 +174,7 @@
 
         window.delAll = function (argument) {
             var data = tableCheck.getData();
-            if (data === '') {
+            if (data.length === 0) {
                 layer.msg('请选择要删除的角色', {
                     anim: 6
                 });
