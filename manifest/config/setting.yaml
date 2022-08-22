@@ -1,4 +1,4 @@
-backend:
+backend_view:
   title: 后台设置
   groups:
     - title: 网站信息

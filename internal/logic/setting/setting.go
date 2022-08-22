@@ -49,9 +49,9 @@ func (*sSetting) readYaml() *model.SettingConfig {
 	return conf
 }
 
-// BackendAll 获取所有后台菜单
-func (*sSetting) BackendAll() []model.SettingGroups {
-	cacheKey := util.PublicCachePreFix + ":settings:backend_all"
+// BackendViewAll 获取所有后台菜单
+func (*sSetting) BackendViewAll() []model.SettingGroups {
+	cacheKey := util.PublicCachePreFix + ":settings:backend_view_all"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
 		panic(err)
@@ -64,12 +64,12 @@ func (*sSetting) BackendAll() []model.SettingGroups {
 		return settingGroups
 	}
 	//g.Log().Debug(Ctx, "Setting().readYaml()", Setting().readYaml())
-	backendAll := Setting().readYaml().Backend.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendAll)
+	backendViewAll := Setting().readYaml().BackendView.Groups
+	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendViewAll)
 	if err != nil {
 		panic(err)
 	}
-	return backendAll
+	return backendViewAll
 }
 
 // Save 保存设置

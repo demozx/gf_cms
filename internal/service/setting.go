@@ -10,7 +10,7 @@ import (
 )
 
 type ISetting interface {
-	BackendAll() []model.SettingGroups
+	BackendViewAll() []model.SettingGroups
 	Save(forms url.Values) bool
 }
 

@@ -22,7 +22,7 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 		Page: req.Page,
 		Size: req.Size,
 	})
-	backendAllPermissions := service.Permission().BackendAll()
+	backendViewAllPermissions := service.Permission().BackendViewAll()
 
 	listData := list.List
 	for key, item := range listData {
@@ -32,7 +32,7 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 			if len(ruleArr) != 3 {
 				return nil, gerror.New("权限表中v2字段格式错误")
 			}
-			for _, _item := range backendAllPermissions {
+			for _, _item := range backendViewAllPermissions {
 				if ruleArr[0] == _item.Slug {
 					for _, _permission := range _item.Permissions {
 						if _permission.Slug == ruleArr[1]+"."+ruleArr[2] {
@@ -58,9 +58,9 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 
 // Add 添加角色
 func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.RoleAddRes, err error) {
-	backendAllPermission := service.Permission().BackendAll()
+	backendAllPermissions := service.Permission().BackendAll()
 	err = service.Response().View(ctx, "backend/role/add.html", g.Map{
-		"backendAllPermission": backendAllPermission,
+		"backendAllPermissions": backendAllPermissions,
 	})
 	if err != nil {
 		return nil, err
@@ -70,24 +70,24 @@ func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.
 
 // Edit 编辑角色
 func (c *cRole) Edit(ctx context.Context, req *backend.RoleEditReq) (res *backend.RoleEditRes, err error) {
-	backendAllPermission := service.Permission().BackendAll()
+	backendViewAllPermission := service.Permission().BackendViewAll()
 	role, err := service.Role().BackendRoleGetOne(ctx, req)
 	//g.Dump(role, backendAllPermission)
 	if err != nil {
 		return nil, err
 	}
-	for key, item := range backendAllPermission {
+	for key, item := range backendViewAllPermission {
 		for _key, permission := range item.Permissions {
 			for _, rolePermission := range role.Permissions {
 				if item.Slug+"."+permission.Slug == rolePermission.V2 {
-					backendAllPermission[key].Permissions[_key].HasPermission = true
+					backendViewAllPermission[key].Permissions[_key].HasPermission = true
 				}
 			}
 		}
 	}
 	err = service.Response().View(ctx, "backend/role/edit.html", g.Map{
-		"backendAllPermission": backendAllPermission,
-		"role":                 role,
+		"backendViewAllPermission": backendViewAllPermission,
+		"role":                     role,
 	})
 	if err != nil {
 		return nil, err

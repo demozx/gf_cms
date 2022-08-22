@@ -55,15 +55,29 @@
             </label>
             <table class="layui-table layui-input-block work">
                 <tbody>
-                {{range $key, $item := .backendAllPermission}}
-                <tr>
-                    <td class="row_all" style="width: 130px">
+                {{range $key, $item := .backendAllPermissions}}
+                <tr class="row" data-row="1">
+                    <td rowspan="2" class="row_all">
                         {{$item.Title}}
                         <input type="checkbox" lay-filter="row_all">
                     </td>
+                    <td>视图</td>
                     <td>
                         <div class="layui-input-block layui-row">
-                            {{range $_key, $_permission := $item.Permissions}}
+                            {{range $_key, $_permission := $item.BackendViewPermissions}}
+                            <div class="layui-col-md4">
+                                <input name="rules[]" type="checkbox" class="checkbox" lay-filter="checkbox"
+                                       value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
+                            </div>
+                            {{end}}
+                        </div>
+                    </td>
+                </tr>
+                <tr class="row" data-row="2">
+                    <td>接口</td>
+                    <td>
+                        <div class="layui-input-block layui-row">
+                            {{range $_key, $_permission := $item.BackendApiPermissions}}
                             <div class="layui-col-md4">
                                 <input name="rules[]" type="checkbox" class="checkbox" lay-filter="checkbox"
                                        value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
@@ -92,21 +106,41 @@
         form.on('checkbox(row_all)', function (data) {
             if (data.elem.checked) {
                 //选中当前行的所有checkedbox
-                $(this).parent().next().find('input:checkbox').prop('checked', true);
+                $(this).parents('tr').find('input:checkbox').prop('checked', true);
+                $(this).parents('tr').next().find('input:checkbox').prop('checked', true);
             } else {
                 //取消选中当前行的所有checkedbox
-                $(this).parent().next().find('input:checkbox').prop('checked', false);
+                $(this).parents('tr').find('input:checkbox').prop('checked', false);
+                $(this).parents('tr').next().find('input:checkbox').prop('checked', false);
             }
             form.render('checkbox');
         });
         //监听checkbox，当当前行的checkbox全部选中的时候，勾选最前边的全选checkbox
         form.on('checkbox(checkbox)', function (data) {
-            //console.log('当前行：'+ $(this).parents('td').find('input:checkbox').length );
-            //console.log('当前行：'+ $(this).parents('td').find('input:checked').length );
-            if ($(this).parents('td').find('input:checkbox').length == $(this).parents('td').find('input:checked').length) {
-                $(this).parents('td').prev().find('input:checkbox').prop('checked', true);
+            let currRow = $(this).parents('.row');
+            let len = 0;
+            let lenChecked = 0;
+            len += currRow.find('.layui-row').find('input:checkbox').length
+            lenChecked += currRow.find('.layui-row').find('input:checked').length
+            if (currRow.data('row') === 1) {
+                len += currRow.next().find('.layui-row').find('input:checkbox').length
+                lenChecked += currRow.next().find('.layui-row').find('input:checked').length
             } else {
-                $(this).parents('td').prev().find('input:checkbox').prop('checked', false);
+                len += currRow.prev().find('.layui-row').find('input:checkbox').length
+                lenChecked += currRow.prev().find('.layui-row').find('input:checked').length
+            }
+            if (len === lenChecked) {
+                if (currRow.data('row') === 1){
+                    currRow.find('.row_all input').prop('checked', true)
+                }else{
+                    currRow.next().find('.row_all input').prop('checked', true)
+                }
+            } else {
+                if (currRow.data('row') === 1){
+                    currRow.find('.row_all input').prop('checked', false)
+                }else{
+                    currRow.prev().find('.row_all input').prop('checked', false)
+                }
             }
             form.render('checkbox');
         });

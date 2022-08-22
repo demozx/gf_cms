@@ -15,6 +15,15 @@ type Permissions struct {
 	Groups []PermissionGroups `yaml:"groups"`
 }
 type PermissionConfig struct {
-	Backend Permissions `yaml:"backend"`
-	Web     Permissions `yaml:"web"`
+	BackendView Permissions `yaml:"backend_view"`
+	BackendApi  Permissions `yaml:"backend_api"`
+	WebView     Permissions `yaml:"web_view"`
+	WebApi      Permissions `yaml:"web_api"`
+}
+
+type PermissionAllItem struct {
+	Slug                   string                  `yaml:"slug"`
+	Title                  string                  `yaml:"title"`
+	BackendViewPermissions []PermissionPermissions `yaml:"permissions"`
+	BackendApiPermissions  []PermissionPermissions `yaml:"permissions"`
 }

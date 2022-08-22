@@ -6,12 +6,13 @@ package service
 
 import (
 	"gf_cms/internal/model"
-
 	"github.com/gogf/gf/v2/database/gdb"
 )
 
 type IPermission interface {
-	BackendAll() []model.PermissionGroups
+	BackendAll() []model.PermissionAllItem
+	BackendViewAll() []model.PermissionGroups
+	BackendApiAll() []model.PermissionGroups
 	BackendMy(accountId string) []gdb.Value
 }
 

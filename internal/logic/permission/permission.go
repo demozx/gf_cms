@@ -52,9 +52,34 @@ func (*sPermission) readYaml() *model.PermissionConfig {
 	return conf
 }
 
-// BackendAll Backend 获取全部后台权限
-func (*sPermission) BackendAll() []model.PermissionGroups {
-	cacheKey := util.PublicCachePreFix + ":permissions:backend_all"
+// BackendAll 获取后台全部权限（view和api）
+func (*sPermission) BackendAll() []model.PermissionAllItem {
+	backendViewAll := service.Permission().BackendViewAll()
+	backendApiAll := service.Permission().BackendApiAll()
+	var permissionAll []model.PermissionAllItem
+	for _, viewItem := range backendViewAll {
+		for _, apiItem := range backendApiAll {
+			permissionAllItem := model.PermissionAllItem{}
+			permissionAllItem.Title = viewItem.Title
+			permissionAllItem.Slug = viewItem.Slug
+			for _, viewItemPermission := range viewItem.Permissions {
+				permissionAllItem.BackendViewPermissions = append(permissionAllItem.BackendViewPermissions, viewItemPermission)
+			}
+			if viewItem.Slug == apiItem.Slug {
+				for _, apiItemPermission := range apiItem.Permissions {
+					permissionAllItem.BackendApiPermissions = append(permissionAllItem.BackendApiPermissions, apiItemPermission)
+				}
+			}
+			permissionAll = append(permissionAll, permissionAllItem)
+		}
+	}
+	g.Dump(permissionAll)
+	return permissionAll
+}
+
+// BackendViewAll Backend 获取全部后台权限
+func (*sPermission) BackendViewAll() []model.PermissionGroups {
+	cacheKey := util.PublicCachePreFix + ":permissions:backend_view_all"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
 		panic(err)
@@ -66,12 +91,34 @@ func (*sPermission) BackendAll() []model.PermissionGroups {
 		}
 		return permissionGroups
 	}
-	backendAll := Permission().readYaml().Backend.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendAll)
+	backendViewAll := Permission().readYaml().BackendView.Groups
+	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendViewAll)
 	if err != nil {
 		panic(err)
 	}
-	return backendAll
+	return backendViewAll
+}
+
+// BackendApiAll Backend 获取全部后台接口权限
+func (*sPermission) BackendApiAll() []model.PermissionGroups {
+	cacheKey := util.PublicCachePreFix + ":permissions:backend_api_all"
+	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
+	if err != nil {
+		panic(err)
+	}
+	if !result.IsEmpty() {
+		var permissionGroups []model.PermissionGroups
+		if err = result.Structs(&permissionGroups); err != nil {
+			panic(err)
+		}
+		return permissionGroups
+	}
+	backendApiAll := Permission().readYaml().BackendApi.Groups
+	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendApiAll)
+	if err != nil {
+		panic(err)
+	}
+	return backendApiAll
 }
 
 // BackendMy 获取我的所有后台权限
