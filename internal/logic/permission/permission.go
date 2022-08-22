@@ -73,7 +73,6 @@ func (*sPermission) BackendAll() []model.PermissionAllItem {
 			permissionAll = append(permissionAll, permissionAllItem)
 		}
 	}
-	g.Dump(permissionAll)
 	return permissionAll
 }
 

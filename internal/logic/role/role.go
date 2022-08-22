@@ -182,13 +182,15 @@ func (s *sRole) BackendApiRoleAdd(ctx context.Context, in *backendApi.RoleAddReq
 		return nil, err
 	}
 	var rulePermissions []interface{}
-	for _, rule := range in.Rules {
-		var rulePermission = g.Map{}
-		rulePermission["p_type"] = "p"
-		rulePermission["v0"] = roleId
-		rulePermission["v1"] = "backend"
-		rulePermission["v2"] = rule
-		rulePermissions = append(rulePermissions, rulePermission)
+	for key, rules := range in.Rules {
+		for _, rule := range rules {
+			var rulePermission = g.Map{}
+			rulePermission["p_type"] = "p"
+			rulePermission["v0"] = roleId
+			rulePermission["v1"] = key
+			rulePermission["v2"] = rule
+			rulePermissions = append(rulePermissions, rulePermission)
+		}
 	}
 	_, err = dao.CmsRulePermissions.Ctx(ctx).Insert(rulePermissions)
 	if err != nil {
@@ -231,21 +233,23 @@ func (s *sRole) BackendApiRoleEdit(ctx context.Context, in *backendApi.RoleEditR
 	_, err = dao.CmsRulePermissions.Ctx(ctx).
 		Where(dao.CmsRulePermissions.Columns().PType, "p").
 		Where(dao.CmsRulePermissions.Columns().V0, in.Id).
-		Where(dao.CmsRulePermissions.Columns().V1, "backend").
+		WhereIn(dao.CmsRulePermissions.Columns().V1, g.Slice{"backend", "backend_api"}).
 		Delete()
 	if err != nil {
 		return nil, err
 	}
 	//添加新的权限
 	var permissionsData []interface{}
-	for _, rule := range in.Rules {
-		permission := g.Map{
-			dao.CmsRulePermissions.Columns().PType: "p",
-			dao.CmsRulePermissions.Columns().V0:    in.Id,
-			dao.CmsRulePermissions.Columns().V1:    "backend",
-			dao.CmsRulePermissions.Columns().V2:    rule,
+	for key, rules := range in.Rules {
+		for _, rule := range rules {
+			permission := g.Map{
+				dao.CmsRulePermissions.Columns().PType: "p",
+				dao.CmsRulePermissions.Columns().V0:    in.Id,
+				dao.CmsRulePermissions.Columns().V1:    key,
+				dao.CmsRulePermissions.Columns().V2:    rule,
+			}
+			permissionsData = append(permissionsData, permission)
 		}
-		permissionsData = append(permissionsData, permission)
 	}
 	_, err = dao.CmsRulePermissions.Ctx(ctx).Data(permissionsData).Insert()
 	if err != nil {

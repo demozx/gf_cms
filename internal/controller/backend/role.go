@@ -23,6 +23,7 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 		Size: req.Size,
 	})
 	backendViewAllPermissions := service.Permission().BackendViewAll()
+	backendApiAllPermissions := service.Permission().BackendApiAll()
 
 	listData := list.List
 	for key, item := range listData {
@@ -33,6 +34,15 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 				return nil, gerror.New("权限表中v2字段格式错误")
 			}
 			for _, _item := range backendViewAllPermissions {
+				if ruleArr[0] == _item.Slug {
+					for _, _permission := range _item.Permissions {
+						if _permission.Slug == ruleArr[1]+"."+ruleArr[2] {
+							listData[key].Permissions[_key].Title = _permission.Title
+						}
+					}
+				}
+			}
+			for _, _item := range backendApiAllPermissions {
 				if ruleArr[0] == _item.Slug {
 					for _, _permission := range _item.Permissions {
 						if _permission.Slug == ruleArr[1]+"."+ruleArr[2] {
@@ -70,24 +80,33 @@ func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.
 
 // Edit 编辑角色
 func (c *cRole) Edit(ctx context.Context, req *backend.RoleEditReq) (res *backend.RoleEditRes, err error) {
-	backendViewAllPermission := service.Permission().BackendViewAll()
+	backendAllPermissions := service.Permission().BackendAll()
 	role, err := service.Role().BackendRoleGetOne(ctx, req)
 	//g.Dump(role, backendAllPermission)
 	if err != nil {
 		return nil, err
 	}
-	for key, item := range backendViewAllPermission {
-		for _key, permission := range item.Permissions {
+	for key, item := range backendAllPermissions {
+		for _key, permission := range item.BackendViewPermissions {
 			for _, rolePermission := range role.Permissions {
 				if item.Slug+"."+permission.Slug == rolePermission.V2 {
-					backendViewAllPermission[key].Permissions[_key].HasPermission = true
+					backendAllPermissions[key].BackendViewPermissions[_key].HasPermission = true
+				}
+			}
+		}
+	}
+	for key, item := range backendAllPermissions {
+		for _key, permission := range item.BackendApiPermissions {
+			for _, rolePermission := range role.Permissions {
+				if item.Slug+"."+permission.Slug == rolePermission.V2 {
+					backendAllPermissions[key].BackendApiPermissions[_key].HasPermission = true
 				}
 			}
 		}
 	}
 	err = service.Response().View(ctx, "backend/role/edit.html", g.Map{
-		"backendViewAllPermission": backendViewAllPermission,
-		"role":                     role,
+		"backendAllPermissions": backendAllPermissions,
+		"role":                  role,
 	})
 	if err != nil {
 		return nil, err

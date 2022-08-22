@@ -66,7 +66,7 @@
                         <div class="layui-input-block layui-row">
                             {{range $_key, $_permission := $item.BackendViewPermissions}}
                             <div class="layui-col-md4">
-                                <input name="rules[]" type="checkbox" class="checkbox" lay-filter="checkbox"
+                                <input name="rules[backend][]" type="checkbox" class="checkbox" lay-filter="checkbox"
                                        value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
                             </div>
                             {{end}}
@@ -79,7 +79,7 @@
                         <div class="layui-input-block layui-row">
                             {{range $_key, $_permission := $item.BackendApiPermissions}}
                             <div class="layui-col-md4">
-                                <input name="rules[]" type="checkbox" class="checkbox" lay-filter="checkbox"
+                                <input name="rules[backend_api][]" type="checkbox" class="checkbox" lay-filter="checkbox"
                                        value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
                             </div>
                             {{end}}
@@ -133,7 +133,7 @@
                 if (currRow.data('row') === 1){
                     currRow.find('.row_all input').prop('checked', true)
                 }else{
-                    currRow.next().find('.row_all input').prop('checked', true)
+                    currRow.prev().find('.row_all input').prop('checked', true)
                 }
             } else {
                 if (currRow.data('row') === 1){
