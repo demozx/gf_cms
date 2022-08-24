@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 	"gf_cms/internal/service"
-	"github.com/gogf/gf/v2/container/gvar"
-	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gctx"
 	"math"
 	"net"
 	"os"
 	"time"
+
+	"github.com/gogf/gf/v2/container/gvar"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gctx"
 )
 
 // Util
@@ -66,6 +67,11 @@ func (*sUtil) SystemRoot() string {
 // BackendPrefix 后台入口前缀
 func (*sUtil) BackendPrefix() string {
 	return BackendPrefix.String()
+}
+
+// BackendApiPrefix 后台入口前缀
+func (*sUtil) BackendApiPrefix() string {
+	return service.Util().BackendPrefix() + "_api"
 }
 
 //BackendGroup 后台view分组

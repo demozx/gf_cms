@@ -14,6 +14,7 @@ type Menus struct {
 	Groups []MenuGroups `yaml:"groups"`
 }
 type MenuConfig struct {
-	Backend Menus `yaml:"backend"`
-	Web     Menus `yaml:"web"`
+	Backend    Menus `yaml:"backend"`
+	BackendApi Menus `yaml:"backend_api"`
+	Web        Menus `yaml:"web"`
 }

@@ -6,8 +6,12 @@ import (
 	"gf_cms/internal/logic/casbinPolicy"
 	"gf_cms/internal/logic/menu"
 	"gf_cms/internal/logic/util"
+	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+
+	"github.com/gogf/gf/v2/util/gconv"
+
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
@@ -51,24 +55,24 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 	r.Middleware.Next()
 }
 
-// BackendCheckPolicy 检测用户有无某个请求权限
+// BackendCheckPolicy 检测后台页面用户有无某个请求权限
 func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
-	accountId := Middleware().GetAdminUserID(r)
+	accountId := Middleware().GetBackendUserID(r)
 	obj := casbinPolicy.CasbinPolicy().ObjBackend()
 	act := r.Router.Uri
-	g.Log().Info(util.Ctx, "act", act)
+	g.Log().Notice(util.Ctx, "act", act)
 	var backendPrefix = util.Util().BackendPrefix()
-	var backendAllMenus = menu.Menu().BackendAll()
-	var backendMyMenus = menu.Menu().BackendMy(accountId)
+	var backendViewMenus = menu.Menu().BackendView()
+	var backendMyMenus = menu.Menu().BackendMyMenu(accountId)
 	var routeHit = false
-	for _, menuGroup := range backendAllMenus {
+	for _, menuGroup := range backendViewMenus {
 		for _, children := range menuGroup.Children {
 			if act == "/"+backendPrefix+children.Route {
 				routeHit = true
 			}
 		}
 	}
-	g.Log().Info(util.Ctx, "routeHit："+act, routeHit)
+	g.Log().Notice(util.Ctx, "backendRouteHit："+act, routeHit)
 	if routeHit == false {
 		//路由不在权限中，不拦截
 		r.Middleware.Next()
@@ -78,20 +82,81 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 			for _, children := range menu.Children {
 				if "/"+backendPrefix+children.Route == act {
 					routePermission = children.Permission
-					g.Log().Info(util.Ctx, "路由"+act+"的权限是："+children.Permission)
+					g.Log().Notice(util.Ctx, "路由"+act+"的权限是："+children.Permission)
 				}
 			}
 		}
 		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
-			g.Log().Info(util.Ctx, "没有权限"+act)
+			g.Log().Warning(util.Ctx, "没有权限"+act)
 			r.Response.WriteExit("没有权限")
 		}
 		r.Middleware.Next()
 	}
 }
 
-// GetAdminUserID 获取后台用户ID
-func (s *sMiddleware) GetAdminUserID(r *ghttp.Request) string {
+// BackendApiCheckPolicy 检测后台接口用户有无某个请求权限
+func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
+	//先取session，没有session走jwt
+	var sessionInfo, _ = r.Session.Get(consts.AdminSessionKeyPrefix)
+	var adminSession *model.AdminSession
+	err := sessionInfo.Scan(&adminSession)
+	if err != nil {
+		return
+	}
+	var accountId string
+	if adminSession != nil {
+		accountId = gconv.String(adminSession.Id)
+	} else {
+		Middleware().Auth(r)
+		accountId = gconv.String(auth.Auth().JWTAuth().GetIdentity(r.GetCtx()))
+	}
+	obj := casbinPolicy.CasbinPolicy().ObjBackendApi()
+	act := r.Router.Uri
+	g.Log().Notice(util.Ctx, "act", act)
+	var backendPrefix = util.Util().BackendApiPrefix()
+	var backendApiMenus = menu.Menu().BackendApi()
+	var backendMyApis = menu.Menu().BackendMyApi(accountId)
+	//g.Dump("backendApiMenus", backendApiMenus)
+	//g.Dump("backendMyApis", backendMyApis)
+	var routeHit = false
+	var ruleName = ""
+	for _, menuGroup := range backendApiMenus {
+		for _, children := range menuGroup.Children {
+			g.Dump("当前接口act", act)
+			g.Dump("backendPrefix+children.Route", backendPrefix+children.Route)
+			if act == "/"+backendPrefix+children.Route {
+				routeHit = true
+				ruleName = children.Title
+			}
+		}
+	}
+	g.Log().Notice(util.Ctx, "backendApiRouteHit："+act, routeHit)
+	if routeHit == false {
+		//路由不在权限中，不拦截
+		r.Middleware.Next()
+	} else {
+		var routePermission = ""
+		for _, menu := range backendMyApis {
+			for _, children := range menu.Children {
+				if "/"+backendPrefix+children.Route == act {
+					routePermission = children.Permission
+					g.Log().Notice(util.Ctx, "路由"+act+"的权限是："+children.Permission)
+				}
+			}
+		}
+		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
+			g.Log().Warning(util.Ctx, "没有权限"+act)
+			r.Response.WriteJsonExit(g.Map{
+				"code":    401,
+				"message": "没有权限操作 " + ruleName,
+			})
+		}
+		r.Middleware.Next()
+	}
+}
+
+// GetBackendUserID 获取后台用户ID
+func (s *sMiddleware) GetBackendUserID(r *ghttp.Request) string {
 	var adminSession, _ = r.Session.Get(consts.AdminSessionKeyPrefix)
 	var admin *entity.CmsAdmin
 	err := adminSession.Scan(&admin)

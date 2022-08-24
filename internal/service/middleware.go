@@ -13,7 +13,8 @@ type IMiddleware interface {
 	Auth(r *ghttp.Request)
 	BackendAuthSession(r *ghttp.Request)
 	BackendCheckPolicy(r *ghttp.Request)
-	GetAdminUserID(r *ghttp.Request) string
+	BackendApiCheckPolicy(r *ghttp.Request)
+	GetBackendUserID(r *ghttp.Request) string
 }
 
 var localMiddleware IMiddleware

@@ -36,7 +36,8 @@
                 <input name="captcha_id" id="captcha_id" type="hidden" class="layui-input">
             </div>
             <div class="layui-col-xs6">
-                <img src="/resource/backend/images/loading.gif" id="captcha_img" style="margin:auto;height:50px;display:table-cell;cursor:pointer;">
+                <img src="/resource/backend/images/loading.gif" id="captcha_img"
+                     style="margin:auto;height:50px;display:table-cell;cursor:pointer;">
             </div>
 
         </div>
@@ -73,8 +74,14 @@
         form.on('submit(login)', function (data) {
             var data = $("form").serialize();
             $.post('{{ backend_api_url "/admin/login" }}', data, function (result) {
+                console.log(result)
                 if (!result.code) {
-                    location.href = '{{ backend_url "/" }}'
+                    layer.msg(result.message, {
+                        icon: 6
+                        , time: 500
+                    }, function () {
+                        location.href = '{{ backend_url "/" }}'
+                    })
                 } else {
                     //刷新验证码
                     reloadCaptcha();

@@ -33,3 +33,10 @@ type AdminGetListOutput struct {
 	Size  int             `json:"size" description:"分页数量"`
 	Total int             `json:"total" description:"数据总数"`
 }
+
+type AdminSession struct {
+	Id       int    `json:"id"`
+	Token    string `json:"token"`
+	Username string `json:"username"`
+	Name     string `json:"name"`
+}

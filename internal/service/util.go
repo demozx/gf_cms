@@ -14,6 +14,7 @@ type IUtil interface {
 	ProjectName() string
 	SystemRoot() string
 	BackendPrefix() string
+	BackendApiPrefix() string
 	BackendGroup() string
 	BackendApiGroup() string
 	GetConfig(node string) string

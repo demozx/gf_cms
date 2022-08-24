@@ -5,16 +5,18 @@ import (
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/service"
+	"log"
+
 	sqlAdapter "github.com/Blank-Xu/sql-adapter"
 	"github.com/casbin/casbin/v2"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
-	"log"
 )
 
 var (
-	insPolicy         = sCasbinPolicy{}
-	ObjBackend string = "backend"
+	insPolicy            = sCasbinPolicy{}
+	ObjBackend    string = "backend"
+	ObjBackendApi string = "backend_api"
 )
 
 type sCasbinPolicy struct{}
@@ -72,6 +74,11 @@ func initCasbin() *casbin.Enforcer {
 // ObjBackend 获取后台obj
 func (*sCasbinPolicy) ObjBackend() string {
 	return ObjBackend
+}
+
+// ObjBackendApi 获取后台接口obj
+func (*sCasbinPolicy) ObjBackendApi() string {
+	return ObjBackendApi
 }
 
 // CheckByRoleId 检测角色权限

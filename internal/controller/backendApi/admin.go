@@ -9,6 +9,7 @@ import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -34,6 +35,10 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 	res = &backendApi.AdminLoginRes{}
 	//生成token
 	res.Token, res.Expire = auth.Auth().JWTAuth().LoginHandler(ctx)
+	g.Dump(g.Map{
+		"Token":  res.Token,
+		"Expire": res.Expire,
+	})
 	// 记录session：自己定义的，因为一般后台登录用session
 	err = g.RequestFromCtx(ctx).Session.Set(consts.AdminSessionKeyPrefix, g.Map{
 		"Token":    res.Token,

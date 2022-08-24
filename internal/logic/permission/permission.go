@@ -6,11 +6,12 @@ import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+	"log"
+	"os"
+
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
 	"gopkg.in/yaml.v3"
-	"log"
-	"os"
 )
 
 type sPermission struct{}
@@ -120,8 +121,8 @@ func (*sPermission) BackendApiAll() []model.PermissionGroups {
 	return backendApiAll
 }
 
-// BackendMy 获取我的所有后台权限
-func (*sPermission) BackendMy(accountId string) []gdb.Value {
+// BackendMyView 获取我的所有后台视图权限
+func (*sPermission) BackendMyView(accountId string) []gdb.Value {
 	roleIds := admin.Admin().GetRoleIdsByAccountId(accountId)
 	if len(roleIds) == 0 {
 		panic("用户无任何角色")
@@ -130,6 +131,24 @@ func (*sPermission) BackendMy(accountId string) []gdb.Value {
 		Where("p_type", "p").
 		WhereIn("v0", roleIds).
 		Where("v1", "backend").
+		Fields("v2").
+		Array()
+	if err != nil {
+		panic(err)
+	}
+	return myPermissions
+}
+
+// BackendMyApi 获取我的所有后台接口权限
+func (*sPermission) BackendMyApi(accountId string) []gdb.Value {
+	roleIds := admin.Admin().GetRoleIdsByAccountId(accountId)
+	if len(roleIds) == 0 {
+		panic("用户无任何角色")
+	}
+	myPermissions, err := dao.CmsRulePermissions.Ctx(util.Ctx).
+		Where("p_type", "p").
+		WhereIn("v0", roleIds).
+		Where("v1", "backend_api").
 		Fields("v2").
 		Array()
 	if err != nil {

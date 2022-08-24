@@ -9,8 +9,10 @@ import (
 )
 
 type IMenu interface {
-	BackendAll() []model.MenuGroups
-	BackendMy(accountId string) []model.MenuGroups
+	BackendView() []model.MenuGroups
+	BackendApi() []model.MenuGroups
+	BackendMyMenu(accountId string) []model.MenuGroups
+	BackendMyApi(accountId string) []model.MenuGroups
 }
 
 var localMenu IMenu

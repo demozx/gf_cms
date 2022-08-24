@@ -6,6 +6,7 @@ package service
 
 type ICasbinPolicy interface {
 	ObjBackend() string
+	ObjBackendApi() string
 	CheckByRoleId(roleId, obj, act string) bool
 	CheckByAccountId(AccountId, obj, act string) bool
 	AddByRoleId(roleId, obj, act string) bool

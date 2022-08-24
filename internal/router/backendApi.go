@@ -4,6 +4,7 @@ import (
 	"gf_cms/internal/controller/backendApi"
 	"gf_cms/internal/logic/middleware"
 	"gf_cms/internal/logic/util"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 )
@@ -24,7 +25,8 @@ func backendApiHandle(s *ghttp.Server) {
 	s.Group(backendApiGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
-			middleware.Middleware().BackendAuthSession,
+			//middleware.Middleware().Auth,
+			middleware.Middleware().BackendApiCheckPolicy,
 		)
 		group.ALLMap(g.Map{
 			"/welcome/index": backendApi.Welcome.Index, //欢迎页面

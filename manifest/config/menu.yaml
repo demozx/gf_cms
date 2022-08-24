@@ -37,3 +37,12 @@ backend:
         - title: 站点配置
           route: /setting/index
           permission: setting.setting.manage
+
+backend_api:
+  title: 后台接口
+  groups:
+    - title: 系统设置
+      children:
+        - title: 保存配置
+          route: /setting/save
+          permission: setting.setting.save
