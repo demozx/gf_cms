@@ -5,6 +5,9 @@ import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+	"strings"
+	"time"
+
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcache"
@@ -14,8 +17,6 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
 	"gitlab.com/tingshuo/go-diskstate/diskstate"
-	"strings"
-	"time"
 )
 
 type sRuntime struct{}

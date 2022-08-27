@@ -5,9 +5,10 @@ import (
 	"gf_cms/internal/logic/admin"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+	"time"
+
 	jwt "github.com/gogf/gf-jwt/v2"
 	"github.com/gogf/gf/v2/frame/g"
-	"time"
 )
 
 var authService *jwt.GfJWTMiddleware

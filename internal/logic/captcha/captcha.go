@@ -3,6 +3,7 @@ package captcha
 import (
 	"fmt"
 	"gf_cms/internal/service"
+
 	"github.com/mojocn/base64Captcha"
 )
 
