@@ -61,6 +61,23 @@ func (s *sAdmin) LoginVerify(ctx context.Context, in model.AdminLoginInput) (adm
 		return admin, gerror.New(`用户已被封禁`)
 	}
 
+	//角色id们
+	roleIds, err := dao.CmsRoleAccount.Ctx(ctx).Where(do.CmsRoleAccount{AccountId: admin.Id}).Array(dao.CmsRoleAccount.Columns().RoleId)
+	if err != nil {
+		return nil, err
+	}
+	if len(roleIds) == 0 {
+		return nil, gerror.New("该用户没有任何角色，无法登录")
+	}
+	//用户拥有的角色启用的数量
+	count, err := dao.CmsRole.Ctx(ctx).WhereIn(dao.CmsRole.Columns().Id, roleIds).Where(dao.CmsRole.Columns().IsEnable, 1).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count == 0 {
+		return nil, gerror.New("该用户的角色均未启用，无法登录")
+	}
+
 	return admin, nil
 }
 

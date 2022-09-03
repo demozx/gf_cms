@@ -20,4 +20,5 @@ type CmsAdmin struct {
 	IsSystem  int         `json:"isSystem"  ` // 是否系统用户
 	CreatedAt *gtime.Time `json:"createdAt" ` //
 	UpdatedAt *gtime.Time `json:"updatedAt" ` //
+
 }

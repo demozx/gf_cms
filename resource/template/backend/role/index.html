@@ -125,7 +125,7 @@
                 });
             } else {
                 layer.confirm('确认要停用吗？', function (index) {
-                    $.get('{{backend_api_url `/role/status`}}', {'id': id}, function (res) {
+                    $.post('{{backend_api_url `/role/status`}}', {'id': id}, function (res) {
                         if (res.code === 0) {
                             //停用成功
                             $(obj).attr('title', '启用')
