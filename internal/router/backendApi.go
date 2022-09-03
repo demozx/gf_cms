@@ -25,7 +25,6 @@ func backendApiHandle(s *ghttp.Server) {
 	s.Group(backendApiGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
-			//middleware.Middleware().Auth,
 			middleware.Middleware().BackendApiCheckPolicy,
 		)
 		group.ALLMap(g.Map{

@@ -14,8 +14,8 @@ type SettingChildren struct {
 	Options     []SettingOptions `yaml:"options"`
 }
 type SettingConfig struct {
-	BackendView Settings `yaml:"backend_view"`
-	Web         Settings `yaml:"web"`
+	Backend Settings `yaml:"backend"`
+	Web     Settings `yaml:"web"`
 }
 type Settings struct {
 	Title  string          `yaml:"title"`

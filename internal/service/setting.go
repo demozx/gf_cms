@@ -6,12 +6,11 @@ package service
 
 import (
 	"gf_cms/internal/model"
-	"net/url"
 )
 
 type ISetting interface {
 	BackendViewAll() []model.SettingGroups
-	Save(forms url.Values) bool
+	Save(forms map[string]interface{}) (res bool, err error)
 }
 
 var localSetting ISetting

@@ -5,7 +5,6 @@ import (
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
 	"log"
-	"net/url"
 	"os"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -52,7 +51,7 @@ func (*sSetting) readYaml() *model.SettingConfig {
 
 // BackendViewAll 获取所有后台菜单
 func (*sSetting) BackendViewAll() []model.SettingGroups {
-	cacheKey := util.PublicCachePreFix + ":settings:backend_view_all"
+	cacheKey := util.PublicCachePreFix + ":settings:backend_all"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
 		panic(err)
@@ -65,41 +64,51 @@ func (*sSetting) BackendViewAll() []model.SettingGroups {
 		return settingGroups
 	}
 	//g.Log().Debug(Ctx, "Setting().readYaml()", Setting().readYaml())
-	backendViewAll := Setting().readYaml().BackendView.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendViewAll)
+	backendAll := Setting().readYaml().Backend.Groups
+	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendAll)
 	if err != nil {
 		panic(err)
 	}
-	return backendViewAll
+	return backendAll
 }
 
 // Save 保存设置
-func (*sSetting) Save(forms url.Values) bool {
+func (*sSetting) Save(forms map[string]interface{}) (res bool, err error) {
 	group := "backend"
-	model := "system_setting"
+	settingModel := "system_setting"
 	names := g.Slice{}
 	for name, value := range forms {
 		names = append(names, name)
-		one, err := g.Model(model).Where("group", group).Where("name", name).One()
+		one, err := g.Model(settingModel).Where("group", group).Where("name", name).One()
 		if err != nil {
 			panic(err)
 		}
 		if one.IsEmpty() {
-			g.Model(model).Data(g.Map{
+			_, err := g.Model(settingModel).Data(g.Map{
 				"group": group,
 				"name":  name,
-				"value": value[0],
+				"value": value,
 			}).Insert()
+			if err != nil {
+				return false, err
+			}
 		} else {
-			g.Model(model).Data(g.Map{
+			_, err = g.Model(settingModel).Data(g.Map{
 				"name":  name,
-				"value": value[0],
+				"value": value,
 			}).Where("group", group).Where("name", name).Update()
+			if err != nil {
+				return false, err
+			}
 		}
-
 	}
-	g.Model(model).Where("group", group).WhereNotIn("name", names).Delete()
-	util.Util().ClearSystemSettingCache()
-
-	return true
+	_, err = g.Model(settingModel).Where("group", group).WhereNotIn("name", names).Delete()
+	if err != nil {
+		return false, err
+	}
+	_, err = util.Util().ClearSystemSettingCache()
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }

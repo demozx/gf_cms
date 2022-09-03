@@ -1,8 +1,6 @@
 package main
 
 import (
-	_ "github.com/gogf/gf/v2/os/gres/testdata/example/boot"
-
 	_ "gf_cms/internal/packed"
 
 	_ "gf_cms/internal/logic"

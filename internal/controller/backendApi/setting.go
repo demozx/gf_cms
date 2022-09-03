@@ -15,8 +15,11 @@ var (
 )
 
 func (c *cSetting) Save(ctx context.Context, req *backendApi.SettingSaveApiReq) (res *backendApi.SettingSaveApiRes, err error) {
-	form := g.RequestFromCtx(ctx).Request.Form
-	setting.Setting().Save(form)
+	form := g.RequestFromCtx(ctx).GetMap()
+	_, err = setting.Setting().Save(form)
+	if err != nil {
+		return nil, err
+	}
 	g.RequestFromCtx(ctx).Response.WriteJsonExit(g.Map{
 		"code":    0,
 		"message": "保存成功",

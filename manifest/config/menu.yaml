@@ -20,12 +20,6 @@ backend:
         - title: 角色列表
           route: /role/index
           permission: admin.role.manage
-        - title: 权限分类
-          route: /rule_channel/index
-          permission: admin.rule_channel.manage
-        - title: 权限列表
-          route: /rule/index
-          permission: admin.rule.manage
     - title: 系统设置
       children:
         - title: 快捷方式
