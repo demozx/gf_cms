@@ -22,6 +22,9 @@ type cAdmin struct{}
 
 // Login 管理员登录
 func (c *cAdmin) Login(ctx context.Context, req *backend.AdminLoginReq) (res *backend.AdminLoginRes, err error) {
+	//初始化系统管理员
+	service.Admin().InitAdminUser(ctx)
+
 	var adminSession, _ = g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
 	if !adminSession.IsEmpty() {
 		// 有session，已经登录过

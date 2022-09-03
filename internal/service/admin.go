@@ -24,6 +24,7 @@ type IAdmin interface {
 	BackendApiAdminStatus(ctx context.Context, in *backendApi.AdminStatusReq) (out interface{}, err error)
 	BackendApiAdminDelete(ctx context.Context, in *backendApi.AdminDeleteReq) (out interface{}, err error)
 	BackendApiAdminDeleteBatch(ctx context.Context, in *backendApi.AdminDeleteBatchReq) (out interface{}, err error)
+	InitAdminUser(ctx context.Context)
 }
 
 var localAdmin IAdmin

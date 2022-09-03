@@ -16,6 +16,8 @@ type IPermission interface {
 	BackendApiAll() []model.PermissionGroups
 	BackendMyView(accountId string) []gdb.Value
 	BackendMyApi(accountId string) []gdb.Value
+	GetAllViewPermissionsArray() []string
+	GetAllApiPermissionsArray() []string
 }
 
 var localPermission IPermission

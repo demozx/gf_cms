@@ -9,6 +9,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/gogf/gf/v2/util/gconv"
+
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
 	"gopkg.in/yaml.v3"
@@ -155,4 +157,30 @@ func (*sPermission) BackendMyApi(accountId string) []gdb.Value {
 		panic(err)
 	}
 	return myPermissions
+}
+
+// GetAllViewPermissionsArray 获取全部视图权限数组
+func (*sPermission) GetAllViewPermissionsArray() []string {
+	backendViewAllPermissions := service.Permission().BackendViewAll()
+	var permissionsArray = make([]string, 0)
+	for _, _item := range backendViewAllPermissions {
+		for _, _permission := range _item.Permissions {
+			permission := gconv.String(_item.Slug) + "." + gconv.String(_permission.Slug)
+			permissionsArray = append(permissionsArray, permission)
+		}
+	}
+	return permissionsArray
+}
+
+// GetAllApiPermissionsArray 获取全部接口权限数组
+func (*sPermission) GetAllApiPermissionsArray() []string {
+	backendApiAllPermissions := service.Permission().BackendApiAll()
+	var permissionsArray = make([]string, 0)
+	for _, _item := range backendApiAllPermissions {
+		for _, _permission := range _item.Permissions {
+			permission := gconv.String(_item.Slug) + "." + gconv.String(_permission.Slug)
+			permissionsArray = append(permissionsArray, permission)
+		}
+	}
+	return permissionsArray
 }

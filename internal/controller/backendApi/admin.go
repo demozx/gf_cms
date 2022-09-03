@@ -4,10 +4,13 @@ import (
 	"context"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/consts"
+	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/admin"
 	"gf_cms/internal/logic/auth"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
+	"gf_cms/internal/model/do"
+	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -27,18 +30,57 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 		CaptchaStr: req.CaptchaStr,
 		CaptchaId:  req.CaptchaId,
 	})
-
 	if err != nil {
-		return
+		return nil, err
 	}
-
+	//如果登录的是系统用户
+	if adminInfo.IsSystem == 1 {
+		//给系统角色赋予全部的权限
+		go func() {
+			var systemRole *entity.CmsRole
+			err = dao.CmsRole.Ctx(ctx).Where(do.CmsRole{IsSystem: 1}).Scan(&systemRole)
+			if err != nil {
+				return
+			}
+			//给系统角色增加权限
+			_, err = dao.CmsRulePermissions.Ctx(ctx).Where(dao.CmsRulePermissions.Columns().V0, systemRole.Id).Delete()
+			if err != nil {
+				return
+			}
+			allViewPermissionsArray := service.Permission().GetAllViewPermissionsArray()
+			allApiPermissionsArray := service.Permission().GetAllApiPermissionsArray()
+			insertData := make([]interface{}, 0)
+			for _, permission := range allViewPermissionsArray {
+				row := g.Map{
+					"p_type": "p",
+					"v0":     systemRole.Id,
+					"v1":     "backend",
+					"v2":     permission,
+				}
+				insertData = append(insertData, row)
+			}
+			for _, permission := range allApiPermissionsArray {
+				row := g.Map{
+					"p_type": "p",
+					"v0":     systemRole.Id,
+					"v1":     "backend_api",
+					"v2":     permission,
+				}
+				insertData = append(insertData, row)
+			}
+			_, err := dao.CmsRulePermissions.Ctx(ctx).Data(insertData).Insert()
+			if err != nil {
+				return
+			}
+		}()
+	}
 	res = &backendApi.AdminLoginRes{}
 	//生成token
 	res.Token, res.Expire = auth.Auth().JWTAuth().LoginHandler(ctx)
-	g.Dump(g.Map{
-		"Token":  res.Token,
-		"Expire": res.Expire,
-	})
+	//g.Dump(g.Map{
+	//	"Token":  res.Token,
+	//	"Expire": res.Expire,
+	//})
 	// 记录session：自己定义的，因为一般后台登录用session
 	err = g.RequestFromCtx(ctx).Session.Set(consts.AdminSessionKeyPrefix, g.Map{
 		"Token":    res.Token,

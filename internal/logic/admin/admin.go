@@ -13,6 +13,10 @@ import (
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 
+	"github.com/gogf/gf/v2/util/grand"
+
+	"github.com/gogf/gf/v2/util/gconv"
+
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -333,4 +337,76 @@ func (s *sAdmin) BackendApiAdminDeleteBatch(ctx context.Context, in *backendApi.
 		return nil, err
 	}
 	return
+}
+
+// InitAdminUser 初始化系统管理员
+func (s *sAdmin) InitAdminUser(ctx context.Context) {
+	//系统角色
+	systemRoleOne, err := dao.CmsRole.Ctx(ctx).Where(do.CmsRole{IsSystem: 1}).One()
+	if err != nil {
+		return
+	}
+	//系统用户
+	systemAdminOne, err := dao.CmsAdmin.Ctx(ctx).Where(do.CmsAdmin{IsSystem: 1}).One()
+	if err != nil {
+		return
+	}
+
+	if !systemRoleOne.IsEmpty() && !systemAdminOne.IsEmpty() {
+		g.Log("InitAdminUser").Notice(ctx, "┌────────────────────────────┐")
+		g.Log("InitAdminUser").Notice(ctx, "│无需初始化系统管理员，已跳过│")
+		g.Log("InitAdminUser").Notice(ctx, "└────────────────────────────┘")
+	}
+
+	//没有系统角色
+	var roleId = systemRoleOne.GMap().Get("id")
+	if systemRoleOne.IsEmpty() {
+		//创建系统角色
+		roleId, err = dao.CmsRole.Ctx(ctx).Data(g.Map{
+			dao.CmsRole.Columns().Type:        "backend",
+			dao.CmsRole.Columns().IsEnable:    1,
+			dao.CmsRole.Columns().IsSystem:    1,
+			dao.CmsRole.Columns().Title:       "超级管理员",
+			dao.CmsRole.Columns().Description: "超级管理员",
+		}).InsertAndGetId()
+		if err != nil {
+			return
+		}
+		g.Log("InitAdminUser").Warning(ctx, "┌────────────────────────────")
+		g.Log("InitAdminUser").Warning(ctx, "│自动初始化系统角色ID："+gconv.String(roleId)+"")
+		g.Log("InitAdminUser").Warning(ctx, "└────────────────────────────")
+	}
+	// 没有系统管理员
+	if systemAdminOne.IsEmpty() {
+		//创建系统管理员
+		var name = grand.Str("abcdefghijklmnopqrstuvwxyz0123456789", 6)
+		var username = name
+		var password = grand.Str("abcdefghijklmnopqrstuvwxyz0123456789", 10)
+		adminId, err := dao.CmsAdmin.Ctx(ctx).Data(g.Map{
+			dao.CmsAdmin.Columns().IsSystem: 1,
+			dao.CmsAdmin.Columns().Status:   1,
+			dao.CmsAdmin.Columns().Name:     name,
+			dao.CmsAdmin.Columns().Username: username,
+			dao.CmsAdmin.Columns().Password: Admin().passMd5(password),
+		}).InsertAndGetId()
+		if err != nil {
+			return
+		}
+
+		//绑定用户和角色
+		_, err = dao.CmsRoleAccount.Ctx(ctx).Data(g.Map{
+			dao.CmsRoleAccount.Columns().RoleId:    roleId,
+			dao.CmsRoleAccount.Columns().AccountId: adminId,
+		}).Insert()
+		if err != nil {
+			return
+		}
+
+		g.Log("InitAdminUser").Warning(ctx, "┌────────────────────────────────────────────────────")
+		g.Log("InitAdminUser").Warning(ctx, "│自动初始化系统管理员ID："+gconv.String(adminId)+"")
+		g.Log("InitAdminUser").Warning(ctx, "│请使用如下信息登录后台，并修改密码")
+		g.Log("InitAdminUser").Warning(ctx, "│用户名："+gconv.String(username)+"")
+		g.Log("InitAdminUser").Warning(ctx, "│密码："+gconv.String(password)+"")
+		g.Log("InitAdminUser").Warning(ctx, "└────────────────────────────────────────────────────")
+	}
 }
