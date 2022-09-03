@@ -125,7 +125,7 @@
             if ($(obj).prop('title') === '启用') {
                 layer.confirm('确认要启用吗？', function (index) {
                     //发异步把用户状态进行更改
-                    $.get(url, {'id': id}, function (res) {
+                    $.post(url, {'id': id}, function (res) {
                         if (res['code'] === 0) {
                             $(obj).attr('title', '停用')
                             $(obj).find('i').html('&#xe601;');
@@ -145,7 +145,7 @@
                 });
             } else {
                 layer.confirm('确认要停用吗？', function (index) {
-                    $.get(url, {'id': id}, function (res) {
+                    $.post(url, {'id': id}, function (res) {
                         if (res['code'] === 0) {
                             $(obj).attr('title', '启用')
                             $(obj).find('i').html('&#xe62f;');
@@ -172,7 +172,7 @@
         window.member_del = function (obj, id) {
             layer.confirm('确认要删除吗？', function (index) {
                 //发异步删除数据
-                $.get('{{backend_api_url `/admin/delete`}}', {'id': id}, function (res) {
+                $.post('{{backend_api_url `/admin/delete`}}', {'id': id}, function (res) {
                     if (res.code === 0) {
                         layer.msg(res.message, {
                             time: 1000
