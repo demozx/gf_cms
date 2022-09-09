@@ -29,7 +29,7 @@ func Response() *sResponse {
 }
 
 // SuccessJson 返回成功json
-func (s *sResponse) SuccessJson(ctx context.Context, code int, message string, data g.Map) {
+func (s *sResponse) SuccessJson(ctx context.Context, code int, message string, data interface{}) {
 	g.RequestFromCtx(ctx).Response.WriteJson(g.Map{
 		"code":    code,
 		"message": message,

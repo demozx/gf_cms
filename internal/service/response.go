@@ -11,7 +11,7 @@ import (
 )
 
 type IResponse interface {
-	SuccessJson(ctx context.Context, code int, message string, data g.Map)
+	SuccessJson(ctx context.Context, code int, message string, data interface{})
 	SuccessJsonDefault(ctx context.Context)
 	SuccessCodeDefault() int
 	SuccessMessageDefault() string

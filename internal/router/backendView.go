@@ -31,8 +31,6 @@ func backendViewHandle(s *ghttp.Server) {
 			"/": backend.Index.Index,
 			/*后台欢迎页*/
 			"/welcome/index": backend.Welcome.Index,
-			/*栏目分类*/
-			"/channel/index": backend.Channel.Index,
 			/*后台设置*/
 			"/setting/index": backend.Setting.Index,
 			/*管理员列表*/
@@ -43,6 +41,8 @@ func backendViewHandle(s *ghttp.Server) {
 			"/role/index": backend.Role.Index, //角色列表
 			"/role/add":   backend.Role.Add,   //添加角色
 			"/role/edit":  backend.Role.Edit,  //编辑角色
+			/*栏目分类*/
+			"/channel/index": backend.Channel.Index, //栏目分类列表
 		})
 	})
 }

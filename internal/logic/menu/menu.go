@@ -17,9 +17,7 @@ var (
 )
 
 //菜单
-type sMenu struct {
-	MenuGroups struct{}
-}
+type sMenu struct{}
 
 func init() {
 	service.RegisterMenu(New())
