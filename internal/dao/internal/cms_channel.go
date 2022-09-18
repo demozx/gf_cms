@@ -22,6 +22,7 @@ type CmsChannelDao struct {
 type CmsChannelColumns struct {
 	Id               string // 频道ID
 	Pid              string // 父级ID
+	Level            string // 分类层次
 	Name             string // 名称
 	Thumb            string // 缩略图
 	Sort             string // 排名
@@ -41,6 +42,7 @@ type CmsChannelColumns struct {
 var cmsChannelColumns = CmsChannelColumns{
 	Id:               "id",
 	Pid:              "pid",
+	Level:            "level",
 	Name:             "name",
 	Thumb:            "thumb",
 	Sort:             "sort",

@@ -13,6 +13,7 @@ type CmsChannel struct {
 	g.Meta           `orm:"table:cms_channel, do:true"`
 	Id               interface{} // 频道ID
 	Pid              interface{} // 父级ID
+	Level            interface{} // 分类层次
 	Name             interface{} // 名称
 	Thumb            interface{} // 缩略图
 	Sort             interface{} // 排名

@@ -1,10 +1,5 @@
 <!DOCTYPE html>
 <html>
-<!--
-作者：github.com/WangEn
-时间：2018-02-02
-描述：树形菜单的引入，分享自http://fly.layui.com/jie/17979/
--->
 <head>
     <meta charset="UTF-8">
     <title>文章分类-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
@@ -35,9 +30,9 @@
 </div>
 <div class="weadmin-body">
     <div class="weadmin-block">
-        <button class="layui-btn" id="expand">全部展开</button>
-        <button class="layui-btn" id="collapse">全部收起</button>
-        <button class="layui-btn" onclick="WeAdminShow('添加分类','{:url(\'@admin/category/add\')}')"><i
+        <button class="layui-btn layui-btn-primary" id="expand">全部展开</button>
+        <button class="layui-btn layui-btn-primary" id="collapse">全部收起</button>
+        <button class="layui-btn" onclick="WeAdminShow('添加分类','{{ backend_url `/channel/add` }}')"><i
                 class="layui-icon"></i>添加
         </button>
     </div>
@@ -57,10 +52,10 @@
             confirmTip = '确认要启用吗？';
         }
         layer.confirm(confirmTip, function (index) {
-            if ($(obj).attr('title') == '启用') {
+            if ($(obj).attr('title') === '启用') {
                 //发异步把用户状态进行更改
                 $.post('editstate.html', {'id': id, 'state': 'off'}, function (res) {
-                    if (res['code'] == 1) {
+                    if (res.code === 0) {
                         $(obj).attr('title', '停用')
                         $(obj).find('i').html('&#xe62f;');
                         $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
@@ -118,10 +113,10 @@
             render: function (row) {
                 //启用禁用状态值
                 //console.log('----'+row.state);
-                if (row.state == 1) {
-                    return '<span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span>';
+                if (row.status === 1) {
+                    return '<span class="layui-badge layui-bg-blue">已启用</span>';
                 }
-                return '<span class="layui-btn layui-btn-normal layui-btn-xs layui-btn-disabled">已停用</span>';
+                return '<span class="layui-badge layui-bg-blue  layui-bg-gray">已停用</span>';
             }
         },
         {
@@ -130,17 +125,16 @@
             colClass: 'td-manage',
             style: 'width: 20%',
             render: function (row) {
-                if (row.state == 1) {
+                if (row.status === 1) {
                     return '<a onclick="member_stop(this,' + row.id + ')" href="javascript:;" title="启用"><i class="layui-icon">&#xe601;</i></a>' +
-                        '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'../category/add.html?cid=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
-                        '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'../category/edit.html?cid=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
+                        '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'{{backend_url `/channel/add`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
+                        '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'{{backend_url `/channel/edit`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
                         '<a title="删除" onclick="del(' + row.id + ')" href="javascript:;">\<i class="layui-icon">&#xe640;</i></a>';
                 }
                 return '<a onclick="member_stop(this,' + row.id + ')" href="javascript:;" title="停用"><i class="layui-icon">&#xe62f;</i></a>' +
-                    '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'../category/add.html?cid=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
-                    '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'../category/edit.html?cid=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
+                    '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'{{backend_url `/channel/add`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
+                    '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'{{backend_url `/channel/edit`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
                     '<a title="删除" onclick="del(' + row.id + ')" href="javascript:;">\<i class="layui-icon">&#xe640;</i></a>';
-                //return '<a class="layui-btn layui-btn-danger layui-btn-mini" onclick="del(' + row.id + ')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
             }
         },
     ];

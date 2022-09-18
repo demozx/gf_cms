@@ -2,11 +2,12 @@ package model
 
 // ChannelBackendApiListItem 后台栏目分类接口列表数据
 type ChannelBackendApiListItem struct {
-	Id       int                                  `json:"id"`
-	Pid      int                                  `json:"pid"`
-	Name     string                               `json:"name"`
-	Status   int                                  `json:"status"`
-	Children []*ChannelBackendApiListItemChildren `json:"children"`
+	Id       int                          `json:"id"`
+	Pid      int                          `json:"pid"`
+	Level    int                          `json:"level"`
+	Name     string                       `json:"name"`
+	Status   int                          `json:"status"`
+	Children []*ChannelBackendApiListItem `json:"children"`
 }
 
 type ChannelBackendApiListItemChildren struct {
@@ -14,4 +15,11 @@ type ChannelBackendApiListItemChildren struct {
 	Pid    int    `json:"pid"`
 	Name   string `json:"name"`
 	Status int    `json:"status"`
+}
+
+type ChannelTreeItem struct {
+	Id    int    `json:"id"`
+	Pid   int    `json:"pid"`
+	Name  string `json:"name"`
+	Level int    `json:"level"`
 }

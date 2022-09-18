@@ -8,6 +8,7 @@ package entity
 type CmsChannel struct {
 	Id               uint   `json:"id"               ` // 频道ID
 	Pid              int    `json:"pid"              ` // 父级ID
+	Level            int    `json:"level"            ` // 分类层次
 	Name             string `json:"name"             ` // 名称
 	Thumb            string `json:"thumb"            ` // 缩略图
 	Sort             int    `json:"sort"             ` // 排名
