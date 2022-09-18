@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/Blank-Xu/sql-adapter v0.0.0-20210714092925-0bdd0d548758
-	github.com/casbin/casbin/v2 v2.54.0
+	github.com/casbin/casbin/v2 v2.55.0
 	github.com/gogf/gf-jwt/v2 v2.0.1
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.1.4
 	github.com/gogf/gf/v2 v2.1.4
@@ -46,6 +46,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.10.0 // indirect
 	golang.org/x/image v0.0.0-20220902085622-e7cb96979f69 // indirect
 	golang.org/x/net v0.0.0-20220909164309-bea034e7d591 // indirect
-	golang.org/x/sys v0.0.0-20220909162455-aba9fc2a8ff2 // indirect
+	golang.org/x/sys v0.0.0-20220915200043-7b5979e65e41 // indirect
 	golang.org/x/text v0.3.8-0.20211105212822-18b340fc7af2 // indirect
 )
