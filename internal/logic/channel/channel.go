@@ -108,7 +108,7 @@ func (*sChannel) tree(list []*model.ChannelBackendApiListItem) (out []*model.Cha
 		for i := 0; i < item.Level; i++ {
 			emsp += "&emsp;&emsp;"
 		}
-		newList[key].Name = emsp + "├" + item.Name
+		newList[key].Name = emsp + "├&nbsp;" + item.Name
 	}
 	return newList
 }
