@@ -6,6 +6,7 @@ package do
 
 import (
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 )
 
 // CmsChannel is the golang structure of table cms_channel for DAO operations like Where/Data.
@@ -27,4 +28,7 @@ type CmsChannel struct {
 	DetailTemplate   interface{} // 详情页模板
 	Description      interface{} // 频道描述
 	Model            interface{} // 模型
+	CreatedAt        *gtime.Time // 创建时间
+	UpdatedAt        *gtime.Time // 修改时间
+	DeletedAt        *gtime.Time // 删除时间
 }

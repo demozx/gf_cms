@@ -164,7 +164,6 @@ func (*sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelDel
 	if children != nil {
 		return nil, gerror.New("当前栏目下有子栏目，不允许删除")
 	}
-	// todo 栏目应该软删除
 	// todo 栏目下有内容页不能删除
 	_, err = m.Delete()
 	if err != nil {

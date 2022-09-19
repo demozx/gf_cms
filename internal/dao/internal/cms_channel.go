@@ -36,6 +36,9 @@ type CmsChannelColumns struct {
 	DetailTemplate   string // 详情页模板
 	Description      string // 频道描述
 	Model            string // 模型
+	CreatedAt        string // 创建时间
+	UpdatedAt        string // 修改时间
+	DeletedAt        string // 删除时间
 }
 
 //  cmsChannelColumns holds the columns for table cms_channel.
@@ -56,6 +59,9 @@ var cmsChannelColumns = CmsChannelColumns{
 	DetailTemplate:   "detail_template",
 	Description:      "description",
 	Model:            "model",
+	CreatedAt:        "created_at",
+	UpdatedAt:        "updated_at",
+	DeletedAt:        "deleted_at",
 }
 
 // NewCmsChannelDao creates and returns a new DAO object for table data access.
