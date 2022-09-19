@@ -30,3 +30,13 @@ func (c *cChannel) Status(ctx context.Context, req *backendApi.ChannelStatusApiR
 	}
 	return
 }
+
+// Delete 删除
+func (c *cChannel) Delete(ctx context.Context, req *backendApi.ChannelDeleteApiReq) (res *backendApi.ChannelDeleteApiRes, err error) {
+	_, err = service.Channel().BackendApiDelete(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefault(ctx)
+	return
+}

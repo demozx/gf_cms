@@ -47,6 +47,7 @@ func backendApiHandle(s *ghttp.Server) {
 			/*栏目分类*/
 			"/channel/index":  backendApi.Channel.Index,  //栏目分类列表
 			"/channel/status": backendApi.Channel.Status, //启用禁用
+			"/channel/delete": backendApi.Channel.Delete, //删除
 		})
 	})
 }

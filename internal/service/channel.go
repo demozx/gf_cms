@@ -14,6 +14,7 @@ type IChannel interface {
 	BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
 	BackendChannelTree(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
 	BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error)
+	BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error)
 }
 
 var localChannel IChannel

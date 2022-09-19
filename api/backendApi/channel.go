@@ -14,3 +14,10 @@ type ChannelStatusApiReq struct {
 }
 type ChannelStatusApiRes struct {
 }
+
+type ChannelDeleteApiReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"栏目删除"`
+	Id     int `p:"id" name:"id" brief:"栏目ID" des:"栏目ID"  arg:"true" v:"required#请选择栏目ID"`
+}
+type ChannelDeleteApiRes struct {
+}

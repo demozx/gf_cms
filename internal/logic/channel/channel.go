@@ -44,8 +44,11 @@ func (*sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendA
 	for key, channel := range allChannels {
 		if channel.Thumb != "" {
 			channel.Name = channel.Name + "<span style='color:red;font-size: 12px;margin: 0 2px;'>图</span><span id='id_" + gconv.String(channel.Id) + "' class='cate_id'>&nbsp;id:" + gconv.String(channel.Id) + "</span>"
-			allChannels[key] = channel
+
+		} else {
+			channel.Name = channel.Name + "<span id='id_" + gconv.String(channel.Id) + "' class='cate_id'>&nbsp;id:" + gconv.String(channel.Id) + "</span>"
 		}
+		allChannels[key] = channel
 	}
 	err = gconv.Scan(allChannels, &channelBackendApiList)
 	if err != nil {
@@ -86,6 +89,7 @@ func (*sChannel) BackendChannelTree(ctx context.Context) (out []*model.ChannelBa
 	return channelBackendApiList, err
 }
 
+// 递归生成栏目分类树
 func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem) (out []*model.ChannelBackendApiListItem) {
 	var hasChildren = false
 	newList := make([]*model.ChannelBackendApiListItem, 0)
@@ -118,6 +122,7 @@ func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem) (out []*mo
 	return newList
 }
 
+// BackendApiStatus 状态禁用启用
 func (*sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error) {
 	var first *entity.CmsChannel
 	var m = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, in.Id)
@@ -135,6 +140,33 @@ func (*sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelSta
 	_, err = m.Data(g.Map{
 		dao.CmsChannel.Columns().Status: status,
 	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (*sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error) {
+	var first *entity.CmsChannel
+	var m = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, in.Id)
+	err = m.Scan(&first)
+	if err != nil {
+		return nil, err
+	}
+	if first == nil {
+		return nil, gerror.New("栏目不存在")
+	}
+	var children *entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Pid, in.Id).Scan(&children)
+	if err != nil {
+		return nil, err
+	}
+	if children != nil {
+		return nil, gerror.New("当前栏目下有子栏目，不允许删除")
+	}
+	// todo 栏目应该软删除
+	// todo 栏目下有内容页不能删除
+	_, err = m.Delete()
 	if err != nil {
 		return nil, err
 	}
