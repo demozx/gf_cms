@@ -11,7 +11,7 @@ import (
 
 type IChannel interface {
 	Index(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
-	ChannelTree(ctx context.Context) (out []*model.ChannelTreeItem, err error)
+	ChannelTree(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
 }
 
 var localChannel IChannel

@@ -6,7 +6,7 @@ import (
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
-	"github.com/gogf/gf/v2/frame/g"
+
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -65,7 +65,7 @@ func (*sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (ou
 }
 
 // ChannelTree 获取栏目分类树
-func (*sChannel) ChannelTree(ctx context.Context) (out []*model.ChannelTreeItem, err error) {
+func (*sChannel) ChannelTree(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -78,20 +78,37 @@ func (*sChannel) ChannelTree(ctx context.Context) (out []*model.ChannelTreeItem,
 	}
 	channelBackendApiList = Channel().recursion(channelBackendApiList, 0)
 	channelBackendApiList = Channel().tree(channelBackendApiList)
-	g.Dump("channelBackendApiList", channelBackendApiList)
-	return
+	return channelBackendApiList, err
 }
 
-func (*sChannel) tree(in []*model.ChannelBackendApiListItem) (out []*model.ChannelBackendApiListItem) {
-	res := make([]*model.ChannelBackendApiListItem, 0)
-	for _, item := range in {
-		res = append(res, item)
+func (*sChannel) tree(list []*model.ChannelBackendApiListItem) (out []*model.ChannelBackendApiListItem) {
+	var hasChildren = false
+	newList := make([]*model.ChannelBackendApiListItem, 0)
+	for _, item := range list {
+		newItem := new(model.ChannelBackendApiListItem)
+		newItem.Id = item.Id
+		newItem.Pid = item.Pid
+		newItem.Level = item.Level
+		newItem.Status = item.Status
+		newItem.Name = item.Name
+		newItem.Children = nil
+		newList = append(newList, newItem)
 		if len(item.Children) > 0 {
-			for _, children := range item.Children {
-				res = append(res, children)
+			hasChildren = true
+			for _, childrenItem := range item.Children {
+				newList = append(newList, childrenItem)
 			}
 		}
 	}
-	g.Dump("res", res)
-	return
+	if hasChildren == true {
+		return Channel().tree(newList)
+	}
+	for key, item := range newList {
+		var emsp = ""
+		for i := 0; i < item.Level; i++ {
+			emsp += "&emsp;&emsp;"
+		}
+		newList[key].Name = emsp + "├" + item.Name
+	}
+	return newList
 }
