@@ -2,10 +2,15 @@ package channel
 
 import (
 	"context"
+	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+
+	"github.com/gogf/gf/v2/frame/g"
+
+	"github.com/gogf/gf/v2/errors/gerror"
 
 	"github.com/gogf/gf/v2/util/gconv"
 )
@@ -28,8 +33,8 @@ func Channel() *sChannel {
 	return &insChannel
 }
 
-// Index 获取后台栏目分类接口数据
-func (*sChannel) Index(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
+// BackendIndex 获取后台栏目分类接口数据
+func (*sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -64,8 +69,8 @@ func (*sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (ou
 	return res
 }
 
-// ChannelTree 获取栏目分类树
-func (*sChannel) ChannelTree(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
+// BackendChannelTree 获取栏目分类树
+func (*sChannel) BackendChannelTree(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -77,11 +82,11 @@ func (*sChannel) ChannelTree(ctx context.Context) (out []*model.ChannelBackendAp
 		return nil, err
 	}
 	channelBackendApiList = Channel().recursion(channelBackendApiList, 0)
-	channelBackendApiList = Channel().tree(channelBackendApiList)
+	channelBackendApiList = Channel().backendTree(channelBackendApiList)
 	return channelBackendApiList, err
 }
 
-func (*sChannel) tree(list []*model.ChannelBackendApiListItem) (out []*model.ChannelBackendApiListItem) {
+func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem) (out []*model.ChannelBackendApiListItem) {
 	var hasChildren = false
 	newList := make([]*model.ChannelBackendApiListItem, 0)
 	for _, item := range list {
@@ -101,7 +106,7 @@ func (*sChannel) tree(list []*model.ChannelBackendApiListItem) (out []*model.Cha
 		}
 	}
 	if hasChildren == true {
-		return Channel().tree(newList)
+		return Channel().backendTree(newList)
 	}
 	for key, item := range newList {
 		var emsp = ""
@@ -111,4 +116,27 @@ func (*sChannel) tree(list []*model.ChannelBackendApiListItem) (out []*model.Cha
 		newList[key].Name = emsp + "├&nbsp;" + item.Name
 	}
 	return newList
+}
+
+func (*sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error) {
+	var first *entity.CmsChannel
+	var m = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, in.Id)
+	err = m.Scan(&first)
+	if err != nil {
+		return nil, err
+	}
+	if first == nil {
+		return nil, gerror.New("栏目不存在")
+	}
+	status := 1
+	if first.Status == 1 {
+		status = 0
+	}
+	_, err = m.Data(g.Map{
+		dao.CmsChannel.Columns().Status: status,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
 }

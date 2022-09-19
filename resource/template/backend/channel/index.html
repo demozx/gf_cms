@@ -46,7 +46,7 @@
     function member_stop(obj, id) {
         var confirmTip;
         var $ = layui.jquery;
-        if ($(obj).attr('title') == '启用') {
+        if ($(obj).attr('title') === '启用') {
             confirmTip = '确认要停用吗？';
         } else {
             confirmTip = '确认要启用吗？';
@@ -54,11 +54,11 @@
         layer.confirm(confirmTip, function (index) {
             if ($(obj).attr('title') === '启用') {
                 //发异步把用户状态进行更改
-                $.post('editstate.html', {'id': id, 'state': 'off'}, function (res) {
+                $.post('{{backend_api_url `/channel/status`}}', {'id': id}, function (res) {
                     if (res.code === 0) {
                         $(obj).attr('title', '停用')
                         $(obj).find('i').html('&#xe62f;');
-                        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-bg-gray').removeClass('layui-bg-blue').html('已停用');
                         layer.msg('已停用!', {
                             icon: 6,
                             time: 1000
@@ -74,12 +74,12 @@
 
             } else {
                 //发异步把用户状态进行更改
-                $.post('editstate.html', {'id': id, 'state': 'on'}, function (res) {
-                    if (res['code'] == 1) {
+                $.post('{{backend_api_url `/channel/status`}}', {'id': id}, function (res) {
+                    if (res.code === 0) {
                         $(obj).attr('title', '启用')
                         $(obj).find('i').html('&#xe601;');
 
-                        $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                        $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-bg-gray').addClass('layui-bg-blue').html('已启用');
                         layer.msg('已启用!', {
                             icon: 6,
                             time: 1000

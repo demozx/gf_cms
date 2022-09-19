@@ -45,7 +45,8 @@ func backendApiHandle(s *ghttp.Server) {
 			"/role/add":          backendApi.Role.Add,         //添加角色
 			"/role/edit":         backendApi.Role.Edit,        //添加角色
 			/*栏目分类*/
-			"/channel/index": backendApi.Channel.Index, //栏目分类列表
+			"/channel/index":  backendApi.Channel.Index,  //栏目分类列表
+			"/channel/status": backendApi.Channel.Status, //启用禁用
 		})
 	})
 }

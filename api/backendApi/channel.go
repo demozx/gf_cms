@@ -7,3 +7,10 @@ type ChannelIndexApiReq struct {
 }
 type ChannelIndexApiRes struct {
 }
+
+type ChannelStatusApiReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"栏目启用禁用"`
+	Id     int `p:"id" name:"id" brief:"栏目ID" des:"栏目ID"  arg:"true" v:"required#请选择栏目ID"`
+}
+type ChannelStatusApiRes struct {
+}
