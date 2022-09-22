@@ -1,290 +1,326 @@
 <!DOCTYPE html>
 <html>
 <style>
-  .layui-upload-img{
-    max-width: 300px;
-  }
-  #editor{
-    min-height: 200px;
-  }
+    .layui-upload-img {
+        max-width: 300px;
+    }
+
+    #editor {
+        min-height: 200px;
+    }
 </style>
 <head>
-  <meta charset="UTF-8">
-  <title>添加文章分类-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" href="/resource/backend/css/font.css">
-  <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
-  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-  <!--[if lt IE 9]>
-  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <meta charset="UTF-8">
+    <title>添加文章分类-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
 <div class="weadmin-body">
 
-  <form id="form1" class="layui-form">
-    <div class="layui-tab">
-      <ul class="layui-tab-title">
-        <li class="layui-this">基本设置</li>
-        <li>高级设置</li>
-        <li>栏目简介</li>
-      </ul>
-      <div class="layui-tab-content">
-        <div class="layui-tab-item layui-show">
-          <!--tab1 content-->
+    <form id="form1" class="layui-form">
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本设置</li>
+                <li>栏目简介</li>
+                <li>高级设置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <!--tab1 content-->
 
-          <div class="layui-form-item">
-            <label class="layui-form-label">父级分类</label>
-            <div class="layui-input-block">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">父级分类</label>
+                        <div class="layui-input-block">
 
-              <select name="cat_pid" id="pid-select" lay-verify="required" lay-filter="pid-select">
-                <option value="0" data-level="0">顶级分类</option>
-                {{range $key, $item := .channelTree}}
-                <option value="{{ $item.Id }}" data-level="{{ $item.Level }}" {if condition="($cid==$vo.cat_id)"}selected{/if} >{{ $item.Name }}</option>
-                {{end}}
-              </select>
+                            <select name="cat_pid" id="pid-select" lay-verify="required" lay-filter="pid-select">
+                                <option value="0" data-level="0">顶级分类</option>
+                                {{range $key, $item := .channelTree}}
+                                <option value="{{ $item.Id }}" data-level="{{ $item.Level }}" {if
+                                        condition="($cid==$vo.cat_id)" }selected{
+                                /if} >{{ $item.Name }}</option>
+                                {{end}}
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分类名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="cat_name" lay-verify="required" jq-error="请输入分类名称"
+                                   placeholder="请输入分类名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目别名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="cat_byname" lay-verify="" jq-error="请输入栏目别名"
+                                   placeholder="请输入栏目别名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目缩略图</label>
+
+                        <div class="layui-input-block">
+                            <input style="width: 60%;display: inline;" type="text" id="cat_pic_text" name="cat_pic"
+                                   placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off"
+                                   class="layui-input">
+                            <button style="margin-left: -118px;margin-bottom: 3px;" type="button" class="layui-btn"
+                                    id="topicImg"><i class="layui-icon">&#xe67c;</i>上传图片
+                            </button>
+                            <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="cat_pic">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="cat_sort" lay-verify="number" value="100" jq-error="排序必须为数字"
+                                   placeholder="分类排序" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="cat_state" title="启用" value="1"/>
+                            <input type="radio" name="cat_state" title="禁用" value="0" checked/>
+                        </div>
+                    </div>
+                    <!--//tab1 content-->
+                </div>
+                <div class="layui-tab-item">
+                    <!--tab3 content-->
+                    <script id="editor" type="text/plain" name="cat_description"></script>
+                    <!--//tab3 content-->
+                </div>
+
+                <div class="layui-tab-item">
+                    <!--tab2 content-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目类型</label>
+                        <div class="layui-input-block" id="channel_type">
+                            <input type="radio" name="cat_type" lay-filter="channel_type" title="频道" value="1"
+                                   checked/>
+                            <input type="radio" name="cat_type" lay-filter="channel_type" title="单页" value="2"/>
+                            <input type="radio" name="cat_type" lay-filter="channel_type" title="链接" value="3"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="channel_link">
+                        <label class="layui-form-label">链接地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="cat_link" lay-verify=""
+                                   jq-error="请输入栏目跳转网址（支持url方法、getCatUrl方法或者直接写链接地址）"
+                                   placeholder="请输入栏目跳转网址（支持url方法、getCatUrl方法或者直接写链接地址）"
+                                   autocomplete="off" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">打开方式</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="cat_target" title="当前页面" value="0" checked/>
+                            <input type="radio" name="cat_target" title="新页面" value="1"/>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模型</label>
+                        <div class="layui-input-block">
+                            <select name="model">
+                                <option value="">请选择模型</option>
+                                <option value="0">写作</option>
+                                <option value="1">阅读</option>
+                                <option value="2">游戏</option>
+                                <option value="3">音乐</option>
+                                <option value="4">旅行</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目控制器</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   placeholder="请输入栏目控制器名，留空则使用默认控制器（频道：Listview,单页：Content）"
+                                   autocomplete="off" class="layui-input" name="cat_controller" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容控制器</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="请输入内容控制器名，留空则使用默认控制器（频道：Pageview）"
+                                   autocomplete="off" class="layui-input" name="view_controller" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目模板</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="请输入栏目模板名，留空则使用默认模板‘index’"
+                                   autocomplete="off" class="layui-input" name="cat_template" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容模板</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="请输入内容模板名，留空则使用默认模板‘index’"
+                                   autocomplete="off" class="layui-input" name="view_template" value=""/>
+                        </div>
+                    </div>
+
+                    <!--//tab2 content-->
+                </div>
 
             </div>
-          </div>
-
-          <div class="layui-form-item">
-            <label class="layui-form-label">分类名称</label>
-            <div class="layui-input-block">
-              <input type="text" name="cat_name" lay-verify="required" jq-error="请输入分类名称" placeholder="请输入分类名称" autocomplete="off" class="layui-input">
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label class="layui-form-label">栏目别名</label>
-            <div class="layui-input-block">
-              <input type="text" name="cat_byname" lay-verify="" jq-error="请输入栏目别名" placeholder="请输入栏目别名" autocomplete="off" class="layui-input">
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label class="layui-form-label">栏目缩略图</label>
-
-            <div class="layui-input-block">
-              <input style="width: 60%;display: inline;" type="text" id="cat_pic_text" name="cat_pic" placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off" class="layui-input">
-              <button style="margin-left: -118px;margin-bottom: 3px;" type="button" class="layui-btn" id="topicImg"><i class="layui-icon">&#xe67c;</i>上传图片</button>
-              <div class="layui-upload-list">
-                <img class="layui-upload-img" id="cat_pic">
-              </div>
-            </div>
-
-          </div>
-          <div class="layui-form-item">
-            <label class="layui-form-label">排序</label>
-            <div class="layui-input-inline">
-              <input type="text" name="cat_sort" lay-verify="number" value="100" jq-error="排序必须为数字" placeholder="分类排序" autocomplete="off" class="layui-input">
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-inline">
-              <input type="radio" name="cat_state" title="启用" value="1" checked />
-              <input type="radio" name="cat_state" title="禁用" value="0" />
-            </div>
-          </div>
-          <!--//tab1 content-->
         </div>
-        <div class="layui-tab-item">
-          <!--tab2 content-->
-          <div class="layui-form-item">
-            <label class="layui-form-label">栏目类型</label>
-            <div class="layui-input-block" id="channel_type">
-              <input type="radio" name="cat_type" lay-filter="channel_type" title="频道" value="1" checked />
-              <input type="radio" name="cat_type" lay-filter="channel_type" title="单页" value="2" />
-              <input type="radio" name="cat_type" lay-filter="channel_type" title="链接" value="3" />
-            </div>
-          </div>
-          <div class="layui-form-item" id="channel_link">
-            <label class="layui-form-label">链接地址</label>
+
+        <div class="layui-form-item">
             <div class="layui-input-block">
-              <input type="text" name="cat_link" lay-verify="" jq-error="请输入栏目跳转网址（支持url方法、getCatUrl方法或者直接写链接地址）" placeholder="请输入栏目跳转网址（支持url方法、getCatUrl方法或者直接写链接地址）" autocomplete="off" class="layui-input ">
+                <button class="layui-btn" id="editTopic" lay-submit="" lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
-          </div>
-
-          <div class="layui-form-item">
-            <label class="layui-form-label">打开方式</label>
-            <div class="layui-input-block">
-              <input type="radio" name="cat_target" title="当前页面" value="0" checked />
-              <input type="radio" name="cat_target" title="新页面" value="1" />
-            </div>
-          </div>
-
-
-          <div class="layui-form-item">
-            <label class="layui-form-label">栏目控制器</label>
-            <div class="layui-input-block">
-              <input type="text" placeholder="请输入栏目控制器名，留空则使用默认控制器（频道：Listview,单页：Content）" autocomplete="off" class="layui-input" name="cat_controller" value="" />
-            </div>
-          </div>
-
-          <div class="layui-form-item">
-            <label class="layui-form-label">内容控制器</label>
-            <div class="layui-input-block">
-              <input type="text" placeholder="请输入内容控制器名，留空则使用默认控制器（频道：Pageview）" autocomplete="off" class="layui-input" name="view_controller" value="" />
-            </div>
-          </div>
-
-          <div class="layui-form-item">
-            <label class="layui-form-label">栏目模板</label>
-            <div class="layui-input-block">
-              <input type="text" placeholder="请输入栏目模板名，留空则使用默认模板‘index’" autocomplete="off" class="layui-input" name="cat_template" value="" />
-            </div>
-          </div>
-
-          <div class="layui-form-item">
-            <label class="layui-form-label">内容模板</label>
-            <div class="layui-input-block">
-              <input type="text" placeholder="请输入内容模板名，留空则使用默认模板‘index’" autocomplete="off" class="layui-input" name="view_template" value="" />
-            </div>
-          </div>
-
-          <!--//tab2 content-->
         </div>
-        <div class="layui-tab-item">
-          <!--tab3 content-->
-          <script id="editor" type="text/plain" name="cat_description" ></script>
-          <!--//tab3 content-->
-        </div>
-
-      </div>
-    </div>
-
-    <div class="layui-form-item">
-      <div class="layui-input-block">
-        <button class="layui-btn" id="editTopic" lay-submit="" lay-filter="add">立即提交</button>
-        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-      </div>
-    </div>
-    <input type="hidden" name="level" value="0" />
-  </form>
+        <input type="hidden" name="level" value="0"/>
+    </form>
 </div>
 <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript">
-  layui.extend({
-    admin: '{/}/resource/backend/js/admin'
-  });
-  layui.use(['admin','jquery','form', 'layer'], function() {
-    var admin = layui.admin,
+    layui.extend({
+        admin: '{/}/resource/backend/js/admin'
+    });
+    layui.use(['admin', 'jquery', 'form', 'layer'], function () {
+        var admin = layui.admin,
             $ = layui.jquery,
             form = layui.form,
             layer = layui.layer;
-    //监听提交
-    form.on('submit(add)', function(data) {
-      console.log(data.field);
-      //发异步，把数据提交给php
-      $.post("{:url('add')}",data.field,function (res) {
-        //console.log(res);
-        if(res['code']==1){
-          //添加成功
-          layer.msg("增加成功", {
-            time:1000,
-            icon: 6
-          }, function() {
-            // 获得frame索引
-            var index = parent.layer.getFrameIndex(window.name);
-            //关闭父级当前frame
-            //parent.layer.close(index);
-            parent.location.reload();
-          });
-        }else{
-          //添加失败
-          layer.msg("增加失败："+res['msg'], {
-            icon: 5
-          }, function() {
-            // 获得frame索引
-            //var index = parent.layer.getFrameIndex(window.name);
-            //关闭当前frame
-            parent.layer.close(index);
-          });
+        //监听提交
+        form.on('submit(add)', function (data) {
+            console.log(data.field);
+            //发异步，把数据提交给php
+            $.post("{:url('add')}", data.field, function (res) {
+                //console.log(res);
+                if (res['code'] == 1) {
+                    //添加成功
+                    layer.msg("增加成功", {
+                        time: 1000,
+                        icon: 6
+                    }, function () {
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭父级当前frame
+                        //parent.layer.close(index);
+                        parent.location.reload();
+                    });
+                } else {
+                    //添加失败
+                    layer.msg("增加失败：" + res['msg'], {
+                        icon: 5
+                    }, function () {
+                        // 获得frame索引
+                        //var index = parent.layer.getFrameIndex(window.name);
+                        //关闭当前frame
+                        parent.layer.close(index);
+                    });
+                }
+            });
+
+            return false;
+        });
+        //栏目类型切换时执行showLink
+        form.on('radio(channel_type)', function (data) {
+            //console.log(data.elem); //得到checkbox原始DOM对象
+            //console.log(data.elem.checked); //是否被选中，true或者false
+            //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+            //console.log(data.othis); //得到美化后的DOM对象
+            showLink(data.value);
+        });
+
+        //如果栏目类型是链接，则显示链接地址，否则隐藏链接复制
+        function showLink(value) {
+            val = '';
+            $('#channel_type input').each(function () {
+                if ($(this).prop('checked') == true) {
+                    val = $(this).val();
+                }
+            });
+            var value = value || val;
+            if (value == 3) {
+                $('#channel_link').show();
+            } else {
+                $('#channel_link').hide();
+            }
         }
-      });
 
-      return false;
-    });
-    //栏目类型切换时执行showLink
-    form.on('radio(channel_type)', function(data){
-      //console.log(data.elem); //得到checkbox原始DOM对象
-      //console.log(data.elem.checked); //是否被选中，true或者false
-      //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
-      //console.log(data.othis); //得到美化后的DOM对象
-      showLink(data.value);
-    });
-    //如果栏目类型是链接，则显示链接地址，否则隐藏链接复制
-    function showLink(value) {
-      val = '';
-      $('#channel_type input').each(function () {
-        if($(this).prop('checked')==true){
-          val = $(this).val();
-        }
-      });
-      var value = value || val;
-      if(value == 3){
-        $('#channel_link').show();
-      }else{
-        $('#channel_link').hide();
-      }
-    }
-    showLink();
+        showLink();
 
-    //遍历select option
-    $(document).ready(function(){
-      $("#pid-select option").each(function (text){
-        var level = $(this).attr('data-level');
-        var text = $(this).text();
-        //console.log(text);
-        /*
-         if(level>0){
-         text = "├　"+ text;
-         for(var i=0;i<level;i++){
-         text ="　　"+ text;　//js中连续显示多个空格，需要使用全角的空格
-         //console.log(i+"text:"+text);
-         }
-         }
-         */
-        $(this).text(text);
+        //遍历select option
+        $(document).ready(function () {
+            $("#pid-select option").each(function (text) {
+                var level = $(this).attr('data-level');
+                var text = $(this).text();
+                //console.log(text);
+                /*
+                 if(level>0){
+                 text = "├　"+ text;
+                 for(var i=0;i<level;i++){
+                 text ="　　"+ text;　//js中连续显示多个空格，需要使用全角的空格
+                 //console.log(i+"text:"+text);
+                 }
+                 }
+                 */
+                $(this).text(text);
 
-      });
+            });
 
-      form.render('select'); //刷新select选择框渲染
-    });
-
-  });
-  //上传栏目缩略图
-  layui.use(['upload','jquery'], function(){
-    var upload = layui.upload;
-    var $ = layui.$;
-    //执行实例
-    var uploadInst = upload.render({
-      elem: '#topicImg' //绑定元素
-      ,url: 'catepic.html' //上传接口
-      ,done: function(res){
-        //上传完毕回调
-        if(res['code']==1){
-          $('#cat_pic').attr('src',res['path']);
-          $('#cat_pic_text').val(res['path']);
-        }else{
-          layer.msg(res['error'], {
-            time:3000,
-            icon: 5
-          });
-        }
-      }
-      ,error: function(){
-        //请求异常回调
-
-      }
+            form.render('select'); //刷新select选择框渲染
+        });
 
     });
+    //上传栏目缩略图
+    layui.use(['upload', 'jquery'], function () {
+        var upload = layui.upload;
+        var $ = layui.$;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#topicImg' //绑定元素
+            , url: 'catepic.html' //上传接口
+            , done: function (res) {
+                //上传完毕回调
+                if (res['code'] == 1) {
+                    $('#cat_pic').attr('src', res['path']);
+                    $('#cat_pic_text').val(res['path']);
+                } else {
+                    layer.msg(res['error'], {
+                        time: 3000,
+                        icon: 5
+                    });
+                }
+            }
+            , error: function () {
+                //请求异常回调
 
-  });
-  //加载百度编辑器
-  var ue = UE.getEditor('editor');
+            }
+
+        });
+
+    });
+    //加载百度编辑器
+    var ue = UE.getEditor('editor');
 
 </script>
 
