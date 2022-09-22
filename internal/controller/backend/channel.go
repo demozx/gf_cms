@@ -26,7 +26,6 @@ func (c *cChannel) Index(ctx context.Context, req *backend.ChannelIndexReq) (res
 // Add 添加
 func (c *cChannel) Add(ctx context.Context, req *backend.ChannelAddReq) (res *backend.ChannelAddRes, err error) {
 	channelTree, err := service.Channel().BackendChannelTree(ctx)
-	g.Dump(channelTree)
 	err = service.Response().View(ctx, "backend/channel/add.html", g.Map{
 		"channelTree": channelTree,
 	})
