@@ -27,6 +27,7 @@ var (
 	BackendGroup      string
 	BackendApiGroup   string
 	PublicCachePreFix string
+	ServerRoot        *gvar.Var
 )
 
 func init() {
@@ -44,6 +45,8 @@ func init() {
 	PublicCachePreFix = ProjectName.String() + ":public"
 	//项目目录
 	SystemRoot, _ = os.Getwd()
+	//服务目录
+	ServerRoot, _ = g.Cfg().Get(Ctx, "server.serverRoot")
 }
 
 func New() *sUtil {
@@ -82,6 +85,11 @@ func (*sUtil) BackendGroup() string {
 //BackendApiGroup 后台api分组
 func (*sUtil) BackendApiGroup() string {
 	return "/" + Util().BackendPrefix() + "_api"
+}
+
+//ServerRoot 服务目录
+func (s *sUtil) ServerRoot() string {
+	return ServerRoot.String()
 }
 
 // GetConfig 获取配置文件的配置信息
