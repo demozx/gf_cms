@@ -18,11 +18,11 @@ var (
 	typeVideo = "video"
 )
 
-func (c *cUpload) File(ctx context.Context, req *backendApi.UploadFileReq) (res *backendApi.UploadFileRes, err error) {
+func (c *cUpload) SingleFile(ctx context.Context, req *backendApi.UploadFileReq) (res *backendApi.UploadFileRes, err error) {
 	if req.File == nil {
 		return nil, gerror.NewCode(gcode.CodeMissingParameter, "请选择需要上传的文件")
 	}
-	file, err := service.Upload().BackendUploadFile(ctx, model.FileUploadInput{
+	file, err := service.Upload().SingleUploadFile(ctx, model.FileUploadInput{
 		File:       req.File,
 		RandomName: true,
 	}, typeFile)
@@ -36,11 +36,11 @@ func (c *cUpload) File(ctx context.Context, req *backendApi.UploadFileReq) (res 
 	return
 }
 
-func (c *cUpload) Image(ctx context.Context, req *backendApi.UploadFileReq) (res *backendApi.UploadFileRes, err error) {
+func (c *cUpload) SingleImage(ctx context.Context, req *backendApi.UploadFileReq) (res *backendApi.UploadFileRes, err error) {
 	if req.File == nil {
 		return nil, gerror.NewCode(gcode.CodeMissingParameter, "请选择需要上传的图片")
 	}
-	file, err := service.Upload().BackendUploadFile(ctx, model.FileUploadInput{
+	file, err := service.Upload().SingleUploadFile(ctx, model.FileUploadInput{
 		File:       req.File,
 		RandomName: true,
 	}, typeImage)
@@ -53,11 +53,11 @@ func (c *cUpload) Image(ctx context.Context, req *backendApi.UploadFileReq) (res
 	}
 	return
 }
-func (c *cUpload) Video(ctx context.Context, req *backendApi.UploadFileReq) (res *backendApi.UploadFileRes, err error) {
+func (c *cUpload) SingleVideo(ctx context.Context, req *backendApi.UploadFileReq) (res *backendApi.UploadFileRes, err error) {
 	if req.File == nil {
 		return nil, gerror.NewCode(gcode.CodeMissingParameter, "请选择需要上传的视频")
 	}
-	file, err := service.Upload().BackendUploadFile(ctx, model.FileUploadInput{
+	file, err := service.Upload().SingleUploadFile(ctx, model.FileUploadInput{
 		File:       req.File,
 		RandomName: true,
 	}, typeVideo)

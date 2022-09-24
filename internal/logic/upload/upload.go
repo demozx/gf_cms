@@ -26,8 +26,8 @@ func Upload() *sUpload {
 	return &insUpload
 }
 
-// BackendUploadFile 上传文件
-func (*sUpload) BackendUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error) {
+// BackendSingleUploadFile BackendUploadFile 上传文件
+func (*sUpload) SingleUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error) {
 	serverRoot := service.Util().ServerRoot()
 	if err != nil {
 		return nil, err

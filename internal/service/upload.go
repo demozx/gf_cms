@@ -12,7 +12,7 @@ import (
 )
 
 type IUpload interface {
-	BackendUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error)
+	SingleUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error)
 }
 
 var localUpload IUpload
