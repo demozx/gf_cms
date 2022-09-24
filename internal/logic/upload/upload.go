@@ -27,15 +27,15 @@ func Upload() *sUpload {
 }
 
 // BackendUploadFile 上传文件
-func (*sUpload) BackendUploadFile(ctx context.Context, in model.FileUploadInput) (out *backendApi.UploadFileRes, err error) {
+func (*sUpload) BackendUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error) {
 	serverRoot := service.Util().ServerRoot()
 	if err != nil {
 		return nil, err
 	}
-	uploadDir := "/upload/" + gtime.Date()
-	fullDir := serverRoot + uploadDir
+	fullUploadDir := "/upload/" + dir + "/" + gtime.Date()
+	fullDir := serverRoot + fullUploadDir
 	filename, err := in.File.Save(fullDir, in.RandomName)
-	url := uploadDir + "/" + filename
+	url := fullUploadDir + "/" + filename
 	out = &backendApi.UploadFileRes{
 		Name: filename,
 		Url:  url,

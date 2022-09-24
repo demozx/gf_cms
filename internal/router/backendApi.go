@@ -50,7 +50,9 @@ func backendApiHandle(s *ghttp.Server) {
 			"/channel/delete": backendApi.Channel.Delete, //删除
 
 			/*上传*/
-			"upload/file": backendApi.Upload.File, //文件上传
+			"upload/file":  backendApi.Upload.File,  //文件上传
+			"upload/image": backendApi.Upload.Image, //图片上传
+			"upload/video": backendApi.Upload.Video, //视频上传
 		})
 	})
 }
