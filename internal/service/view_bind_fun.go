@@ -8,6 +8,7 @@ package service
 type IViewBindFun interface {
 	Register()
 	SystemSetting(name string) string
+	SystemConfig(name string) string
 	BackendUrl(route string) string
 	BackendApiUrl(route string) string
 }

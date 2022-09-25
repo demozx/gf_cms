@@ -30,6 +30,7 @@ func New() *sViewBindFun {
 func (*sViewBindFun) Register() {
 	g.View().BindFuncMap(g.Map{
 		"system_setting":  ViewBindFun().SystemSetting,
+		"system_config":   ViewBindFun().SystemConfig,
 		"backend_url":     ViewBindFun().BackendUrl,
 		"backend_api_url": ViewBindFun().BackendApiUrl,
 	})
@@ -54,6 +55,11 @@ func (*sViewBindFun) SystemSetting(name string) string {
 	val, _ := g.Model("system_setting").Where("name", name).Value("value")
 	g.Redis().Do(util.Ctx, "SET", cacheKey, val.String())
 	return val.String()
+}
+
+// SystemConfig 获取系统配置
+func (*sViewBindFun) SystemConfig(name string) string {
+	return service.Util().GetConfig(name)
 }
 
 // BackendUrl 生成后台view的url

@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html>
 <style>
-  .layui-upload-img{
-    max-width: 300px;
-  }
-  #editor{
-    min-height: 200px;
-  }
+    .layui-upload-img {
+        max-width: 300px;
+    }
+
+    #editor {
+        min-height: 200px;
+    }
 </style>
 <head>
-  <meta charset="UTF-8">
-  <title>添加文章分类-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" href="/resource/backend/css/font.css">
-  <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
-  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-  <!--[if lt IE 9]>
-  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <meta charset="UTF-8">
+    <title>添加文章分类-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
@@ -101,7 +104,11 @@
                 </div>
                 <div class="layui-tab-item">
                     <!--tab3 content-->
-                    <script id="editor" type="text/plain" name="cat_description"></script>
+                    <div id="editor—wrapper">
+                        <div id="toolbar-container"><!-- 工具栏 --></div>
+                        <div id="editor-container"><!-- 编辑器 --></div>
+                    </div>
+                    <textarea name="description" id="description" cols="30" rows="10" style="display: none"></textarea>
                     <!--//tab3 content-->
                 </div>
 
@@ -157,26 +164,29 @@
                         </div>
                     </div>
 
-          <div class="layui-form-item">
-            <label class="layui-form-label">内容控制器</label>
-            <div class="layui-input-block">
-              <input type="text" placeholder="请输入内容控制器名，留空则使用默认控制器（频道：Pageview）" autocomplete="off" class="layui-input" name="view_controller" value="" />
-            </div>
-          </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容控制器</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="请输入内容控制器名，留空则使用默认控制器（频道：Pageview）"
+                                   autocomplete="off" class="layui-input" name="view_controller" value=""/>
+                        </div>
+                    </div>
 
-          <div class="layui-form-item">
-            <label class="layui-form-label">栏目模板</label>
-            <div class="layui-input-block">
-              <input type="text" placeholder="请输入栏目模板名，留空则使用默认模板‘index’" autocomplete="off" class="layui-input" name="cat_template" value="" />
-            </div>
-          </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目模板</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="请输入栏目模板名，留空则使用默认模板‘index’"
+                                   autocomplete="off" class="layui-input" name="cat_template" value=""/>
+                        </div>
+                    </div>
 
-          <div class="layui-form-item">
-            <label class="layui-form-label">内容模板</label>
-            <div class="layui-input-block">
-              <input type="text" placeholder="请输入内容模板名，留空则使用默认模板‘index’" autocomplete="off" class="layui-input" name="view_template" value="" />
-            </div>
-          </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容模板</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="请输入内容模板名，留空则使用默认模板‘index’"
+                                   autocomplete="off" class="layui-input" name="view_template" value=""/>
+                        </div>
+                    </div>
 
                     <!--//tab2 content-->
                 </div>
@@ -308,17 +318,87 @@
             }
             , error: function () {
                 //请求异常回调
-
             }
-
         });
-
     });
-    //加载百度编辑器
-    var ue = UE.getEditor('editor');
 
 </script>
+<!--wangEditor-->
+<link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
+<style>
+    #editor—wrapper {
+        border: 1px solid #ccc;
+        z-index: 100; /* 按需定义 */
+    }
 
+    #toolbar-container {
+        border-bottom: 1px solid #ccc;
+    }
+
+    #editor-container {
+        height: 500px;
+    }
+</style>
+<script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
+<script>
+    const {createEditor, createToolbar} = window.wangEditor
+
+    const editorConfig = {
+        placeholder: '',
+        onChange(editor) {
+            const html = editor.getHtml()
+            console.log('editor content', html)
+            // 也可以同步到 <textarea>
+            document.getElementById('description').value = html
+        },
+        MENU_CONF: {}
+    }
+    editorConfig.MENU_CONF['uploadImage'] = {
+        server: '{{backend_api_url `/upload/single_image`}}',
+        fieldName: 'file',
+        allowedFileTypes: ['image/*'],
+        maxFileSize: '{{system_config `server.ClientMaxBodySize`}}',
+        // 自定义插入图片
+        customInsert(res, insertFn) {                  // JS 语法
+            // 从 res 中找到 url alt href ，然后插入图片
+            console.log("upload-image-res", res)
+            if (res.code !== 0) throw new Error(res.message)
+            let imageInfo = res.data;
+            insertFn(imageInfo.url, "", "")
+        },
+    }
+    editorConfig.MENU_CONF['uploadVideo'] = {
+        server: '{{backend_api_url `/upload/single_video`}}',
+        fieldName: 'file',
+        allowedFileTypes: ['video/*'],
+        maxFileSize: '{{system_config `server.ClientMaxBodySize`}}',
+        // 自定义插入视频
+        customInsert(res, insertFn) {                  // JS 语法
+            // 从 res 中找到 url alt href ，然后插入视频
+            console.log("upload-video-res", res)
+            if (res.code !== 0) throw new Error(res.message)
+            let videoInfo = res.data;
+            insertFn(videoInfo.url, "", "")
+        },
+    }
+
+    const editor = createEditor({
+        selector: '#editor-container',
+        html: '<p><br></p>',
+        config: editorConfig,
+        mode: 'default', // or 'simple'
+    })
+
+    const toolbarConfig = {}
+
+    const toolbar = createToolbar({
+        editor,
+        selector: '#toolbar-container',
+        config: toolbarConfig,
+        mode: 'default', // or 'simple'
+    })
+</script>
+<!--wangEditor-->
 </body>
 
 </html>
