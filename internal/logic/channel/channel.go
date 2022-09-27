@@ -2,6 +2,7 @@ package channel
 
 import (
 	"context"
+	"gf_cms/api/backend"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
@@ -73,7 +74,7 @@ func (*sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (ou
 }
 
 // BackendChannelTree 获取栏目分类树
-func (*sChannel) BackendChannelTree(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
+func (*sChannel) BackendChannelTree(ctx context.Context, req *backend.ChannelAddReq) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -85,12 +86,12 @@ func (*sChannel) BackendChannelTree(ctx context.Context) (out []*model.ChannelBa
 		return nil, err
 	}
 	channelBackendApiList = Channel().recursion(channelBackendApiList, 0)
-	channelBackendApiList = Channel().backendTree(channelBackendApiList)
+	channelBackendApiList = Channel().backendTree(channelBackendApiList, req.Id)
 	return channelBackendApiList, err
 }
 
 // 递归生成栏目分类树
-func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem) (out []*model.ChannelBackendApiListItem) {
+func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPid int) (out []*model.ChannelBackendApiListItem) {
 	var hasChildren = false
 	newList := make([]*model.ChannelBackendApiListItem, 0)
 	for _, item := range list {
@@ -110,7 +111,7 @@ func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem) (out []*mo
 		}
 	}
 	if hasChildren == true {
-		return Channel().backendTree(newList)
+		return Channel().backendTree(newList, selectedPid)
 	}
 	for key, item := range newList {
 		var emsp = ""
@@ -118,6 +119,9 @@ func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem) (out []*mo
 			emsp += "&emsp;&emsp;"
 		}
 		newList[key].Name = emsp + "├&nbsp;" + item.Name
+		if item.Id == selectedPid {
+			newList[key].Selected = 1
+		}
 	}
 	return newList
 }
@@ -166,6 +170,14 @@ func (*sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelDel
 	}
 	// todo 栏目下有内容页不能删除
 	_, err = m.Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (*sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error) {
+	_, err = dao.CmsChannel.Ctx(ctx).Data(in).Insert()
 	if err != nil {
 		return nil, err
 	}

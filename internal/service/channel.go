@@ -7,18 +7,24 @@ package service
 
 import (
 	"context"
+	"gf_cms/api/backend"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/model"
 )
 
-type IChannel interface {
-	BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
-	BackendChannelTree(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
-	BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error)
-	BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error)
-}
+type (
+	IChannel interface {
+		BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
+		BackendChannelTree(ctx context.Context, req *backend.ChannelAddReq) (out []*model.ChannelBackendApiListItem, err error)
+		BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error)
+		BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error)
+		BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error)
+	}
+)
 
-var localChannel IChannel
+var (
+	localChannel IChannel
+)
 
 func Channel() IChannel {
 	if localChannel == nil {

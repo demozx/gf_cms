@@ -5,15 +5,19 @@
 
 package service
 
-type IViewBindFun interface {
-	Register()
-	SystemSetting(name string) string
-	SystemConfig(name string) string
-	BackendUrl(route string) string
-	BackendApiUrl(route string) string
-}
+type (
+	IViewBindFun interface {
+		Register()
+		SystemSetting(name string) string
+		SystemConfig(name string) string
+		BackendUrl(route string) string
+		BackendApiUrl(route string) string
+	}
+)
 
-var localViewBindFun IViewBindFun
+var (
+	localViewBindFun IViewBindFun
+)
 
 func ViewBindFun() IViewBindFun {
 	if localViewBindFun == nil {

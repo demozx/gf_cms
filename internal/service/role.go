@@ -12,17 +12,21 @@ import (
 	"gf_cms/internal/model"
 )
 
-type IRole interface {
-	BackendRoleGetList(ctx context.Context, in model.RoleGetListInput) (out *model.RoleGetListOutput, err error)
-	BackendRoleGetOne(ctx context.Context, in *backend.RoleEditReq) (out *model.RoleItem, err error)
-	BackendApiRoleStatus(ctx context.Context, in *backendApi.RoleStatusReq) (out interface{}, err error)
-	BackendApiRoleDelete(ctx context.Context, in *backendApi.RoleDeleteReq) (out interface{}, err error)
-	BackendApiRoleDeleteBatch(ctx context.Context, in *backendApi.RoleDeleteBatchReq) (out interface{}, err error)
-	BackendApiRoleAdd(ctx context.Context, in *backendApi.RoleAddReq) (out interface{}, err error)
-	BackendApiRoleEdit(ctx context.Context, in *backendApi.RoleEditReq) (out interface{}, err error)
-}
+type (
+	IRole interface {
+		BackendRoleGetList(ctx context.Context, in model.RoleGetListInput) (out *model.RoleGetListOutput, err error)
+		BackendRoleGetOne(ctx context.Context, in *backend.RoleEditReq) (out *model.RoleItem, err error)
+		BackendApiRoleStatus(ctx context.Context, in *backendApi.RoleStatusReq) (out interface{}, err error)
+		BackendApiRoleDelete(ctx context.Context, in *backendApi.RoleDeleteReq) (out interface{}, err error)
+		BackendApiRoleDeleteBatch(ctx context.Context, in *backendApi.RoleDeleteBatchReq) (out interface{}, err error)
+		BackendApiRoleAdd(ctx context.Context, in *backendApi.RoleAddReq) (out interface{}, err error)
+		BackendApiRoleEdit(ctx context.Context, in *backendApi.RoleEditReq) (out interface{}, err error)
+	}
+)
 
-var localRole IRole
+var (
+	localRole IRole
+)
 
 func Role() IRole {
 	if localRole == nil {

@@ -40,3 +40,13 @@ func (c *cChannel) Delete(ctx context.Context, req *backendApi.ChannelDeleteApiR
 	service.Response().SuccessJsonDefault(ctx)
 	return
 }
+
+// Add 添加
+func (c *cChannel) Add(ctx context.Context, req *backendApi.ChannelAddApiReq) (res *backendApi.ChannelAddApiRes, err error) {
+	_, err = service.Channel().BackendApiAdd(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefault(ctx)
+	return
+}

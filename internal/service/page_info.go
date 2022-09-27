@@ -9,11 +9,15 @@ import (
 	"context"
 )
 
-type IPageInfo interface {
-	LayUiPageInfo(ctx context.Context, total int, size int) string
-}
+type (
+	IPageInfo interface {
+		LayUiPageInfo(ctx context.Context, total int, size int) string
+	}
+)
 
-var localPageInfo IPageInfo
+var (
+	localPageInfo IPageInfo
+)
 
 func PageInfo() IPageInfo {
 	if localPageInfo == nil {

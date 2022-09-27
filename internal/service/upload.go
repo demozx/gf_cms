@@ -11,11 +11,15 @@ import (
 	"gf_cms/internal/model"
 )
 
-type IUpload interface {
-	SingleUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error)
-}
+type (
+	IUpload interface {
+		SingleUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error)
+	}
+)
 
-var localUpload IUpload
+var (
+	localUpload IUpload
+)
 
 func Upload() IUpload {
 	if localUpload == nil {

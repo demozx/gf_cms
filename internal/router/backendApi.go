@@ -48,11 +48,12 @@ func backendApiHandle(s *ghttp.Server) {
 			"/channel/index":  backendApi.Channel.Index,  //栏目分类列表
 			"/channel/status": backendApi.Channel.Status, //启用禁用
 			"/channel/delete": backendApi.Channel.Delete, //删除
+			"/channel/add":    backendApi.Channel.Add,    //添加
 
 			/*上传*/
-			"upload/single_file":  backendApi.Upload.SingleFile,  //文件上传
-			"upload/single_image": backendApi.Upload.SingleImage, //图片上传
-			"upload/single_video": backendApi.Upload.SingleVideo, //视频上传
+			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传
+			"/upload/single_image": backendApi.Upload.SingleImage, //图片上传
+			"/upload/single_video": backendApi.Upload.SingleVideo, //视频上传
 		})
 	})
 }

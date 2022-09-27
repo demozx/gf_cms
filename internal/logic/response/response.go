@@ -3,6 +3,7 @@ package response
 import (
 	"context"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/errors/gcode"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -12,7 +13,7 @@ type sResponse struct {
 
 var (
 	insResponse           = sResponse{}
-	codeSuccessDefault    = 0
+	codeSuccessDefault    = gcode.CodeOK.Code()
 	MessageSuccessDefault = "操作成功"
 )
 

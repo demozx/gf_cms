@@ -11,22 +11,26 @@ import (
 	"github.com/gogf/gf/v2/container/gvar"
 )
 
-type IUtil interface {
-	ProjectName() string
-	SystemRoot() string
-	BackendPrefix() string
-	BackendApiPrefix() string
-	BackendGroup() string
-	BackendApiGroup() string
-	ServerRoot() string
-	GetConfig(node string) string
-	ClearPublicCache() (*gvar.Var, error)
-	ClearSystemSettingCache() (*gvar.Var, error)
-	GetLocalIP() (ip string, err error)
-	FriendyTimeFormat(TimeCreate time.Time, TimeEnd time.Time) string
-}
+type (
+	IUtil interface {
+		ProjectName() string
+		SystemRoot() string
+		BackendPrefix() string
+		BackendApiPrefix() string
+		BackendGroup() string
+		BackendApiGroup() string
+		ServerRoot() string
+		GetConfig(node string) string
+		ClearPublicCache() (*gvar.Var, error)
+		ClearSystemSettingCache() (*gvar.Var, error)
+		GetLocalIP() (ip string, err error)
+		FriendyTimeFormat(TimeCreate time.Time, TimeEnd time.Time) string
+	}
+)
 
-var localUtil IUtil
+var (
+	localUtil IUtil
+)
 
 func Util() IUtil {
 	if localUtil == nil {

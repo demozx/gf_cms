@@ -5,16 +5,20 @@
 
 package service
 
-type ICasbinPolicy interface {
-	ObjBackend() string
-	ObjBackendApi() string
-	CheckByRoleId(roleId, obj, act string) bool
-	CheckByAccountId(AccountId, obj, act string) bool
-	AddByRoleId(roleId, obj, act string) bool
-	RemoveByRoleId(roleId, obj, act string) bool
-}
+type (
+	ICasbinPolicy interface {
+		ObjBackend() string
+		ObjBackendApi() string
+		CheckByRoleId(roleId, obj, act string) bool
+		CheckByAccountId(AccountId, obj, act string) bool
+		AddByRoleId(roleId, obj, act string) bool
+		RemoveByRoleId(roleId, obj, act string) bool
+	}
+)
 
-var localCasbinPolicy ICasbinPolicy
+var (
+	localCasbinPolicy ICasbinPolicy
+)
 
 func CasbinPolicy() ICasbinPolicy {
 	if localCasbinPolicy == nil {

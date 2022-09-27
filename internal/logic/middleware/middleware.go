@@ -122,8 +122,6 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 	var ruleName = ""
 	for _, menuGroup := range backendApiMenus {
 		for _, children := range menuGroup.Children {
-			g.Dump("当前接口act", act)
-			g.Dump("backendPrefix+children.Route", backendPrefix+children.Route)
 			if act == "/"+backendPrefix+children.Route {
 				routeHit = true
 				ruleName = children.Title

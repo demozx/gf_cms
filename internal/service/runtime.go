@@ -11,18 +11,22 @@ import (
 	"github.com/gogf/gf/v2/container/gvar"
 )
 
-type IRuntime interface {
-	GetCpuInfo() model.Cpu
-	GetLoadInfo() model.Load
-	GetMemInfo() model.Mem
-	GetHostInfo() model.Host
-	GetDiskInfo() model.Disk
-	GetNetInfo() model.Net
-	SetServerStartAt() bool
-	GetServerStartAt() *gvar.Var
-}
+type (
+	IRuntime interface {
+		GetCpuInfo() model.Cpu
+		GetLoadInfo() model.Load
+		GetMemInfo() model.Mem
+		GetHostInfo() model.Host
+		GetDiskInfo() model.Disk
+		GetNetInfo() model.Net
+		SetServerStartAt() bool
+		GetServerStartAt() *gvar.Var
+	}
+)
 
-var localRuntime IRuntime
+var (
+	localRuntime IRuntime
+)
 
 func Runtime() IRuntime {
 	if localRuntime == nil {

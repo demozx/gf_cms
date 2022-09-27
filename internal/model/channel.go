@@ -7,6 +7,7 @@ type ChannelBackendApiListItem struct {
 	Level    int                          `json:"level"`
 	Name     string                       `json:"name"`
 	Status   int                          `json:"status"`
+	Selected uint8                        `json:"selected"`
 	Children []*ChannelBackendApiListItem `json:"children"`
 }
 

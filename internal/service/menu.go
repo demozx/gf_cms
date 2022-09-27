@@ -9,14 +9,18 @@ import (
 	"gf_cms/internal/model"
 )
 
-type IMenu interface {
-	BackendView() []model.MenuGroups
-	BackendApi() []model.MenuGroups
-	BackendMyMenu(accountId string) []model.MenuGroups
-	BackendMyApi(accountId string) []model.MenuGroups
-}
+type (
+	IMenu interface {
+		BackendView() []model.MenuGroups
+		BackendApi() []model.MenuGroups
+		BackendMyMenu(accountId string) []model.MenuGroups
+		BackendMyApi(accountId string) []model.MenuGroups
+	}
+)
 
-var localMenu IMenu
+var (
+	localMenu IMenu
+)
 
 func Menu() IMenu {
 	if localMenu == nil {

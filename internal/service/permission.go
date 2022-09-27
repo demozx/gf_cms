@@ -11,17 +11,21 @@ import (
 	"github.com/gogf/gf/v2/database/gdb"
 )
 
-type IPermission interface {
-	BackendAll() []model.PermissionAllItem
-	BackendViewAll() []model.PermissionGroups
-	BackendApiAll() []model.PermissionGroups
-	BackendMyView(accountId string) []gdb.Value
-	BackendMyApi(accountId string) []gdb.Value
-	GetAllViewPermissionsArray() []string
-	GetAllApiPermissionsArray() []string
-}
+type (
+	IPermission interface {
+		BackendAll() []model.PermissionAllItem
+		BackendViewAll() []model.PermissionGroups
+		BackendApiAll() []model.PermissionGroups
+		BackendMyView(accountId string) []gdb.Value
+		BackendMyApi(accountId string) []gdb.Value
+		GetAllViewPermissionsArray() []string
+		GetAllApiPermissionsArray() []string
+	}
+)
 
-var localPermission IPermission
+var (
+	localPermission IPermission
+)
 
 func Permission() IPermission {
 	if localPermission == nil {

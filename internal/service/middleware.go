@@ -9,16 +9,20 @@ import (
 	"github.com/gogf/gf/v2/net/ghttp"
 )
 
-type IMiddleware interface {
-	CORS(r *ghttp.Request)
-	Auth(r *ghttp.Request)
-	BackendAuthSession(r *ghttp.Request)
-	BackendCheckPolicy(r *ghttp.Request)
-	BackendApiCheckPolicy(r *ghttp.Request)
-	GetBackendUserID(r *ghttp.Request) string
-}
+type (
+	IMiddleware interface {
+		CORS(r *ghttp.Request)
+		Auth(r *ghttp.Request)
+		BackendAuthSession(r *ghttp.Request)
+		BackendCheckPolicy(r *ghttp.Request)
+		BackendApiCheckPolicy(r *ghttp.Request)
+		GetBackendUserID(r *ghttp.Request) string
+	}
+)
 
-var localMiddleware IMiddleware
+var (
+	localMiddleware IMiddleware
+)
 
 func Middleware() IMiddleware {
 	if localMiddleware == nil {

@@ -5,12 +5,16 @@
 
 package service
 
-type ICaptcha interface {
-	Get() (string, string)
-	Verify(id string, val string) bool
-}
+type (
+	ICaptcha interface {
+		Get() (string, string)
+		Verify(id string, val string) bool
+	}
+)
 
-var localCaptcha ICaptcha
+var (
+	localCaptcha ICaptcha
+)
 
 func Captcha() ICaptcha {
 	if localCaptcha == nil {
