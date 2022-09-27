@@ -86,7 +86,9 @@ func (*sChannel) BackendChannelTree(ctx context.Context, req *backend.ChannelAdd
 		return nil, err
 	}
 	channelBackendApiList = Channel().recursion(channelBackendApiList, 0)
+	//g.Dump(channelBackendApiList)
 	channelBackendApiList = Channel().backendTree(channelBackendApiList, req.Id)
+
 	return channelBackendApiList, err
 }
 
@@ -177,7 +179,18 @@ func (*sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelDel
 }
 
 func (*sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error) {
-	_, err = dao.CmsChannel.Ctx(ctx).Data(in).Insert()
+	var entityData *entity.CmsChannel
+	err = gconv.Scan(in, &entityData)
+	if err != nil {
+		return nil, err
+	}
+	var parent *entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, in.Pid).Scan(&parent)
+	if err != nil {
+		return nil, err
+	}
+	entityData.Level = parent.Level + 1
+	_, err = dao.CmsChannel.Ctx(ctx).Data(entityData).Insert()
 	if err != nil {
 		return nil, err
 	}
