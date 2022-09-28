@@ -189,7 +189,7 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" id="editTopic" lay-submit="" lay-filter="add">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button type="button" class="layui-btn layui-btn-primary" onclick="window.location.reload()">重置</button>
             </div>
         </div>
         <input type="hidden" name="level" value="0"/>
@@ -316,7 +316,7 @@
 
 </script>
 <!--wangEditor-->
-<link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
+<link href="/resource/backend/lib/wangEditor/wangEditor.css" rel="stylesheet">
 <style>
     #editor—wrapper {
         border: 1px solid #ccc;
@@ -331,7 +331,7 @@
         height: 500px;
     }
 </style>
-<script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
+<script src="/resource/backend/lib/wangEditor/wangEditor.js"></script>
 <script>
     const {createEditor, createToolbar} = window.wangEditor
 
