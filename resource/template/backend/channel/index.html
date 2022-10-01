@@ -103,7 +103,16 @@
             treeNodes: true,
             headerClass: 'value_col',
             colClass: 'value_col',
-            style: 'width: 60%'
+            style: 'width: 40%'
+        },
+        {
+            name: '模型',
+            headerClass: 'td-model',
+            colClass: 'td-model',
+            style: 'width: 20%',
+            render: function (row) {
+                return row.modelDesc;
+            }
         },
         {
             name: '状态',

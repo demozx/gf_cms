@@ -72,6 +72,7 @@ func (*sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (ou
 			if item.Children == nil {
 				item.Children = make([]*model.ChannelBackendApiListItem, 0)
 			}
+			item.ModelDesc = service.Channel().BackendModelDesc(item.Model)
 			res = append(res, item)
 		}
 	}
@@ -258,4 +259,13 @@ func (*sChannel) BackendModelMap() map[string]string {
 	var modelMap = make(map[string]string)
 	modelMap[ModelArticle] = ModelArticleDesc
 	return modelMap
+}
+
+func (*sChannel) BackendModelDesc(model string) string {
+	modelMap := Channel().BackendModelMap()
+	out, isOk := modelMap[model]
+	if isOk == false {
+		return ""
+	}
+	return out
 }
