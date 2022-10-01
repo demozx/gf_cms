@@ -22,6 +22,11 @@ var (
 	insChannel = sChannel{}
 )
 
+const (
+	ModelArticle     = "article"
+	ModelArticleDesc = "文章"
+)
+
 func init() {
 	service.RegisterChannel(New())
 }
@@ -195,4 +200,10 @@ func (*sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApi
 		return nil, err
 	}
 	return
+}
+
+func (*sChannel) BackendModelMap() map[string]string {
+	var modelMap = make(map[string]string)
+	modelMap[ModelArticle] = ModelArticleDesc
+	return modelMap
 }

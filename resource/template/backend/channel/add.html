@@ -144,7 +144,9 @@
                         <div class="layui-input-block">
                             <select name="model">
                                 <option value="">请选择模型</option>
-                                <option value="article">文章</option>
+                                {{range $key, $value := .modelMap}}
+                                <option value="{{$key}}">{{$value}}</option>
+                                {{end}}
                             </select>
                         </div>
                     </div>
