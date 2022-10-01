@@ -11,19 +11,15 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-type (
-	IResponse interface {
-		SuccessJson(ctx context.Context, code int, message string, data interface{})
-		SuccessJsonDefault(ctx context.Context)
-		SuccessCodeDefault() int
-		SuccessMessageDefault() string
-		View(ctx context.Context, template string, data g.Map) (err error)
-	}
-)
+type IResponse interface {
+	SuccessJson(ctx context.Context, code int, message string, data interface{})
+	SuccessJsonDefault(ctx context.Context)
+	SuccessCodeDefault() int
+	SuccessMessageDefault() string
+	View(ctx context.Context, template string, data g.Map) (err error)
+}
 
-var (
-	localResponse IResponse
-)
+var localResponse IResponse
 
 func Response() IResponse {
 	if localResponse == nil {

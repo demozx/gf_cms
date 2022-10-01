@@ -25,7 +25,7 @@ func (c *cChannel) Index(ctx context.Context, req *backend.ChannelIndexReq) (res
 
 // Add 添加
 func (c *cChannel) Add(ctx context.Context, req *backend.ChannelAddReq) (res *backend.ChannelAddRes, err error) {
-	channelTree, err := service.Channel().BackendChannelTree(ctx, req)
+	channelTree, err := service.Channel().BackendChannelTree(ctx, req.Id)
 	modelMap := service.Channel().BackendModelMap()
 	err = service.Response().View(ctx, "backend/channel/add.html", g.Map{
 		"channelTree": channelTree,
@@ -39,7 +39,14 @@ func (c *cChannel) Add(ctx context.Context, req *backend.ChannelAddReq) (res *ba
 
 // Edit 编辑
 func (c *cChannel) Edit(ctx context.Context, req *backend.ChannelEditReq) (res *backend.ChannelEditRes, err error) {
-	err = service.Response().View(ctx, "backend/channel/edit.html", g.Map{})
+	channel, err := service.Channel().GetOneById(ctx, req.Id)
+	channelTree, err := service.Channel().BackendChannelTree(ctx, channel.Pid)
+	modelMap := service.Channel().BackendModelMap()
+	err = service.Response().View(ctx, "backend/channel/edit.html", g.Map{
+		"channelTree": channelTree,
+		"modelMap":    modelMap,
+		"channel":     channel,
+	})
 	if err != nil {
 		return nil, err
 	}

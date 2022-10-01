@@ -15,24 +15,20 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-type (
-	IAdmin interface {
-		LoginVerify(ctx context.Context, in model.AdminLoginInput) (admin *entity.CmsAdmin, err error)
-		GetUserByUserNamePassword(ctx context.Context, in model.AdminLoginInput) g.Map
-		GetRoleIdsByAccountId(accountId string) []gdb.Value
-		BackendAdminGetList(ctx context.Context, in model.AdminGetListInput) (out *model.AdminGetListOutput, err error)
-		BackendApiAdminAdd(ctx context.Context, in *backendApi.AdminAddReq) (out interface{}, err error)
-		BackendApiAdminEdit(ctx context.Context, in *backendApi.AdminEditReq) (out interface{}, err error)
-		BackendApiAdminStatus(ctx context.Context, in *backendApi.AdminStatusReq) (out interface{}, err error)
-		BackendApiAdminDelete(ctx context.Context, in *backendApi.AdminDeleteReq) (out interface{}, err error)
-		BackendApiAdminDeleteBatch(ctx context.Context, in *backendApi.AdminDeleteBatchReq) (out interface{}, err error)
-		InitAdminUser(ctx context.Context)
-	}
-)
+type IAdmin interface {
+	LoginVerify(ctx context.Context, in model.AdminLoginInput) (admin *entity.CmsAdmin, err error)
+	GetUserByUserNamePassword(ctx context.Context, in model.AdminLoginInput) g.Map
+	GetRoleIdsByAccountId(accountId string) []gdb.Value
+	BackendAdminGetList(ctx context.Context, in model.AdminGetListInput) (out *model.AdminGetListOutput, err error)
+	BackendApiAdminAdd(ctx context.Context, in *backendApi.AdminAddReq) (out interface{}, err error)
+	BackendApiAdminEdit(ctx context.Context, in *backendApi.AdminEditReq) (out interface{}, err error)
+	BackendApiAdminStatus(ctx context.Context, in *backendApi.AdminStatusReq) (out interface{}, err error)
+	BackendApiAdminDelete(ctx context.Context, in *backendApi.AdminDeleteReq) (out interface{}, err error)
+	BackendApiAdminDeleteBatch(ctx context.Context, in *backendApi.AdminDeleteBatchReq) (out interface{}, err error)
+	InitAdminUser(ctx context.Context)
+}
 
-var (
-	localAdmin IAdmin
-)
+var localAdmin IAdmin
 
 func Admin() IAdmin {
 	if localAdmin == nil {

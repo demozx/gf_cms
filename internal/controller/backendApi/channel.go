@@ -50,3 +50,13 @@ func (c *cChannel) Add(ctx context.Context, req *backendApi.ChannelAddApiReq) (r
 	service.Response().SuccessJsonDefault(ctx)
 	return
 }
+
+// Edit 编辑
+func (c *cChannel) Edit(ctx context.Context, req *backendApi.ChannelEditApiReq) (res *backendApi.ChannelEditApiRes, err error) {
+	_, err = service.Channel().BackendApiEdit(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefault(ctx)
+	return
+}

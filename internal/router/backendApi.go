@@ -49,6 +49,7 @@ func backendApiHandle(s *ghttp.Server) {
 			"/channel/status": backendApi.Channel.Status, //启用禁用
 			"/channel/delete": backendApi.Channel.Delete, //删除
 			"/channel/add":    backendApi.Channel.Add,    //添加
+			"/channel/edit":   backendApi.Channel.Edit,   //编辑
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

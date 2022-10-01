@@ -108,6 +108,10 @@
                             <td>{{ .system_root }}</td>
                         </tr>
                         <tr>
+                            <td>上传文件限制</td>
+                            <td>{{ system_config `server.ClientMaxBodySize` }}</td>
+                        </tr>
+                        <tr>
                             <td>启动时间</td>
                             <td>{{ .server_start_at|date "Y-m-d H:i:s" }}</td>
                         </tr>

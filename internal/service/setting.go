@@ -9,16 +9,12 @@ import (
 	"gf_cms/internal/model"
 )
 
-type (
-	ISetting interface {
-		BackendViewAll() []model.SettingGroups
-		Save(forms map[string]interface{}) (res bool, err error)
-	}
-)
+type ISetting interface {
+	BackendViewAll() []model.SettingGroups
+	Save(forms map[string]interface{}) (res bool, err error)
+}
 
-var (
-	localSetting ISetting
-)
+var localSetting ISetting
 
 func Setting() ISetting {
 	if localSetting == nil {

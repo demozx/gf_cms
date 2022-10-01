@@ -2,12 +2,12 @@ package channel
 
 import (
 	"context"
-	"gf_cms/api/backend"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/container/gvar"
 
 	"github.com/gogf/gf/v2/frame/g"
 
@@ -79,7 +79,7 @@ func (*sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (ou
 }
 
 // BackendChannelTree 获取栏目分类树
-func (*sChannel) BackendChannelTree(ctx context.Context, req *backend.ChannelAddReq) (out []*model.ChannelBackendApiListItem, err error) {
+func (*sChannel) BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -92,7 +92,7 @@ func (*sChannel) BackendChannelTree(ctx context.Context, req *backend.ChannelAdd
 	}
 	channelBackendApiList = Channel().recursion(channelBackendApiList, 0)
 	//g.Dump(channelBackendApiList)
-	channelBackendApiList = Channel().backendTree(channelBackendApiList, req.Id)
+	channelBackendApiList = Channel().backendTree(channelBackendApiList, channelId)
 
 	return channelBackendApiList, err
 }
@@ -125,7 +125,7 @@ func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPi
 		for i := 0; i < item.Level; i++ {
 			emsp += "&emsp;&emsp;"
 		}
-		newList[key].Name = emsp + "├&nbsp;" + item.Name
+		newList[key].Name = emsp + "├" + item.Name
 		if item.Id == selectedPid {
 			newList[key].Selected = 1
 		}
@@ -194,12 +194,64 @@ func (*sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApi
 	if err != nil {
 		return nil, err
 	}
-	entityData.Level = parent.Level + 1
+	entityData.Level = 0
+	if parent != nil {
+		entityData.Level = parent.Level + 1
+	}
 	_, err = dao.CmsChannel.Ctx(ctx).Data(entityData).Insert()
 	if err != nil {
 		return nil, err
 	}
 	return
+}
+
+func (*sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditApiReq) (out *backendApi.ChannelEditApiRes, err error) {
+	var oldLevel = 0
+	var newLevel = 0
+	var newPid = 0
+	if in.Pid > 0 {
+		parent, err := Channel().GetOneById(ctx, in.Pid)
+		if err != nil {
+			return nil, err
+		}
+		oldLevel = parent.Level
+		newLevel = parent.Level + 1
+		newPid = gvar.New(parent.Id).Int()
+	}
+	channel, err := Channel().GetOneById(ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	if oldLevel >= channel.Level {
+		return nil, gerror.New("不能选择同级别或级别在自己下边的分类")
+	}
+	if in.Pid == in.Id {
+		return nil, gerror.New("自己不能是自己的父级分类")
+	}
+	var data *entity.CmsChannel
+	err = gconv.Scan(in, &data)
+	if err != nil {
+		return nil, err
+	}
+	data.Level = newLevel
+	data.Pid = newPid
+	_, err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, in.Id).Update(data)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (*sChannel) GetOneById(ctx context.Context, id int) (out *entity.CmsChannel, err error) {
+	var channel *entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, id).Scan(&channel)
+	if err != nil {
+		return nil, err
+	}
+	if channel == nil {
+		return nil, gerror.New("栏目分类不存在")
+	}
+	return channel, nil
 }
 
 func (*sChannel) BackendModelMap() map[string]string {
