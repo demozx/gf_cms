@@ -28,7 +28,7 @@ type CmsRoleColumns struct {
 	IsSystem    string //
 }
 
-//  cmsRoleColumns holds the columns for table cms_role.
+// cmsRoleColumns holds the columns for table cms_role.
 var cmsRoleColumns = CmsRoleColumns{
 	Id:          "id",
 	Title:       "title",

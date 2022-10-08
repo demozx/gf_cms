@@ -32,7 +32,7 @@ type CmsAdminColumns struct {
 	UpdatedAt string //
 }
 
-//  cmsAdminColumns holds the columns for table cms_admin.
+// cmsAdminColumns holds the columns for table cms_admin.
 var cmsAdminColumns = CmsAdminColumns{
 	Id:        "id",
 	Username:  "username",

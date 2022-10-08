@@ -12,19 +12,24 @@ import (
 	"gf_cms/internal/model/entity"
 )
 
-type IChannel interface {
-	BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
-	BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error)
-	BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error)
-	BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error)
-	BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error)
-	BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditApiReq) (out *backendApi.ChannelEditApiRes, err error)
-	GetOneById(ctx context.Context, id int) (out *entity.CmsChannel, err error)
-	BackendModelMap() map[string]string
-	BackendModelDesc(model string) string
-}
+type (
+	IChannel interface {
+		BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
+		BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error)
+		BackendChannelModelTree(ctx context.Context, modelType string, channelId int) (out []*model.ChannelBackendApiListItem, err error)
+		BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error)
+		BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error)
+		BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error)
+		BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditApiReq) (out *backendApi.ChannelEditApiRes, err error)
+		GetOneById(ctx context.Context, id int) (out *entity.CmsChannel, err error)
+		BackendModelMap() map[string]string
+		BackendModelDesc(model string) string
+	}
+)
 
-var localChannel IChannel
+var (
+	localChannel IChannel
+)
 
 func Channel() IChannel {
 	if localChannel == nil {

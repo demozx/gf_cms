@@ -28,7 +28,7 @@ type CmsSystemSettingColumns struct {
 	UpdatedAt string //
 }
 
-//  cmsSystemSettingColumns holds the columns for table cms_system_setting.
+// cmsSystemSettingColumns holds the columns for table cms_system_setting.
 var cmsSystemSettingColumns = CmsSystemSettingColumns{
 	Id:        "id",
 	Group:     "group",

@@ -25,7 +25,7 @@ type CmsRoleAccountColumns struct {
 	RoleId    string // 角色id
 }
 
-//  cmsRoleAccountColumns holds the columns for table cms_role_account.
+// cmsRoleAccountColumns holds the columns for table cms_role_account.
 var cmsRoleAccountColumns = CmsRoleAccountColumns{
 	Id:        "id",
 	AccountId: "account_id",

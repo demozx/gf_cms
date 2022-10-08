@@ -94,6 +94,20 @@ func (*sChannel) BackendChannelTree(ctx context.Context, channelId int) (out []*
 	return channelBackendApiList, err
 }
 
+func (*sChannel) BackendChannelModelTree(ctx context.Context, modelType string, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
+	tree, err := service.Channel().BackendChannelTree(ctx, channelId)
+	if err != nil {
+		return nil, err
+	}
+	out = make([]*model.ChannelBackendApiListItem, 0)
+	for _, item := range tree {
+		if item.Model == modelType {
+			out = append(out, item)
+		}
+	}
+	return
+}
+
 // 递归生成栏目分类树
 func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPid int) (out []*model.ChannelBackendApiListItem) {
 	var hasChildren = false
@@ -105,6 +119,7 @@ func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPi
 		newItem.Level = item.Level
 		newItem.Status = item.Status
 		newItem.Name = item.Name
+		newItem.Model = item.Model
 		newItem.Children = nil
 		newList = append(newList, newItem)
 		if len(item.Children) > 0 {

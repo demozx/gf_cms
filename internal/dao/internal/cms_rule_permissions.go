@@ -29,7 +29,7 @@ type CmsRulePermissionsColumns struct {
 	V5    string //
 }
 
-//  cmsRulePermissionsColumns holds the columns for table cms_rule_permissions.
+// cmsRulePermissionsColumns holds the columns for table cms_rule_permissions.
 var cmsRulePermissionsColumns = CmsRulePermissionsColumns{
 	PType: "p_type",
 	V0:    "v0",

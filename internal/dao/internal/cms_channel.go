@@ -41,7 +41,7 @@ type CmsChannelColumns struct {
 	DeletedAt        string // 删除时间
 }
 
-//  cmsChannelColumns holds the columns for table cms_channel.
+// cmsChannelColumns holds the columns for table cms_channel.
 var cmsChannelColumns = CmsChannelColumns{
 	Id:               "id",
 	Pid:              "pid",
