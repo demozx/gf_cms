@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>文章列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="Description" content="基于layUI数据表格操作"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .layui-form-switch {
+            width: 55px;
+        }
+
+        .layui-form-switch em {
+            width: 40px;
+        }
+
+        .layui-form-onswitch i {
+            left: 45px;
+        }
+
+        .litpic {
+            /*height:24px;*/
+        }
+
+        /*解决动态数据表格固定浮动的高度问题*/
+        .layui-table-fixed .layui-table-body td {
+            height: 112px !important;
+        }
+
+        .layui-table-body .layui-table-cell {
+            height: auto;
+            min-height: 110px;
+            max-height: 110px;
+            line-height: 110px;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .sort {
+            width: 80%;
+            height: 40px;
+            margin-top: 30px;
+            margin-left: 10%;
+        }
+
+        body {
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+
+<body>
+{{if eq .withTab true}}
+{{include "backend/channel_model/tab.html" .}}
+{{end}}
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">栏目管理</a>
+        <a href="">数据列表</a>
+        <a>
+          <cite>文章列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="layui-row">
+        <div class="layui-form layui-col-md12 we-search">
+            <div class="layui-input-inline">
+                <select name="catid" id="catid">
+                    <option value="" data-level="0">-请选择栏目-</option>
+                    {{range $key, $item := .channelTree}}
+                    <option value="{{$item.Id}}" data-level="{{$item.Level}}" {{if $item.Selected}}selected{{end}}>{{$item.Name}}</option>
+                    {{end}}
+                </select>
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" placeholder="开始时间" readonly name="start" id="start">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" placeholder="结束时间" readonly name="end" id="end">
+            </div>
+            <div class="layui-inline">
+                <input type="text" name="keyword" id="keyword" placeholder="请输入关键字" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <button class="layui-btn" data-type="reload" id="reload"><i class="layui-icon">&#xe615;</i></button>
+        </div>
+    </div>
+    <div class="weadmin-block demoTable">
+        <!--用于list.js获取删除类型-->
+        <input type="hidden" id="delType" value="{$delType}">
+        <button class="layui-btn layui-btn-danger" data-type="getCheckData"><i class="layui-icon">&#xe640;</i>批量删除
+        </button>
+        <button class="layui-btn layui-btn-normal" data-type="move"><i class="layui-icon">&#xe609;</i>移动</button>
+        <button class="layui-btn" data-type="Recommend"><i class="layui-icon">&#xe6c6;</i>推荐</button>
+        <button class="layui-btn" data-type="Top"><i class="layui-icon">&#xe619;</i>置顶</button>
+        <button class="layui-btn" data-type="Review"><i class="layui-icon">&#xe6b2;</i>审核</button>
+        <button class="layui-btn" data-type="Sort"><i class="layui-icon">&#xe60e;</i>更新排序</button>
+        <button class="layui-btn" data-type="add"><i class="layui-icon">&#xe61f;</i>添加文章</button>
+    </div>
+    <table class="layui-hide" id="articleList"></table>
+
+
+    <script type="text/html" id="recommendTpl">
+        <input type="checkbox" id="flag_r_{@d.id@}>" name="flag[]" class="flag_r" value="{@d.id@}" lay-skin="switch"
+               lay-filter="flag" lay-text="已推荐|未推荐" {@d.flag.indexOf('r')!=-1 ? 'checked' : ''@}>
+    </script>
+    <script type="text/html" id="topTpl">
+        <input type="checkbox" id="flag_t_{@d.id@}" name="flag[]" class="flag_t" value="{@d.id@}" lay-skin="switch"
+               lay-filter="flag" lay-text="已置顶|未置顶" {@d.flag.indexOf('t')!=-1 ? 'checked' : ''@}>
+    </script>
+    <script type="text/html" id="reviewTpl">
+        <input type="checkbox" id="review_{@d.id@}" class="review" name="review" value="{@d.id@}" title="审核"
+               lay-filter="review" {@ d.read== 1 ? 'checked' : '' @}>
+    </script>
+
+    <script type="text/html" id="operateTpl">
+        <a title="编辑" onclick="WeAdminEdit('编辑','{:url(\"
+           admin/article/edit\")}?aid=<{d.id}>', '', 1000, 500)" href="javascript:;">
+        <i class="layui-icon">&#xe642;</i>
+        </a>
+        <a title="查看" href="javascript:;" class="preView" data-id="{@d.id@}">
+            <i class="layui-icon">&#xe63c;</i>
+        </a>
+        <a title="删除" onclick="member_del(this,'<{d.id}>')" href="javascript:;">
+            <i class="layui-icon">&#xe640;</i>
+        </a>
+    </script>
+    <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+    <script>
+        layui.extend({
+            admin: '{/}../../resource/backend/js/admin'
+        });
+
+        layui.use(['table', 'jquery', 'form', 'admin', 'laydate'], function () {
+            var table = layui.table,
+                $ = layui.jquery,
+                form = layui.form,
+                admin = layui.admin,
+                laydate = layui.laydate;
+
+            table.render({
+                elem: '#articleList',
+                cellMinWidth: 100,
+                cellMinHeight: 100,
+                url: location.href,
+                cols: [
+                    [{
+                        type: 'checkbox', fixed: 'left'
+                    }, {
+                        field: 'id', title: 'ID', width: 70, sort: true, fixed: 'left'
+                    }, {
+                        field: 'litpic',
+                        title: '缩略图',
+                        width: 110,
+                        style: 'height:100px;width:100px;',
+                        templet: '<div><img src="{@ d.litpic @}"></div>'
+                    }, {
+                        field: 'title', title: '标题', width: 200, templet: '#usernameTpl'
+                    }, {
+                        field: 'createdate', title: '发布时间', width: 164, sort: true
+                    }, {
+                        field: 'cat_name', title: '分类', sort: true
+                    }, {
+                        field: 'flag', title: '推荐', templet: '#recommendTpl', unresize: true
+                    }, {
+                        field: 'flag', title: '置顶', templet: '#topTpl', unresize: true
+                    }, {
+                        field: 'read', title: '审核', templet: '#reviewTpl', unresize: true
+                    }, {
+                        field: 'click', title: '点击', width: 80, sort: true
+                    }, {
+                        field: 'sort',
+                        title: '排序',
+                        templet: '<div style="line-height: 100px;"><input lay-verify="required" autocomplete="off" class="layui-input sort" id="sort_{@ d.id @}" data-id="{@ d.id @}" type="number" value="{@ d.sort @}"></div>'
+                    }, {
+                        field: 'operate', title: '操作', toolbar: '#operateTpl', unresize: true, fixed: 'right'
+                    }]
+                ],
+
+                event: true,
+                page: {
+                    layout: ['prev', 'next', 'page', 'count', 'skip', 'limit'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    , groups: 5 //只显示 N 个连续页码
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+
+                },
+            });
+            //console.table(res);
+
+            /*
+             *数据表格中form表单元素是动态插入,所以需要更新渲染下
+             * http://www.layui.com/doc/modules/form.html#render
+             * */
+            $(function () {
+                //form.render();
+            });
+
+            var active = {
+                //表格内容重载
+                reload: function (nowPage) {
+                    var nowPage = nowPage || 1;
+                    var catid = $('#catid');
+                    var start = $('#start');
+                    var end = $('#end');
+                    var keyword = $('#keyword');
+                    //执行重载
+                    table.reload('articleList', {
+                        page: {
+                            curr: nowPage //重新从第 N 页开始
+                        }
+                        , where: {
+                            catid: catid.val(),
+                            start: start.val(),
+                            end: end.val(),
+                            keyword: keyword.val(),
+                        },
+                    });
+
+                },
+                //添加文章
+                add: function () {
+                    var cid = $('#catid').val();
+                    var str = ''
+                    //console.log(cid);
+                    if (cid) {
+                        str = '?cid=' + cid;
+                    }
+                    WeAdminShow('添加文章', 'add.html' + str, 1000, 500);
+                },
+                //批量删除
+                getCheckData: function () { //获取选中数据
+                    var checkStatus = table.checkStatus('articleList'),
+                        data = checkStatus.data;
+                    // 判断物理删除和逻辑删除 start
+                    var delType = $('#delType').val();
+                    var delNotice = '';
+                    if (delType == 1) {
+                        delNotice = '确认要删除吗？';
+                    } else {
+                        delNotice = '确认要移至回收站吗？';
+                    }
+                    // 判断物理删除和逻辑删除 end
+                    //console.log(data);
+                    //layer.alert(JSON.stringify(data));
+                    var ids = new Array();
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i]['id']);
+                        }
+                        layer.confirm(delNotice + 'ID:(' + ids + ')', function (index) {
+                            $.post('del.html', {'aids': ids}, function (res) {
+                                if (res['code'] == 1) {
+                                    //删除成功
+                                    layer.msg(res['msg'], {
+                                        icon: 6
+                                        , time: 2000
+                                    });
+                                    //重载当前页码的表格数据
+                                    //var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                                    active.reload();
+                                } else {
+                                    //删除失败
+                                    layer.msg(res['msg'], {
+                                        icon: 5
+                                        , time: 2000
+                                    });
+                                }
+                            });
+                        });
+                    } else {
+                        layer.msg("请先选择需要删除的文章！", {
+                            anim: 6
+                        });
+                    }
+
+                },
+                //批量移动文章
+                move: function () {
+                    var checkStatus = table.checkStatus('articleList'),
+                        data = checkStatus.data;
+                    if (data.length > 0) {
+                        var aids = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            aids.push(data[i]['id']);
+                        }
+                        //弹出页面
+                        WeAdminShow('移动文章', 'move.html?aids=' + aids, 400, 200)
+                    } else {
+                        layer.msg("请选择要移动的文章", {
+                            anim: 6
+                        });
+                        return false;
+                    }
+                },
+                //批量推荐
+                Recommend: function () {
+                    var checkStatus = table.checkStatus('articleList'),
+                        data = checkStatus.data;
+                    if (data.length > 0) {
+                        var ids = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i]['id']);
+                        }
+                        //console.log(ids);
+                    } else {
+                        layer.msg("请选择要推荐的文章", {
+                            anim: 6
+                        });
+                        return false;
+                    }
+                    $.post('flag.html', {'aids': ids, 'flag': 'r'}, function (res) {
+                        //console.log(res);
+                        layer.msg(res['msg'], {
+                            icon: 6
+                            , time: 1000
+                        });
+                        for (var i = 0; i < ids.length; i++) {
+                            if (res['code'] == 1) {
+                                $('#flag_r_' + ids[i]).prop('checked', true);
+                            } else if (res['code'] == 2) {
+                                $('#flag_r_' + ids[i]).prop('checked', false);
+                            }
+
+                        }
+                        form.render();//重新渲染
+                    });
+
+                },
+                //批量置顶
+                Top: function () {
+                    var checkStatus = table.checkStatus('articleList'),
+                        data = checkStatus.data;
+                    if (data.length > 0) {
+                        var ids = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i]['id']);
+                        }
+                        //console.log(ids);
+                    } else {
+                        layer.msg("请选择要置顶的文章", {
+                            anim: 6
+                        });
+                        return false;
+                    }
+                    $.post('flag.html', {'aids': ids, 'flag': 't'}, function (res) {
+                        //console.log(res);
+                        layer.msg(res['msg'], {
+                            icon: 6
+                            , time: 1000
+                        });
+                        for (var i = 0; i < ids.length; i++) {
+                            if (res['code'] == 1) {
+                                $('#flag_t_' + ids[i]).prop('checked', true);
+                            } else if (res['code'] == 2) {
+                                $('#flag_t_' + ids[i]).prop('checked', false);
+                            }
+
+                        }
+                        form.render();//重新渲染
+                    });
+                },
+                //批量审核
+                Review: function () {
+                    var checkStatus = table.checkStatus('articleList'),
+                        data = checkStatus.data;
+                    if (data.length > 0) {
+                        var ids = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i]['id']);
+                        }
+                    } else {
+                        layer.msg('请选择要审核的文章', {
+                            anim: 6
+                        });
+                        return false;
+                    }
+                    $.post('review.html', {'aids': ids}, function (res) {
+                        //console.log(res);
+                        if (res['code'] == 1 || res['code'] == 2) {
+                            layer.msg(res['msg'], {
+                                icon: 6
+                            });
+                        }
+                        if (res['code'] == 0) {
+                            layer.msg(res['msg'], {
+                                icon: 6
+                                , anim: 6
+                            });
+                        }
+                        //返回res的code=0，审核失败或者已审核；code=1，审核成功；code=2，取消审核成功
+                        for (var i = 0; i < ids.length; i++) {
+                            if (res['code'] == 1) {
+                                $('#review_' + ids[i]).prop('checked', true);
+                            } else if (res['code'] == 2) {
+                                $('#review_' + ids[i]).prop('checked', false);
+                            }
+
+                        }
+                        form.render();//重新渲染
+                    });
+                },
+
+                /*排序*/
+                Sort: function () {
+                    var arr = new Array();
+                    var work = false;
+                    $('.sort').each(function () {
+                        if ($(this).val() == '') {
+                            layer.tips('不能为空', '#sort_' + $(this).attr('data-id'), {
+                                tips: [4, '#78BA32']
+                                , tipsMore: false
+                            });
+                            work = false;
+                            return false;
+                        } else if ($(this).val() < 0) {
+                            layer.tips('必须为大于等于0的数字', '#sort_' + $(this).attr('data-id'), {
+                                tips: [4, '#78BA32']
+                                , tipsMore: false
+                            });
+                            work = false;
+                            return false;
+                        } else {
+                            arr.push({'id': $(this).attr('data-id'), 'sort': $(this).val()});
+                            work = true;
+                        }
+                    });
+                    if (work == true) {
+                        $.post('sort.html', {'data': arr}, function (res) {
+                            if (res['code'] == 1) {
+                                layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
+                                    //top.location.reload();
+                                });
+                            } else {
+                                layer.msg(res['msg'], {icon: 5, time: 2000});
+                            }
+                        }, 'json');
+                    }
+
+                }
+
+
+            };
+
+            $('.we-search .layui-btn, .demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            //单个审核
+            form.on('checkbox(review)', function (data) {
+                //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+                $.post('review.html', {'aids': data.value}, function (res) {
+                    //console.log(res);
+                    if (res['code'] == 1 || res['code'] == 2) {
+                        layer.msg(res['msg'], {
+                            icon: 6
+                            , time: 1000
+                        });
+                    } else {
+                        layer.msg(res['msg'], {
+                            icon: 5
+                            , time: 1000
+                        });
+                    }
+                    form.render();
+                });
+            });
+            //单个修改flag
+            form.on('switch(flag)', function (data) {
+                //console.log(data.elem.className);
+                var flag = '';
+                if (data.elem.className == 'flag_r') {
+                    //推荐
+                    flag = 'r';
+                } else if (data.elem.className == 'flag_t') {
+                    //置顶
+                    flag = 't'
+                }
+                $.post('flag.html', {'aids': data.value, 'flag': flag}, function (res) {
+                    //console.log(res);
+                    if (res['code'] == 1 || res['code'] == 2) {
+                        layer.msg(res['msg'], {
+                            icon: 6
+                            , time: 1000
+                        });
+                    } else {
+                        layer.msg(res['msg'], {
+                            icon: 5
+                            , time: 1000
+                        });
+                    }
+                    form.render();
+                });
+
+            });
+            /*单个删除*/
+            window.member_del = function (obj, id) {
+                // 判断物理删除和逻辑删除 start
+                var delType = $('#delType').val();
+                var delNotice = '';
+                if (delType == 1) {
+                    delNotice = '确认要删除吗？';
+                } else {
+                    delNotice = '确认要移至回收站吗？';
+                }
+                // 判断物理删除和逻辑删除 end
+                layer.confirm(delNotice, function (index) {
+                    //发异步删除数据
+                    $.post('del.html', {'aids': id}, function (res) {
+                        if (res['code'] == 1) {
+                            //删除成功
+                            layer.msg(res['msg'], {
+                                icon: 6,
+                                time: 2000
+                            });
+                            //重载当前页码的表格数据
+                            var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                            active.reload(nowPage);
+                        } else {
+                            //删除失败
+                            layer.msg(res['msg'], {
+                                icon: 5,
+                                time: 1000
+                            });
+                        }
+                    });
+
+                });
+            }
+            //文章搜索开始时间选择器
+            laydate.render({
+                elem: '#start'
+                , type: 'datetime'
+            });
+            //文章搜索结束时间选择器
+            laydate.render({
+                elem: '#end'
+                , type: 'datetime'
+            });
+            /*图片放大预览*/
+            $('body').on('mouseenter', '.layui-table-cell>img', function () {
+                //console.log('显示大图');
+                var index = layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: '100',
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shade: false,
+                    shadeClose: true,
+                    content: "<img style='max-width:600px;' src='" + $(this).prop('src') + "'>"
+                });
+            });
+            $('body').on('mouseleave', '.layui-table-cell>img', function () {
+                //console.log('取消显示大图');
+                layer.close(layer.index);
+            });
+
+            //文章预览
+            $('body').on('click', '.preView', function () {
+                var artid = $(this).attr('data-id');
+                $.get('preView.html', {'artid': artid}, function (res) {
+                    layer.open({
+                        type: 2,
+                        title: '文章预览',
+                        content: res,
+                        area: ['96%', '96%'],
+                        maxmin: true
+                    })
+                });
+            });
+
+        });
+    </script>
+</div>
+
+</body>
+
+</html>

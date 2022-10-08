@@ -6,9 +6,9 @@ backend:
         - title: 栏目分类
           route: /channel/index
           permission: channel.channel.manage
-        - title: 档案列表
-          route: /content/index
-          permission: channel.content.manage
+        - title: 数据列表
+          route: /channel_model/index
+          permission: channel.channel.manage
         - title: 内容回收站
           route: /recycle/index
           permission: channel.recycle.manage

@@ -24,3 +24,13 @@ type ChannelEditReq struct {
 type ChannelEditRes struct {
 	g.Meta `mime:"text/html" example:"string"`
 }
+
+type ChannelModelIndexReq struct {
+	g.Meta    `tags:"Backend" method:"get" summary:"数据列表"`
+	Type      string `json:"type"`
+	ChannelId int    `json:"channel_id"`
+	WithTab   bool   `json:"with_tab" d:"true" v:"in:true,false#with_tab不合法"`
+}
+type ChannelModelIndexRes struct {
+	g.Meta `mime:"text/html" example:"string"`
+}

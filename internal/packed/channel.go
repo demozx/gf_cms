@@ -1,8 +1,9 @@
-package channel
+package packed
 
 import (
 	"context"
 	"gf_cms/api/backendApi"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
@@ -20,11 +21,6 @@ type sChannel struct{}
 
 var (
 	insChannel = sChannel{}
-)
-
-const (
-	ModelArticle     = "article"
-	ModelArticleDesc = "文章"
 )
 
 func init() {
@@ -257,7 +253,7 @@ func (*sChannel) GetOneById(ctx context.Context, id int) (out *entity.CmsChannel
 
 func (*sChannel) BackendModelMap() map[string]string {
 	var modelMap = make(map[string]string)
-	modelMap[ModelArticle] = ModelArticleDesc
+	modelMap[consts.ChannelModelArticle] = consts.ChannelModelArticleDesc
 	return modelMap
 }
 
