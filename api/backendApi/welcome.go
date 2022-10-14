@@ -13,7 +13,7 @@ type GetRuntimeInfoApiRes struct {
 	Load                model.Load `json:"load" "dc": "负载"`
 	LoadPercent         float32    `json:"loadPercent" "dc": "负载"`
 	Cpu                 model.Cpu  `json:"cpu" "dc": "CPU"`
-	CPUNum              int        `json:"CPUNum" "dc": "CPU核心数"`
+	CPUNum              int        `json:"cpuNum" "dc": "CPU核心数"`
 	Mem                 model.Mem  `json:"mem" "dc": "内存"`
 	Disk                model.Disk `json:"disk" "dc": "磁盘"`
 	Net                 model.Net  `json:"net" "dc": "网络"`

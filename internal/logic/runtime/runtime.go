@@ -54,7 +54,11 @@ func (*sRuntime) GetCpuInfo() model.Cpu {
 		cpuInfo.Mhz = gvar.New(ci.Mhz).Int()
 	}
 	percent, _ := cpu.Percent(0, false) // false表示CPU总使用率，true为单核
-	cpuInfo.UsedPercent = gvar.New(percent[0]).String()
+	if len(percent) > 0 {
+		cpuInfo.UsedPercent = gvar.New(percent[0]).String()
+	} else {
+		cpuInfo.UsedPercent = ""
+	}
 	return cpuInfo
 }
 
