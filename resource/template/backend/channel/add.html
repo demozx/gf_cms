@@ -352,7 +352,7 @@
         server: '{{backend_api_url `/upload/single_image`}}',
         fieldName: 'file',
         allowedFileTypes: ['image/*'],
-        maxFileSize: '{{system_config `server.ClientMaxBodySize`}}',
+        maxFileSize: '{{system_config `server.clientMaxBodySize`}}',
         // 自定义插入图片
         customInsert(res, insertFn) {                  // JS 语法
             // 从 res 中找到 url alt href ，然后插入图片
@@ -366,7 +366,7 @@
         server: '{{backend_api_url `/upload/single_video`}}',
         fieldName: 'file',
         allowedFileTypes: ['video/*'],
-        maxFileSize: '{{system_config `server.ClientMaxBodySize`}}',
+        maxFileSize: '{{system_config `server.clientMaxBodySize`}}',
         // 自定义插入视频
         customInsert(res, insertFn) {                  // JS 语法
             // 从 res 中找到 url alt href ，然后插入视频
