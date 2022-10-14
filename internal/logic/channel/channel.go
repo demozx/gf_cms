@@ -234,7 +234,7 @@ func (*sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditA
 	if err != nil {
 		return nil, err
 	}
-	if oldLevel >= channel.Level {
+	if channel.Pid != newPid && oldLevel >= channel.Level {
 		return nil, gerror.New("不能选择同级别或级别在自己下边的分类")
 	}
 	if in.Pid == in.Id {
