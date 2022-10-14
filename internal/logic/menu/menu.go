@@ -1,15 +1,13 @@
 package menu
 
 import (
+	"context"
 	"gf_cms/internal/logic/permission"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
-	"log"
-	"os"
-
 	"github.com/gogf/gf/v2/frame/g"
-	"gopkg.in/yaml.v3"
+	"github.com/gogf/gf/v2/util/gconv"
 )
 
 var (
@@ -31,22 +29,16 @@ func Menu() *sMenu {
 	return &insMenu
 }
 
-func (*sMenu) readYamlConfig(path string) (*model.MenuConfig, error) {
-	conf := &model.MenuConfig{}
-	if f, err := os.Open(path); err != nil {
-		return nil, err
-	} else {
-		yaml.NewDecoder(f).Decode(conf)
-	}
-	return conf, nil
-}
-
-func (*sMenu) readYaml() *model.MenuConfig {
-	conf, err := Menu().readYamlConfig(util.Util().SystemRoot() + "/manifest/config/menu.yaml")
+func (*sMenu) readYaml(ctx context.Context) (conf *model.MenuConfig, err error) {
+	data, err := g.Cfg("menu").Data(ctx)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return conf
+	err = gconv.Scan(data, &conf)
+	if err != nil {
+		return nil, err
+	}
+	return
 }
 
 // BackendView 获取全部后台菜单
@@ -63,7 +55,8 @@ func (*sMenu) BackendView() []model.MenuGroups {
 		}
 		return menuGroups
 	}
-	backendView := Menu().readYaml().Backend.Groups
+	conf, _ := Menu().readYaml(util.Ctx)
+	backendView := conf.Backend.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendView)
 	if err != nil {
 		panic(err)
@@ -85,7 +78,8 @@ func (*sMenu) BackendApi() []model.MenuGroups {
 		}
 		return menuGroups
 	}
-	backendApi := Menu().readYaml().BackendApi.Groups
+	conf, _ := Menu().readYaml(util.Ctx)
+	backendApi := conf.BackendApi.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendApi)
 	if err != nil {
 		panic(err)

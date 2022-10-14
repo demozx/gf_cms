@@ -5,6 +5,7 @@ import (
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/service"
+	"github.com/casbin/casbin/v2/model"
 	"log"
 
 	sqlAdapter "github.com/Blank-Xu/sql-adapter"
@@ -56,7 +57,13 @@ func initCasbin() *casbin.Enforcer {
 	if err != nil {
 		panic(err)
 	}
-	e, err := casbin.NewEnforcer(util.Util().SystemRoot()+"/manifest/config/rbac_model.conf", a)
+	m := model.NewModel()
+	m.AddDef("r", "r", "sub, obj, act")
+	m.AddDef("p", "p", "sub, obj, act")
+	m.AddDef("g", "g", "_, _")
+	m.AddDef("e", "e", "some(where (p.eft == allow))")
+	m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act")
+	e, err := casbin.NewEnforcer(m, a)
 	if err != nil {
 		log.Fatalf("NewEnforecer failed:%v\n", err)
 	}

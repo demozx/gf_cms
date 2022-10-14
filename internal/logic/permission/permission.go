@@ -1,19 +1,16 @@
 package permission
 
 import (
+	"context"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/admin"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
-	"log"
-	"os"
-
 	"github.com/gogf/gf/v2/util/gconv"
 
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
-	"gopkg.in/yaml.v3"
 )
 
 type sPermission struct{}
@@ -35,24 +32,16 @@ func Permission() *sPermission {
 	return &insPermission
 }
 
-func (*sPermission) readYamlConfig(path string) (*model.PermissionConfig, error) {
-	conf := &model.PermissionConfig{}
-	if f, err := os.Open(path); err != nil {
-		return nil, err
-	} else {
-		yaml.NewDecoder(f).Decode(conf)
-	}
-	//fmt.Println("conf: ", conf)
-	return conf, nil
-}
-
-func (*sPermission) readYaml() *model.PermissionConfig {
-	conf, err := Permission().readYamlConfig(util.Util().SystemRoot() + "/manifest/config/permission.yaml")
-	//fmt.Println(conf)
+func (*sPermission) readYaml(ctx context.Context) (conf *model.PermissionConfig, err error) {
+	data, err := g.Cfg("permission").Data(ctx)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return conf
+	err = gconv.Scan(data, &conf)
+	if err != nil {
+		return nil, err
+	}
+	return
 }
 
 // BackendAll 获取后台全部权限（view和api）
@@ -93,7 +82,8 @@ func (*sPermission) BackendViewAll() []model.PermissionGroups {
 		}
 		return permissionGroups
 	}
-	backendViewAll := Permission().readYaml().BackendView.Groups
+	conf, _ := Permission().readYaml(util.Ctx)
+	backendViewAll := conf.BackendView.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendViewAll)
 	if err != nil {
 		panic(err)
@@ -115,7 +105,8 @@ func (*sPermission) BackendApiAll() []model.PermissionGroups {
 		}
 		return permissionGroups
 	}
-	backendApiAll := Permission().readYaml().BackendApi.Groups
+	conf, _ := Permission().readYaml(util.Ctx)
+	backendApiAll := conf.BackendApi.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendApiAll)
 	if err != nil {
 		panic(err)
