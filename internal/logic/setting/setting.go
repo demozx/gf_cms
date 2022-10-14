@@ -1,14 +1,12 @@
 package setting
 
 import (
+	"context"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
-	"log"
-	"os"
-
 	"github.com/gogf/gf/v2/frame/g"
-	"gopkg.in/yaml.v3"
+	"github.com/gogf/gf/v2/util/gconv"
 )
 
 var (
@@ -30,23 +28,16 @@ func Setting() *sSetting {
 	return &insSetting
 }
 
-func (*sSetting) readYamlConfig(path string) (*model.SettingConfig, error) {
-	conf := &model.SettingConfig{}
-	if f, err := os.Open(path); err != nil {
-		return nil, err
-	} else {
-		yaml.NewDecoder(f).Decode(conf)
-	}
-	//fmt.Println("SettingConfig: ", conf)
-	return conf, nil
-}
-
-func (*sSetting) readYaml() *model.SettingConfig {
-	conf, err := Setting().readYamlConfig(util.Util().SystemRoot() + "/manifest/config/setting.yaml")
+func (*sSetting) readYaml(ctx context.Context) (conf *model.SettingConfig, err error) {
+	data, err := g.Cfg("setting").Data(ctx)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return conf
+	err = gconv.Scan(data, &conf)
+	if err != nil {
+		return nil, err
+	}
+	return
 }
 
 // BackendViewAll 获取所有后台菜单
@@ -63,8 +54,8 @@ func (*sSetting) BackendViewAll() []model.SettingGroups {
 		}
 		return settingGroups
 	}
-	//g.Log().Debug(Ctx, "Setting().readYaml()", Setting().readYaml())
-	backendAll := Setting().readYaml().Backend.Groups
+	conf, _ := Setting().readYaml(util.Ctx)
+	backendAll := conf.Backend.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendAll)
 	if err != nil {
 		panic(err)
