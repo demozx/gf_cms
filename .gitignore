@@ -35,3 +35,5 @@ temp/
 # vendor/
 /manifest/config/config.yaml
 /deploy/
+/log/
+/resource/public/upload/
