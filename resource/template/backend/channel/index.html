@@ -26,13 +26,13 @@
 		    </span>
     <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
        href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+        <i class="layui-icon" style="line-height:30px">&#xe669;</i></a>
 </div>
 <div class="weadmin-body">
     <div class="weadmin-block">
         <button class="layui-btn layui-btn-primary" id="expand">全部展开</button>
         <button class="layui-btn layui-btn-primary" id="collapse">全部收起</button>
-        <button class="layui-btn" onclick="WeAdminShow('添加分类','{{ backend_url `/channel/add` }}')"><i
+        <button class="layui-btn" onclick="WeAdminShow('添加分类','${ backend_url `/channel/add` }$')"><i
                 class="layui-icon"></i>添加
         </button>
     </div>
@@ -54,7 +54,7 @@
         layer.confirm(confirmTip, function (index) {
             if ($(obj).attr('title') === '启用') {
                 //发异步把用户状态进行更改
-                $.post('{{backend_api_url `/channel/status`}}', {'id': id}, function (res) {
+                $.post('${backend_api_url `/channel/status`}$', {'id': id}, function (res) {
                     if (res.code === 0) {
                         $(obj).attr('title', '停用')
                         $(obj).find('i').html('&#xe62f;');
@@ -74,7 +74,7 @@
 
             } else {
                 //发异步把用户状态进行更改
-                $.post('{{backend_api_url `/channel/status`}}', {'id': id}, function (res) {
+                $.post('${backend_api_url `/channel/status`}$', {'id': id}, function (res) {
                     if (res.code === 0) {
                         $(obj).attr('title', '启用')
                         $(obj).find('i').html('&#xe601;');
@@ -99,7 +99,7 @@
     //自定义的render渲染输出多列表格
     var layout = [
         {
-            name: '菜单名称',
+            name: '栏目名称',
             treeNodes: true,
             headerClass: 'value_col',
             colClass: 'value_col',
@@ -136,13 +136,13 @@
             render: function (row) {
                 if (row.status === 1) {
                     return '<a onclick="member_stop(this,' + row.id + ')" href="javascript:;" title="启用"><i class="layui-icon">&#xe601;</i></a>' +
-                        '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'{{backend_url `/channel/add`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
-                        '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'{{backend_url `/channel/edit`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
+                        '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'${backend_url `/channel/add`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
+                        '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'${backend_url `/channel/edit`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
                         '<a title="删除" onclick="del(' + row.id + ')" href="javascript:;">\<i class="layui-icon">&#xe640;</i></a>';
                 }
                 return '<a onclick="member_stop(this,' + row.id + ')" href="javascript:;" title="停用"><i class="layui-icon">&#xe62f;</i></a>' +
-                    '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'{{backend_url `/channel/add`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
-                    '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'{{backend_url `/channel/edit`}}?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
+                    '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'${backend_url `/channel/add`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
+                    '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'${backend_url `/channel/edit`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
                     '<a title="删除" onclick="del(' + row.id + ')" href="javascript:;">\<i class="layui-icon">&#xe640;</i></a>';
             }
         },
@@ -162,7 +162,7 @@
             admin = layui.admin,
             treeGird = layui.treeGird;
 
-        $.post('{{backend_api_url `/channel/index`}}', function (res) {
+        $.post('${backend_api_url `/channel/index`}$', function (res) {
             var tree1 = layui.treeGird({
                 elem: '#demo', //传入元素选择器
                 spreadable: true, //设置是否全展开，默认不展开
@@ -212,12 +212,14 @@
             //获取栏目id
             var cateId = $(this).parents('tr').attr('id');
             var title = $(this).text()
+            var type = $(this).parents('tr').data('type')
             //console.log(cateId);
             //self.location.href = '../article/index.html?catid='+cateId;
             //WeAdminEdit(title,'../article/index.html?catid='+cateId);
             var index = layer.open({
                 type: 2,
-                content: '../article/index.html?catid=' + cateId,
+                content: '${backend_url `/channel_model/index`}$' +'?type='+type+'&channel_id='+ cateId+'&with_tab=false',
+                title:'栏目 '+cateId+' 数据',
                 area: ['90%', '90%'],
                 maxmin: true
             });
@@ -254,7 +256,7 @@
         });
 
         function delpost() {
-            $.post('{{ backend_api_url `/channel/delete` }}', {'id': Id}, function (res) {
+            $.post('${ backend_api_url `/channel/delete` }$', {'id': Id}, function (res) {
                 if (res.code === 0) {
                     layer.msg(res.message, {
                         icon: 6,

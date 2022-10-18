@@ -27,13 +27,13 @@
       </span>
     <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
        href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+        <i class="layui-icon" style="line-height:30px">&#xe669;</i></a>
 </div>
 <div class="weadmin-body">
 
     <div class="weadmin-block">
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="WeAdminShow('添加角色','{{backend_url `/role/add`}}')"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="WeAdminShow('添加角色','${backend_url `/role/add`}$')"><i class="layui-icon"></i>添加
         </button>
     </div>
     <table class="layui-table">
@@ -50,43 +50,43 @@
             <th>操作</th>
         </thead>
         <tbody>
-        {{range $key, $item := .list.List }}
+        ${range $key, $item := .list.List }$
         <tr>
             <td>
-                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$item.Id}}'><i
+                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${$item.Id}$'><i
                         class="layui-icon">&#xe605;</i></div>
             </td>
-            <td>{{$item.Id}}</td>
-            <td>{{$item.Title}}</td>
+            <td>${$item.Id}$</td>
+            <td>${$item.Title}$</td>
             <td style="max-width:750px;line-height: 26px;">
-                {{range $key, $permission := $item.Permissions}}
-                <span class="layui-badge layui-bg-blue">{{$permission.Title}}</span>
-                {{end}}
+                ${range $key, $permission := $item.Permissions}$
+                <span class="layui-badge layui-bg-blue">${$permission.Title}$</span>
+                ${end}$
             </td>
             <td class="td-status">
-                <span class="layui-badge layui-bg-blue {{if eq $item.IsEnable 0}}layui-bg-gray{{end}}">{{if eq $item.IsEnable 1}}已启用{{else}}已停用{{end}}</span>
+                <span class="layui-badge layui-bg-blue ${if eq $item.IsEnable 0}$layui-bg-gray${end}$">${if eq $item.IsEnable 1}$已启用${else}$已停用${end}$</span>
             </td>
             <td class="td-manage">
-                <a onclick="member_stop(this,'{{$item.Id}}')" href="javascript:;"
-                   title="{{if eq $item.IsEnable 1}}停用{{else}}启用{{end}}">
-                    <i class="layui-icon">{{if eq $item.IsEnable 1}}&#xe601;{{else}}&#xe62f;{{end}}</i>
+                <a onclick="member_stop(this,'${$item.Id}$')" href="javascript:;"
+                   title="${if eq $item.IsEnable 1}$停用${else}$启用${end}$">
+                    <i class="layui-icon">${if eq $item.IsEnable 1}$&#xe601;${else}$&#xe62f;${end}$</i>
                 </a>
-                <a title="编辑" onclick="WeAdminShow('编辑','{{backend_url `/role/edit`}}?id={{$item.Id}}')"
+                <a title="编辑" onclick="WeAdminShow('编辑','${backend_url `/role/edit`}$?id=${$item.Id}$')"
                    href="javascript:;">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
-                <a title="删除" onclick="member_del(this,'{{$item.Id}}')" href="javascript:;">
+                <a title="删除" onclick="member_del(this,'${$item.Id}$')" href="javascript:;">
                     <i class="layui-icon">&#xe640;</i>
                 </a>
             </td>
         </tr>
-        {{end}}
+        ${end}$
         </tbody>
     </table>
     <div class="page">
         <div>
             <ul class="pagination">
-                {{.pageInfo}}
+                ${.pageInfo}$
             </ul>
         </div>
     </div>
@@ -103,7 +103,7 @@
         window.member_stop = function (obj, id) {
             if ($(obj).prop('title') === '启用') {
                 layer.confirm('确认要启用吗？', function (index) {
-                    $.post('{{backend_api_url `/role/status`}}', {'id': id}, function (res) {
+                    $.post('${backend_api_url `/role/status`}$', {'id': id}, function (res) {
                         if (res.code === 0) {
                             //启用成功
                             $(obj).attr('title', '停用')
@@ -125,7 +125,7 @@
                 });
             } else {
                 layer.confirm('确认要停用吗？', function (index) {
-                    $.post('{{backend_api_url `/role/status`}}', {'id': id}, function (res) {
+                    $.post('${backend_api_url `/role/status`}$', {'id': id}, function (res) {
                         if (res.code === 0) {
                             //停用成功
                             $(obj).attr('title', '启用')
@@ -152,7 +152,7 @@
         /*角色-删除*/
         window.member_del = function (obj, id) {
             layer.confirm('确认要删除吗？如果管理员只有当前一个角色，当前角色的管理员将无法登录！', function (index) {
-                $.post('{{backend_api_url `/role/delete`}}', {'id': id}, function (res) {
+                $.post('${backend_api_url `/role/delete`}$', {'id': id}, function (res) {
                     if (res.code === 0) {
                         //删除成功
                         layer.msg(res.message, {
@@ -181,7 +181,7 @@
                 return false;
             }
             layer.confirm('确认要删除ID(' + data + ')的角色吗？如果管理员只有当前一个角色，当前角色的管理员将无法登录！', function (index) {
-                $.post('{{backend_api_url `/role/delete_batch`}}', {'ids': data}, function (res) {
+                $.post('${backend_api_url `/role/delete_batch`}$', {'ids': data}, function (res) {
                     if (res.code === 0) {
                         layer.msg(res.message, {
                             icon: 6

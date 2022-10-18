@@ -48,16 +48,16 @@
 
                             <select name="pid" id="pid-select" lay-verify="required" lay-filter="pid-select">
                                 <option value="0" data-level="0">顶级分类</option>
-                                {{range $key, $item := .channelTree}}
+                                ${range $key, $item := .channelTree}$
                                 <option
-                                        value="{{ $item.Id }}"
-                                        data-level="{{ $item.Level }}"
-                                        {{if $item.Selected}}selected{{end}}
-                                        {{if eq $item.Id $.channel.Id}}disabled{{end}}
-                                        {{if ge $item.Level $.channel.Level}}disabled{{end}}
-                                >{{ $item.Name }}
+                                        value="${ $item.Id }$"
+                                        data-level="${ $item.Level }$"
+                                        ${if $item.Selected}$selected${end}$
+                                        ${if eq $item.Id $.channel.Id}$disabled${end}$
+                                        ${if ge $item.Level $.channel.Level}$disabled${end}$
+                                >${ $item.Name }$
                                 </option>
-                                {{end}}
+                                ${end}$
                             </select>
 
                         </div>
@@ -66,7 +66,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">分类名称</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" value="{{.channel.Name}}" lay-verify="required" jq-error="请输入分类名称"
+                            <input type="text" name="name" value="${.channel.Name}$" lay-verify="required" jq-error="请输入分类名称"
                                    placeholder="请输入分类名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -75,14 +75,14 @@
 
                         <div class="layui-input-block">
                             <input style="width: 60%;display: inline;" type="text" id="cat_pic_text" name="thumb"
-                                   value="{{.channel.Thumb}}"
+                                   value="${.channel.Thumb}$"
                                    placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off"
                                    class="layui-input">
                             <button style="margin-left: -118px;margin-bottom: 3px;" type="button" class="layui-btn"
                                     id="topicImg"><i class="layui-icon">&#xe67c;</i>上传图片
                             </button>
                             <div class="layui-upload-list">
-                                <img class="layui-upload-img" id="cat_pic" src="{{.channel.Thumb}}">
+                                <img class="layui-upload-img" id="cat_pic" src="${.channel.Thumb}$">
                             </div>
                         </div>
 
@@ -90,15 +90,15 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">排序</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="sort" value="{{.channel.Sort}}" lay-verify="number" value="100" jq-error="排序必须为数字"
+                            <input type="text" name="sort" value="${.channel.Sort}$" lay-verify="number" value="100" jq-error="排序必须为数字"
                                    placeholder="分类排序" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">状态</label>
                         <div class="layui-input-inline">
-                            <input type="radio" name="status" title="启用" value="1" {{if eq .channel.Status 1}}checked{{end}}/>
-                            <input type="radio" name="status" title="禁用" value="0"  {{if eq .channel.Status 0}}checked{{end}}/>
+                            <input type="radio" name="status" title="启用" value="1" ${if eq .channel.Status 1}$checked${end}$/>
+                            <input type="radio" name="status" title="禁用" value="0"  ${if eq .channel.Status 0}$checked${end}$/>
                         </div>
                     </div>
                     <!--//tab1 content-->
@@ -118,15 +118,15 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">栏目类型</label>
                         <div class="layui-input-block" id="channel_type">
-                            <input type="radio" name="type" lay-filter="channel_type" title="频道" value="1" {{if eq .channel.Type 1}}checked{{end}}/>
-                            <input type="radio" name="type" lay-filter="channel_type" title="单页" value="2" {{if eq .channel.Type 2}}checked{{end}}/>
-                            <input type="radio" name="type" lay-filter="channel_type" title="链接" value="3" {{if eq .channel.Type 3}}checked{{end}}/>
+                            <input type="radio" name="type" lay-filter="channel_type" title="频道" value="1" ${if eq .channel.Type 1}$checked${end}$/>
+                            <input type="radio" name="type" lay-filter="channel_type" title="单页" value="2" ${if eq .channel.Type 2}$checked${end}$/>
+                            <input type="radio" name="type" lay-filter="channel_type" title="链接" value="3" ${if eq .channel.Type 3}$checked${end}$/>
                         </div>
                     </div>
                     <div class="layui-form-item" id="channel_link">
                         <label class="layui-form-label">链接地址</label>
                         <div class="layui-input-block">
-                            <input type="text" name="link_url" value="{{.channel.LinkUrl}}" lay-verify=""
+                            <input type="text" name="link_url" value="${.channel.LinkUrl}$" lay-verify=""
                                    jq-error="请输入栏目跳转网址（支持url方法、getCatUrl方法或者直接写链接地址）"
                                    placeholder="请输入栏目跳转网址（支持url方法、getCatUrl方法或者直接写链接地址）"
                                    autocomplete="off" class="layui-input ">
@@ -136,8 +136,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">打开方式</label>
                         <div class="layui-input-block">
-                            <input type="radio" name="link_trigger" title="当前页面" value="0" {{if eq .channel.LinkTrigger 0}}checked{{end}}/>
-                            <input type="radio" name="link_trigger" title="新页面" value="1" {{if eq .channel.LinkTrigger 1}}checked{{end}}/>
+                            <input type="radio" name="link_trigger" title="当前页面" value="0" ${if eq .channel.LinkTrigger 0}$checked${end}$/>
+                            <input type="radio" name="link_trigger" title="新页面" value="1" ${if eq .channel.LinkTrigger 1}$checked${end}$/>
                         </div>
                     </div>
 
@@ -146,9 +146,9 @@
                         <div class="layui-input-block">
                             <select name="model">
                                 <option value="">请选择模型</option>
-                                {{range $key, $value := .modelMap}}
-                                <option {{if eq $.channel.Model $key}}selected{{end}} value="{{$key}}">{{$value}}</option>
-                                {{end}}
+                                ${range $key, $value := .modelMap}$
+                                <option ${if eq $.channel.Model $key}$selected${end}$ value="${$key}$">${$value}$</option>
+                                ${end}$
                             </select>
                         </div>
                     </div>
@@ -158,7 +158,7 @@
                         <div class="layui-input-block">
                             <input type="text"
                                    placeholder="请输入频道控制器名，留空则使用默认控制器（频道：ListView,单页：Content）"
-                                   autocomplete="off" class="layui-input" name="list_controller" value="{{.channel.ListController}}" />
+                                   autocomplete="off" class="layui-input" name="list_controller" value="${.channel.ListController}$" />
                         </div>
                     </div>
 
@@ -166,7 +166,7 @@
                         <label class="layui-form-label">详情控制器</label>
                         <div class="layui-input-block">
                             <input type="text" placeholder="请输入详情控制器名，留空则使用默认控制器（频道：DetailView）"
-                                   autocomplete="off" class="layui-input" name="detail_controller" value="{{.channel.DetailController}}"/>
+                                   autocomplete="off" class="layui-input" name="detail_controller" value="${.channel.DetailController}$"/>
                         </div>
                     </div>
 
@@ -174,7 +174,7 @@
                         <label class="layui-form-label">频道模板</label>
                         <div class="layui-input-block">
                             <input type="text" placeholder="请输入频道模板名，留空则使用默认模板‘index’"
-                                   autocomplete="off" class="layui-input" name="list_template" value="{{.channel.ListTemplate}}"/>
+                                   autocomplete="off" class="layui-input" name="list_template" value="${.channel.ListTemplate}$"/>
                         </div>
                     </div>
 
@@ -182,7 +182,7 @@
                         <label class="layui-form-label">详情模板</label>
                         <div class="layui-input-block">
                             <input type="text" placeholder="请输入详情模板名，留空则使用默认模板‘index’"
-                                   autocomplete="off" class="layui-input" name="detail_template" value="{{.channel.DetailTemplate}}"/>
+                                   autocomplete="off" class="layui-input" name="detail_template" value="${.channel.DetailTemplate}$"/>
                         </div>
                     </div>
 
@@ -215,7 +215,7 @@
         form.on('submit(add)', function (data) {
             console.log(data.field);
             //发异步，把数据提交给php
-            $.post('{{ backend_api_url `/channel/edit` }}?id={{.channel.Id}}', data.field, function (res) {
+            $.post('${ backend_api_url `/channel/edit` }$?id=${.channel.Id}$', data.field, function (res) {
                 //console.log(res);
                 if (res.code === 0) {
                     //添加成功
@@ -301,7 +301,7 @@
         //执行实例
         var uploadInst = upload.render({
             elem: '#topicImg' //绑定元素
-            , url: '{{backend_api_url `/upload/single_image`}}' //上传接口
+            , url: '${backend_api_url `/upload/single_image`}$' //上传接口
             , done: function (res) {
                 //上传完毕回调
                 if (res.code === 0) {
@@ -351,10 +351,10 @@
         MENU_CONF: {}
     }
     editorConfig.MENU_CONF['uploadImage'] = {
-        server: '{{backend_api_url `/upload/single_image`}}',
+        server: '${backend_api_url `/upload/single_image`}$',
         fieldName: 'file',
         allowedFileTypes: ['image/*'],
-        maxFileSize: '{{system_config `server.clientMaxBodySize`}}',
+        maxFileSize: '${system_config `server.clientMaxBodySize`}$',
         // 自定义插入图片
         customInsert(res, insertFn) {                  // JS 语法
             // 从 res 中找到 url alt href ，然后插入图片
@@ -365,10 +365,10 @@
         },
     }
     editorConfig.MENU_CONF['uploadVideo'] = {
-        server: '{{backend_api_url `/upload/single_video`}}',
+        server: '${backend_api_url `/upload/single_video`}$',
         fieldName: 'file',
         allowedFileTypes: ['video/*'],
-        maxFileSize: '{{system_config `server.clientMaxBodySize`}}',
+        maxFileSize: '${system_config `server.clientMaxBodySize`}$',
         // 自定义插入视频
         customInsert(res, insertFn) {                  // JS 语法
             // 从 res 中找到 url alt href ，然后插入视频
@@ -381,7 +381,7 @@
 
     const editor = createEditor({
         selector: '#editor-container',
-        html: '{{.channel.Description}}',
+        html: '${.channel.Description}$',
         config: editorConfig,
         mode: 'default', // or 'simple'
     })

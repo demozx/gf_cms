@@ -20,6 +20,9 @@ var (
 		Usage: "main",
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
+			// 设置模板标签分隔符
+			g.View().SetDelimiters("${", "}$")
+
 			//设置服务启动时间
 			runtime.Runtime().SetServerStartAt()
 			s := g.Server()

@@ -55,7 +55,7 @@ function member_stop(obj, id) {
 //自定义的render渲染输出多列表格
 var layout = [
 	{
-		name: '菜单名称',
+		name: '栏目名称',
 		treeNodes: true,
 		headerClass: 'value_col',
 		colClass: 'value_col',

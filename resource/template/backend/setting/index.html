@@ -17,74 +17,74 @@
     <form class="layui-form layui-form-pane" action="">
         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
             <ul class="layui-tab-title">
-                {{ range $key, $groups := .settings }}
-                <li {{ if not $key }}class="layui-this" {{ end }}>{{ $groups.Title }}</li>
-                {{ end }}
+                ${ range $key, $groups := .settings }$
+                <li ${ if not $key }$class="layui-this" ${ end }$>${ $groups.Title }$</li>
+                ${ end }$
             </ul>
             <div class="layui-tab-content" style="height: 100px;">
-                {{ range $key, $groups := .settings }}
-                <div class="layui-tab-item {{ if not $key }}layui-show{{ end }}">
-                    {{ range $config := $groups.Children }}
+                ${ range $key, $groups := .settings }$
+                <div class="layui-tab-item ${ if not $key }$layui-show${ end }$">
+                    ${ range $config := $groups.Children }$
 
-                    {{ if eq $config.Type "text" }}
+                    ${ if eq $config.Type "text" }$
                     <!-- 文本框开始 -->
                     <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">{{ $config.Title }}</label>
+                        <label class="layui-form-label" style="width: 160px;">${ $config.Title }$</label>
                         <div class="layui-input-block" style="margin-left: 160px;">
                             <input type="text"
-                                   name="{{ $config.Name }}"
-                                   value="{{system_setting $config.Name}}"
+                                   name="${ $config.Name }$"
+                                   value="${system_setting $config.Name}$"
                                    autocomplete="off"
-                                   placeholder="{{ $config.Tip }}"
+                                   placeholder="${ $config.Tip }$"
                                    class="layui-input">
                         </div>
                     </div>
                     <!-- 文本框结束 -->
-                    {{ end }}
+                    ${ end }$
 
-                    {{ if eq $config.Type "textarea" }}
+                    ${ if eq $config.Type "textarea" }$
                     <!-- 文本域开始 -->
                     <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">{{ $config.Title }}</label>
+                        <label class="layui-form-label">${ $config.Title }$</label>
                         <div class="layui-input-block">
-                            <textarea placeholder="{{ $config.Tip }}"
+                            <textarea placeholder="${ $config.Tip }$"
                                       class="layui-textarea"
-                                      name="{{ $config.Name }}">{{system_setting $config.Name}}</textarea>
+                                      name="${ $config.Name }$">${system_setting $config.Name}$</textarea>
                         </div>
                     </div>
                     <!-- 文本域结束 -->
-                    {{ end }}
-                    {{ if eq $config.Type "radio" }}
+                    ${ end }$
+                    ${ if eq $config.Type "radio" }$
                     <!-- radio开始 -->
                     <div class="layui-form-item" pane="">
-                        <label class="layui-form-label" style="width: 160px;">{{ $config.Title }}</label>
+                        <label class="layui-form-label" style="width: 160px;">${ $config.Title }$</label>
                         <div class="layui-input-block" style="margin-left: 160px;">
-                            {{ range $option := $config.Options }}
+                            ${ range $option := $config.Options }$
                             <input type="radio"
-                                   name="{{ $config.Name }}"
-                                   value="{{ $option.Value }}"
-                                   title="{{ $option.Title }}"
-                                   {{ if eq (system_setting $config.Name) $option.Value }} checked {{ end }}>
-                            {{ end }}
+                                   name="${ $config.Name }$"
+                                   value="${ $option.Value }$"
+                                   title="${ $option.Title }$"
+                                   ${ if eq (system_setting $config.Name) $option.Value }$ checked ${ end }$>
+                            ${ end }$
                         </div>
                     </div>
                     <!-- radio结束 -->
-                    {{ end }}
-                    {{ if eq $config.Type "image" }}
+                    ${ end }$
+                    ${ if eq $config.Type "image" }$
                     <!-- 图片开始 -->
                     <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 160px;">{{ $config.Title }}</label>
+                        <label class="layui-form-label" style="width: 160px;">${ $config.Title }$</label>
                         <div class="layui-input-block">
-                            <input style="width: 60%;display: inline;" type="text" id="{{ $config.Name }}_text" name="{{ $config.Name }}" placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off" class="layui-input" value="{{ system_setting $config.Name }}">
-                            <button style="margin-left: -5px;margin-bottom: 3px;" type="button" class="layui-btn" id="{{ $config.Name }}_button">
+                            <input style="width: 60%;display: inline;" type="text" id="${ $config.Name }$_text" name="${ $config.Name }$" placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off" class="layui-input" value="${ system_setting $config.Name }$">
+                            <button style="margin-left: -5px;margin-bottom: 3px;" type="button" class="layui-btn" id="${ $config.Name }$_button">
                                 <i class="layui-icon"></i>
                                 上传图片
                             </button><input class="layui-upload-file" type="file" accept="undefined" name="file">
-                            {{ if system_setting $config.Name  }}
+                            ${ if system_setting $config.Name  }$
                             <div class="layui-upload-list" style="margin-left: 50px;">
-                                <img class="layui-upload-img" id="weixin_qr_code" src="{{ system_setting $config.Name }}" style="width: 100px;">
+                                <img class="layui-upload-img" id="weixin_qr_code" src="${ system_setting $config.Name }$" style="width: 100px;">
                             </div>
-                            {{ end }}
+                            ${ end }$
                         </div>
                         <script>
                             layui.use(['upload', 'jquery'], function() {
@@ -92,13 +92,13 @@
                                 var $ = layui.$;
                                 //执行实例
                                 var uploadInst = upload.render({
-                                    elem    : '#{{ $config.Name }}_button' //绑定元素
+                                    elem    : '#${ $config.Name }$_button' //绑定元素
                                     , url   : '/mgr-page.php/article/litpic.html' //上传接口
                                     , done  : function(res) {
                                         //上传完毕回调
                                         if (res['code'] == 0) {
-                                            $('#{{ $config.Name }}_code').attr('src', res['path']);
-                                            $('#{{ $config.Name }}_text').val(res['path']);
+                                            $('#${ $config.Name }$_code').attr('src', res['path']);
+                                            $('#${ $config.Name }$_text').val(res['path']);
                                         } else {
                                             layer.msg(res['error'], {
                                                 time : 3000,
@@ -132,11 +132,11 @@
                         </script>
                     </div>
                     <!-- 图片结束 -->
-                    {{ end }}
+                    ${ end }$
 
-                    {{ end }}
+                    ${ end }$
                 </div>
-                {{ end }}
+                ${ end }$
                 <!--公共提交按钮-->
                 <div class="layui-form-item">
                     <button class="layui-btn" lay-submit="" lay-filter="submit">提交</button>
@@ -180,7 +180,7 @@
             //console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             //console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             //console.log(data.id)
-            $.post('{{ backend_api_url "/setting/save" }}', data.field, function (res) {
+            $.post('${ backend_api_url "/setting/save" }$', data.field, function (res) {
                 console.log(res);
                 if (res.code === 0) {
                     layer.msg(res.message, {

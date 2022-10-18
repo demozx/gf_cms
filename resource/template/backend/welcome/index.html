@@ -57,67 +57,67 @@
                         <tbody>
                         <tr>
                             <td>系统端口</td>
-                            <td>{{ .server_address }}</td>
+                            <td>${ .server_address }$</td>
                         </tr>
                         <tr>
                             <td>项目标识</td>
-                            <td>{{ .project_name }}</td>
+                            <td>${ .project_name }$</td>
                         </tr>
                         <tr>
                             <td>服务器名称</td>
-                            <td>{{ .host_info.Hostname }}</td>
+                            <td>${ .host_info.Hostname }$</td>
                         </tr>
                         <tr>
                             <td>服务器IP</td>
-                            <td>{{ .ip }}</td>
+                            <td>${ .ip }$</td>
                         </tr>
                         <tr>
                             <td>系统内核</td>
-                            <td>{{ .host_info.OS }}</td>
+                            <td>${ .host_info.OS }$</td>
                         </tr>
                         <tr>
                             <td>内核版本</td>
-                            <td>{{ .host_info.KernelVersion }}</td>
+                            <td>${ .host_info.KernelVersion }$</td>
                         </tr>
                         <tr>
                             <td>系统平台</td>
-                            <td>{{ .host_info.Platform }}</td>
+                            <td>${ .host_info.Platform }$</td>
                         </tr>
                         <tr>
                             <td>平台版本</td>
-                            <td>{{ .host_info.PlatformVersion }}</td>
+                            <td>${ .host_info.PlatformVersion }$</td>
                         </tr>
                         <tr>
                             <td>系统架构</td>
-                            <td>{{ .host_info.KernelArch }}</td>
+                            <td>${ .host_info.KernelArch }$</td>
                         </tr>
                         <tr>
                             <td>处理器信息</td>
-                            <td>{{ .cpu_info.ModelName }}&nbsp;&nbsp;{{ .cpu_num }}核</td>
+                            <td>${ .cpu_info.ModelName }$&nbsp;&nbsp;${ .cpu_num }$核</td>
                         </tr>
                         <tr>
                             <td>GO版本</td>
-                            <td>{{ .go_version }}</td>
+                            <td>${ .go_version }$</td>
                         </tr>
                         <tr>
                             <td>环境路径</td>
-                            <td>{{ .go_root }}</td>
+                            <td>${ .go_root }$</td>
                         </tr>
                         <tr>
                             <td>项目路径</td>
-                            <td>{{ .system_root }}</td>
+                            <td>${ .system_root }$</td>
                         </tr>
                         <tr>
                             <td>上传文件限制</td>
-                            <td>{{ system_config `server.clientMaxBodySize` }}</td>
+                            <td>${ system_config `server.clientMaxBodySize` }$</td>
                         </tr>
                         <tr>
                             <td>启动时间</td>
-                            <td>{{ .server_start_at|date "Y-m-d H:i:s" }}</td>
+                            <td>${ .server_start_at|date "Y-m-d H:i:s" }$</td>
                         </tr>
                         <tr>
                             <td>运行时长</td>
-                            <td id="server_start_duration">{{ .server_start_duration }}</td>
+                            <td id="server_start_duration">${ .server_start_duration }$</td>
                         </tr>
                         </tbody>
                     </table>
@@ -162,7 +162,7 @@
             labelMinFontSize: 18,
             minLabelMinFontSize: 18,
             maxLabelMinFontSize: 18,
-            label: "CPU\n{{ .cpu_info.Mhz }}Mhz {{ .cpu_num }}核"
+            label: "CPU\n${ .cpu_info.Mhz }$Mhz ${ .cpu_num }$核"
         });
         var Memory = new JustGage({
             id: "memory",
@@ -221,7 +221,7 @@
         }, 3000);
 
         function getRuntimeInfo() {
-            $.post('{{ backend_api_url "/welcome/index" }}', {}, function (res) {
+            $.post('${ backend_api_url "/welcome/index" }$', {}, function (res) {
                 // console.log(res.data);
                 let load1 = parseFloat(res.data['load']['Load1']).toFixed(2);
                 let loadPercent = res.data['loadPercent'];

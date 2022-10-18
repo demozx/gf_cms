@@ -48,14 +48,14 @@
 
                             <select name="pid" id="pid-select" lay-verify="required" lay-filter="pid-select">
                                 <option value="0" data-level="0">顶级分类</option>
-                                {{range $key, $item := .channelTree}}
+                                ${range $key, $item := .channelTree}$
                                 <option
-                                        value="{{ $item.Id }}"
-                                        data-level="{{ $item.Level }}"
-                                        {{if $item.Selected}}selected{{end}}
-                                >{{ $item.Name }}
+                                        value="${ $item.Id }$"
+                                        data-level="${ $item.Level }$"
+                                        ${if $item.Selected}$selected${end}$
+                                >${ $item.Name }$
                                 </option>
-                                {{end}}
+                                ${end}$
                             </select>
 
                         </div>
@@ -144,9 +144,9 @@
                         <div class="layui-input-block">
                             <select name="model">
                                 <option value="">请选择模型</option>
-                                {{range $key, $value := .modelMap}}
-                                <option value="{{$key}}">{{$value}}</option>
-                                {{end}}
+                                ${range $key, $value := .modelMap}$
+                                <option value="${$key}$">${$value}$</option>
+                                ${end}$
                             </select>
                         </div>
                     </div>
@@ -213,7 +213,7 @@
         form.on('submit(add)', function (data) {
             console.log(data.field);
             //发异步，把数据提交给php
-            $.post('{{ backend_api_url `/channel/add` }}', data.field, function (res) {
+            $.post('${ backend_api_url `/channel/add` }$', data.field, function (res) {
                 //console.log(res);
                 if (res.code === 0) {
                     //添加成功
@@ -299,7 +299,7 @@
         //执行实例
         var uploadInst = upload.render({
             elem: '#topicImg' //绑定元素
-            , url: '{{backend_api_url `/upload/single_image`}}' //上传接口
+            , url: '${backend_api_url `/upload/single_image`}$' //上传接口
             , done: function (res) {
                 //上传完毕回调
                 if (res.code === 0) {
@@ -349,10 +349,10 @@
         MENU_CONF: {}
     }
     editorConfig.MENU_CONF['uploadImage'] = {
-        server: '{{backend_api_url `/upload/single_image`}}',
+        server: '${backend_api_url `/upload/single_image`}$',
         fieldName: 'file',
         allowedFileTypes: ['image/*'],
-        maxFileSize: '{{system_config `server.clientMaxBodySize`}}',
+        maxFileSize: '${system_config `server.clientMaxBodySize`}$',
         // 自定义插入图片
         customInsert(res, insertFn) {                  // JS 语法
             // 从 res 中找到 url alt href ，然后插入图片
@@ -363,10 +363,10 @@
         },
     }
     editorConfig.MENU_CONF['uploadVideo'] = {
-        server: '{{backend_api_url `/upload/single_video`}}',
+        server: '${backend_api_url `/upload/single_video`}$',
         fieldName: 'file',
         allowedFileTypes: ['video/*'],
-        maxFileSize: '{{system_config `server.clientMaxBodySize`}}',
+        maxFileSize: '${system_config `server.clientMaxBodySize`}$',
         // 自定义插入视频
         customInsert(res, insertFn) {                  // JS 语法
             // 从 res 中找到 url alt href ，然后插入视频

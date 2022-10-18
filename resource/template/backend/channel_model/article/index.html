@@ -17,18 +17,6 @@
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
-        .layui-form-switch {
-            width: 55px;
-        }
-
-        .layui-form-switch em {
-            width: 40px;
-        }
-
-        .layui-form-onswitch i {
-            left: 45px;
-        }
-
         .litpic {
             /*height:24px;*/
         }
@@ -62,9 +50,9 @@
 </head>
 
 <body>
-{{if eq .withTab true}}
-{{include "backend/channel_model/tab.html" .}}
-{{end}}
+${if eq .withTab true}$
+${include "backend/channel_model/public/tab.html" .}$
+${end}$
 <div class="weadmin-nav">
 			<span class="layui-breadcrumb">
         <a href="">首页</a>
@@ -75,7 +63,7 @@
       </span>
     <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
        href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
+        <i class="layui-icon" style="line-height:30px">&#xe669;</i></a>
 </div>
 <div class="weadmin-body">
     <div class="layui-row">
@@ -83,16 +71,18 @@
             <div class="layui-input-inline">
                 <select name="catid" id="catid">
                     <option value="" data-level="0">-请选择栏目-</option>
-                    {{range $key, $item := .channelTree}}
-                    <option value="{{$item.Id}}" data-level="{{$item.Level}}" {{if $item.Selected}}selected{{end}}>{{$item.Name}}</option>
-                    {{end}}
+                    ${range $key, $item := .channelTree}$
+                    <option value="${$item.Id}$" data-level="${$item.Level}$" ${if $item.Selected}$selected${end}$>
+                        ${$item.Name}$
+                    </option>
+                    ${end}$
                 </select>
             </div>
             <div class="layui-inline">
-                <input class="layui-input" placeholder="开始时间" readonly name="start" id="start">
+                <input class="layui-input" placeholder="开始时间" readonly name="start_at" id="start">
             </div>
             <div class="layui-inline">
-                <input class="layui-input" placeholder="结束时间" readonly name="end" id="end">
+                <input class="layui-input" placeholder="结束时间" readonly name="end_at" id="end">
             </div>
             <div class="layui-inline">
                 <input type="text" name="keyword" id="keyword" placeholder="请输入关键字" autocomplete="off"
@@ -117,27 +107,26 @@
 
 
     <script type="text/html" id="recommendTpl">
-        <input type="checkbox" id="flag_r_{@d.id@}>" name="flag[]" class="flag_r" value="{@d.id@}" lay-skin="switch"
-               lay-filter="flag" lay-text="已推荐|未推荐" {@d.flag.indexOf('r')!=-1 ? 'checked' : ''@}>
+        <input type="checkbox" id="flag_r_{{d.id}}>" name="flag[]" class="flag_r" value="{{d.id}}" lay-skin="switch"
+               lay-filter="flag" lay-text="已推荐|未推荐">
     </script>
     <script type="text/html" id="topTpl">
-        <input type="checkbox" id="flag_t_{@d.id@}" name="flag[]" class="flag_t" value="{@d.id@}" lay-skin="switch"
-               lay-filter="flag" lay-text="已置顶|未置顶" {@d.flag.indexOf('t')!=-1 ? 'checked' : ''@}>
+        <input type="checkbox" id="flag_t_{{d.id}}" name="flag[]" class="flag_t" value="{{d.id}}" lay-skin="switch"
+               lay-filter="flag" lay-text="已置顶|未置顶">
     </script>
     <script type="text/html" id="reviewTpl">
-        <input type="checkbox" id="review_{@d.id@}" class="review" name="review" value="{@d.id@}" title="审核"
-               lay-filter="review" {@ d.read== 1 ? 'checked' : '' @}>
+        <input type="checkbox" id="review_{{d.id}}" class="review" name="review" value="{{d.id}}" title="审核"
+               lay-filter="review">
     </script>
 
     <script type="text/html" id="operateTpl">
-        <a title="编辑" onclick="WeAdminEdit('编辑','{:url(\"
-           admin/article/edit\")}?aid=<{d.id}>', '', 1000, 500)" href="javascript:;">
-        <i class="layui-icon">&#xe642;</i>
+        <a title="编辑" onclick="WeAdminEdit('编辑','', '', 1000, 500)" href="javascript:;">
+            <i class="layui-icon">&#xe642;</i>
         </a>
-        <a title="查看" href="javascript:;" class="preView" data-id="{@d.id@}">
+        <a title="查看" href="javascript:;" class="preView" data-id="{{d.id}}">
             <i class="layui-icon">&#xe63c;</i>
         </a>
-        <a title="删除" onclick="member_del(this,'<{d.id}>')" href="javascript:;">
+        <a title="删除" onclick="member_del(this,'{{d.id}}')" href="javascript:;">
             <i class="layui-icon">&#xe640;</i>
         </a>
     </script>
@@ -147,7 +136,7 @@
             admin: '{/}../../resource/backend/js/admin'
         });
 
-        layui.use(['table', 'jquery', 'form', 'admin', 'laydate'], function () {
+        layui.use(['table', 'jquery', 'form', 'admin', 'laydate',], function () {
             var table = layui.table,
                 $ = layui.jquery,
                 form = layui.form,
@@ -158,36 +147,49 @@
                 elem: '#articleList',
                 cellMinWidth: 100,
                 cellMinHeight: 100,
-                url: location.href,
+                url: '${ backend_api_url `/article/index` }$',
+                method: "post",
+                request: {
+                    pageName: 'page'
+                    , limitName: 'size'
+                },
+                parseData: function (res) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                },
                 cols: [
                     [{
                         type: 'checkbox', fixed: 'left'
                     }, {
                         field: 'id', title: 'ID', width: 70, sort: true, fixed: 'left'
                     }, {
-                        field: 'litpic',
+                        field: 'thumb',
                         title: '缩略图',
                         width: 110,
-                        style: 'height:100px;width:100px;',
-                        templet: '<div><img src="{@ d.litpic @}"></div>'
+                        style: 'height:110px;width:110px;',
+                        templet: '<div><img src="{{ d.thumb }}"></div>'
                     }, {
                         field: 'title', title: '标题', width: 200, templet: '#usernameTpl'
                     }, {
-                        field: 'createdate', title: '发布时间', width: 164, sort: true
+                        field: 'created_at', title: '发布时间', width: 164, sort: true
                     }, {
-                        field: 'cat_name', title: '分类', sort: true
+                        field: 'channel_name', title: '分类', sort: true
                     }, {
                         field: 'flag', title: '推荐', templet: '#recommendTpl', unresize: true
                     }, {
                         field: 'flag', title: '置顶', templet: '#topTpl', unresize: true
                     }, {
-                        field: 'read', title: '审核', templet: '#reviewTpl', unresize: true
+                        field: 'status', title: '审核', templet: '#reviewTpl', unresize: true
                     }, {
-                        field: 'click', title: '点击', width: 80, sort: true
+                        field: 'click_num', title: '点击', width: 80, sort: true
                     }, {
-                        field: 'sort',
+                        field: 'list_order',
                         title: '排序',
-                        templet: '<div style="line-height: 100px;"><input lay-verify="required" autocomplete="off" class="layui-input sort" id="sort_{@ d.id @}" data-id="{@ d.id @}" type="number" value="{@ d.sort @}"></div>'
+                        templet: '<div style="line-height: 100px;"><input lay-verify="required" autocomplete="off" class="layui-input sort" id="sort_{{ d.id }}" data-id="{{ d.id }}" type="number" value="{{d.sort}}"></div>'
                     }, {
                         field: 'operate', title: '操作', toolbar: '#operateTpl', unresize: true, fixed: 'right'
                     }]
@@ -222,14 +224,14 @@
                     var end = $('#end');
                     var keyword = $('#keyword');
                     //执行重载
-                    table.reload('articleList', {
+                    table.reload('${ backend_api_url `/article/index`}$', {
                         page: {
                             curr: nowPage //重新从第 N 页开始
                         }
                         , where: {
-                            catid: catid.val(),
-                            start: start.val(),
-                            end: end.val(),
+                            channel_id: catid.val(),
+                            start_at: start.val(),
+                            end_at: end.val(),
                             keyword: keyword.val(),
                         },
                     });

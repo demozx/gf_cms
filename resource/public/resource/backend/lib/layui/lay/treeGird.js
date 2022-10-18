@@ -11,8 +11,8 @@ layui.define("jquery", function(e) {
             arrow: ["&#xe623;", "&#xe625;"],
             checkbox: ["&#xe626;", "&#xe627;"],
             radio: ["&#xe62b;", "&#xe62a;"],
-            branch: ["&#xe622;", "&#xe624;"],
-            leaf: "&#xe621;"
+            branch: ["", ""],
+            leaf: ""
         },
         index = 1,
         tt = {},
@@ -136,7 +136,7 @@ layui.define("jquery", function(e) {
                     p = treeNode.parentId == 'root' ? null : treeNode.parentId;
                 }
                 var l = n.children && n.children.length > 0,
-                    str = o(['<tr class="' + (p ? "layui-hide" : "") + '" id="' + n.id + '">', function() {
+                    str = o(['<tr class="' + (p ? "layui-hide" : "") + '" id="' + n.id + '" data-type="'+n.model+'">', function() {
                         return '<td style="width:2%">' + index + '</td>';
                     }(), function() {
                         var ret = ""

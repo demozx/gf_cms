@@ -27,7 +27,7 @@
             </label>
             <div class="layui-input-block">
                 <input type="text" id="name" name="title" required="" lay-verify="required" autocomplete="off"
-                       value="{{.role.Title}}"
+                       value="${.role.Title}$"
                        class="layui-input">
             </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="layui-input-block">
                 <textarea id="description" name="description" required="" lay-verify="required"
                           autocomplete="off"
-                          class="layui-textarea">{{.role.Description}}</textarea>
+                          class="layui-textarea">${.role.Description}$</textarea>
             </div>
         </div>
         <div class="layui-form-item">
@@ -48,8 +48,8 @@
             <div class="layui-input-block">
                 <input type="checkbox" name="status" lay-skin="switch"
                        value="1"
-                       {{if eq .role.IsEnable 1}}checked{{end}}
-                       {{if eq $.role.IsSystem 1}}disabled=""{{end}}
+                       ${if eq .role.IsEnable 1}$checked${end}$
+                       ${if eq $.role.IsSystem 1}$disabled=""${end}$
                        lay-text="启用|停用">
             </div>
         </div>
@@ -57,29 +57,29 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">
                 <span class="we-red">*</span>拥有权限
-                {{if eq $.role.IsSystem 1}}<span style="color: red">系统角色拥有所有权限且无法取消</span>{{end}}
+                ${if eq $.role.IsSystem 1}$<span style="color: red">系统角色拥有所有权限且无法取消</span>${end}$
             </label>
             <table class="layui-table layui-input-block work">
                 <tbody>
-                {{range $key, $item := .backendAllPermissions}}
+                ${range $key, $item := .backendAllPermissions}$
                 <tr class="row" data-row="1">
                     <td rowspan="2" class="row_all">
-                        {{$item.Title}}
+                        ${$item.Title}$
                         <input type="checkbox" lay-filter="row_all"
-                               {{if eq $.role.IsSystem 1}}disabled=""{{end}}
+                               ${if eq $.role.IsSystem 1}$disabled=""${end}$
                         >
                     </td>
                     <td>视图</td>
                     <td>
                         <div class="layui-input-block layui-row">
-                            {{range $_key, $_permission := $item.BackendViewPermissions}}
+                            ${range $_key, $_permission := $item.BackendViewPermissions}$
                             <div class="layui-col-md4">
                                 <input name="rules[backend][]" type="checkbox" class="checkbox" lay-filter="checkbox"
-                                       {{if eq $_permission.HasPermission true}}checked{{end}}
-                                       {{if eq $.role.IsSystem 1}}disabled="" checked{{end}}
-                                       value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
+                                       ${if eq $_permission.HasPermission true}$checked${end}$
+                                       ${if eq $.role.IsSystem 1}$disabled="" checked${end}$
+                                       value="${$item.Slug}$.${$_permission.Slug}$"> ${$_permission.Title}$
                             </div>
-                            {{end}}
+                            ${end}$
                         </div>
                     </td>
                 </tr>
@@ -87,24 +87,24 @@
                     <td>接口</td>
                     <td>
                         <div class="layui-input-block layui-row">
-                            {{range $_key, $_permission := $item.BackendApiPermissions}}
+                            ${range $_key, $_permission := $item.BackendApiPermissions}$
                             <div class="layui-col-md4">
                                 <input name="rules[backend_api][]" type="checkbox" class="checkbox" lay-filter="checkbox"
-                                       {{if eq $_permission.HasPermission true}}checked{{end}}
-                                       {{if eq $.role.IsSystem 1}}disabled="" checked{{end}}
-                                       value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
+                                       ${if eq $_permission.HasPermission true}$checked${end}$
+                                       ${if eq $.role.IsSystem 1}$disabled="" checked${end}$
+                                       value="${$item.Slug}$.${$_permission.Slug}$"> ${$_permission.Title}$
                             </div>
-                            {{end}}
+                            ${end}$
                         </div>
                     </td>
                 </tr>
-                {{end}}
+                ${end}$
                 </tbody>
             </table>
         </div>
 
         <div class="layui-form-item">
-            <input name="id" value="{{.role.Id}}" type="hidden">
+            <input name="id" value="${.role.Id}$" type="hidden">
             <button class="layui-btn" lay-submit="" lay-filter="edit">修改</button>
         </div>
     </form>
@@ -140,7 +140,7 @@
                 layer.msg('至少要给一个权限', {icon: 5, anim: 6});
                 return false;
             }
-            $.post('{{backend_api_url `/role/edit`}}', data.field, function (res) {
+            $.post('${backend_api_url `/role/edit`}$', data.field, function (res) {
                 if (res.code === 0) {
                     //编辑成功
                     layer.msg("编辑成功", {

@@ -55,21 +55,21 @@
             </label>
             <table class="layui-table layui-input-block work">
                 <tbody>
-                {{range $key, $item := .backendAllPermissions}}
+                ${range $key, $item := .backendAllPermissions}$
                 <tr class="row" data-row="1">
                     <td rowspan="2" class="row_all">
-                        {{$item.Title}}
+                        ${$item.Title}$
                         <input type="checkbox" lay-filter="row_all">
                     </td>
                     <td>视图</td>
                     <td>
                         <div class="layui-input-block layui-row">
-                            {{range $_key, $_permission := $item.BackendViewPermissions}}
+                            ${range $_key, $_permission := $item.BackendViewPermissions}$
                             <div class="layui-col-md4">
                                 <input name="rules[backend][]" type="checkbox" class="checkbox" lay-filter="checkbox"
-                                       value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
+                                       value="${$item.Slug}$.${$_permission.Slug}$"> ${$_permission.Title}$
                             </div>
-                            {{end}}
+                            ${end}$
                         </div>
                     </td>
                 </tr>
@@ -77,16 +77,16 @@
                     <td>接口</td>
                     <td>
                         <div class="layui-input-block layui-row">
-                            {{range $_key, $_permission := $item.BackendApiPermissions}}
+                            ${range $_key, $_permission := $item.BackendApiPermissions}$
                             <div class="layui-col-md4">
                                 <input name="rules[backend_api][]" type="checkbox" class="checkbox" lay-filter="checkbox"
-                                       value="{{$item.Slug}}.{{$_permission.Slug}}"> {{$_permission.Title}}
+                                       value="${$item.Slug}$.${$_permission.Slug}$"> ${$_permission.Title}$
                             </div>
-                            {{end}}
+                            ${end}$
                         </div>
                     </td>
                 </tr>
-                {{end}}
+                ${end}$
                 </tbody>
             </table>
         </div>
@@ -152,7 +152,7 @@
                 layer.msg('至少要给一个权限', {icon: 5, anim: 6});
                 return false;
             }
-            $.post('{{backend_api_url `/role/add`}}', data.field, function (res) {
+            $.post('${backend_api_url `/role/add`}$', data.field, function (res) {
                 if (res.code === 0) {
                     //添加成功
                     layer.msg("增加成功", {

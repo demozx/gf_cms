@@ -20,7 +20,7 @@
 <!-- 顶部开始 -->
 <div class="container">
     <div class="logo">
-        <a href='{{ backend_url "/"  }}'>{{ system_setting "web_name" }}</a>
+        <a href='${ backend_url "/"  }$'>${ system_setting "web_name" }$</a>
     </div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
@@ -40,11 +40,11 @@
     </ul>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:;">{{ .admin_session.name }}</a>
+            <a href="javascript:;">${ .admin_session.name }$</a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd>
-                    <a href="javascript:;" class="logout" data-href='{{ backend_api_url "/admin/logout"  }}'>退出</a>
+                    <a href="javascript:;" class="logout" data-href='${ backend_api_url "/admin/logout"  }$'>退出</a>
                 </dd>
             </dl>
         </li>
@@ -63,25 +63,25 @@
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
-            {{range $key, $item := .backend_menu}}
+            ${range $key, $item := .backend_menu}$
             <li>
                 <a href="javascript:;">
                     <i class="iconfont"></i>
-                    <cite>{{$item.Title}}</cite>
+                    <cite>${$item.Title}$</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu">
-                    {{range $key, $subItem := $item.Children}}
+                    ${range $key, $subItem := $item.Children}$
                     <li>
-                        <a _href='{{$subItem.Route | backend_url}}'>
+                        <a _href='${$subItem.Route | backend_url}$'>
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>{{$subItem.Title}}</cite>
+                            <cite>${$subItem.Title}$</cite>
                         </a>
                     </li>
-                    {{end}}
+                    ${end}$
                 </ul>
             </li>
-            {{end}}
+            ${end}$
         </ul>
     </div>
 </div>
@@ -95,7 +95,7 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='{{ backend_url "/welcome/index" }}' frameborder="0" scrolling="yes" class="weIframe"></iframe>
+                <iframe src='${ backend_url "/welcome/index" }$' frameborder="0" scrolling="yes" class="weIframe"></iframe>
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Copyright ©{{ .|date "Y" }} All Rights Reserved &emsp;{{ system_setting "web_name" }}</div>
+    <div class="copyright">Copyright ©${ .|date "Y" }$ All Rights Reserved &emsp;${ system_setting "web_name" }$</div>
 </div>
 <!-- 底部结束 -->
 <script type="text/javascript">
@@ -131,7 +131,7 @@
                 btn: ['确定', '取消']
                 , yes: function () {
                     //ajax清理缓存
-                    $.post('{{ backend_api_url "/admin/clear_cache" }}', function (res) {
+                    $.post('${ backend_api_url "/admin/clear_cache" }$', function (res) {
                         //console.log(res)
                         if (res['code'] === 0) {
                             layer.msg(res['message'], {
@@ -150,7 +150,7 @@
         });
         //退出登录
         $('.logout').click(function () {
-            $.post('{{ backend_api_url "/admin/logout" }}', function () {
+            $.post('${ backend_api_url "/admin/logout" }$', function () {
                 top.location.reload()
             })
         });

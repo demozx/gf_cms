@@ -20,9 +20,8 @@
     </style>
 </head>
 <body class="login-bg">
-
 <div class="login">
-    <div class="message">{{ system_setting "web_name" }} 后台管理</div>
+    <div class="message">${ system_setting "web_name" }$ 后台管理</div>
     <div id="darkbannerwrap"></div>
 
     <form method="post" class="layui-form">
@@ -60,7 +59,7 @@
 
         //刷新验证码方法
         function reloadCaptcha() {
-            $.get('{{ backend_api_url "/captcha/get" }}', {time: new Date().getTime()}, function (res) {
+            $.get('${ backend_api_url "/captcha/get" }$', {time: new Date().getTime()}, function (res) {
                 $('#captcha_img').attr('src', res.data['b64s'])
                 $('#captcha_id').val(res.data['id'])
             })
@@ -73,14 +72,14 @@
         //监听提交
         form.on('submit(login)', function (data) {
             var data = $("form").serialize();
-            $.post('{{ backend_api_url "/admin/login" }}', data, function (result) {
+            $.post('${ backend_api_url "/admin/login" }$', data, function (result) {
                 console.log(result)
                 if (!result.code) {
                     layer.msg(result.message, {
                         icon: 6
                         , time: 500
                     }, function () {
-                        location.href = '{{ backend_url "/" }}'
+                        location.href = '${ backend_url "/" }$'
                     })
                 } else {
                     //刷新验证码

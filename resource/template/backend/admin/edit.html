@@ -25,7 +25,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" name="username"
-                       value="{{.admin.Username}}"
+                       value="${.admin.Username}$"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -38,7 +38,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" name="name"
-                       value="{{.admin.Name}}"
+                       value="${.admin.Name}$"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -48,7 +48,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text"name="tel"
-                       value="{{.admin.Tel}}"
+                       value="${.admin.Tel}$"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -58,7 +58,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" name="email"
-                       value="{{.admin.Email}}"
+                       value="${.admin.Email}$"
                        autocomplete="off" class="layui-input">
             </div>
 
@@ -66,19 +66,19 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span class="we-red">*</span>角色</label>
             <div class="layui-input-block">
-                {{range $key, $item := $.roleIdTitleArr}}
-                <input type="checkbox" name="role[]" title="{{$item.Title}}" value="{{$item.Id}}" lay-skin="primary"
-                       {{range $_key, $_item := $.roleAccounts}}
-                       {{if eq $item.Id $_item.RoleId}}checked{{end}}
-                       {{end}}
+                ${range $key, $item := $.roleIdTitleArr}$
+                <input type="checkbox" name="role[]" title="${$item.Title}$" value="${$item.Id}$" lay-skin="primary"
+                       ${range $_key, $_item := $.roleAccounts}$
+                       ${if eq $item.Id $_item.RoleId}$checked${end}$
+                       ${end}$
                 >
-                {{end}}
+                ${end}$
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label"><span class="we-red">*</span>状态</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="启用|停用" {{if eq .admin.Status 1}}checked{{end}}>
+                <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="启用|停用" ${if eq .admin.Status 1}$checked${end}$>
             </div>
         </div>
         <div class="layui-form-item">
@@ -104,7 +104,7 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label"></label>
-            <input type="hidden" name="id" value="{{.admin.Id}}">
+            <input type="hidden" name="id" value="${.admin.Id}$">
             <button  class="layui-btn" lay-filter="edit" lay-submit="">修改</button>
         </div>
     </form>
@@ -125,7 +125,7 @@
             var serialize = $('.layui-form').serializeArray();
             console.log(data);
             console.log(serialize);
-            $.post('{{backend_api_url `/admin/edit`}}',data.field,function(res){
+            $.post('${backend_api_url `/admin/edit`}$',data.field,function(res){
                 if(res.code === 0){
                     layer.msg("修改成功", {icon: 6,time:800},function () {
                         // 获得frame索引

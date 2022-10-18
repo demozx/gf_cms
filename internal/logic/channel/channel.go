@@ -45,10 +45,10 @@ func (*sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendA
 	var channelBackendApiList []*model.ChannelBackendApiListItem
 	for key, channel := range allChannels {
 		if channel.Thumb != "" {
-			channel.Name = channel.Name + "<span style='color:red;font-size: 12px;margin: 0 2px;'>图</span><span id='id_" + gconv.String(channel.Id) + "' class='cate_id'>&nbsp;id:" + gconv.String(channel.Id) + "</span>"
+			channel.Name = channel.Name + "<span style='color:red;font-size: 12px;margin: 0 2px;'>图</span><span id='id_" + gconv.String(channel.Id) + "' class='cate_id'>&nbsp;ID:" + gconv.String(channel.Id) + "</span>"
 
 		} else {
-			channel.Name = channel.Name + "<span id='id_" + gconv.String(channel.Id) + "' class='cate_id'>&nbsp;id:" + gconv.String(channel.Id) + "</span>"
+			channel.Name = channel.Name + "<span id='id_" + gconv.String(channel.Id) + "' class='cate_id'>&nbsp;ID:" + gconv.String(channel.Id) + "</span>"
 		}
 		allChannels[key] = channel
 	}
@@ -135,9 +135,9 @@ func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPi
 	for key, item := range newList {
 		var emsp = ""
 		for i := 0; i < item.Level; i++ {
-			emsp += "&emsp;&emsp;"
+			emsp += "└"
 		}
-		newList[key].Name = emsp + "├" + item.Name
+		newList[key].Name = "" + emsp + "&nbsp;" + item.Name
 		if item.Id == selectedPid {
 			newList[key].Selected = 1
 		}

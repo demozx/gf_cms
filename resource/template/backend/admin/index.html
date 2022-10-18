@@ -27,13 +27,13 @@
       </span>
     <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
        href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+        <i class="layui-icon" style="line-height:30px">&#xe669;</i></a>
 </div>
 <div class="weadmin-body">
 
     <div class="weadmin-block">
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="WeAdminShow('添加用户','{{backend_url `/admin/add`}}')"><i
+        <button class="layui-btn" onclick="WeAdminShow('添加用户','${backend_url `/admin/add`}$')"><i
                 class="layui-icon"></i>添加
         </button>
 
@@ -56,47 +56,47 @@
             <th>操作</th>
         </thead>
         <tbody>
-        {{range $key, $item := .list.List }}
+        ${range $key, $item := .list.List }$
         <tr>
             <td>
-                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$item.Id}}'><i
+                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${$item.Id}$'><i
                         class="layui-icon">&#xe605;</i></div>
             </td>
-            <td>{{$item.Id}}</td>
-            <td>{{$item.Username}}</td>
-            <td>{{$item.Name}}</td>
-            <td>{{$item.Tel}}</td>
-            <td>{{$item.Email}}</td>
+            <td>${$item.Id}$</td>
+            <td>${$item.Username}$</td>
+            <td>${$item.Name}$</td>
+            <td>${$item.Tel}$</td>
+            <td>${$item.Email}$</td>
             <td>
-                {{range $key, $_item:=$item.RoleAccount}}
-                <span class="layui-badge layui-bg-blue">{{$_item.Title}}</span>
-                {{end}}
+                ${range $key, $_item:=$item.RoleAccount}$
+                <span class="layui-badge layui-bg-blue">${$_item.Title}$</span>
+                ${end}$
             </td>
-            <td>{{$item.CreatedAt}}</td>
+            <td>${$item.CreatedAt}$</td>
             <td class="td-status">
-                <span class="layui-badge layui-bg-blue {{if eq $item.Status 0}}layui-bg-gray{{end}}">{{if eq $item.Status 1}}已启用{{else}}已停用{{end}}</span>
+                <span class="layui-badge layui-bg-blue ${if eq $item.Status 0}$layui-bg-gray${end}$">${if eq $item.Status 1}$已启用${else}$已停用${end}$</span>
             </td>
             <td class="td-manage">
-                <a onclick="member_stop(this,'{{$item.Id}}')" href="javascript:;"
-                   title="{{if eq $item.Status 1}}停用{{else}}启用{{end}}">
-                    <i class="layui-icon">{{if eq $item.Status 1}}&#xe601;{{else}}&#xe62f;{{end}}</i>
+                <a onclick="member_stop(this,'${$item.Id}$')" href="javascript:;"
+                   title="${if eq $item.Status 1}$停用${else}$启用${end}$">
+                    <i class="layui-icon">${if eq $item.Status 1}$&#xe601;${else}$&#xe62f;${end}$</i>
                 </a>
-                <a title="编辑" onclick="WeAdminShow('编辑','{{backend_url `/admin/edit`}}?id={{$item.Id}}')"
+                <a title="编辑" onclick="WeAdminShow('编辑','${backend_url `/admin/edit`}$?id=${$item.Id}$')"
                    href="javascript:;">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
-                <a title="删除" onclick="member_del(this,'{{$item.Id}}')" href="javascript:;">
+                <a title="删除" onclick="member_del(this,'${$item.Id}$')" href="javascript:;">
                     <i class="layui-icon">&#xe640;</i>
                 </a>
             </td>
         </tr>
-        {{end}}
+        ${end}$
         </tbody>
     </table>
     <div class="page">
         <div>
             <ul class="pagination">
-                {{.pageInfo}}
+                ${.pageInfo}$
             </ul>
         </div>
     </div>
@@ -121,7 +121,7 @@
         });
         /*用户-停用*/
         window.member_stop = function (obj, id) {
-            var url = '{{backend_api_url `/admin/status`}}';
+            var url = '${backend_api_url `/admin/status`}$';
             if ($(obj).prop('title') === '启用') {
                 layer.confirm('确认要启用吗？', function (index) {
                     //发异步把用户状态进行更改
@@ -172,7 +172,7 @@
         window.member_del = function (obj, id) {
             layer.confirm('确认要删除吗？', function (index) {
                 //发异步删除数据
-                $.post('{{backend_api_url `/admin/delete`}}', {'id': id}, function (res) {
+                $.post('${backend_api_url `/admin/delete`}$', {'id': id}, function (res) {
                     if (res.code === 0) {
                         layer.msg(res.message, {
                             time: 1000
@@ -203,7 +203,7 @@
             layer.confirm('确认要删除吗？' + data, function (index) {
                 //捉到所有被选中的，发异步进行删除
                 // console.log(data);
-                $.post('{{backend_api_url `/admin/delete_batch`}}', {'ids': data}, function (res) {
+                $.post('${backend_api_url `/admin/delete_batch`}$', {'ids': data}, function (res) {
                     if (res.code === 0) {
                         layer.msg(res.message, {
                             time: 1000

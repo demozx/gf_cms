@@ -28,7 +28,7 @@ func ChannelModel() *sChannelModel {
 
 func (*sChannelModel) ModelArticle(ctx context.Context, in *backend.ChannelModelIndexReq) (out []*model.ChannelBackendApiListItem, err error) {
 	channelTree, err := service.Channel().BackendChannelModelTree(ctx, in.Type, in.ChannelId)
-	err = service.Response().View(ctx, "backend/channel_model/"+in.Type+".html", g.Map{
+	err = service.Response().View(ctx, "backend/channel_model/article/index.html", g.Map{
 		"channelTree": channelTree,
 		"modelType":   in.Type,
 		"modelMap":    service.Channel().BackendModelMap(),
