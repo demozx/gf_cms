@@ -63,3 +63,11 @@ func (s *sArticle) BackendArticleGetList(ctx context.Context, in *model.ArticleG
 	}
 	return
 }
+
+func (s *sArticle) Sort(ctx context.Context, in []*model.ArticleSortMap) (out interface{}, err error) {
+	update, err := dao.CmsArticle.Ctx(ctx).Save(in)
+	if err != nil {
+		return false, err
+	}
+	return update, nil
+}

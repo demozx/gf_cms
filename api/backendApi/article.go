@@ -13,10 +13,15 @@ type ArticleListReq struct {
 	Keyword   string `p:"keyword" name:"keyword" v:"" des:"关键词"`
 	model.PageSizeReq
 }
-
 type ArticleListRes struct {
 	List  []model.ArticleListItem `p:"list" name:"list" des:"列表"`
 	Page  int                     `p:"page" name:"page" des:"分页码"`
 	Size  int                     `p:"size" name:"size" des:"分页数量"`
 	Total int                     `p:"total" name:"total" des:"数据总数"`
 }
+
+type ArticleSortReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"文章排序"`
+	Sort   []string `p:"sort" name:"sort" des:"排序"`
+}
+type ArticleSortRes struct{}

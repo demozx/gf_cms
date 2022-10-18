@@ -13,6 +13,7 @@ import (
 type (
 	IArticle interface {
 		BackendArticleGetList(ctx context.Context, in *model.ArticleGetListInPut) (out *model.ArticleGetListOutPut, err error)
+		Sort(ctx context.Context, in []*model.ArticleSortMap) (out interface{}, err error)
 	}
 )
 
