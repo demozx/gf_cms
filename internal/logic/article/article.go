@@ -34,13 +34,13 @@ func (s *sArticle) BackendArticleGetList(ctx context.Context, in *model.ArticleG
 		Size: in.Size,
 	}
 	if in.ChannelId > 0 {
-		m.Where(dao.CmsArticle.Columns().ChannelId, in.ChannelId)
+		m = m.Where("article.channel_id", in.ChannelId)
 	}
 	if in.StartAt != "" && in.EndAt != "" {
-		m.WhereGTE(dao.CmsArticle.Columns().CreatedAt, in.StartAt).WhereLT(dao.CmsArticle.Columns().CreatedAt, in.EndAt)
+		m = m.WhereGTE("article.created_at", in.StartAt).WhereLT("article.created_at", in.EndAt)
 	}
 	if in.Keyword != "" {
-		m.WhereLike(dao.CmsArticle.Columns().Title, "%"+in.Keyword+"%")
+		m = m.WhereLike("article.title", "%"+in.Keyword+"%")
 	}
 	listModel := m.LeftJoin(dao.CmsChannel.Table(), "channel", "channel.id=article.channel_id").
 		Fields("article.*, channel.name channel_name").

@@ -153,6 +153,11 @@ ${end}$
                     pageName: 'page'
                     , limitName: 'size'
                 },
+                success: function (res, curr) {
+                    console.log(res);
+                    //得到当前页码
+                    console.log(curr);
+                },
                 parseData: function (res) {
                     return {
                         "code": res.code, //解析接口状态
@@ -224,7 +229,7 @@ ${end}$
                     var end = $('#end');
                     var keyword = $('#keyword');
                     //执行重载
-                    table.reload('${ backend_api_url `/article/index`}$', {
+                    table.reload('articleList', {
                         page: {
                             curr: nowPage //重新从第 N 页开始
                         }
