@@ -281,8 +281,8 @@ ${end}$
                                         , time: 2000
                                     });
                                     //重载当前页码的表格数据
-                                    //var nowPage = $('.layui-laypage-skip>.layui-input').val();
-                                    active.reload();
+                                    var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                                    active.reload(nowPage);
                                 } else {
                                     //删除失败
                                     layer.msg(res['msg'], {
@@ -346,7 +346,8 @@ ${end}$
                                 , time: 2000
                             });
                         }
-                        active.reload()
+                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                        active.reload(nowPage)
                     });
 
                 },
@@ -378,7 +379,8 @@ ${end}$
                                 , time: 2000
                             });
                         }
-                        active.reload()
+                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                        active.reload(nowPage)
                     });
                 },
                 //批量审核
@@ -408,7 +410,8 @@ ${end}$
                                 , time: 2000
                             });
                         }
-                        active.reload()
+                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                        active.reload(nowPage)
                     });
                 },
 
@@ -441,7 +444,8 @@ ${end}$
                         $.post('${ backend_api_url `/article/sort` }$', {'sort': arr}, function (res) {
                             if (res.code === 0) {
                                 layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
-                                    active.reload()
+                                    var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                                    active.reload(nowPage)
                                 });
                             } else {
                                 layer.msg(res['msg'], {icon: 5, time: 2000});
@@ -468,8 +472,9 @@ ${end}$
                             icon: 5
                             , time: 2000
                         });
-                        active.reload()
-                    }else{
+                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                        active.reload(nowPage)
+                    } else {
                         layer.msg(res.message, {
                             icon: 6
                             , time: 1000
@@ -495,8 +500,9 @@ ${end}$
                             icon: 5
                             , time: 2000
                         });
-                        active.reload()
-                    }else{
+                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                        active.reload(nowPage)
+                    } else {
                         layer.msg(res.message, {
                             icon: 6
                             , time: 1000
