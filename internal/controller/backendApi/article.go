@@ -51,3 +51,21 @@ func (c *cArticle) Sort(ctx context.Context, req *backendApi.ArticleSortReq) (re
 	service.Response().SuccessJsonDefault(ctx)
 	return
 }
+
+func (c *cArticle) Flag(ctx context.Context, req *backendApi.ArticleFlagReq) (res *backendApi.ArticleFlagRes, err error) {
+	_, err = service.Article().Flag(ctx, req.Ids, req.Flag)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefault(ctx)
+	return
+}
+
+func (c *cArticle) Status(ctx context.Context, req *backendApi.ArticleStatusReq) (res *backendApi.AdminStatusRes, err error) {
+	_, err = service.Article().Status(ctx, req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefault(ctx)
+	return
+}

@@ -108,15 +108,15 @@ ${end}$
 
     <script type="text/html" id="recommendTpl">
         <input type="checkbox" id="flag_r_{{d.id}}>" name="flag[]" class="flag_r" value="{{d.id}}" lay-skin="switch"
-               lay-filter="flag" lay-text="已推荐|未推荐">
+               lay-filter="flag" lay-text="已推荐|未推荐" {{d.flag.indexOf('r')!=-1 ? 'checked' : ''}}>
     </script>
     <script type="text/html" id="topTpl">
         <input type="checkbox" id="flag_t_{{d.id}}" name="flag[]" class="flag_t" value="{{d.id}}" lay-skin="switch"
-               lay-filter="flag" lay-text="已置顶|未置顶">
+               lay-filter="flag" lay-text="已置顶|未置顶" {{d.flag.indexOf('t')!=-1 ? 'checked' : ''}}>
     </script>
     <script type="text/html" id="reviewTpl">
         <input type="checkbox" id="review_{{d.id}}" class="review" name="review" value="{{d.id}}" title="审核"
-               lay-filter="review">
+               lay-filter="review" {{ d.status== 1 ? 'checked' : '' }}>
     </script>
 
     <script type="text/html" id="operateTpl">
@@ -182,7 +182,7 @@ ${end}$
                     }, {
                         field: 'created_at', title: '发布时间', width: 164, sort: true
                     }, {
-                        field: 'channel_name', title: '分类', sort: true
+                        field: 'channel_name', title: '频道', sort: true
                     }, {
                         field: 'flag', title: '推荐', templet: '#recommendTpl', unresize: true
                     }, {
@@ -322,7 +322,7 @@ ${end}$
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
                     if (data.length > 0) {
-                        var ids = new Array();
+                        var ids = [];
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
@@ -333,21 +333,20 @@ ${end}$
                         });
                         return false;
                     }
-                    $.post('flag.html', {'aids': ids, 'flag': 'r'}, function (res) {
+                    $.post('${ backend_api_url `/article/flag` }$', {'ids': ids, 'flag': 'r'}, function (res) {
                         //console.log(res);
-                        layer.msg(res['msg'], {
-                            icon: 6
-                            , time: 1000
-                        });
-                        for (var i = 0; i < ids.length; i++) {
-                            if (res['code'] == 1) {
-                                $('#flag_r_' + ids[i]).prop('checked', true);
-                            } else if (res['code'] == 2) {
-                                $('#flag_r_' + ids[i]).prop('checked', false);
-                            }
-
+                        if (res.code === 0) {
+                            layer.msg(res.message, {
+                                icon: 6
+                                , time: 1000
+                            });
+                        } else {
+                            layer.msg(res.message, {
+                                icon: 5
+                                , time: 2000
+                            });
                         }
-                        form.render();//重新渲染
+                        active.reload()
                     });
 
                 },
@@ -356,7 +355,7 @@ ${end}$
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
                     if (data.length > 0) {
-                        var ids = new Array();
+                        var ids = [];
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
@@ -367,21 +366,19 @@ ${end}$
                         });
                         return false;
                     }
-                    $.post('flag.html', {'aids': ids, 'flag': 't'}, function (res) {
-                        //console.log(res);
-                        layer.msg(res['msg'], {
-                            icon: 6
-                            , time: 1000
-                        });
-                        for (var i = 0; i < ids.length; i++) {
-                            if (res['code'] == 1) {
-                                $('#flag_t_' + ids[i]).prop('checked', true);
-                            } else if (res['code'] == 2) {
-                                $('#flag_t_' + ids[i]).prop('checked', false);
-                            }
-
+                    $.post('${ backend_api_url `/article/flag` }$', {'ids': ids, 'flag': 't'}, function (res) {
+                        if (res.code === 0) {
+                            layer.msg(res.message, {
+                                icon: 6
+                                , time: 1000
+                            });
+                        } else {
+                            layer.msg(res.message, {
+                                icon: 5
+                                , time: 2000
+                            });
                         }
-                        form.render();//重新渲染
+                        active.reload()
                     });
                 },
                 //批量审核
@@ -389,7 +386,7 @@ ${end}$
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
                     if (data.length > 0) {
-                        var ids = new Array();
+                        var ids = [];
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
@@ -399,29 +396,19 @@ ${end}$
                         });
                         return false;
                     }
-                    $.post('review.html', {'aids': ids}, function (res) {
-                        //console.log(res);
-                        if (res['code'] == 1 || res['code'] == 2) {
-                            layer.msg(res['msg'], {
+                    $.post('${ backend_api_url `/article/status` }$', {'ids': ids}, function (res) {
+                        if (res.code === 0) {
+                            layer.msg(res.message, {
                                 icon: 6
+                                , time: 1000
+                            });
+                        } else {
+                            layer.msg(res.message, {
+                                icon: 5
+                                , time: 2000
                             });
                         }
-                        if (res['code'] == 0) {
-                            layer.msg(res['msg'], {
-                                icon: 6
-                                , anim: 6
-                            });
-                        }
-                        //返回res的code=0，审核失败或者已审核；code=1，审核成功；code=2，取消审核成功
-                        for (var i = 0; i < ids.length; i++) {
-                            if (res['code'] == 1) {
-                                $('#review_' + ids[i]).prop('checked', true);
-                            } else if (res['code'] == 2) {
-                                $('#review_' + ids[i]).prop('checked', false);
-                            }
-
-                        }
-                        form.render();//重新渲染
+                        active.reload()
                     });
                 },
 
@@ -475,47 +462,47 @@ ${end}$
             //单个审核
             form.on('checkbox(review)', function (data) {
                 //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
-                $.post('review.html', {'aids': data.value}, function (res) {
-                    //console.log(res);
-                    if (res['code'] == 1 || res['code'] == 2) {
-                        layer.msg(res['msg'], {
+                $.post('${ backend_api_url `/article/status` }$', {'ids': data.value}, function (res) {
+                    if (res.code !== 0) {
+                        layer.msg(res.message, {
+                            icon: 5
+                            , time: 2000
+                        });
+                        active.reload()
+                    }else{
+                        layer.msg(res.message, {
                             icon: 6
                             , time: 1000
                         });
-                    } else {
-                        layer.msg(res['msg'], {
-                            icon: 5
-                            , time: 1000
-                        });
+                        form.render();
                     }
-                    form.render();
                 });
             });
             //单个修改flag
             form.on('switch(flag)', function (data) {
                 //console.log(data.elem.className);
                 var flag = '';
-                if (data.elem.className == 'flag_r') {
+                if (data.elem.className === 'flag_r') {
                     //推荐
                     flag = 'r';
-                } else if (data.elem.className == 'flag_t') {
+                } else if (data.elem.className === 'flag_t') {
                     //置顶
                     flag = 't'
                 }
-                $.post('flag.html', {'aids': data.value, 'flag': flag}, function (res) {
-                    //console.log(res);
-                    if (res['code'] == 1 || res['code'] == 2) {
-                        layer.msg(res['msg'], {
+                $.post('${ backend_api_url `/article/flag` }$', {'ids': data.value, 'flag': flag}, function (res) {
+                    if (res.code !== 0) {
+                        layer.msg(res.message, {
+                            icon: 5
+                            , time: 2000
+                        });
+                        active.reload()
+                    }else{
+                        layer.msg(res.message, {
                             icon: 6
                             , time: 1000
                         });
-                    } else {
-                        layer.msg(res['msg'], {
-                            icon: 5
-                            , time: 1000
-                        });
+                        form.render();
                     }
-                    form.render();
                 });
 
             });

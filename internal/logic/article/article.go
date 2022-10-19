@@ -4,7 +4,12 @@ import (
 	"context"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
+	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/text/gstr"
+	"sync"
 )
 
 type (
@@ -70,4 +75,129 @@ func (s *sArticle) Sort(ctx context.Context, in []*model.ArticleSortMap) (out in
 		return false, err
 	}
 	return update, nil
+}
+
+func (s *sArticle) Flag(ctx context.Context, ids []int, flagType string) (out interface{}, err error) {
+	if len(ids) == 1 {
+		_, err = Article().singleFlag(ctx, ids[0], flagType, "auto")
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		var wg sync.WaitGroup
+		for _, id := range ids {
+			wg.Add(1)
+			go func(id int) {
+				_, err = Article().singleFlag(ctx, id, flagType, "open")
+				defer wg.Done()
+				if err != nil {
+					return
+				}
+			}(id)
+		}
+		wg.Wait()
+	}
+	return
+}
+
+func (s *sArticle) Status(ctx context.Context, ids []int) (out interface{}, err error) {
+	if len(ids) == 1 {
+		_, err = Article().singleStatus(ctx, ids[0], "auto")
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		var wg sync.WaitGroup
+		for _, id := range ids {
+			wg.Add(1)
+			go func(id int) {
+				_, err = Article().singleStatus(ctx, id, "open")
+				defer wg.Done()
+				if err != nil {
+					return
+				}
+			}(id)
+		}
+		wg.Wait()
+	}
+	return
+}
+
+func (s *sArticle) singleFlag(ctx context.Context, id int, flagType string, targetType string) (out interface{}, err error) {
+	m := dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, id)
+	var article *entity.CmsArticle
+	err = m.Scan(&article)
+	if err != nil {
+		return nil, err
+	}
+	if article == nil {
+		return nil, gerror.New("数据不存在")
+	}
+	split := gstr.SplitAndTrim(article.Flag, ",")
+	if targetType == "auto" {
+		if gstr.InArray(split, flagType) {
+			for index, value := range split {
+				if value == flagType {
+					split = append(split[:index], split[index+1:]...)
+					break
+				}
+			}
+		} else {
+			split = append(split, flagType)
+		}
+	} else if targetType == "open" {
+		if !gstr.InArray(split, flagType) {
+			split = append(split, flagType)
+		}
+	} else if targetType == "close" {
+		if gstr.InArray(split, flagType) {
+			for index, value := range split {
+				if value == flagType {
+					split = append(split[:index], split[index+1:]...)
+					break
+				}
+			}
+		}
+	} else {
+		return nil, gerror.New("操作目的错误")
+	}
+	flag := gstr.Implode(",", split)
+	_, err = m.Data(g.Map{
+		dao.CmsArticle.Columns().Flag: flag,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (s *sArticle) singleStatus(ctx context.Context, id int, targetType string) (out interface{}, err error) {
+	m := dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, id)
+	var article *entity.CmsArticle
+	err = m.Scan(&article)
+	if err != nil {
+		return nil, err
+	}
+	if article == nil {
+		return nil, gerror.New("数据不存在")
+	}
+	status := 0
+	if targetType == "auto" {
+		if article.Status == 0 {
+			status = 1
+		}
+	} else if targetType == "open" {
+		status = 1
+	} else if targetType == "close" {
+		status = 0
+	} else {
+		return nil, gerror.New("操作目的错误")
+	}
+	_, err = m.Data(g.Map{
+		dao.CmsArticle.Columns().Status: status,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
 }

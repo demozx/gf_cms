@@ -51,8 +51,10 @@ func backendApiHandle(s *ghttp.Server) {
 			"/channel/add":    backendApi.Channel.Add,    //添加
 			"/channel/edit":   backendApi.Channel.Edit,   //编辑
 			/*文章模型*/
-			"/article/index": backendApi.Article.Index, // 文章列表
-			"/article/sort":  backendApi.Article.Sort,  // 文章排序
+			"/article/index":  backendApi.Article.Index,  // 文章列表
+			"/article/sort":   backendApi.Article.Sort,   // 文章排序
+			"/article/flag":   backendApi.Article.Flag,   // flag
+			"/article/status": backendApi.Article.Status, // 审核状态
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

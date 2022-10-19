@@ -25,3 +25,16 @@ type ArticleSortReq struct {
 	Sort   []string `p:"sort" name:"sort" des:"排序"`
 }
 type ArticleSortRes struct{}
+
+type ArticleFlagReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"flag"`
+	Ids    []int  `p:"ids" name:"ids" dsc:"文章ID们" v:"required#文章ID必填" arg:"true"`
+	Flag   string `p:"flag" name:"flag" dec:"flag" v:"in:t,r#类型不合法" arg:"true"`
+}
+type ArticleFlagRes struct{}
+
+type ArticleStatusReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"审核状态"`
+	Ids    []int `p:"ids" name:"ids" dsc:"文章ID们" v:"required#文章ID必填" arg:"true"`
+}
+type ArticleStatusRes struct{}

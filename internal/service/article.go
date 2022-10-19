@@ -14,6 +14,8 @@ type (
 	IArticle interface {
 		BackendArticleGetList(ctx context.Context, in *model.ArticleGetListInPut) (out *model.ArticleGetListOutPut, err error)
 		Sort(ctx context.Context, in []*model.ArticleSortMap) (out interface{}, err error)
+		Flag(ctx context.Context, ids []int, flagType string) (out interface{}, err error)
+		Status(ctx context.Context, ids []int) (out interface{}, err error)
 	}
 )
 
