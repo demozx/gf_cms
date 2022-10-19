@@ -24,6 +24,9 @@ type CmsArticleBodyColumns struct {
 	ArticleId string // 所属文章id
 	ChannelId string // 所属栏目id
 	Body      string // 文章内容
+	CreatedAt string //
+	UpdatedAt string //
+	DeletedAt string //
 }
 
 // cmsArticleBodyColumns holds the columns for table cms_article_body.
@@ -32,6 +35,9 @@ var cmsArticleBodyColumns = CmsArticleBodyColumns{
 	ArticleId: "article_id",
 	ChannelId: "channel_id",
 	Body:      "body",
+	CreatedAt: "created_at",
+	UpdatedAt: "updated_at",
+	DeletedAt: "deleted_at",
 }
 
 // NewCmsArticleBodyDao creates and returns a new DAO object for table data access.

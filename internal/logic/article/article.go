@@ -124,11 +124,14 @@ func (s *sArticle) Status(ctx context.Context, ids []int) (out interface{}, err 
 }
 
 func (s *sArticle) Delete(ctx context.Context, ids []int) (out interface{}, err error) {
-	m := dao.CmsArticle.Ctx(ctx).WhereIn(dao.CmsArticle.Columns().Id, ids)
+	mArticle := dao.CmsArticle.Ctx(ctx).WhereIn(dao.CmsArticle.Columns().Id, ids)
+	mBody := dao.CmsArticleBody.Ctx(ctx).WhereIn(dao.CmsArticleBody.Columns().ArticleId, ids)
 	if service.Util().GetSetting("recycle_bin") == "1" {
-		_, err = m.Delete()
+		_, err = mArticle.Delete()
+		_, err = mBody.Delete()
 	} else {
-		_, err = m.Unscoped().Delete()
+		_, err = mArticle.Unscoped().Delete()
+		_, err = mBody.Unscoped().Delete()
 	}
 
 	if err != nil {
