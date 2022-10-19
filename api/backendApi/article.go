@@ -38,3 +38,9 @@ type ArticleStatusReq struct {
 	Ids    []int `p:"ids" name:"ids" dsc:"文章ID们" v:"required#文章ID必填" arg:"true"`
 }
 type ArticleStatusRes struct{}
+
+type ArticleDeleteReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"删除"`
+	Ids    []int `p:"ids" name:"ids" dsc:"文章ID们" v:"required#文章ID必填" arg:"true"`
+}
+type ArticleDeleteRes struct{}

@@ -55,6 +55,7 @@ func backendApiHandle(s *ghttp.Server) {
 			"/article/sort":   backendApi.Article.Sort,   // 文章排序
 			"/article/flag":   backendApi.Article.Flag,   // flag
 			"/article/status": backendApi.Article.Status, // 审核状态
+			"/article/delete": backendApi.Article.Delete, // 删除
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

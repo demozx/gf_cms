@@ -93,7 +93,7 @@ ${end}$
     </div>
     <div class="weadmin-block demoTable">
         <!--用于list.js获取删除类型-->
-        <input type="hidden" id="delType" value="{$delType}">
+        <input type="hidden" id="delType" value="${ .deleteType }$">
         <button class="layui-btn layui-btn-danger" data-type="getCheckData"><i class="layui-icon">&#xe640;</i>批量删除
         </button>
         <button class="layui-btn layui-btn-normal" data-type="move"><i class="layui-icon">&#xe609;</i>移动</button>
@@ -259,7 +259,7 @@ ${end}$
                     // 判断物理删除和逻辑删除 start
                     var delType = $('#delType').val();
                     var delNotice = '';
-                    if (delType == 1) {
+                    if (delType === '0') {
                         delNotice = '确认要删除吗？';
                     } else {
                         delNotice = '确认要移至回收站吗？';
@@ -267,16 +267,16 @@ ${end}$
                     // 判断物理删除和逻辑删除 end
                     //console.log(data);
                     //layer.alert(JSON.stringify(data));
-                    var ids = new Array();
+                    var ids = [];
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
                         layer.confirm(delNotice + 'ID:(' + ids + ')', function (index) {
-                            $.post('del.html', {'aids': ids}, function (res) {
-                                if (res['code'] == 1) {
+                            $.post('${ backend_api_url `/article/delete` }$', {'aids': ids}, function (res) {
+                                if (res.code === 1) {
                                     //删除成功
-                                    layer.msg(res['msg'], {
+                                    layer.msg(res.message, {
                                         icon: 6
                                         , time: 2000
                                     });
@@ -285,7 +285,7 @@ ${end}$
                                     active.reload(nowPage);
                                 } else {
                                     //删除失败
-                                    layer.msg(res['msg'], {
+                                    layer.msg(res.message, {
                                         icon: 5
                                         , time: 2000
                                     });
@@ -517,7 +517,7 @@ ${end}$
                 // 判断物理删除和逻辑删除 start
                 var delType = $('#delType').val();
                 var delNotice = '';
-                if (delType == 1) {
+                if (delType === '0') {
                     delNotice = '确认要删除吗？';
                 } else {
                     delNotice = '确认要移至回收站吗？';
@@ -525,10 +525,10 @@ ${end}$
                 // 判断物理删除和逻辑删除 end
                 layer.confirm(delNotice, function (index) {
                     //发异步删除数据
-                    $.post('del.html', {'aids': id}, function (res) {
-                        if (res['code'] == 1) {
+                    $.post('${ backend_api_url `/article/delete` }$', {'ids': id}, function (res) {
+                        if (res.code === 0) {
                             //删除成功
-                            layer.msg(res['msg'], {
+                            layer.msg(res.message, {
                                 icon: 6,
                                 time: 2000
                             });
@@ -537,7 +537,7 @@ ${end}$
                             active.reload(nowPage);
                         } else {
                             //删除失败
-                            layer.msg(res['msg'], {
+                            layer.msg(res.message, {
                                 icon: 5,
                                 time: 1000
                             });

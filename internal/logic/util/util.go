@@ -98,6 +98,27 @@ func (*sUtil) GetConfig(node string) string {
 	return config.String()
 }
 
+// GetSetting 获取设置
+func (*sUtil) GetSetting(name string) string {
+	cacheKey := PublicCachePreFix + ":system_setting:" + name
+	exists, err := g.Redis().Do(Ctx, "EXISTS", cacheKey)
+	if err != nil {
+		panic(err)
+	}
+	//存在缓存key
+	if exists.Bool() {
+		value, err := g.Redis().Do(Ctx, "GET", cacheKey)
+		if err != nil {
+			panic(err)
+		}
+		return value.String()
+	}
+	//不存在缓存key，从数据库读取
+	val, _ := g.Model("system_setting").Where("name", name).Value("value")
+	g.Redis().Do(Ctx, "SET", cacheKey, val.String())
+	return val.String()
+}
+
 // ClearPublicCache 清除公共缓存
 func (*sUtil) ClearPublicCache() (*gvar.Var, error) {
 	cacheKey := PublicCachePreFix + ":*"

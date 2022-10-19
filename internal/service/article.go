@@ -16,6 +16,7 @@ type (
 		Sort(ctx context.Context, in []*model.ArticleSortMap) (out interface{}, err error)
 		Flag(ctx context.Context, ids []int, flagType string) (out interface{}, err error)
 		Status(ctx context.Context, ids []int) (out interface{}, err error)
+		Delete(ctx context.Context, ids []int) (out interface{}, err error)
 	}
 )
 

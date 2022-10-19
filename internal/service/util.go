@@ -21,6 +21,7 @@ type (
 		BackendApiGroup() string
 		ServerRoot() string
 		GetConfig(node string) string
+		GetSetting(name string) string
 		ClearPublicCache() (*gvar.Var, error)
 		ClearSystemSettingCache() (*gvar.Var, error)
 		GetLocalIP() (ip string, err error)

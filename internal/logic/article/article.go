@@ -123,6 +123,20 @@ func (s *sArticle) Status(ctx context.Context, ids []int) (out interface{}, err 
 	return
 }
 
+func (s *sArticle) Delete(ctx context.Context, ids []int) (out interface{}, err error) {
+	m := dao.CmsArticle.Ctx(ctx).WhereIn(dao.CmsArticle.Columns().Id, ids)
+	if service.Util().GetSetting("recycle_bin") == "1" {
+		_, err = m.Delete()
+	} else {
+		_, err = m.Unscoped().Delete()
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 func (s *sArticle) singleFlag(ctx context.Context, id int, flagType string, targetType string) (out interface{}, err error) {
 	m := dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, id)
 	var article *entity.CmsArticle
