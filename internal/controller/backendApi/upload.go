@@ -14,9 +14,9 @@ type cUpload struct{}
 
 var (
 	Upload    = cUpload{}
-	typeFile  = "file"
-	typeImage = "image"
-	typeVideo = "video"
+	typeFile  = "files"
+	typeImage = "images"
+	typeVideo = "videos"
 )
 
 func (c *cUpload) SingleFile(ctx context.Context, req *backendApi.UploadFileReq) (res *backendApi.UploadFileRes, err error) {

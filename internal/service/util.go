@@ -26,6 +26,7 @@ type (
 		ClearSystemSettingCache() (*gvar.Var, error)
 		GetLocalIP() (ip string, err error)
 		FriendyTimeFormat(TimeCreate time.Time, TimeEnd time.Time) string
+		ImageOrDefaultUrl(imgUrl string) string
 	}
 )
 

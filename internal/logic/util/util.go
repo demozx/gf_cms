@@ -203,3 +203,11 @@ func (*sUtil) FriendyTimeFormat(TimeCreate time.Time, TimeEnd time.Time) string 
 	second := tail % 60
 	return fmt.Sprintf("%d天%d小时%d分%d秒", day, hour, minute, second)
 }
+
+// ImageOrDefaultUrl 返回图片或默认图url
+func (*sUtil) ImageOrDefaultUrl(imgUrl string) string {
+	if imgUrl == "" {
+		return "/resource/images/no_pic.jpg"
+	}
+	return imgUrl
+}

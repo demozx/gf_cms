@@ -66,6 +66,9 @@ func (s *sArticle) BackendArticleGetList(ctx context.Context, in *model.ArticleG
 	if err = listModel.Scan(&out.List); err != nil {
 		return out, err
 	}
+	for i, item := range out.List {
+		out.List[i].Thumb = service.Util().ImageOrDefaultUrl(item.Thumb)
+	}
 	return
 }
 

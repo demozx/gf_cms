@@ -6,8 +6,8 @@ require (
 	github.com/Blank-Xu/sql-adapter v0.0.0-20210714092925-0bdd0d548758
 	github.com/casbin/casbin/v2 v2.56.0
 	github.com/gogf/gf-jwt/v2 v2.0.1
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.0
-	github.com/gogf/gf/v2 v2.2.0
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.1
+	github.com/gogf/gf/v2 v2.2.1
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	gitlab.com/tingshuo/go-diskstate v0.0.0-20191211131809-ee5e7223d03c
@@ -40,12 +40,12 @@ require (
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
 	github.com/tklauser/numcpus v0.5.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
-	go.opentelemetry.io/otel v1.10.0 // indirect
+	go.opentelemetry.io/otel v1.11.1 // indirect
 	go.opentelemetry.io/otel/sdk v1.10.0 // indirect
-	go.opentelemetry.io/otel/trace v1.10.0 // indirect
-	golang.org/x/image v0.0.0-20220902085622-e7cb96979f69 // indirect
-	golang.org/x/net v0.0.0-20221012135044-0b7e1fb9d458 // indirect
-	golang.org/x/sys v0.0.0-20221013171732-95e765b1cc43 // indirect
-	golang.org/x/text v0.3.8 // indirect
+	go.opentelemetry.io/otel/trace v1.11.1 // indirect
+	golang.org/x/image v0.1.0 // indirect
+	golang.org/x/net v0.1.0 // indirect
+	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
