@@ -47,6 +47,8 @@ func backendViewHandle(s *ghttp.Server) {
 			"/channel/edit":  backend.Channel.Edit,  //编辑栏目
 			/*模型数据*/
 			"/channel_model/index": backend.ChannelModel.Index, //列表
+			/*文章*/
+			"/article/move": backend.Article.Move, //移动文章
 		})
 	})
 }

@@ -304,12 +304,12 @@ ${end}$
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
                     if (data.length > 0) {
-                        var aids = new Array();
+                        var aids = [];
                         for (var i = 0; i < data.length; i++) {
                             aids.push(data[i]['id']);
                         }
                         //弹出页面
-                        WeAdminShow('移动文章', 'move.html?aids=' + aids, 400, 200)
+                        WeAdminShow('移动文章', '${ backend_url `/article/move` }$?ids=' + aids, 600, 400)
                     } else {
                         layer.msg("请选择要移动的文章", {
                             anim: 6
