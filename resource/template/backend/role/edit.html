@@ -64,8 +64,7 @@
                 ${range $key, $item := .backendAllPermissions}$
                 <tr class="row" data-row="1">
                     <td rowspan="2" class="row_all">
-                        ${$item.Title}$
-                        <input type="checkbox" lay-filter="row_all"
+                        <input type="checkbox" lay-filter="row_all" lay-skin="primary" title="${$item.Title}$"
                                ${if eq $.role.IsSystem 1}$disabled=""${end}$
                         >
                     </td>
@@ -74,10 +73,11 @@
                         <div class="layui-input-block layui-row">
                             ${range $_key, $_permission := $item.BackendViewPermissions}$
                             <div class="layui-col-md4">
-                                <input name="rules[backend][]" type="checkbox" class="checkbox" lay-filter="checkbox"
+                                <input name="rules[backend][]" type="checkbox" class="checkbox" lay-skin="primary" lay-filter="checkbox"
                                        ${if eq $_permission.HasPermission true}$checked${end}$
                                        ${if eq $.role.IsSystem 1}$disabled="" checked${end}$
-                                       value="${$item.Slug}$.${$_permission.Slug}$"> ${$_permission.Title}$
+                                       title="${$_permission.Title}$"
+                                       value="${$item.Slug}$.${$_permission.Slug}$">
                             </div>
                             ${end}$
                         </div>
@@ -89,10 +89,11 @@
                         <div class="layui-input-block layui-row">
                             ${range $_key, $_permission := $item.BackendApiPermissions}$
                             <div class="layui-col-md4">
-                                <input name="rules[backend_api][]" type="checkbox" class="checkbox" lay-filter="checkbox"
+                                <input name="rules[backend_api][]" type="checkbox" class="checkbox" lay-skin="primary" lay-filter="checkbox"
                                        ${if eq $_permission.HasPermission true}$checked${end}$
                                        ${if eq $.role.IsSystem 1}$disabled="" checked${end}$
-                                       value="${$item.Slug}$.${$_permission.Slug}$"> ${$_permission.Title}$
+                                       title="${$_permission.Title}$"
+                                       value="${$item.Slug}$.${$_permission.Slug}$">
                             </div>
                             ${end}$
                         </div>
