@@ -33,7 +33,7 @@ func (*sChannelModel) ModelArticle(ctx context.Context, in *backend.ChannelModel
 		"channelTree": channelTree,
 		"modelType":   in.Type,
 		"modelMap":    service.Channel().BackendModelMap(),
-		"channel_id":  in.ChannelId,
+		"channelId":   in.ChannelId,
 		"withTab":     in.WithTab,
 		"deleteType":  recycleBin,
 	})

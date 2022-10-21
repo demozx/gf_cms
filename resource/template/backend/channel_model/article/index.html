@@ -147,16 +147,16 @@ ${end}$
                 elem: '#articleList',
                 cellMinWidth: 100,
                 cellMinHeight: 100,
-                url: '${ backend_api_url `/article/index` }$',
+                url: '${ backend_api_url `/article/index` }$?channel_id=${ .channelId }$',
                 method: "post",
                 request: {
                     pageName: 'page'
                     , limitName: 'size'
                 },
                 success: function (res, curr) {
-                    console.log(res);
+                    // console.log(res);
                     //得到当前页码
-                    console.log(curr);
+                    // console.log(curr);
                 },
                 parseData: function (res) {
                     return {
