@@ -80,3 +80,13 @@ func (c *cArticle) Delete(ctx context.Context, req *backendApi.ArticleDeleteReq)
 	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "删除成功", g.Map{})
 	return
 }
+
+func (c *cArticle) Move(ctx context.Context, req *backendApi.ArticleMoveReq) (res *backendApi.ArticleMoveRes, err error) {
+	ids := gstr.Explode(",", req.StrIds)
+	_, err = service.Article().Move(ctx, req.ChannelId, ids)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "移动成功", g.Map{})
+	return
+}

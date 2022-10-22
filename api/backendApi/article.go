@@ -44,3 +44,10 @@ type ArticleDeleteReq struct {
 	Ids    []int `name:"ids" dsc:"文章ID们" v:"required#文章ID必填" arg:"true"`
 }
 type ArticleDeleteRes struct{}
+
+type ArticleMoveReq struct {
+	g.Meta    `tags:"BackendApi" method:"post" summary:"移动"`
+	ChannelId int    `name:"channel_id" dec:"频道ID" v:"required#频道ID必填" arg:"true"`
+	StrIds    string `name:"str_ids" dsc:"ids，英文逗号拼接" v:"required#必填项不能为空" arg:"true"`
+}
+type ArticleMoveRes struct{}

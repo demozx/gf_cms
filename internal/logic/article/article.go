@@ -143,6 +143,28 @@ func (s *sArticle) Delete(ctx context.Context, ids []int) (out interface{}, err 
 	return
 }
 
+func (s *sArticle) Move(ctx context.Context, channelId int, ids []string) (out interface{}, err error) {
+	if channelId <= 0 {
+		return nil, gerror.New("频道ID错误")
+	}
+	if len(ids) == 0 {
+		return nil, gerror.New("要移动的文章不能为空")
+	}
+	_, err = dao.CmsArticle.Ctx(ctx).WhereIn(dao.CmsArticle.Columns().Id, ids).Data(g.Map{
+		dao.CmsArticle.Columns().ChannelId: channelId,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsArticleBody.Ctx(ctx).WhereIn(dao.CmsArticleBody.Columns().ArticleId, ids).Data(g.Map{
+		dao.CmsArticle.Columns().ChannelId: channelId,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 func (s *sArticle) singleFlag(ctx context.Context, id int, flagType string, targetType string) (out interface{}, err error) {
 	m := dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, id)
 	var article *entity.CmsArticle

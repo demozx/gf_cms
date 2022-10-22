@@ -20,7 +20,7 @@ func (c *cArticle) Move(ctx context.Context, req *backend.ArticleMoveReq) (res *
 		return nil, err
 	}
 	err = service.Response().View(ctx, "backend/channel_model/article/move.html", g.Map{
-		"rds":              req.Ids,
+		"strIds":           req.StrIds,
 		"channelModelTree": channelModelTree,
 	})
 	if err != nil {

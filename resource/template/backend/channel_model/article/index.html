@@ -273,8 +273,8 @@ ${end}$
                             ids.push(data[i]['id']);
                         }
                         layer.confirm(delNotice + 'ID:(' + ids + ')', function (index) {
-                            $.post('${ backend_api_url `/article/delete` }$', {'aids': ids}, function (res) {
-                                if (res.code === 1) {
+                            $.post('${ backend_api_url `/article/delete` }$', {'ids': ids}, function (res) {
+                                if (res.code === 0) {
                                     //删除成功
                                     layer.msg(res.message, {
                                         icon: 6
@@ -304,12 +304,12 @@ ${end}$
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
                     if (data.length > 0) {
-                        var aids = [];
+                        var ids = [];
                         for (var i = 0; i < data.length; i++) {
-                            aids.push(data[i]['id']);
+                            ids.push(data[i]['id']);
                         }
                         //弹出页面
-                        WeAdminShow('移动文章', '${ backend_url `/article/move` }$?ids=' + aids, 600, 400)
+                        WeAdminShow('移动文章', '${ backend_url `/article/move` }$?str_ids=' + ids, 600, 400)
                     } else {
                         layer.msg("请选择要移动的文章", {
                             anim: 6

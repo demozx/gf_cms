@@ -17,6 +17,7 @@ type (
 		Flag(ctx context.Context, ids []int, flagType string) (out interface{}, err error)
 		Status(ctx context.Context, ids []int) (out interface{}, err error)
 		Delete(ctx context.Context, ids []int) (out interface{}, err error)
+		Move(ctx context.Context, channelId int, ids []string) (out interface{}, err error)
 	}
 )
 
