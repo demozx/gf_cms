@@ -5,6 +5,4 @@ import "github.com/gogf/gf/v2/frame/g"
 type SettingReq struct {
 	g.Meta `tags:"Backend" method:"get" summary:"后台设置"`
 }
-type SettingRes struct {
-	g.Meta `mime:"text/html" example:"string"`
-}
+type SettingRes struct{}

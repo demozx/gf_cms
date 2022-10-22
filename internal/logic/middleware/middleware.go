@@ -60,7 +60,7 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 	accountId := Middleware().GetBackendUserID(r)
 	obj := casbinPolicy.CasbinPolicy().ObjBackend()
 	act := r.Router.Uri
-	g.Log().Notice(util.Ctx, "act", act)
+	//g.Log().Notice(util.Ctx, "act", act)
 	var backendPrefix = util.Util().BackendPrefix()
 	var backendViewMenus = menu.Menu().BackendView()
 	var backendMyMenus = menu.Menu().BackendMyMenu(accountId)
@@ -72,7 +72,7 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 			}
 		}
 	}
-	g.Log().Notice(util.Ctx, "backendRouteHit："+act, routeHit)
+	//g.Log().Notice(util.Ctx, "backendRouteHit："+act, routeHit)
 	if routeHit == false {
 		//路由不在权限中，不拦截
 		r.Middleware.Next()

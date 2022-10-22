@@ -7,22 +7,22 @@ import (
 
 type ArticleListReq struct {
 	g.Meta    `tags:"BackendApi" method:"post" summary:"文章列表"`
-	ChannelId int    `name:"channel_id" v:"" des:"频道ID" brief:"频道ID" arg:"true"`
-	StartAt   string `name:"start_at" v:"date-format:Y-m-d H:i:s" des:"开始时间" brief:"频道ID" arg:"true"`
-	EndAt     string `name:"end_at" v:"date-format:Y-m-d H:i:s" des:"开始时间" brief:"频道ID" arg:"true"`
-	Keyword   string `name:"keyword" v:"" des:"关键词"`
+	ChannelId int    `name:"channel_id" v:"" dc:"频道ID" brief:"频道ID" arg:"true"`
+	StartAt   string `name:"start_at" v:"date-format:Y-m-d H:i:s" dc:"开始时间" brief:"频道ID" arg:"true"`
+	EndAt     string `name:"end_at" v:"date-format:Y-m-d H:i:s" dc:"开始时间" brief:"频道ID" arg:"true"`
+	Keyword   string `name:"keyword" v:"" dc:"关键词"`
 	model.PageSizeReq
 }
 type ArticleListRes struct {
-	List  []model.ArticleListItem `name:"list" des:"列表"`
-	Page  int                     `name:"page" des:"分页码"`
-	Size  int                     `name:"size" des:"分页数量"`
-	Total int                     `name:"total" des:"数据总数"`
+	List  []model.ArticleListItem `name:"list" dc:"列表"`
+	Page  int                     `name:"page" dc:"分页码"`
+	Size  int                     `name:"size" dc:"分页数量"`
+	Total int                     `name:"total" dc:"数据总数"`
 }
 
 type ArticleSortReq struct {
 	g.Meta `tags:"BackendApi" method:"post" summary:"文章排序"`
-	Sort   []string `name:"sort" des:"排序"`
+	Sort   []string `name:"sort" dc:"排序"`
 }
 type ArticleSortRes struct{}
 
