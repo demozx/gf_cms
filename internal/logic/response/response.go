@@ -61,3 +61,16 @@ func (s *sResponse) View(ctx context.Context, template string, data g.Map) (err 
 	}
 	return
 }
+
+func (s *sResponse) ErrorTpl(ctx context.Context, code int, message string) (err error) {
+	template := "tpl/error.html"
+	data := g.Map{
+		"code":    code,
+		"message": message,
+	}
+	err = g.RequestFromCtx(ctx).Response.WriteTpl(template, data)
+	if err != nil {
+		return err
+	}
+	return
+}

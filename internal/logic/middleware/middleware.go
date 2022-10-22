@@ -9,7 +9,6 @@ import (
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
-
 	"github.com/gogf/gf/v2/util/gconv"
 
 	"github.com/gogf/gf/v2/container/gvar"
@@ -88,9 +87,16 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 		}
 		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
 			g.Log().Warning(util.Ctx, "没有权限"+act)
-			r.Response.WriteExit("没有权限")
+			err := r.Response.WriteTpl("tpl/error.html", g.Map{
+				"code":    401,
+				"message": "无权访问",
+			})
+			if err != nil {
+				return
+			}
+		} else {
+			r.Middleware.Next()
 		}
-		r.Middleware.Next()
 	}
 }
 

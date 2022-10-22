@@ -18,6 +18,7 @@ type (
 		SuccessCodeDefault() int
 		SuccessMessageDefault() string
 		View(ctx context.Context, template string, data g.Map) (err error)
+		ErrorTpl(ctx context.Context, code int, message string) (err error)
 	}
 )
 
