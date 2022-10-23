@@ -28,3 +28,13 @@ func (c *cArticle) Move(ctx context.Context, req *backend.ArticleMoveReq) (res *
 	}
 	return
 }
+
+func (c *cArticle) Add(ctx context.Context, req *backend.ArticleAddReq) (res *backend.ArticleAddRes, err error) {
+
+	return
+}
+
+func (c *cArticle) Edit(ctx context.Context, req *backend.ArticleEditReq) (res *backend.ArticleEditRes, err error) {
+
+	return
+}

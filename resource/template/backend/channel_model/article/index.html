@@ -101,7 +101,7 @@ ${end}$
         <button class="layui-btn" data-type="Top"><i class="layui-icon">&#xe619;</i>置顶</button>
         <button class="layui-btn" data-type="Review"><i class="layui-icon">&#xe6b2;</i>审核</button>
         <button class="layui-btn" data-type="Sort"><i class="layui-icon">&#xe60e;</i>更新排序</button>
-        <button class="layui-btn" data-type="add"><i class="layui-icon">&#xe61f;</i>添加文章</button>
+        <button class="layui-btn" data-type="Add"><i class="layui-icon">&#xe61f;</i>添加文章</button>
     </div>
     <table class="layui-hide" id="articleList"></table>
 
@@ -120,11 +120,8 @@ ${end}$
     </script>
 
     <script type="text/html" id="operateTpl">
-        <a title="编辑" onclick="WeAdminEdit('编辑','', '', 1000, 500)" href="javascript:;">
+        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/article/edit` }$?id={{d.id}}', '', 1000, 500)" href="javascript:;">
             <i class="layui-icon">&#xe642;</i>
-        </a>
-        <a title="查看" href="javascript:;" class="preView" data-id="{{d.id}}">
-            <i class="layui-icon">&#xe63c;</i>
         </a>
         <a title="删除" onclick="member_del(this,'{{d.id}}')" href="javascript:;">
             <i class="layui-icon">&#xe640;</i>
@@ -243,14 +240,14 @@ ${end}$
 
                 },
                 //添加文章
-                add: function () {
+                Add: function () {
                     var cid = $('#catid').val();
                     var str = ''
                     //console.log(cid);
                     if (cid) {
-                        str = '?cid=' + cid;
+                        str = '?channel_id=' + cid;
                     }
-                    WeAdminShow('添加文章', 'add.html' + str, 1000, 500);
+                    WeAdminShow('添加文章', '${ backend_url `/article/add` }$' + str, 1000, 800);
                 },
                 //批量删除
                 getCheckData: function () { //获取选中数据
@@ -574,21 +571,6 @@ ${end}$
                 //console.log('取消显示大图');
                 layer.close(layer.index);
             });
-
-            //文章预览
-            $('body').on('click', '.preView', function () {
-                var artid = $(this).attr('data-id');
-                $.get('preView.html', {'artid': artid}, function (res) {
-                    layer.open({
-                        type: 2,
-                        title: '文章预览',
-                        content: res,
-                        area: ['96%', '96%'],
-                        maxmin: true
-                    })
-                });
-            });
-
         });
     </script>
 </div>
