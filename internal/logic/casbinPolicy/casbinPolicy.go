@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/util"
+	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/casbin/casbin/v2/model"
 	"log"
@@ -105,6 +106,17 @@ func (*sCasbinPolicy) CheckByRoleId(roleId, obj, act string) bool {
 
 // CheckByAccountId 检测用户权限
 func (*sCasbinPolicy) CheckByAccountId(AccountId, obj, act string) bool {
+	var admin *entity.CmsAdmin
+	err := dao.CmsAdmin.Ctx(util.Ctx).Where(dao.CmsAdmin.Columns().Id, AccountId).Scan(&admin)
+	if err != nil {
+		return false
+	}
+	if admin == nil {
+		return false
+	}
+	if admin.Status != 1 {
+		return false
+	}
 	all, err := dao.CmsRoleAccount.Ctx(util.Ctx).Where("account_id", AccountId).All()
 	if err != nil {
 		return false

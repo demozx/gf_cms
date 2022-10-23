@@ -86,7 +86,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 		"Token":    res.Token,
 		"Id":       adminInfo.Id,
 		"Username": adminInfo.Username,
-		"name":     adminInfo.Name,
+		"Name":     adminInfo.Name,
 	})
 	if err != nil {
 		return nil, err
