@@ -2,10 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>出错了</title>
 </head>
 <body>
-${.code}$
-${.message}$
+<style>
+    .body {
+        width: 90%;
+        text-align: center;
+        position: absolute;
+        top: 30%;
+        left: 5%;
+    }
+
+    .title {
+        width: 150px;
+        margin: auto;
+    }
+
+    .icon {
+        float: left;
+        text-align: right;
+        color: #FF5722;
+    }
+    .icon .layui-icon{
+        font-size: 50px;
+    }
+    .code {
+        float: right;
+        text-align: left;
+        font-size: 50px;
+    }
+    .message{
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    .clear {
+        clear: both;
+    }
+</style>
+<link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+<div class="body">
+    <div class="title">
+        <div class="icon">
+            <i class="layui-icon">&#xe69c;</i>
+        </div>
+        <div class="code">${.code}$</div>
+    </div>
+    <div class="clear"></div>
+    <div class="message">${.message}$</div>
+</div>
 </body>
 </html>

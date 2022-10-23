@@ -9,6 +9,8 @@ import (
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/errors/gcode"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/util/gconv"
 
 	"github.com/gogf/gf/v2/container/gvar"
@@ -52,6 +54,28 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 		r.Response.RedirectTo(adminRoute + "/admin/login")
 	}
 	r.Middleware.Next()
+	if r.Response.BufferLength() > 0 {
+		return
+	}
+	var (
+		err     = r.GetError()
+		code    = gerror.Code(err)
+		codeNum = gcode.CodeNil.Code()
+		codeMsg = gcode.CodeNil.Message()
+	)
+	if code == gcode.CodeNil && err != nil {
+		codeNum = gcode.CodeInternalError.Code()
+		codeMsg = gcode.CodeInternalError.Message()
+	}
+	if err != nil {
+		err := r.Response.WriteTpl("tpl/error.html", g.Map{
+			"code":    codeNum,
+			"message": codeMsg + "：" + err.Error(),
+		})
+		if err != nil {
+			return
+		}
+	}
 }
 
 // BackendCheckPolicy 检测后台页面用户有无某个请求权限
