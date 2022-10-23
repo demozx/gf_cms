@@ -109,14 +109,30 @@ func (*sCasbinPolicy) CheckByAccountId(AccountId, obj, act string) bool {
 	if err != nil {
 		return false
 	}
+	if len(all) == 0 {
+		return false
+	}
 	var pass = false
-	for _, one := range all {
-		has, _ := initCasbin().Enforce(gvar.New(one["role_id"]).String(), obj, act)
+	if len(all) == 1 {
+		has, _ := initCasbin().Enforce(gvar.New(all[0]["role_id"]).String(), obj, act)
 		if has {
 			pass = true
 		}
+		one, err := dao.CmsRole.Ctx(util.Ctx).Where(dao.CmsRole.Columns().Id, all[0]["role_id"]).Where(dao.CmsRole.Columns().IsEnable, 1).One()
+		if err != nil {
+			return false
+		}
+		if one == nil {
+			pass = false
+		}
+	} else {
+		for _, one := range all {
+			has, _ := initCasbin().Enforce(gvar.New(one["role_id"]).String(), obj, act)
+			if has {
+				pass = true
+			}
+		}
 	}
-
 	return pass
 }
 
