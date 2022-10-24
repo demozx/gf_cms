@@ -30,7 +30,16 @@ func (c *cArticle) Move(ctx context.Context, req *backend.ArticleMoveReq) (res *
 }
 
 func (c *cArticle) Add(ctx context.Context, req *backend.ArticleAddReq) (res *backend.ArticleAddRes, err error) {
-
+	channelModelTree, err := service.Channel().BackendChannelModelTree(ctx, consts.ChannelModelArticle, 0)
+	if err != nil {
+		return nil, err
+	}
+	err = service.Response().View(ctx, "backend/channel_model/article/add.html", g.Map{
+		"channelModelTree": channelModelTree,
+	})
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 
