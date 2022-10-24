@@ -260,7 +260,7 @@ func (s *sAdmin) BackendApiAdminEdit(ctx context.Context, in *backendApi.AdminEd
 		}
 		_, err = dao.CmsRoleAccount.Ctx(ctx).Where(dao.CmsRoleAccount.Columns().AccountId, in.Id).Data(roleData).Insert()
 	}
-	// 如果修改
+	// 如果修改了密码，立刻退出当前用户登录
 	if len(in.Password) > 0 {
 		get, err := g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
 		if err != nil {
