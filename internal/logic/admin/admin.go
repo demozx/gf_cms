@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"gf_cms/api/backendApi"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/captcha"
 	"gf_cms/internal/logic/util"
@@ -12,7 +13,6 @@ import (
 	"gf_cms/internal/model/do"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
-
 	"github.com/gogf/gf/v2/util/grand"
 
 	"github.com/gogf/gf/v2/util/gconv"
@@ -259,6 +259,24 @@ func (s *sAdmin) BackendApiAdminEdit(ctx context.Context, in *backendApi.AdminEd
 			"role_id":    roleId,
 		}
 		_, err = dao.CmsRoleAccount.Ctx(ctx).Where(dao.CmsRoleAccount.Columns().AccountId, in.Id).Data(roleData).Insert()
+	}
+	// 如果修改
+	if len(in.Password) > 0 {
+		get, err := g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
+		if err != nil {
+			return nil, err
+		}
+		var cmsAdmin *entity.CmsAdmin
+		err = get.Scan(&cmsAdmin)
+		if err != nil {
+			return nil, err
+		}
+		if cmsAdmin != nil && in.Id == int(cmsAdmin.Id) {
+			err = g.RequestFromCtx(ctx).Session.Remove(consts.AdminSessionKeyPrefix)
+			if err != nil {
+				return nil, err
+			}
+		}
 	}
 	return
 }
