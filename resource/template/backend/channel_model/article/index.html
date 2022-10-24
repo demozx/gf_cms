@@ -120,7 +120,7 @@ ${end}$
     </script>
 
     <script type="text/html" id="operateTpl">
-        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/article/edit` }$?id={{d.id}}', '', 1000, 800)" href="javascript:;">
+        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/article/edit` }$?id={{d.id}}', '', 1200, 700)" href="javascript:;">
             <i class="layui-icon">&#xe642;</i>
         </a>
         <a title="删除" onclick="member_del(this,'{{d.id}}')" href="javascript:;">
@@ -247,7 +247,7 @@ ${end}$
                     if (cid) {
                         str = '?channel_id=' + cid;
                     }
-                    WeAdminShow('添加文章', '${ backend_url `/article/add` }$' + str, 1000, 800);
+                    WeAdminShow('添加文章', '${ backend_url `/article/add` }$' + str, 1200, 700);
                 },
                 //批量删除
                 getCheckData: function () { //获取选中数据
