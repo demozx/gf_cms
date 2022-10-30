@@ -92,6 +92,10 @@ func (c *cArticle) Move(ctx context.Context, req *backendApi.ArticleMoveReq) (re
 }
 
 func (c *cArticle) Add(ctx context.Context, req *backendApi.ArticleAddReq) (res *backendApi.ArticleAddRes, err error) {
-	g.Dump(req)
+	_, err = service.Article().Add(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "添加成功", g.Map{})
 	return
 }

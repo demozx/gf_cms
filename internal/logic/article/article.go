@@ -2,13 +2,16 @@ package article
 
 import (
 	"context"
+	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/encoding/ghtml"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
+	"regexp"
 	"sync"
 )
 
@@ -161,6 +164,101 @@ func (s *sArticle) Move(ctx context.Context, channelId int, ids []string) (out i
 	}).Update()
 	if err != nil {
 		return nil, err
+	}
+	return
+}
+
+func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out interface{}, err error) {
+	// 没有描述的时候，自动从文章内容获取描述
+	if len(in.Description) == 0 {
+		description, err := Article().getDescriptionByBody(ctx, in.Body)
+		if err != nil {
+			return nil, err
+		}
+		in.Description = description
+	}
+	// 没有缩略图时，自动获取文章的第一张图作为缩略图
+	if len(in.Thumb) == 0 {
+		thumb, err := Article().getThumbByBody(ctx, in.Body)
+		if err != nil {
+			return nil, err
+		}
+		in.Thumb = thumb
+	}
+	flag, err := Article().buildFlagData(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	id, err := dao.CmsArticle.Ctx(ctx).Data(g.Map{
+		"title":       in.Title,
+		"channelId":   in.ChannelId,
+		"description": in.Description,
+		"flag":        flag,
+		"status":      in.Status,
+		"thumb":       in.Thumb,
+		"copyFrom":    in.CopyFrom,
+		"clickNum":    in.ClickNum,
+	}).InsertAndGetId()
+	if err != nil {
+		return nil, err
+	}
+	if id > 0 {
+		_, err := dao.CmsArticleBody.Ctx(ctx).Data(g.Map{
+			"articleId": id,
+			"channelId": in.ChannelId,
+			"body":      in.Body,
+		}).Insert()
+		if err != nil {
+			return nil, err
+		}
+	}
+	return
+}
+
+func (s *sArticle) buildFlagData(ctx context.Context, in *backendApi.ArticleAddReq) (flagData string, err error) {
+	var data []string
+	if in.FlagP == 1 {
+		data = append(data, "p")
+	}
+	if in.FlagT == 1 {
+		data = append(data, "t")
+	}
+	if in.FlagR == 1 {
+		data = append(data, "r")
+	}
+	flagData = gstr.Implode(",", data)
+	return
+}
+
+func (s *sArticle) getDescriptionByBody(ctx context.Context, body string) (description string, err error) {
+	text := ghtml.StripTags(body)
+	description = gstr.SubStrRune(text, 0, 255)
+	return
+}
+
+func (s *sArticle) getThumbByBody(ctx context.Context, body string) (thumb string, err error) {
+	// 自动获取文章缩略图
+	autoArtPic := service.Util().GetSetting("auto_art_pic")
+	// 功能未开启
+	if autoArtPic != "1" {
+		return
+	}
+	compileImg, err := regexp.Compile(`<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png]))[\'|\"].*?[\/]?>`)
+	if err != nil {
+		return "", err
+	}
+	img := compileImg.FindString(body)
+	if len(img) == 0 {
+		return "", err
+	}
+	explodeImg := gstr.Explode(" ", img)
+	if len(explodeImg) > 0 {
+		for _, value := range explodeImg {
+			// 找到src字符串
+			if gstr.Contains(value, "src=") {
+				thumb = gstr.ReplaceIByArray(value, []string{"src=", "", "\"", ""})
+			}
+		}
 	}
 	return
 }
