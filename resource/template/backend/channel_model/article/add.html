@@ -81,9 +81,9 @@
                 文章属性
             </label>
             <div class="layui-input-block">
-                <input type="checkbox" name="flag[]" value="p" title="带图">
-                <input type="checkbox" name="flag[]" value="r" title="推荐">
-                <input type="checkbox" name="flag[]" value="t" title="置顶">
+                <input type="checkbox" name="flag_p" value="1" title="带图">
+                <input type="checkbox" name="flag_r" value="1" title="推荐">
+                <input type="checkbox" name="flag_t" value="1" title="置顶">
             </div>
         </div>
         <div class="layui-form-item">
@@ -101,7 +101,8 @@
 
             <div class="layui-input-block">
                 <input style="width: 90%;display: inline;" type="text" id="litpic_text" name="thumb"
-                       placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off" class="layui-input">
+                       placeholder="点击上传图片按钮或手动输入图片路径（如不填写，当文章内容中有图时，会自动使用第一张图作为缩略图）"
+                       autocomplete="off" class="layui-input">
                 <button style="margin-left: -118px;margin-bottom: 3px;" type="button" class="layui-btn" id="topicImg"><i
                         class="layui-icon">&#xe67c;</i>上传图片
                 </button>
@@ -162,6 +163,7 @@
         laydate.render({
             elem: '#editdate'
             , type: 'datetime'
+            , value: new Date()
         });
         //上传文章缩略图
         layui.use(['upload', 'jquery'], function () {
@@ -170,22 +172,25 @@
             //执行实例
             var uploadInst = upload.render({
                 elem: '#topicImg' //绑定元素
-                , url: '{:url("@admin/article/litpic")}' //上传接口
+                , url: '${ backend_api_url `/upload/single_image` }$' //上传接口
                 , done: function (res) {
                     //上传完毕回调
-                    if (res['code'] == 1) {
-                        $('#litpic').attr('src', res['path']);
-                        $('#litpic_text').val(res['path']);
+                    if (res.code === 0) {
+                        $('#litpic').attr('src', res.data['url']);
+                        $('#litpic_text').val(res.data['url']);
                     } else {
-                        layer.msg(res['msg'], {
+                        layer.msg(res.message, {
                             time: 3000,
                             icon: 5
                         });
                     }
                 }
-                , error: function () {
+                , error: function (res) {
                     //请求异常回调
-
+                    layer.msg(res.message, {
+                        time: 3000,
+                        icon: 5
+                    })
                 }
             });
         });
@@ -194,7 +199,7 @@
         form.on('submit(add)', function (data) {
             //console.table(data.field);
             //发异步，把数据提交给php
-            $.post('{:url("@admin/article/add")}', data.field, function (res) {
+            $.post('${ backend_api_url `/article/add` }$', data.field, function (res) {
                 //console.table(res);
                 if (res.code === 0) {
                     layer.msg("增加成功", {icon: 6, time: 1000}, function () {

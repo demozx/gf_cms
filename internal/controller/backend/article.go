@@ -30,7 +30,8 @@ func (c *cArticle) Move(ctx context.Context, req *backend.ArticleMoveReq) (res *
 }
 
 func (c *cArticle) Add(ctx context.Context, req *backend.ArticleAddReq) (res *backend.ArticleAddRes, err error) {
-	channelModelTree, err := service.Channel().BackendChannelModelTree(ctx, consts.ChannelModelArticle, 0)
+	channelId := req.ChannelId
+	channelModelTree, err := service.Channel().BackendChannelModelTree(ctx, consts.ChannelModelArticle, channelId)
 	if err != nil {
 		return nil, err
 	}

@@ -90,3 +90,8 @@ func (c *cArticle) Move(ctx context.Context, req *backendApi.ArticleMoveReq) (re
 	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "移动成功", g.Map{})
 	return
 }
+
+func (c *cArticle) Add(ctx context.Context, req *backendApi.ArticleAddReq) (res *backendApi.ArticleAddRes, err error) {
+	g.Dump(req)
+	return
+}

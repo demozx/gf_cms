@@ -9,7 +9,8 @@ type ArticleMoveReq struct {
 type ArticleMoveRes struct{}
 
 type ArticleAddReq struct {
-	g.Meta `tags:"Backend" method:"get" summary:"文章新增"`
+	ChannelId int `json:"channel_id" in:"query" d:"0"  v:""  dc:"频道ID"`
+	g.Meta    `tags:"Backend" method:"get" summary:"文章新增"`
 }
 type ArticleAddRes struct{}
 
