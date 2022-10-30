@@ -14,7 +14,7 @@ type ArticleListReq struct {
 	model.PageSizeReq
 }
 type ArticleListRes struct {
-	List  []model.ArticleListItem `name:"list" dc:"列表"`
+	List  []model.ArticleListItem `name:"list" dc:"文章列表"`
 	Page  int                     `name:"page" dc:"分页码"`
 	Size  int                     `name:"size" dc:"分页数量"`
 	Total int                     `name:"total" dc:"数据总数"`
@@ -27,7 +27,7 @@ type ArticleSortReq struct {
 type ArticleSortRes struct{}
 
 type ArticleFlagReq struct {
-	g.Meta `tags:"BackendApi" method:"post" summary:"flag"`
+	g.Meta `tags:"BackendApi" method:"post" summary:"文章flag"`
 	Ids    []int  `name:"ids" dc:"文章ID们" v:"required#文章ID必填" arg:"true"`
 	Flag   string `name:"flag" dc:"flag" v:"in:t,r#类型不合法" arg:"true"`
 }
@@ -40,20 +40,20 @@ type ArticleStatusReq struct {
 type ArticleStatusRes struct{}
 
 type ArticleDeleteReq struct {
-	g.Meta `tags:"BackendApi" method:"post" summary:"删除"`
+	g.Meta `tags:"BackendApi" method:"post" summary:"删除文章"`
 	Ids    []int `name:"ids" dc:"文章ID们" v:"required#文章ID必填" arg:"true"`
 }
 type ArticleDeleteRes struct{}
 
 type ArticleMoveReq struct {
-	g.Meta    `tags:"BackendApi" method:"post" summary:"移动"`
+	g.Meta    `tags:"BackendApi" method:"post" summary:"移动文章"`
 	ChannelId int    `name:"channel_id" dc:"频道ID" v:"required#频道ID必填" arg:"true"`
 	StrIds    string `name:"str_ids" dc:"ids，英文逗号拼接" v:"required#必填项不能为空" arg:"true"`
 }
 type ArticleMoveRes struct{}
 
 type ArticleAddReq struct {
-	g.Meta      `tags:"BackendApi" method:"post" summary:"移动"`
+	g.Meta      `tags:"BackendApi" method:"post" summary:"新增文章"`
 	Title       string `name:"title" dc:"文章标题" v:"required#文章标题必填" arg:"true"`
 	ChannelId   int    `name:"channel_id" dc:"频道ID" v:"required#频道ID必填" arg:"true"`
 	Keyword     string `name:"keyword" dc:"关键词" v:"" arg:"true"`
@@ -69,3 +69,22 @@ type ArticleAddReq struct {
 	Body        string `name:"body" dc:"文章内容" v:"" arg:"true"`
 }
 type ArticleAddRes struct{}
+
+type ArticleEditReq struct {
+	g.Meta      `tags:"BackendApi" method:"post" summary:"移动"`
+	Id          int    `name:"id" dc:"文章id" v:"required#文章id必填" arg:"true"`
+	Title       string `name:"title" dc:"文章标题" v:"required#文章标题必填" arg:"true"`
+	ChannelId   int    `name:"channel_id" dc:"频道ID" v:"required#频道ID必填" arg:"true"`
+	Keyword     string `name:"keyword" dc:"关键词" v:"" arg:"true"`
+	Description string `name:"description" dc:"文章摘要" v:"" arg:"true"`
+	FlagP       int    `name:"flag_p" dc:"文章属性-带图" v:"in:0,1#带图属性不合法" arg:"true"`
+	FlagR       int    `name:"flag_r" dc:"文章属性-推荐" v:"in:0,1#推荐属性不合法" arg:"true"`
+	FlagT       int    `name:"flag_t" dc:"文章属性-置顶" v:"in:0,1#置顶属性不合法" arg:"true"`
+	Status      int    `name:"status" dc:"审核状态" v:"in:0,1#审核状态不合法" arg:"true"`
+	Thumb       string `name:"thumb" dc:"文章缩略图" v:"" arg:"true"`
+	CreatedAt   string `name:"created_at" dc:"发布时间" v:"date-format:Y-m-d H:i:s" arg:"true"`
+	CopyFrom    string `name:"copy_from" dc:"文章来源" v:"" arg:"true"`
+	ClickNum    int    `name:"copy_from" dc:"点击数" v:"" arg:"true"`
+	Body        string `name:"body" dc:"文章内容" v:"" arg:"true"`
+}
+type ArticleEditRes struct{}

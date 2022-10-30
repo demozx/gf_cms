@@ -99,3 +99,12 @@ func (c *cArticle) Add(ctx context.Context, req *backendApi.ArticleAddReq) (res 
 	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "添加成功", g.Map{})
 	return
 }
+
+func (c *cArticle) Edit(ctx context.Context, req *backendApi.ArticleEditReq) (res *backendApi.ArticleEditRes, err error) {
+	_, err = service.Article().Edit(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "编辑成功", g.Map{})
+	return
+}

@@ -39,3 +39,11 @@ type ArticleSortMap struct {
 	Id   int `json:"id"`
 	Sort int `json:"sort"`
 }
+
+type ArticleWithBody struct {
+	ArticleListItem
+	FlagP int             `json:"flag_p" description:"flag带图"`
+	FlagR int             `json:"flag_r" description:"flag推荐"`
+	FlagT int             `json:"flag_t" description:"flag置顶"`
+	Body  ArticleBodyItem `orm:"with:article_id=id"`
+}

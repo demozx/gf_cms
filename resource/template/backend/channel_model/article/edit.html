@@ -7,7 +7,7 @@
 -->
 <head>
     <meta charset="UTF-8">
-    <title>添加文章-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <title>编辑文章-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -39,7 +39,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><i style="color:red;margin: 0 4px;">*</i>文章标题</label>
             <div class="layui-input-block">
-                <input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input" value="${ .articleInfo.Title }$">
             </div>
         </div>
 
@@ -64,7 +64,7 @@
             <label class="layui-form-label">关键词</label>
             <div class="layui-input-block">
                 <input type="text" id="keyword" name="keyword"
-                       placeholder="多个关键词之间用英文逗号隔开，如“关键词1,关键词2”" lay-verify="" class="layui-input">
+                       placeholder="多个关键词之间用英文逗号隔开，如“关键词1,关键词2”" lay-verify="" class="layui-input" value="${ .articleInfo.Keyword }$">
             </div>
         </div>
 
@@ -72,7 +72,7 @@
             <label class="layui-form-label">文章摘要</label>
             <div class="layui-input-block">
                 <textarea name="description" placeholder="如不填写将从文章内容自动截取"
-                          class="layui-textarea"></textarea>
+                          class="layui-textarea">${ .articleInfo.Description }$</textarea>
             </div>
         </div>
 
@@ -81,9 +81,9 @@
                 文章属性
             </label>
             <div class="layui-input-block">
-                <input type="checkbox" name="flag_p" value="1" title="带图">
-                <input type="checkbox" name="flag_r" value="1" title="推荐">
-                <input type="checkbox" name="flag_t" value="1" title="置顶">
+                <input type="checkbox" name="flag_p" value="1" title="带图" ${ if eq 1 .articleInfo.FlagP }$ checked ${ end }$>
+                <input type="checkbox" name="flag_r" value="1" title="推荐" ${ if eq 1 .articleInfo.FlagR }$ checked ${ end }$>
+                <input type="checkbox" name="flag_t" value="1" title="置顶" ${ if eq 1 .articleInfo.FlagT }$ checked ${ end }$>
             </div>
         </div>
         <div class="layui-form-item">
@@ -91,8 +91,8 @@
                 审核状态
             </label>
             <div class="layui-input-block">
-                <input type="checkbox" checked="" name="status" lay-skin="switch" lay-filter="switchTest"
-                       lay-text="ON|OFF" value="1">
+                <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest"
+                       lay-text="ON|OFF" value="1" ${ if eq 1 .articleInfo.Status }$ checked ${ end }$>
             </div>
         </div>
 
@@ -102,12 +102,12 @@
             <div class="layui-input-block">
                 <input style="width: 90%;display: inline;" type="text" id="litpic_text" name="thumb"
                        placeholder="点击上传图片按钮或手动输入图片路径（如不填写，当文章内容中有图时，会自动使用第一张图作为缩略图）"
-                       autocomplete="off" class="layui-input">
+                       autocomplete="off" class="layui-input" value="${ .articleInfo.Thumb }$">
                 <button style="margin-left: -118px;margin-bottom: 3px;" type="button" class="layui-btn" id="topicImg"><i
                         class="layui-icon">&#xe67c;</i>上传图片
                 </button>
                 <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="litpic" style="width: 200px;">
+                    <img class="layui-upload-img" id="litpic" style="width: 200px;" src="${ .articleInfo.Thumb }$">
                 </div>
             </div>
 
@@ -116,22 +116,22 @@
         <div class="layui-form-item">
             <label class="layui-form-label">发布时间</label>
             <div class="layui-input-block">
-                <input type="text" value="" name="created_at" id="editdate" lay-verify="datetime"
-                       placeholder="yyyy-MM-dd H:i:s" autocomplete="off" class="layui-input">
+                <input type="text" name="created_at" id="editdate" lay-verify="datetime"
+                       placeholder="yyyy-MM-dd H:i:s" autocomplete="off" class="layui-input" value="${ .articleInfo.CreatedAt }$">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">文章来源</label>
             <div class="layui-input-block">
-                <input type="text" id="copyfrom" name="copy_from" lay-verify="" class="layui-input">
+                <input type="text" id="copyfrom" name="copy_from" lay-verify="" class="layui-input" value="${ .articleInfo.CopyFrom }$">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">点击数</label>
             <div class="layui-input-inline">
-                <input type="text" id="click" name="click_num" lay-verify="number" value="0" class="layui-input">
+                <input type="text" id="click" name="click_num" lay-verify="number" class="layui-input" value="${ .articleInfo.ClickNum }$">
             </div>
         </div>
 
@@ -147,6 +147,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
+                <input name="id" type="hidden" value="${ .articleInfo.Id }$">
                 <button class="layui-btn" lay-submit lay-filter="add">提交</button>
                 <button class="layui-btn layui-btn-primary" type="reset">重置</button>
             </div>
@@ -163,7 +164,6 @@
         laydate.render({
             elem: '#editdate'
             , type: 'datetime'
-            , value: new Date()
         });
         //上传文章缩略图
         layui.use(['upload', 'jquery'], function () {
@@ -199,7 +199,7 @@
         form.on('submit(add)', function (data) {
             //console.table(data.field);
             //发异步，把数据提交给php
-            $.post('${ backend_api_url `/article/add` }$', data.field, function (res) {
+            $.post('${ backend_api_url `/article/edit` }$', data.field, function (res) {
                 //console.table(res);
                 if (res.code === 0) {
                     layer.msg(res.message, {icon: 6, time: 1000}, function () {
@@ -281,7 +281,7 @@
 
     const editor = createEditor({
         selector: '#editor-container',
-        html: '<p><br></p>',
+        html: '${ .articleInfo.Body.Body }$',
         config: editorConfig,
         mode: 'default', // or 'simple'
     })

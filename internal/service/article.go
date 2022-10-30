@@ -20,6 +20,7 @@ type (
 		Delete(ctx context.Context, ids []int) (out interface{}, err error)
 		Move(ctx context.Context, channelId int, ids []string) (out interface{}, err error)
 		Add(ctx context.Context, in *backendApi.ArticleAddReq) (out interface{}, err error)
+		Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out interface{}, err error)
 	}
 )
 

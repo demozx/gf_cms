@@ -186,7 +186,7 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 		in.Thumb = thumb
 	}
 	// 构建flag
-	flag, err := Article().buildFlagData(ctx, in)
+	flagStr, err := Article().buildFlagData(ctx, in.FlagP, in.FlagT, in.FlagR)
 	if err != nil {
 		return nil, err
 	}
@@ -200,7 +200,7 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 		"channelId":   in.ChannelId,
 		"keyword":     keyword,
 		"description": in.Description,
-		"flag":        flag,
+		"flag":        flagStr,
 		"status":      in.Status,
 		"thumb":       in.Thumb,
 		"copyFrom":    in.CopyFrom,
@@ -222,15 +222,66 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 	return
 }
 
-func (s *sArticle) buildFlagData(ctx context.Context, in *backendApi.ArticleAddReq) (flagData string, err error) {
+func (s *sArticle) Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out interface{}, err error) {
+	// 没有描述的时候，自动从文章内容获取描述
+	if len(in.Description) == 0 {
+		description, err := Article().getDescriptionByBody(ctx, in.Body)
+		if err != nil {
+			return nil, err
+		}
+		in.Description = description
+	}
+	// 没有缩略图时，自动获取文章的第一张图作为缩略图
+	if len(in.Thumb) == 0 {
+		thumb, err := Article().getThumbByBody(ctx, in.Body)
+		if err != nil {
+			return nil, err
+		}
+		in.Thumb = thumb
+	}
+	// 构建flag
+	flagStr, err := Article().buildFlagData(ctx, in.FlagP, in.FlagT, in.FlagR)
+	if err != nil {
+		return nil, err
+	}
+	// 关键词逗号替换成英文逗号
+	keyword, err := Article().buildKeywordData(ctx, in.Keyword)
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, in.Id).Data(g.Map{
+		"title":       in.Title,
+		"channelId":   in.ChannelId,
+		"keyword":     keyword,
+		"description": in.Description,
+		"flag":        flagStr,
+		"status":      in.Status,
+		"thumb":       in.Thumb,
+		"copyFrom":    in.CopyFrom,
+		"clickNum":    in.ClickNum,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsArticleBody.Ctx(ctx).Where(dao.CmsArticleBody.Columns().ArticleId, in.Id).Data(g.Map{
+		"channelId": in.ChannelId,
+		"body":      in.Body,
+	}).Insert()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (s *sArticle) buildFlagData(ctx context.Context, flagP, flagT, flagR int) (flagData string, err error) {
 	var data []string
-	if in.FlagP == 1 {
+	if flagP == 1 {
 		data = append(data, "p")
 	}
-	if in.FlagT == 1 {
+	if flagT == 1 {
 		data = append(data, "t")
 	}
-	if in.FlagR == 1 {
+	if flagR == 1 {
 		data = append(data, "r")
 	}
 	flagData = gstr.Implode(",", data)
