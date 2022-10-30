@@ -223,6 +223,13 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 }
 
 func (s *sArticle) Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out interface{}, err error) {
+	one, err := dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, in.Id).One()
+	if err != nil {
+		return nil, err
+	}
+	if one.IsEmpty() {
+		return nil, gerror.New("文章不存在")
+	}
 	// 没有描述的时候，自动从文章内容获取描述
 	if len(in.Description) == 0 {
 		description, err := Article().getDescriptionByBody(ctx, in.Body)
