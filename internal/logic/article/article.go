@@ -185,13 +185,20 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 		}
 		in.Thumb = thumb
 	}
+	// 构建flag
 	flag, err := Article().buildFlagData(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	// 关键词逗号替换成英文逗号
+	keyword, err := Article().buildKeywordData(ctx, in.Keyword)
 	if err != nil {
 		return nil, err
 	}
 	id, err := dao.CmsArticle.Ctx(ctx).Data(g.Map{
 		"title":       in.Title,
 		"channelId":   in.ChannelId,
+		"keyword":     keyword,
 		"description": in.Description,
 		"flag":        flag,
 		"status":      in.Status,
@@ -227,6 +234,15 @@ func (s *sArticle) buildFlagData(ctx context.Context, in *backendApi.ArticleAddR
 		data = append(data, "r")
 	}
 	flagData = gstr.Implode(",", data)
+	return
+}
+
+func (s *sArticle) buildKeywordData(ctx context.Context, keyword string) (newKeyword string, err error) {
+	str := "，"
+	if gstr.Contains(keyword, str) {
+		keyword = gstr.Replace(keyword, str, ",")
+	}
+	newKeyword = gstr.TrimRightStr(keyword, ",", -1)
 	return
 }
 
