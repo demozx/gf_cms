@@ -185,6 +185,10 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 		}
 		in.Thumb = thumb
 	}
+	if len(in.Thumb) > 0 {
+		//有缩略图，自动勾选in.FlagP
+		in.FlagP = 1
+	}
 	// 构建flag
 	flagStr, err := Article().buildFlagData(ctx, in.FlagP, in.FlagT, in.FlagR)
 	if err != nil {
@@ -245,6 +249,10 @@ func (s *sArticle) Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out
 			return nil, err
 		}
 		in.Thumb = thumb
+	}
+	if len(in.Thumb) > 0 {
+		//有缩略图，自动勾选in.FlagP
+		in.FlagP = 1
 	}
 	// 构建flag
 	flagStr, err := Article().buildFlagData(ctx, in.FlagP, in.FlagT, in.FlagR)
