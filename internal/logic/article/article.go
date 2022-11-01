@@ -281,7 +281,7 @@ func (s *sArticle) Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out
 	_, err = dao.CmsArticleBody.Ctx(ctx).Where(dao.CmsArticleBody.Columns().ArticleId, in.Id).Data(g.Map{
 		"channelId": in.ChannelId,
 		"body":      in.Body,
-	}).Insert()
+	}).Update()
 	if err != nil {
 		return nil, err
 	}
