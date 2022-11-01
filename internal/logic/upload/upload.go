@@ -29,10 +29,6 @@ func Upload() *sUpload {
 // SingleUploadFile 上传文件
 func (*sUpload) SingleUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error) {
 	serverRoot := service.Util().ServerRoot()
-	//如果是打包运行的，文件上传到可自行文件的同等目录
-	if service.Util().PackedAloneRun() == true {
-		serverRoot = service.Util().SystemRoot()
-	}
 	if err != nil {
 		return nil, err
 	}

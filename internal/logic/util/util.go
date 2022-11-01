@@ -211,16 +211,3 @@ func (*sUtil) ImageOrDefaultUrl(imgUrl string) string {
 	}
 	return imgUrl
 }
-
-// PackedAloneRun 判断是否打包后单独运行的
-func (*sUtil) PackedAloneRun() bool {
-	//通过判断根目录的resource文件夹是否存在
-	_, err := os.Stat(Util().SystemRoot() + "/resource/")
-	if err != nil {
-		if os.IsExist(err) {
-			return false
-		}
-		return true
-	}
-	return false
-}
