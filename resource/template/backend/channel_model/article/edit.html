@@ -37,13 +37,6 @@
     <form class="layui-form">
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><i style="color:red;margin: 0 4px;">*</i>文章标题</label>
-            <div class="layui-input-block">
-                <input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input" value="${ .articleInfo.Title }$">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
             <label class="layui-form-label">
                 <i style="color:red;margin: 0 4px;">*</i>
                 所属栏目
@@ -61,10 +54,19 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label"><i style="color:red;margin: 0 4px;">*</i>文章标题</label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input"
+                       value="${ .articleInfo.Title }$">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label">关键词</label>
             <div class="layui-input-block">
                 <input type="text" id="keyword" name="keyword"
-                       placeholder="多个关键词之间用英文逗号隔开，如“关键词1,关键词2”" lay-verify="" class="layui-input" value="${ .articleInfo.Keyword }$">
+                       placeholder="多个关键词之间用英文逗号隔开，如“关键词1,关键词2”" lay-verify="" class="layui-input"
+                       value="${ .articleInfo.Keyword }$">
             </div>
         </div>
 
@@ -81,9 +83,12 @@
                 文章属性
             </label>
             <div class="layui-input-block">
-                <input type="checkbox" name="flag_p" value="1" title="带图" ${ if eq 1 .articleInfo.FlagP }$ checked ${ end }$>
-                <input type="checkbox" name="flag_r" value="1" title="推荐" ${ if eq 1 .articleInfo.FlagR }$ checked ${ end }$>
-                <input type="checkbox" name="flag_t" value="1" title="置顶" ${ if eq 1 .articleInfo.FlagT }$ checked ${ end }$>
+                <input type="checkbox" name="flag_p" value="1" title="带图" ${ if eq 1 .articleInfo.FlagP }$ checked ${
+                       end }$>
+                <input type="checkbox" name="flag_r" value="1" title="推荐" ${ if eq 1 .articleInfo.FlagR }$ checked ${
+                       end }$>
+                <input type="checkbox" name="flag_t" value="1" title="置顶" ${ if eq 1 .articleInfo.FlagT }$ checked ${
+                       end }$>
             </div>
         </div>
         <div class="layui-form-item">
@@ -117,21 +122,24 @@
             <label class="layui-form-label">发布时间</label>
             <div class="layui-input-block">
                 <input type="text" name="created_at" id="editdate" lay-verify="datetime"
-                       placeholder="yyyy-MM-dd H:i:s" autocomplete="off" class="layui-input" value="${ .articleInfo.CreatedAt }$">
+                       placeholder="yyyy-MM-dd H:i:s" autocomplete="off" class="layui-input"
+                       value="${ .articleInfo.CreatedAt }$">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">文章来源</label>
             <div class="layui-input-block">
-                <input type="text" id="copyfrom" name="copy_from" lay-verify="" class="layui-input" value="${ .articleInfo.CopyFrom }$">
+                <input type="text" id="copyfrom" name="copy_from" lay-verify="" class="layui-input"
+                       value="${ .articleInfo.CopyFrom }$">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">点击数</label>
             <div class="layui-input-inline">
-                <input type="text" id="click" name="click_num" lay-verify="number" class="layui-input" value="${ .articleInfo.ClickNum }$">
+                <input type="text" id="click" name="click_num" lay-verify="number" class="layui-input"
+                       value="${ .articleInfo.ClickNum }$">
             </div>
         </div>
 
