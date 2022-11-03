@@ -423,3 +423,39 @@ func (s *sArticle) singleStatus(ctx context.Context, id int, targetType string) 
 	}
 	return
 }
+
+// BackendRecycleBinArticleGetList 回收站文章列表
+func (s *sArticle) BackendRecycleBinArticleGetList(ctx context.Context, in *model.ArticleGetListInPut) (out *model.ArticleGetListOutPut, err error) {
+	m := dao.CmsArticle.Ctx(ctx).
+		As("article").OrderAsc("article.sort").OrderDesc("article.id").WhereNotNull("article.deleted_at").Unscoped()
+	out = &model.ArticleGetListOutPut{
+		Page: in.Page,
+		Size: in.Size,
+	}
+	if in.Keyword != "" {
+		m = m.WhereLike("article.title", "%"+in.Keyword+"%")
+	}
+	listModel := m.LeftJoin(dao.CmsChannel.Table(), "channel", "channel.id=article.channel_id").
+		Fields("article.*, channel.name channel_name").
+		Page(in.Page, in.Size)
+
+	var list []*model.ArticleListItem
+	err = listModel.Scan(&list)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return out, nil
+	}
+	out.Total, err = m.Count()
+	if err != nil {
+		return out, err
+	}
+	if err = listModel.Scan(&out.List); err != nil {
+		return out, err
+	}
+	for i, item := range out.List {
+		out.List[i].Thumb = service.Util().ImageOrDefaultUrl(item.Thumb)
+	}
+	return
+}

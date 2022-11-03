@@ -10,8 +10,8 @@ backend:
           route: /channel_model/index
           permission: channel.channel.manage
         - title: 内容回收站
-          route: /recycle/index
-          permission: channel.recycle.manage
+          route: /recycle_bin/index
+          permission: channel.recycle_bin.manage
     - title: 管理员管理
       children:
         - title: 管理员列表

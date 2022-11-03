@@ -9,7 +9,7 @@ backend_view:
         - title: 档案列表
           slug: content.manage
         - title: 内容回收站
-          slug: recycle.manage
+          slug: recycle_bin.manage
     - title: 管理员管理
       slug: admin
       permissions:

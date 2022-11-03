@@ -1,0 +1,9 @@
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="margin-left: 20px">
+  <ul class="layui-tab-title">
+    ${range $key, $desc := .modelMap}$
+    <li class="layui-this" style="padding: 0">
+      <a href="?type=${$key}$">${$desc}$</a>
+    </li>
+    ${end}$
+  </ul>
+</div>

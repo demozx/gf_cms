@@ -59,6 +59,8 @@ func backendApiHandle(s *ghttp.Server) {
 			"/article/move":   backendApi.Article.Move,   // 移动
 			"/article/add":    backendApi.Article.Add,    // 新增
 			"/article/edit":   backendApi.Article.Edit,   // 编辑
+			/*回收站*/
+			"/recycle_bin/article_list": backendApi.RecycleBin.ArticleList, //文章列表
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传
