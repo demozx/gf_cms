@@ -88,3 +88,9 @@ type ArticleEditReq struct {
 	Body        string `name:"body" dc:"文章内容" v:"" arg:"true"`
 }
 type ArticleEditRes struct{}
+
+type ArticleBatchDestroyReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"回收站-批量删除文章"`
+	Ids    []int `name:"ids" dc:"文章ID们" v:"required#文章ID必填" arg:"true"`
+}
+type ArticleBatchDestroyRes struct{}

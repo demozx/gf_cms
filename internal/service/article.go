@@ -22,6 +22,7 @@ type (
 		Add(ctx context.Context, in *backendApi.ArticleAddReq) (out interface{}, err error)
 		Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out interface{}, err error)
 		BackendRecycleBinArticleGetList(ctx context.Context, in *model.ArticleGetListInPut) (out *model.ArticleGetListOutPut, err error)
+		BackendRecycleBinArticleBatchDestroy(ctx context.Context, ids []int) (out interface{}, err error)
 	}
 )
 

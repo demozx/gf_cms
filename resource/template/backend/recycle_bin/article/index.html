@@ -76,9 +76,9 @@ ${include "backend/recycle_bin/public/tab.html" .}$
     <div class="weadmin-block demoTable">
         <!--用于list.js获取删除类型-->
         <input type="hidden" id="delType" value="${ .deleteType }$">
-        <button class="layui-btn layui-btn-danger" data-type="getCheckData"><i class="layui-icon">&#xe640;</i>批量删除
+        <button class="layui-btn layui-btn-danger" data-type="BatchDestroy"><i class="layui-icon">&#xe640;</i>批量删除
         </button>
-        <button class="layui-btn" data-type="Restore"><i class="layui-icon">&#xe609;</i>还原文章</button>
+        <button class="layui-btn" data-type="batchRestore"><i class="layui-icon">&#xe609;</i>还原文章</button>
     </div>
     <table class="layui-hide" id="articleList"></table>
 
@@ -208,7 +208,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
 
                 },
                 //批量删除
-                getCheckData: function () { //获取选中数据
+                BatchDestroy: function () { //获取选中数据
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
                     // 判断物理删除和逻辑删除 start
@@ -228,7 +228,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                             ids.push(data[i]['id']);
                         }
                         layer.confirm(delNotice + 'ID:(' + ids + ')', function (index) {
-                            $.post('${ backend_api_url `/article/delete` }$', {'ids': ids}, function (res) {
+                            $.post('${ backend_api_url `/recycle_bin/article_batch_destroy` }$', {'ids': ids}, function (res) {
                                 if (res.code === 0) {
                                     //删除成功
                                     layer.msg(res.message, {
@@ -255,7 +255,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
 
                 },
                 //还原文章
-                Restore: function () {
+                BatchRestore: function () {
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
                     if (data.length > 0) {

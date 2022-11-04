@@ -5,6 +5,7 @@ import (
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -26,5 +27,15 @@ func (*cRecycleBin) ArticleList(ctx context.Context, req *backendApi.ArticleList
 		return nil, err
 	}
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "返回成功", list)
+	return
+}
+
+// ArticleBatchDestroy 回收站-文章批量永久删除
+func (*cRecycleBin) ArticleBatchDestroy(ctx context.Context, req *backendApi.ArticleBatchDestroyReq) (res *backendApi.ArticleBatchDestroyRes, err error) {
+	_, err = service.Article().BackendRecycleBinArticleBatchDestroy(ctx, req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "删除成功", g.Map{})
 	return
 }

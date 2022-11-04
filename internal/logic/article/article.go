@@ -459,3 +459,16 @@ func (s *sArticle) BackendRecycleBinArticleGetList(ctx context.Context, in *mode
 	}
 	return
 }
+
+// BackendRecycleBinArticleBatchDestroy 回收站-文章批量永久删除
+func (s *sArticle) BackendRecycleBinArticleBatchDestroy(ctx context.Context, ids []int) (out interface{}, err error) {
+	_, err = dao.CmsArticle.Ctx(ctx).WhereIn(dao.CmsArticle.Columns().Id, ids).Unscoped().Delete()
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsArticleBody.Ctx(ctx).WhereIn(dao.CmsArticleBody.Columns().ArticleId, ids).Unscoped().Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
