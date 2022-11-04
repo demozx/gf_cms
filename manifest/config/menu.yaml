@@ -52,6 +52,38 @@ backend_api:
         - title: 栏目编辑
           route: /channel/edit
           permission: channel.channel.edit
+    - title: 管理员管理
+      children:
+        - title: 管理员新增
+          route: /admin/add
+          permission: admin.admin.add
+        - title: 管理员编辑
+          route: /admin/edit
+          permission: admin.admin.edit
+        - title: 管理员启用/停用
+          route: /admin/status
+          permission: admin.admin.status
+        - title: 管理员删除
+          route: /admin/delete
+          permission: admin.admin.delete
+        - title: 管理员批量删除
+          route: /admin/delete_batch
+          permission: admin.admin.delete_batch
+        - title: 角色新增
+          route: /role/add
+          permission: admin.role.add
+        - title: 角色编辑
+          route: /role/edit
+          permission: admin.role.edit
+        - title: 角色启用/停用
+          route: /role/status
+          permission: admin.role.status
+        - title: 角色删除
+          route: /role/delete
+          permission: admin.role.delete
+        - title: 角色批量删除
+          route: /role/delete_batch
+          permission: admin.role.delete_batch
     - title: 系统设置
       children:
         - title: 保存配置

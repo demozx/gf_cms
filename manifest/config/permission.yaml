@@ -38,7 +38,7 @@ backend_api:
       permissions:
         - title: 栏目分类列表
           slug: channel.index
-        - title: 栏目启用禁用
+        - title: 栏目启用/禁用
           slug: channel.status
         - title: 栏目删除
           slug: channel.delete
@@ -46,6 +46,29 @@ backend_api:
           slug: channel.add
         - title: 栏目编辑
           slug: channel.edit
+    - title: 管理员管理
+      slug: admin
+      permissions:
+        - title: 管理员新增
+          slug: admin.add
+        - title: 管理员编辑
+          slug: admin.edit
+        - title: 管理员启动/停用
+          slug: admin.status
+        - title: 管理员删除
+          slug: admin.delete
+        - title: 管理员批量删除
+          slug: admin.delete_batch
+        - title: 角色新增
+          slug: role.add
+        - title: 角色编辑
+          slug: role.edit
+        - title: 角色启用/停用
+          slug: role.status
+        - title: 角色删除
+          slug: role.delete
+        - title: 角色批量删除
+          slug: role.delete_batch
     - title: 系统设置
       slug: setting
       permissions:
