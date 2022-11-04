@@ -50,25 +50,36 @@ func (*sPermission) BackendAll() []model.PermissionAllItem {
 	backendApiAll := service.Permission().BackendApiAll()
 	var permissionAll []model.PermissionAllItem
 	for _, viewItem := range backendViewAll {
-		permissionAllItem := model.PermissionAllItem{}
-		permissionAllItem.Title = viewItem.Title
-		permissionAllItem.Slug = viewItem.Slug
-		for _, apiItem := range backendApiAll {
-			for _, viewItemPermission := range viewItem.Permissions {
-				permissionAllItem.BackendViewPermissions = append(permissionAllItem.BackendViewPermissions, viewItemPermission)
-			}
-			if viewItem.Slug == apiItem.Slug {
-				for _, apiItemPermission := range apiItem.Permissions {
-					permissionAllItem.BackendApiPermissions = append(permissionAllItem.BackendApiPermissions, apiItemPermission)
+		// 只有视图的slug在permissionAll中不存在，直接将只有视图的权限放进去
+		if Permission().slugInModelPermissionAllItem(viewItem.Slug, permissionAll) == false {
+			permissionAllItem := model.PermissionAllItem{}
+			permissionAllItem.Title = viewItem.Title
+			permissionAllItem.Slug = viewItem.Slug
+			permissionAllItem.BackendViewPermissions = viewItem.Permissions
+			permissionAll = append(permissionAll, permissionAllItem)
+		} else {
+			for key, permissionAllItem := range permissionAll {
+				if permissionAllItem.Slug == viewItem.Slug {
+					permissionAll[key].BackendViewPermissions = viewItem.Permissions
 				}
-				permissionAll = append(permissionAll, permissionAllItem)
-			}
-			//只有视图没有接口
-			if Permission().slugInModelPermissionGroups(viewItem.Slug, backendApiAll) == false && Permission().slugInModelPermissionAllItem(viewItem.Slug, permissionAll) == false {
-				permissionAll = append(permissionAll, permissionAllItem)
 			}
 		}
-
+	}
+	for _, apiItem := range backendApiAll {
+		// 只有接口的slug在permissionAll中不存在，直接将只有接口的权限放进去
+		if Permission().slugInModelPermissionAllItem(apiItem.Slug, permissionAll) == false {
+			permissionAllItem := model.PermissionAllItem{}
+			permissionAllItem.Title = apiItem.Title
+			permissionAllItem.Slug = apiItem.Slug
+			permissionAllItem.BackendApiPermissions = apiItem.Permissions
+			permissionAll = append(permissionAll, permissionAllItem)
+		} else {
+			for key, permissionAllItem := range permissionAll {
+				if permissionAllItem.Slug == apiItem.Slug {
+					permissionAll[key].BackendApiPermissions = apiItem.Permissions
+				}
+			}
+		}
 	}
 	return permissionAll
 }
