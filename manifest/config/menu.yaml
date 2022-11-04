@@ -8,7 +8,7 @@ backend:
           permission: channel.channel.manage
         - title: 数据列表
           route: /channel_model/index
-          permission: channel.channel.manage
+          permission: channel.content.manage
         - title: 内容回收站
           route: /recycle_bin/index
           permission: channel.recycle_bin.manage
@@ -35,6 +35,23 @@ backend:
 backend_api:
   title: 后台接口
   groups:
+    - title: 栏目管理
+      children:
+        - title: 栏目分类列表
+          route: /channel/index
+          permission: channel.channel.index
+        - title: 栏目启用禁用
+          route: /channel/status
+          permission: channel.channel.status
+        - title: 栏目删除
+          route: /channel/delete
+          permission: channel.channel.delete
+        - title: 栏目添加
+          route: /channel/add
+          permission: channel.channel.add
+        - title: 栏目编辑
+          route: /channel/edit
+          permission: channel.channel.edit
     - title: 系统设置
       children:
         - title: 保存配置

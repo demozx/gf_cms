@@ -83,7 +83,6 @@ func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.
 func (c *cRole) Edit(ctx context.Context, req *backend.RoleEditReq) (res *backend.RoleEditRes, err error) {
 	backendAllPermissions := service.Permission().BackendAll()
 	role, err := service.Role().BackendRoleGetOne(ctx, req)
-	//g.Dump(role, backendAllPermission)
 	if err != nil {
 		return nil, err
 	}

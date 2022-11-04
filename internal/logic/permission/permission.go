@@ -50,10 +50,10 @@ func (*sPermission) BackendAll() []model.PermissionAllItem {
 	backendApiAll := service.Permission().BackendApiAll()
 	var permissionAll []model.PermissionAllItem
 	for _, viewItem := range backendViewAll {
+		permissionAllItem := model.PermissionAllItem{}
+		permissionAllItem.Title = viewItem.Title
+		permissionAllItem.Slug = viewItem.Slug
 		for _, apiItem := range backendApiAll {
-			permissionAllItem := model.PermissionAllItem{}
-			permissionAllItem.Title = viewItem.Title
-			permissionAllItem.Slug = viewItem.Slug
 			for _, viewItemPermission := range viewItem.Permissions {
 				permissionAllItem.BackendViewPermissions = append(permissionAllItem.BackendViewPermissions, viewItemPermission)
 			}
@@ -61,9 +61,14 @@ func (*sPermission) BackendAll() []model.PermissionAllItem {
 				for _, apiItemPermission := range apiItem.Permissions {
 					permissionAllItem.BackendApiPermissions = append(permissionAllItem.BackendApiPermissions, apiItemPermission)
 				}
+				permissionAll = append(permissionAll, permissionAllItem)
 			}
-			permissionAll = append(permissionAll, permissionAllItem)
+			//只有视图没有接口
+			if Permission().slugInModelPermissionGroups(viewItem.Slug, backendApiAll) == false && Permission().slugInModelPermissionAllItem(viewItem.Slug, permissionAll) == false {
+				permissionAll = append(permissionAll, permissionAllItem)
+			}
 		}
+
 	}
 	return permissionAll
 }
@@ -174,4 +179,24 @@ func (*sPermission) GetAllApiPermissionsArray() []string {
 		}
 	}
 	return permissionsArray
+}
+
+//判断slug是否在model.PermissionGroups数组中
+func (*sPermission) slugInModelPermissionGroups(slug string, permissionGroups []model.PermissionGroups) bool {
+	for _, item := range permissionGroups {
+		if slug == item.Slug {
+			return true
+		}
+	}
+	return false
+}
+
+//判断slug是否在model.PermissionAllItem数组中
+func (*sPermission) slugInModelPermissionAllItem(slug string, permissionGroups []model.PermissionAllItem) bool {
+	for _, item := range permissionGroups {
+		if slug == item.Slug {
+			return true
+		}
+	}
+	return false
 }

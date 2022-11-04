@@ -6,7 +6,7 @@ backend_view:
       permissions:
         - title: 栏目分类
           slug: channel.manage
-        - title: 档案列表
+        - title: 数据列表
           slug: content.manage
         - title: 内容回收站
           slug: recycle_bin.manage
@@ -33,6 +33,19 @@ backend_view:
 backend_api:
   title: 后台接口权限
   groups:
+    - title: 栏目管理
+      slug: channel
+      permissions:
+        - title: 栏目分类列表
+          slug: channel.index
+        - title: 栏目启用禁用
+          slug: channel.status
+        - title: 栏目删除
+          slug: channel.delete
+        - title: 栏目添加
+          slug: channel.add
+        - title: 栏目编辑
+          slug: channel.edit
     - title: 系统设置
       slug: setting
       permissions:
