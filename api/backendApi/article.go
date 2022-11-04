@@ -94,3 +94,9 @@ type ArticleBatchDestroyReq struct {
 	Ids    []int `name:"ids" dc:"文章ID们" v:"required#文章ID必填" arg:"true"`
 }
 type ArticleBatchDestroyRes struct{}
+
+type ArticleBatchRestoreReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"回收站-批量恢复文章"`
+	Ids    []int `name:"ids" dc:"文章ID们" v:"required#文章ID必填" arg:"true"`
+}
+type ArticleBatchRestoreRes struct{}

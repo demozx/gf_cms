@@ -39,3 +39,13 @@ func (*cRecycleBin) ArticleBatchDestroy(ctx context.Context, req *backendApi.Art
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "删除成功", g.Map{})
 	return
 }
+
+// ArticleBatchRestore 回收站-文章批量恢复
+func (*cRecycleBin) ArticleBatchRestore(ctx context.Context, req *backendApi.ArticleBatchRestoreReq) (res *backendApi.ArticleBatchRestoreRes, err error) {
+	_, err = service.Article().BackendRecycleBinArticleBatchRestore(ctx, req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "恢复成功", g.Map{})
+	return
+}

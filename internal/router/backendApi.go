@@ -62,6 +62,7 @@ func backendApiHandle(s *ghttp.Server) {
 			/*回收站*/
 			"/recycle_bin/article_list":          backendApi.RecycleBin.ArticleList,         //文章列表
 			"/recycle_bin/article_batch_destroy": backendApi.RecycleBin.ArticleBatchDestroy, //文章批量永久删除
+			"/recycle_bin/article_batch_restore": backendApi.RecycleBin.ArticleBatchRestore, //文章批量恢复
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

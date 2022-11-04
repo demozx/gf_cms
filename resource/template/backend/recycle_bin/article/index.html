@@ -78,7 +78,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
         <input type="hidden" id="delType" value="${ .deleteType }$">
         <button class="layui-btn layui-btn-danger" data-type="BatchDestroy"><i class="layui-icon">&#xe640;</i>批量删除
         </button>
-        <button class="layui-btn" data-type="batchRestore"><i class="layui-icon">&#xe609;</i>还原文章</button>
+        <button class="layui-btn" data-type="BatchRestore"><i class="layui-icon">&#xe609;</i>恢复文章</button>
     </div>
     <table class="layui-hide" id="articleList"></table>
 
@@ -211,23 +211,12 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                 BatchDestroy: function () { //获取选中数据
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
-                    // 判断物理删除和逻辑删除 start
-                    var delType = $('#delType').val();
-                    var delNotice = '';
-                    if (delType === '0') {
-                        delNotice = '确认要删除吗？';
-                    } else {
-                        delNotice = '确认要移至回收站吗？';
-                    }
-                    // 判断物理删除和逻辑删除 end
-                    //console.log(data);
-                    //layer.alert(JSON.stringify(data));
                     var ids = [];
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
-                        layer.confirm(delNotice + 'ID:(' + ids + ')', function (index) {
+                        layer.confirm('确认要永久删除吗？' + 'ID:(' + ids + ')', function (index) {
                             $.post('${ backend_api_url `/recycle_bin/article_batch_destroy` }$', {'ids': ids}, function (res) {
                                 if (res.code === 0) {
                                     //删除成功
@@ -252,41 +241,39 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                             anim: 6
                         });
                     }
-
                 },
                 //还原文章
                 BatchRestore: function () {
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
+                    var ids = [];
                     if (data.length > 0) {
-                        var ids = [];
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
-                        //console.log(ids);
+                        layer.confirm('确定要恢复文章吗？' + 'ID:(' + ids + ')', function (index) {
+                            $.post('${ backend_api_url `/recycle_bin/article_batch_restore` }$', {'ids': ids}, function (res) {
+                                if (res.code === 0) {
+                                    layer.msg(res.message, {
+                                        icon: 6
+                                        , time: 2000
+                                    });
+                                    //重载当前页码的表格数据
+                                    var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                                    active.reload(nowPage);
+                                } else {
+                                    layer.msg(res.message, {
+                                        icon: 5
+                                        , time: 2000
+                                    });
+                                }
+                            });
+                        });
                     } else {
-                        layer.msg("请选择要还原的文章", {
+                        layer.msg("请先选择需要恢复的文章！", {
                             anim: 6
                         });
-                        return false;
                     }
-                    $.post('${ backend_api_url `/article/flag` }$', {'ids': ids, 'flag': 'r'}, function (res) {
-                        //console.log(res);
-                        if (res.code === 0) {
-                            layer.msg(res.message, {
-                                icon: 6
-                                , time: 1000
-                            });
-                        } else {
-                            layer.msg(res.message, {
-                                icon: 5
-                                , time: 2000
-                            });
-                        }
-                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
-                        active.reload(nowPage)
-                    });
-
                 }
             };
 

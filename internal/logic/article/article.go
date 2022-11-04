@@ -472,3 +472,20 @@ func (s *sArticle) BackendRecycleBinArticleBatchDestroy(ctx context.Context, ids
 	}
 	return
 }
+
+// BackendRecycleBinArticleBatchRestore 回收站-文章批量恢复
+func (s *sArticle) BackendRecycleBinArticleBatchRestore(ctx context.Context, ids []int) (out interface{}, err error) {
+	_, err = dao.CmsArticle.Ctx(ctx).WhereIn(dao.CmsArticle.Columns().Id, ids).Unscoped().Update(g.Map{
+		dao.CmsArticle.Columns().DeletedAt: nil,
+	})
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsArticleBody.Ctx(ctx).WhereIn(dao.CmsArticleBody.Columns().ArticleId, ids).Unscoped().Update(g.Map{
+		dao.CmsArticleBody.Columns().DeletedAt: nil,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
