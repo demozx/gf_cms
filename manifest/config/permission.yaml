@@ -75,6 +75,19 @@ backend_api:
           slug: recycle_bin.article_batch_destroy
         - title: 回收站-文章批量恢复
           slug: recycle_bin.article_batch_restore
+    - title: 广告管理
+      slug: ad
+      permissions:
+        - title: 广告分类-列表
+          slug: ad_channel.index
+        - title: 广告分类-新增
+          slug: ad_channel.add
+        - title: 广告分类-编辑
+          slug: ad_channel.edit
+        - title: 广告分类-删除
+          slug: ad_channel.delete
+        - title: 广告分类-排序
+          slug: ad_channel.sort
     - title: 管理员管理
       slug: admin
       permissions:

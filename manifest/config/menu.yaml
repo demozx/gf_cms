@@ -83,6 +83,23 @@ backend_api:
           permission: channel.recycle_bin.article_batch_destroy
         - title: 回收站-文章批量恢复
           permission: channel.recycle_bin.article_batch_restore
+    - title: 广告管理
+      children:
+        - title: 广告分类-列表
+          route: /ad_channel/index
+          permission: ad.ad_channel.index
+        - title: 广告分类-新增
+          route: /ad_channel/add
+          permission: ad.ad_channel.add
+        - title: 广告分类-编辑
+          route: /ad_channel/edit
+          permission: ad.ad_channel.edit
+        - title: 广告分类-删除
+          route: /ad_channel/delete
+          permission: ad.ad_channel.delete
+        - title: 广告分类-排序
+          route: /ad_channel/sort
+          permission: ad.ad_channel.sort
     - title: 管理员管理
       children:
         - title: 管理员新增
