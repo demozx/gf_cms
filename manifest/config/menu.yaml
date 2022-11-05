@@ -52,6 +52,29 @@ backend_api:
         - title: 栏目编辑
           route: /channel/edit
           permission: channel.channel.edit
+        - title: 文章列表
+          route: /article/index
+          permission: channel.article.index
+        - title: 文章添加
+          permission: channel.article.add
+        - title: 文章编辑
+          permission: channel.article.edit
+        - title: 文章删除
+          permission: channel.article.delete
+        - title: 文章排序
+          permission: channel.article.sort
+        - title: 文章flag(推荐、置顶)
+          permission: channel.article.flag
+        - title: 文章审核
+          permission: channel.article.status
+        - title: 文章移动
+          permission: channel.article.move
+        - title: 回收站-文章列表
+          permission: channel.recycle_bin.article_list
+        - title: 回收站-文章批量永久删除
+          permission: channel.recycle_bin.article_batch_destroy
+        - title: 回收站-文章批量恢复
+          permission: channel.recycle_bin.article_batch_restore
     - title: 管理员管理
       children:
         - title: 管理员新增

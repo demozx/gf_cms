@@ -36,41 +36,63 @@ backend_api:
     - title: 栏目管理
       slug: channel
       permissions:
-        - title: 栏目分类列表
+        - title: 栏目-分类列表
           slug: channel.index
-        - title: 栏目启用/禁用
-          slug: channel.status
-        - title: 栏目删除
-          slug: channel.delete
-        - title: 栏目添加
+        - title: 栏目-添加
           slug: channel.add
-        - title: 栏目编辑
+        - title: 栏目-编辑
           slug: channel.edit
+        - title: 栏目-删除
+          slug: channel.delete
+        - title: 栏目-启用/禁用
+          slug: channel.status
+        - title: 文章-列表
+          slug: article.index
+        - title: 文章-添加
+          slug: article.add
+        - title: 文章-编辑
+          slug: article.edit
+        - title: 文章-删除
+          slug: article.delete
+        - title: 文章-排序
+          slug: article.sort
+        - title: 文章-flag(推荐、置顶)
+          slug: article.flag
+        - title: 文章-审核
+          slug: article.status
+        - title: 文章-移动
+          slug: article.move
+        - title: 回收站-文章列表
+          slug: recycle_bin.article_list
+        - title: 回收站-文章批量永久删除
+          slug: recycle_bin.article_batch_destroy
+        - title: 回收站-文章批量恢复
+          slug: recycle_bin.article_batch_restore
     - title: 管理员管理
       slug: admin
       permissions:
-        - title: 管理员新增
+        - title: 管理员-新增
           slug: admin.add
-        - title: 管理员编辑
+        - title: 管理员-编辑
           slug: admin.edit
-        - title: 管理员启动/停用
+        - title: 管理员-启动/停用
           slug: admin.status
-        - title: 管理员删除
+        - title: 管理员-删除
           slug: admin.delete
-        - title: 管理员批量删除
+        - title: 管理员-批量删除
           slug: admin.delete_batch
-        - title: 角色新增
+        - title: 角色-新增
           slug: role.add
-        - title: 角色编辑
+        - title: 角色-编辑
           slug: role.edit
-        - title: 角色启用/停用
+        - title: 角色-启用/停用
           slug: role.status
-        - title: 角色删除
+        - title: 角色-删除
           slug: role.delete
-        - title: 角色批量删除
+        - title: 角色-批量删除
           slug: role.delete_batch
     - title: 系统设置
       slug: setting
       permissions:
-        - title: 保存配置
+        - title: 站点配置-保存
           slug: setting.save
