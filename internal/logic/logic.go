@@ -5,6 +5,7 @@
 package logic
 
 import (
+	_ "gf_cms/internal/logic/adChannel"
 	_ "gf_cms/internal/logic/admin"
 	_ "gf_cms/internal/logic/article"
 	_ "gf_cms/internal/logic/auth"

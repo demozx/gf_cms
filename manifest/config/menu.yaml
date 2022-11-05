@@ -12,6 +12,14 @@ backend:
         - title: 内容回收站
           route: /recycle_bin/index
           permission: channel.recycle_bin.manage
+    - title: 广告管理
+      children:
+        - title: 广告分类
+          route: /ad_channel/index
+          permission: ad.ad_channel.manage
+        - title: 广告列表
+          route: /ad_list/index
+          permission: ad.ad_list.manage
     - title: 管理员管理
       children:
         - title: 管理员列表

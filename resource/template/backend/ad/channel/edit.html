@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>编辑权限分类-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-body">
+    <form action="" method="post" class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red"></span>分类名称
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="channel_name" value="${ .adChannel.ChannelName }$" required=""
+                       lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="remarks" class="layui-form-label">
+                <span class="we-red"></span>备注
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="remarks" name="remarks" value="${ .adChannel.Remarks }$" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <input type="hidden" name="channel_id" value="${ .adChannel.Id }$">
+        <button class="layui-btn" lay-submit="" lay-filter="add">修改</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.jquery;
+        //监听提交
+        form.on('submit(add)', function (data) {
+            //console.log($('input:checked').length);
+            //console.log(data.field);
+            $.post('${ backend_api_url `/ad_channel/edit` }$', data.field, function (res) {
+                if (res.code === 0) {
+                    //修改成功
+                    layer.msg(res.message, {
+                        icon: 6
+                        , time: 1000
+                    }, function () {
+                        //刷新父级页面
+                        window.parent.layer.closeAll()
+                        $('.layui-laypage-btn', window.parent.document).trigger('click');
+                    });
+                } else {
+                    //修改失败
+                    layer.msg(res.message, {
+                            'icon': 5
+                            , time: 2000
+                        }
+                    );
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

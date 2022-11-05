@@ -51,8 +51,12 @@ func backendViewHandle(s *ghttp.Server) {
 			"/article/move": backend.Article.Move, //移动文章
 			"/article/add":  backend.Article.Add,  //新增文章
 			"/article/edit": backend.Article.Edit, //编辑文章
-			/**回收站**/
+			/*回收站*/
 			"/recycle_bin/index": backend.RecycleBin.Index, //回收站列表
+			/*广告*/
+			"/ad_channel/index": backend.AdChannel.Index, //广告分类列表
+			"/ad_channel/edit":  backend.AdChannel.Edit,  //广告分类编辑
+			"/ad_list/index":    backend.AdList.Index,    //广告列表
 		})
 	})
 }

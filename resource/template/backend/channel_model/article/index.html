@@ -120,7 +120,8 @@ ${end}$
     </script>
 
     <script type="text/html" id="operateTpl">
-        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/article/edit` }$?id={{d.id}}', '', 1200, 700)" href="javascript:;">
+        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/article/edit` }$?id={{d.id}}', '', 1200, 700)"
+           href="javascript:;">
             <i class="layui-icon">&#xe642;</i>
         </a>
         <a title="删除" onclick="member_del(this,'{{d.id}}')" href="javascript:;">
@@ -445,14 +446,11 @@ ${end}$
                                     active.reload(nowPage)
                                 });
                             } else {
-                                layer.msg(res['msg'], {icon: 5, time: 2000});
+                                layer.msg(res.message, {icon: 5, time: 2000});
                             }
                         }, 'json');
                     }
-
                 }
-
-
             };
 
             $('.we-search .layui-btn, .demoTable .layui-btn').on('click', function () {

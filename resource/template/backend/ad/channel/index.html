@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>广告分类-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="Description" content="基于layUI数据表格操作"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">广告管理</a>
+        <a>
+          <cite>广告分类</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe669;</i></a>
+</div>
+<div class="weadmin-body">
+    <form class="layui-form layui-col-md9 we-search layui-form-pane">
+        <div class="layui-inline layui-col-md4">
+            <input class="layui-input" placeholder="分类名称" name="channel_name" style="width:100%;">
+        </div>
+        <div class="layui-inline layui-col-md6">
+            <input class="layui-input" placeholder="备注" name="remarks" style="width:96%;margin: 0 2%">
+        </div>
+        <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon"></i>增加分类</button>
+    </form>
+    <div class="layui-form layui-col-md3 we-search layui-form-pane">
+        <button class="layui-btn" onclick="Sort()"><i class="layui-icon">&#xe60e;</i>更新排序</button>
+    </div>
+
+    <div class="layui-row">
+        <table class="layui-hide" id="adschannel"></table>
+    </div>
+
+    <script type="text/html" id="operateTpl">
+        <a title="编辑"
+           onclick="WeAdminEdit('编辑','${ backend_url `/ad_channel/edit` }$?id={{d.id}}', '', 800, 260)"
+           href="javascript:;">
+            <i class="layui-icon">&#xe642;</i>
+        </a>
+        <a title="删除" onclick="member_del(this,'{{d.id}}')" href="javascript:;">
+            <i class="layui-icon">&#xe640;</i>
+        </a>
+    </script>
+    <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+    <script>
+        layui.extend({
+            admin: '{/}/resource/backend/js/admin'
+        });
+        layui.use(['table', 'jquery', 'form', 'admin', 'laydate'], function () {
+            var table = layui.table,
+                $ = layui.jquery,
+                form = layui.form,
+                admin = layui.admin;
+            //监听submit
+            form.on('submit(add)', function (data) {
+                //console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                //console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                //console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                if (data.field.channel_name === '') {
+                    layer.msg('请输入分类名称', {icon: 5, anim: 6, time: 2000});
+                } else {
+                    $.post('${ backend_api_url `/ad_channel/add` }$', data.field, function (res) {
+                        if (res.code === 0) {
+                            //添加成功
+                            layer.msg(res.message, {icon: 6, time: 1000}, function () {
+                                table.reload('adschannel', {
+                                    url: '${ backend_api_url `/ad_channel/index` }$'
+                                    , where: {} //设定异步数据接口的额外参数
+                                    //,height: 300
+                                });
+                            });
+                        } else {
+                            //添加失败
+                            layer.msg(res.message, {icon: 5, time: 2000});
+                        }
+                    });
+                }
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+            table.render({
+                elem: '#adschannel',
+                cellMinWidth: 60,
+                url: '${ backend_api_url `/ad_channel/index` }$',
+                method: "post",
+                request: {
+                    pageName: 'page'
+                    , limitName: 'size'
+                },
+                success: function (res, curr) {
+                    // console.log(res);
+                    //得到当前页码
+                    // console.log(curr);
+                },
+                parseData: function (res) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                },
+                cols: [
+                    [{
+                        field: 'id', title: '分类ID', sort: true
+                    }, {
+                        field: 'channel_name', title: '分类名称', templet: '#usernameTpl'
+                    }, {
+                        field: 'remarks', title: '备注', width: '60%'
+                    }, {
+                        field: 'sort',
+                        title: '排序',
+                        templet: '<div style="line-height: 60px;"><input style="height:28px;" lay-verify="required" autocomplete="off" class="layui-input sort" id="sort_{{ d.id }}" data-id="{{ d.id }}" type="number" value="{{ d.sort }}"></div>'
+                    }, {
+                        field: 'operate', title: '操作', toolbar: '#operateTpl', unresize: true
+                    }]
+                ],
+                event: true,
+                page: {
+                    layout: ['prev', 'next', 'page', 'count', 'skip', 'limit'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    , groups: 5 //只显示 N 个连续页码
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+
+                },
+            });
+            //console.table(res);
+            /*
+             *数据表格中form表单元素是动态插入,所以需要更新渲染下
+             * http://www.layui.com/doc/modules/form.html#render
+             * */
+            $(function () {
+                //form.render();
+            });
+            /*单个删除*/
+            window.member_del = function (obj, id) {
+                layer.confirm('确认要删除吗？', function (index) {
+                    //发异步删除数据
+                    $.post('${ backend_api_url `/ad_channel/delete` }$', {'channel_id': id}, function (res) {
+                        if (res.code === 0) {
+                            //删除成功
+                            layer.msg(res.message, {
+                                icon: 6,
+                                time: 1000,
+                                end: function () {
+                                    //重载当前页码的表格数据
+                                    var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                                    table.reload('adschannel', {
+                                        url: '${ backend_api_url `/ad_channel/index` }$'
+                                        , where: {} //设定异步数据接口的额外参数
+                                        , page: {
+                                            curr: nowPage //重新从第 N 页开始
+                                        }
+                                        //,height: 300
+                                    });
+                                }
+                            });
+
+                        } else {
+                            //删除失败
+                            layer.msg(res.message, {
+                                icon: 5,
+                                time: 2000
+                            });
+                        }
+                    });
+
+                });
+            }
+            /*排序*/
+            window.Sort = function () {
+                var arr = [];
+                var work = false;
+                $('.sort').each(function () {
+                    if ($(this).val() === '') {
+                        layer.tips('不能为空', '#sort_' + $(this).attr('data-id'), {
+                            tips: [4, '#78BA32']
+                            , tipsMore: false
+                        });
+                        work = false;
+                        return false;
+                    } else if ($(this).val() < 0) {
+                        layer.tips('必须为大于等于0的数字', '#sort_' + $(this).attr('data-id'), {
+                            tips: [4, '#78BA32']
+                            , tipsMore: false
+                        });
+                        work = false;
+                        return false;
+                    } else {
+                        // arr.push({'id': $(this).attr('data-id'), 'sort': $(this).val()});
+                        arr.push($(this).attr('data-id') + "_" + $(this).val())
+                        work = true;
+                    }
+                });
+                if (work === true) {
+                    $.post('${ backend_api_url `/ad_channel/sort` }$', {'sort': arr}, function (res) {
+                        if (res.code === 0) {
+                            layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
+                                $('.layui-laypage-btn').trigger('click');
+                            });
+                        } else {
+                            layer.msg(res.message, {icon: 5, time: 2000});
+                        }
+                    }, 'json');
+                }
+            }
+        });
+    </script>
+</div>
+</body>
+</html>
