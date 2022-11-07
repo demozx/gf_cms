@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>广告列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="Description" content="基于layUI数据表格操作"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">广告管理</a>
+        <a>
+          <cite>广告列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe669;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="layui-row">
+        <div class="layui-form layui-col-md12 we-search">
+            分类筛选：
+            <div class="layui-input-inline">
+                <select name="channel_id" id="catid" lay-filter="adschannel">
+                    <option value="">-请选择分类-</option>
+                    ${range $key, $item := .adChannel}$
+                    <option value="${$item.Id}$">${$item.ChannelName}$</option>
+                    ${end}$
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="weadmin-block demoTable">
+        <button class="layui-btn layui-btn-danger" data-type="Del"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn layui-btn-radius layui-btn-normal" data-type="Open"><i class="layui-icon ">&#xe605;</i>批量启用
+        </button>
+        <button class="layui-btn layui-btn-radius layui-btn-normal" data-type="Close"><i class="layui-icon">&#x1006;</i>批量停用
+        </button>
+        <button class="layui-btn" data-type="Sort"><i class="layui-icon">&#xe60e;</i>更新排序</button>
+        <button class="layui-btn" onclick="WeAdminShow('添加广告','{:url(\'admin/ads/add\')}',1000,500)"><i
+                class="layui-icon">&#xe61f;</i>添加广告
+        </button>
+
+    </div>
+    <table class="layui-hide" id="adsList"></table>
+
+    <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+
+    <script type="text/html" id="recommendTpl">
+        <input type="checkbox" id="flag_r_{{d.id}}" name="flag[]" class="flag_r" value="{{d.id}}" lay-skin="switch"
+               lay-filter="flag" lay-text="已推荐|未推荐" {{d.flag.indexOf('r')!=-1 ? 'checked' : ''}}>
+    </script>
+    <script type="text/html" id="topTpl">
+        <input type="checkbox" id="flag_t_{{d.id}}" name="flag[]" class="flag_t" value="{{d.id}}" lay-skin="switch"
+               lay-filter="flag" lay-text="已置顶|未置顶" {{d.flag.indexOf('t')!=-1 ? 'checked' : ''}}>
+    </script>
+    <script type="text/html" id="reviewTpl">
+        <input type="checkbox" id="review_{{d.id}}" class="review" name="review" value="{{d.id}}" title="审核"
+               lay-filter="review" {{ d.read== 1 ? 'checked' : '' }}>
+    </script>
+
+    <script type="text/html" id="operateTpl">
+        <a title="编辑" onclick="WeAdminEdit('编辑','{:url(\'admin/ads/edit\')}?adid={{d.id}}', '', 1000, 500)"
+           href="javascript:;">
+            <i class="layui-icon">&#xe642;</i>
+        </a>
+        <a title="删除" onclick="ad_del(this,'{{d.id}}')" href="javascript:;">
+            <i class="layui-icon">&#xe640;</i>
+        </a>
+    </script>
+    <script type="text/html" id="status">
+        {{#  if(d.status_desc === '已停用'){ }}
+        <span class="layui-btn layui-btn-xs layui-btn-normal">{{ d.status_desc }}</span>
+        {{#  }else if(d.status_desc === '待生效'){ }}
+        <span class="layui-btn layui-btn-xs layui-btn-warm">{{ d.status_desc }}</span>
+        {{#  }else if(d.status_desc === '长启用'){ }}
+        <span class="layui-btn layui-btn-xs layui-btn-primary">{{ d.status_desc }}</span>
+        {{#  }else if(d.status_desc === '显示中'){ }}
+        <span class="layui-btn layui-btn-xs">{{ d.status_desc }}</span>
+        {{#  } else { }}
+        <span class="layui-btn layui-btn-xs layui-btn-danger">{{ d.status_desc }}</span>
+        {{#  } }}
+    </script>
+    <script>
+        layui.extend({
+            admin: '{/}/resource/backend/js/admin'
+        });
+
+        layui.use(['table', 'jquery', 'form', 'admin', 'laydate'], function () {
+            var table = layui.table,
+                $ = layui.jquery,
+                form = layui.form,
+                admin = layui.admin,
+                laydate = layui.laydate;
+
+            table.render({
+                elem: '#adsList',
+                cellMinWidth: 60,
+                cellMinHeight: 100,
+                method: "post",
+                request: {
+                    pageName: 'page'
+                    , limitName: 'size'
+                },
+                success: function (res, curr) {
+                    // console.log(res);
+                    //得到当前页码
+                    // console.log(curr);
+                },
+                parseData: function (res) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                },
+                url: '${ backend_api_url `/ad_list/index` }$',
+                cols: [
+                    [{
+                        type: 'checkbox'
+                    }, {
+                        field: 'id', title: 'ID', width: 60, sort: true
+                    }, {
+                        field: 'img_url',
+                        width: 110,
+                        title: '广告图片',
+                        style: 'height:100px;width:100px;',
+                        templet: '<div><img src="{{ d.img_url }}"></div>'
+                    }, {
+                        field: 'name', title: '广告名称'
+                    }, {
+                        field: 'ad_channel.channel_name', title: '分类'
+                    }, {
+                        field: 'link', title: '链接地址'
+                    }, {
+                        field: 'status_desc', title: '状态', width: 80, templet: '#status'
+                    }, {
+                        field: 'start_time', title: '开始时间', width: 170
+                    }, {
+                        field: 'end_time', title: '结束时间', width: 170
+                    }, {
+                        field: 'sort',
+                        title: '排序',
+                        templet: '<div style="line-height: 100px;"><input lay-verify="required" autocomplete="off" class="layui-input sort" id="sort_{{ d.id }}" data-id="{{ d.id }}" type="number" value="{{ d.sort }}"></div>'
+                    }, {
+                        field: 'remarks', title: '备注'
+                    }, {
+                        field: 'operate', title: '操作', toolbar: '#operateTpl'
+                    }]
+                ],
+
+                event: true,
+                page: {
+                    layout: ['prev', 'next', 'page', 'count', 'skip', 'limit'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    , groups: 5 //只显示 N 个连续页码
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+
+                },
+            });
+            //console.table(res);
+
+            /*
+             *数据表格中form表单元素是动态插入,所以需要更新渲染下
+             * http://www.layui.com/doc/modules/form.html#render
+             * */
+            $(function () {
+                //form.render();
+            });
+
+            var active = {
+                //表格内容重载
+                reload: function (nowPage) {
+                    var nowPage = nowPage || 1;
+                    var catid = $('#catid');
+                    //执行重载
+                    table.reload('adsList', {
+                        page: {
+                            curr: nowPage //重新从第 N 页开始
+                        }
+                        , where: {
+                            channel_id: catid.val(),
+                        },
+                    });
+
+                },
+                //批量删除
+                Del: function () { //获取选中数据
+                    var checkStatus = table.checkStatus('adsList'),
+                        data = checkStatus.data;
+                    //console.log(data);
+                    //layer.alert(JSON.stringify(data));
+                    var ids = new Array();
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i]['id']);
+                        }
+                        layer.confirm('确认要删除吗？ID:(' + ids + ')', function (index) {
+                            $.post('del.html', {'adids': ids}, function (res) {
+                                if (res['code'] == 1) {
+                                    //删除成功
+                                    layer.msg(res['msg'], {
+                                        icon: 6
+                                        , time: 1000
+                                    });
+                                    //重载当前页码的表格数据
+                                    //var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                                    active.reload();
+                                } else {
+                                    //删除失败
+                                    layer.msg(res['msg'], {
+                                        icon: 5
+                                        , time: 2000
+                                    });
+                                }
+                            });
+                        });
+                    } else {
+                        layer.msg("请先选择需要删除的广告！", {
+                            anim: 6
+                        });
+                    }
+
+                },
+                //批量启用
+                Open: function () {
+                    var checkStatus = table.checkStatus('adsList'),
+                        data = checkStatus.data;
+                    if (data.length > 0) {
+                        var ids = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i]['id']);
+                        }
+                        //console.log(ids);
+                    } else {
+                        layer.msg("请选择要启用的广告", {
+                            anim: 6
+                        });
+                        return false;
+                    }
+                    $.post('editstatus.html', {'adids': ids, 'status': 'on'}, function (res) {
+                        //console.log(res);
+                        var icon = 6;//笑脸
+                        var anim = '';//抖动动画初始变量
+                        if (res['code'] == 0) {
+                            icon = 5;//哭脸
+                        }
+                        if (res['code'] == 2) {
+                            anim = 6;
+                        }
+                        layer.msg(res['msg'], {
+                            icon: icon
+                            , anim: anim
+                            , time: 1000
+                        });
+                        //重载当前页码的表格数据
+                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                        active.reload(nowPage);
+                    });
+
+                },
+                //批量停用
+                Close: function () {
+                    var checkStatus = table.checkStatus('adsList'),
+                        data = checkStatus.data;
+                    if (data.length > 0) {
+                        var ids = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i]['id']);
+                        }
+                        //console.log(ids);
+                    } else {
+                        layer.msg("请选择要停用的广告", {
+                            anim: 6
+                        });
+                        return false;
+                    }
+                    $.post('editstatus.html', {'adids': ids, 'status': 'off'}, function (res) {
+                        //console.log(res);
+                        var icon = 6;//笑脸
+                        var anim = '';//抖动动画初始变量
+                        if (res['code'] == 0) {
+                            icon = 5;//哭脸
+                        }
+                        if (res['code'] == 2) {
+                            anim = 6;
+                        }
+                        layer.msg(res['msg'], {
+                            icon: icon
+                            , anim: anim
+                            , time: 1000
+                        });
+                        //重载当前页码的表格数据
+                        var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                        active.reload(nowPage);
+                    });
+
+                },
+                /*排序*/
+                Sort: function () {
+                    var arr = new Array();
+                    var work = false;
+                    $('.sort').each(function () {
+                        if ($(this).val() == '') {
+                            layer.tips('不能为空', '#sort_' + $(this).attr('data-id'), {
+                                tips: [4, '#78BA32']
+                                , tipsMore: false
+                            });
+                            work = false;
+                            return false;
+                        } else if ($(this).val() < 0) {
+                            layer.tips('必须为大于等于0的数字', '#sort_' + $(this).attr('data-id'), {
+                                tips: [4, '#78BA32']
+                                , tipsMore: false
+                            });
+                            work = false;
+                            return false;
+                        } else {
+                            arr.push({'id': $(this).attr('data-id'), 'sort': $(this).val()});
+                            work = true;
+                        }
+                    });
+                    if (work == true) {
+                        $.post('sort.html', {'data': arr}, function (res) {
+                            if (res['code'] == 1) {
+                                layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
+                                    //top.location.reload();
+                                });
+                            } else {
+                                layer.msg(res['msg'], {icon: 5, time: 2000});
+                            }
+                        }, 'json');
+                    }
+                }
+            };
+            $('.we-search .layui-btn, .demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+            //监听select
+            form.on('select(adschannel)', function (data) {
+                //console.log(data.elem); //得到select原始DOM对象
+                //console.log(data.value); //得到被选中的值
+                //console.log(data.othis); //得到美化后的DOM对象
+                active.reload();
+            });
+            /*单个删除*/
+            window.ad_del = function (obj, id) {
+                layer.confirm('确认要删除吗？', function (index) {
+                    //发异步删除数据
+                    $.post('del.html', {'adids': id}, function (res) {
+                        if (res['code'] == 1) {
+                            //删除成功
+                            layer.msg(res['msg'], {
+                                icon: 6,
+                                time: 1000
+                            });
+                            //重载当前页码的表格数据
+                            var nowPage = $('.layui-laypage-skip>.layui-input').val();
+                            active.reload(nowPage);
+                        } else {
+                            //删除失败
+                            layer.msg(res['msg'], {
+                                icon: 5,
+                                time: 1000
+                            });
+                        }
+                    });
+
+                });
+            }
+            /*广告图片放大预览*/
+            $('body').on('mouseenter', '.layui-table-cell>img', function () {
+                //console.log('显示大图');
+                var index = layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: '100',
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shade: false,
+                    shadeClose: true,
+                    content: "<img style='max-width:600px;' src='" + $(this).prop('src') + "'>"
+                });
+            });
+            $('body').on('mouseleave', '.layui-table-cell>img', function () {
+                //console.log('取消显示大图');
+                layer.close(layer.index);
+            });
+        });
+    </script>
+</div>
+
+</body>
+
+</html>
