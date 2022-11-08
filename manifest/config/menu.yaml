@@ -100,6 +100,24 @@ backend_api:
         - title: 广告分类-排序
           route: /ad_channel/sort
           permission: ad.ad_channel.sort
+        - title: 广告-列表
+          route: /ad_list/index
+          permission: ad.ad_list.index
+        - title: 广告-新增
+          route: /ad_list/add
+          permission: ad.ad_list.add
+        - title: 广告-编辑
+          route: /ad_list/edit
+          permission: ad.ad_list.edit
+        - title: 广告-删除/批量删除
+          route: /ad_list/delete
+          permission: ad.ad_list.delete
+        - title: 广告-排序
+          route: /ad_list/sort
+          permission: ad.ad_list.sort
+        - title: 广告-批量启用/停用
+          route: /ad_list/batch_status
+          permission: ad.ad_list.batch_status
     - title: 管理员管理
       children:
         - title: 管理员新增
