@@ -15,6 +15,9 @@ database:
     prefix: "cms_"
     removePrefix: "cms_"
     charset: "utf8mb4"
+    maxIdle: "10"       #连接池最大闲置的连接数
+    maxOpen: "100"      #连接池最大打开的连接数
+    maxLifetime: "30s"  #连接对象可重复使用的时间长度
     host: "127.0.0.1"
     port: "3306"
     user: "root"
