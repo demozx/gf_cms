@@ -5,6 +5,7 @@ import (
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
+	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -24,7 +25,7 @@ func New() *sAdChannel {
 	return &sAdChannel{}
 }
 
-func Admin() *sAdChannel {
+func AdChannel() *sAdChannel {
 	return &insAdChannel
 }
 
@@ -104,4 +105,14 @@ func (s *sAdChannel) Sort(ctx context.Context, in *backendApi.AdChannelSortReq) 
 		}
 	}
 	return
+}
+
+// GetAdChannelMap 获取adChannelMap
+func (s *sAdChannel) GetAdChannelMap(ctx context.Context) (output []*entity.CmsAdChannel, err error) {
+	var adChannel []*entity.CmsAdChannel
+	err = dao.CmsAdChannel.Ctx(ctx).OrderAsc(dao.CmsAdChannel.Columns().Sort).OrderAsc(dao.CmsAdChannel.Columns().Id).Scan(&adChannel)
+	if err != nil {
+		return nil, err
+	}
+	return adChannel, nil
 }

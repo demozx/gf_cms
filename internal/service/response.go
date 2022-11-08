@@ -7,8 +7,6 @@ package service
 
 import (
 	"context"
-
-	"github.com/gogf/gf/v2/frame/g"
 )
 
 type (
@@ -17,7 +15,7 @@ type (
 		SuccessJsonDefault(ctx context.Context)
 		SuccessCodeDefault() int
 		SuccessMessageDefault() string
-		View(ctx context.Context, template string, data g.Map) (err error)
+		View(ctx context.Context, template string, data map[string]interface{}) (err error)
 		ErrorTpl(ctx context.Context, code int, message string) (err error)
 	}
 )

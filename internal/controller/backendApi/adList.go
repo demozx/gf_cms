@@ -24,6 +24,8 @@ func (c *cAdList) Index(ctx context.Context, req *backendApi.AdListIndexReq) (re
 	}
 	err = m.LeftJoin(dao.CmsAdChannel.Table(), "ad_channel", "ad_channel.id=ad.Channel_id").
 		Fields("ad.*", "ad_channel.channel_name").
+		OrderAsc("ad.sort").
+		OrderAsc("ad.id").
 		Page(req.Page, req.Size).Scan(&adList)
 	if err != nil {
 		return nil, err
@@ -53,5 +55,14 @@ func (c *cAdList) Index(ctx context.Context, req *backendApi.AdListIndexReq) (re
 		Page:  req.Page,
 		Size:  req.Size,
 	}
+	return
+}
+
+func (c *cAdList) Add(ctx context.Context, req *backendApi.AdListAddReq) (res *backendApi.AdListAddRes, err error) {
+	_, err = service.AdList().Add(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "添加成功", nil)
 	return
 }

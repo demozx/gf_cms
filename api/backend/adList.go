@@ -7,3 +7,8 @@ type AdListIndexReq struct {
 }
 
 type AdListIndexRes struct{}
+
+type AdListAddReq struct {
+	g.Meta `tags:"Backend" method:"get" summary:"后台添加广告"`
+}
+type AdListAddRes struct{}

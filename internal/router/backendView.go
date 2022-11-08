@@ -57,6 +57,7 @@ func backendViewHandle(s *ghttp.Server) {
 			"/ad_channel/index": backend.AdChannel.Index, //广告分类列表
 			"/ad_channel/edit":  backend.AdChannel.Edit,  //广告分类编辑
 			"/ad_list/index":    backend.AdList.Index,    //广告列表
+			"/ad_list/add":      backend.AdList.Add,      //添加广告
 		})
 	})
 }

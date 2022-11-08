@@ -69,8 +69,8 @@ func backendApiHandle(s *ghttp.Server) {
 			"/ad_channel/edit":   backendApi.AdChannel.Edit,   //编辑广告分类
 			"/ad_channel/delete": backendApi.AdChannel.Delete, //删除广告分类
 			"/ad_channel/sort":   backendApi.AdChannel.Sort,   //广告分类排序
-
-			"/ad_list/index": backendApi.AdList.Index, //广告列表
+			"/ad_list/index":     backendApi.AdList.Index,     //广告列表
+			"/ad_list/add":       backendApi.AdList.Add,       //添加广告
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

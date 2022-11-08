@@ -8,6 +8,7 @@ package service
 import (
 	"context"
 	"gf_cms/api/backendApi"
+	"gf_cms/internal/model/entity"
 )
 
 type (
@@ -16,6 +17,7 @@ type (
 		Edit(ctx context.Context, in *backendApi.AdChannelEditReq) (out interface{}, err error)
 		Delete(ctx context.Context, in *backendApi.AdChannelDeleteReq) (out interface{}, err error)
 		Sort(ctx context.Context, in *backendApi.AdChannelSortReq) (out interface{}, err error)
+		GetAdChannelMap(ctx context.Context) (output []*entity.CmsAdChannel, err error)
 	}
 )
 

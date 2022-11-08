@@ -11,29 +11,29 @@ type AdChannelIndexReq struct {
 }
 
 type AdChannelIndexRes struct {
-	List  []*model.AdChannelListItem `json:"list" description:"后台广告分类列表接口结果"`
-	Page  int                        `json:"page" description:"分页码"`
-	Size  int                        `json:"size" description:"分页数量"`
-	Total int                        `json:"total" description:"数据总数"`
+	List  []*model.AdChannelListItem `json:"list" dc:"后台广告分类列表接口结果"`
+	Page  int                        `json:"page" dc:"分页码"`
+	Size  int                        `json:"size" dc:"分页数量"`
+	Total int                        `json:"total" dc:"数据总数"`
 }
 
 type AdChannelAddReq struct {
 	g.Meta      `tags:"Backend" method:"post" summary:"新增广告分类"`
-	ChannelName string `json:"channel_name" description:"分类名称"`
-	Remarks     string `json:"remarks" description:"备注"`
+	ChannelName string `json:"channel_name" dc:"分类名称"`
+	Remarks     string `json:"remarks" dc:"备注"`
 }
 type AdChannelAddRes struct{}
 
 type AdChannelEditReq struct {
 	g.Meta    `tags:"Backend" method:"post" summary:"编辑广告分类"`
-	ChannelId int `json:"channel_id" description:"分类id"`
+	ChannelId int `json:"channel_id" dc:"分类id"`
 	AdChannelAddReq
 }
 type AdChannelEditRes struct{}
 
 type AdChannelDeleteReq struct {
 	g.Meta    `tags:"Backend" method:"post" summary:"删除广告分类"`
-	ChannelId int `json:"channel_id" description:"分类id"`
+	ChannelId int `json:"channel_id" dc:"分类id"`
 }
 type AdChannelDeleteRes struct{}
 

@@ -54,7 +54,7 @@ func (s *sResponse) SuccessMessageDefault() string {
 }
 
 // View 模板渲染
-func (s *sResponse) View(ctx context.Context, template string, data g.Map) (err error) {
+func (s *sResponse) View(ctx context.Context, template string, data map[string]interface{}) (err error) {
 	err = g.RequestFromCtx(ctx).Response.WriteTpl(template, data)
 	if err != nil {
 		return err
