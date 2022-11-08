@@ -42,3 +42,23 @@ func (c *cAdList) Add(ctx context.Context, req *backend.AdListAddReq) (res *back
 	}
 	return
 }
+
+// Edit 编辑广告
+func (c *cAdList) Edit(ctx context.Context, req *backend.AdListEditReq) (res *backend.AdListEditRes, err error) {
+	adChannel, err := service.AdChannel().GetAdChannelMap(ctx)
+	if err != nil {
+		return nil, err
+	}
+	adInfo, err := service.AdList().GetAdInfoById(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	err = service.Response().View(ctx, "/backend/ad/list/edit.html", g.Map{
+		"adChannel": adChannel,
+		"adInfo":    adInfo,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}

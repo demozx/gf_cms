@@ -96,7 +96,7 @@
     </script>
 
     <script type="text/html" id="operateTpl">
-        <a title="编辑" onclick="WeAdminEdit('编辑','{:url(\'admin/ads/edit\')}?adid={{d.id}}', '', 1000, 500)"
+        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/ad_list/edit` }$?id={{d.id}}', '', 1000, 800)"
            href="javascript:;">
             <i class="layui-icon">&#xe642;</i>
         </a>

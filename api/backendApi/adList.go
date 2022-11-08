@@ -29,3 +29,10 @@ type AdListAddReq struct {
 	Remarks   string `json:"remarks" dc:"备注" v:""`
 }
 type AdListAddRes struct{}
+
+type AdListEditReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"后台广告编辑"`
+	Id     int `json:"id" dc:"广告id" arg:"true" v:"required|min:1#广告id必填|广告id错误"`
+	AdListAddReq
+}
+type AdListEditRes struct{}

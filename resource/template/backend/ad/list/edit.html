@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>编辑广告-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .layui-form-selected dl {
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+<div class="weadmin-body">
+    <form class="layui-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                所属分类
+            </label>
+            <div class="layui-input-block">
+                <select name="channel_id" lay-verify="required|number" lay-filter="channel_id">
+                    <option value="">-请选择分类-</option>
+                    ${range $key, $item:=.adChannel}$
+                    <option value="${ $item.Id }$" ${ if eq $.adInfo.ChannelId $item.Id }$selected${ end }$>${$item.ChannelName}$</option>
+                    ${end}$
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" lay-verify="required" autocomplete="off" class="layui-input"
+                value="${ .adInfo.Name }$"
+                >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告图片</label>
+
+            <div class="layui-input-block">
+                <input style="width: 90%;display: inline;" type="text" id="litpic_text" name="img_url"
+                       placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off" class="layui-input"
+                       value="${ .adInfo.ImgUrl }$"
+                >
+                <button style="margin-left: -118px;margin-bottom: 3px;" type="button" class="layui-btn" id="topicImg"><i
+                        class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="litpic" style="width: 200px;"
+                         src="${ .adInfo.ImgUrl }$"
+                    >
+                </div>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接地址</label>
+            <div class="layui-input-block">
+                <input type="text" id="link" name="link" placeholder="请输入广告链接地址" class="layui-input"
+                value="${ .adInfo.Link }$"
+                >
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                启用广告
+            </label>
+            <div class="layui-input-block">
+                <input type="checkbox" ${if eq .adInfo.Status 1}$checked${end}$ name="status" lay-skin="switch" lay-filter="switchTest"
+                       lay-text="ON|OFF" value="1">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-block">
+                <input type="text" value="${ .adInfo.StartTime }$" name="start_time" id="start_time" readonly
+                       lay-verify="datetime" placeholder="年-月-日 时:分:秒" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div>
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block" style="color:#12b13f;">
+                当开始时间等于结束时间时，广告将永久显示
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-block">
+                <input type="text" value="${ .adInfo.EndTime }$" name="end_time" id="end_time" readonly
+                       lay-verify="datetime" placeholder="年-月-日 时:分:秒" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告备注</label>
+            <div class="layui-input-block">
+                <textarea name="remarks" placeholder="" class="layui-textarea">${ .adInfo.Remarks }$</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="hidden" name="id" value="${ .adInfo.Id }$">
+                <button class="layui-btn" lay-submit lay-filter="add">提交</button>
+                <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'layer', 'laydate', 'jquery'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            laydate = layui.laydate,
+            $ = layui.jquery;
+        laydate.render({
+            elem: '#start_time'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_time'
+            , type: 'datetime'
+        });
+        //上传文章缩略图
+        layui.use(['upload', 'jquery'], function () {
+            var upload = layui.upload;
+            var $ = layui.$;
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#topicImg' //绑定元素
+                , url: '${ backend_api_url `/upload/single_image` }$' //上传接口
+                , done: function (res) {
+                    //上传完毕回调
+                    if (res.code === 0) {
+                        $('#litpic').attr('src', res.data['url']);
+                        $('#litpic_text').val(res.data['url']);
+                    } else {
+                        layer.msg(res.message, {
+                            time: 3000,
+                            icon: 5
+                        });
+                    }
+                }
+                , error: function () {
+                    //请求异常回调
+
+                }
+            });
+        });
+
+        //监听提交
+        form.on('submit(add)', function (data) {
+            //console.table(data.field);
+            //发异步，把数据提交给php
+            $.post('${ backend_api_url `/ad_list/edit` }$', data.field, function (res) {
+                //console.table(res);
+                if (res.code === 0) {
+                    layer.msg(res.message, {icon: 6, time: 1000}, function () {
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭当前frame
+                        parent.layer.close(index);
+                        parent.location.reload();
+                    });
+                } else {
+                    layer.msg(res.message, {icon: 5});
+                }
+
+            }, 'json');
+
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

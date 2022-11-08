@@ -12,3 +12,9 @@ type AdListAddReq struct {
 	g.Meta `tags:"Backend" method:"get" summary:"后台添加广告"`
 }
 type AdListAddRes struct{}
+
+type AdListEditReq struct {
+	g.Meta `tags:"Backend" method:"get" summary:"后台编辑广告"`
+	Id     int `json:"id" dc:"广告id"`
+}
+type AdListEditRes struct{}

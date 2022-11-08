@@ -58,11 +58,22 @@ func (c *cAdList) Index(ctx context.Context, req *backendApi.AdListIndexReq) (re
 	return
 }
 
+// Add 添加广告
 func (c *cAdList) Add(ctx context.Context, req *backendApi.AdListAddReq) (res *backendApi.AdListAddRes, err error) {
 	_, err = service.AdList().Add(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "添加成功", nil)
+	return
+}
+
+// Edit 编辑广告
+func (c *cAdList) Edit(ctx context.Context, req *backendApi.AdListEditReq) (res *backendApi.AdListEditRes, err error) {
+	_, err = service.AdList().Edit(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "编辑成功", nil)
 	return
 }
