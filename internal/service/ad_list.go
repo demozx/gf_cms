@@ -15,6 +15,7 @@ type (
 		Add(ctx context.Context, req *backendApi.AdListAddReq) (out interface{}, err error)
 		Edit(ctx context.Context, req *backendApi.AdListEditReq) (out interface{}, err error)
 		Delete(ctx context.Context, req *backendApi.AdListDeleteReq) (out interface{}, err error)
+		BatchStatus(ctx context.Context, req *backendApi.AdListBatchStatusReq) (out interface{}, err error)
 		GetAdInfoById(ctx context.Context, id int) (out interface{}, err error)
 	}
 )

@@ -18,5 +18,7 @@ type AdListItem struct {
 	Remarks     string `json:"remarks" description:"备注"`
 }
 
-type AdListOutPut struct {
+type AdBatchStatusItem struct {
+	Id     int `json:"id"`
+	Status int `json:"status"`
 }

@@ -42,3 +42,10 @@ type AdListDeleteReq struct {
 	Ids    []int `json:"ids" dc:"广告ids" arg:"true" v:"required#广告ids必填"`
 }
 type AdListDeleteRes struct{}
+
+type AdListBatchStatusReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"后台广告删除"`
+	Ids    []int `json:"ids" dc:"广告ids" arg:"true" v:"required#广告ids必填"`
+	Status int   `json:"status" dc:"开启/关闭(1/0)" arg:"true" v:"required|in:0,1#操作必填|操作不合法"`
+}
+type AdListBatchStatusRes struct{}

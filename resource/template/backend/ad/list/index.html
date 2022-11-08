@@ -265,7 +265,7 @@
                     var checkStatus = table.checkStatus('adsList'),
                         data = checkStatus.data;
                     if (data.length > 0) {
-                        var ids = new Array();
+                        var ids = [];
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
@@ -276,17 +276,14 @@
                         });
                         return false;
                     }
-                    $.post('editstatus.html', {'adids': ids, 'status': 'on'}, function (res) {
-                        //console.log(res);
-                        var icon = 6;//笑脸
-                        var anim = '';//抖动动画初始变量
-                        if (res['code'] == 0) {
-                            icon = 5;//哭脸
+                    $.post('${ backend_api_url `/ad_list/batch_status` }$', {'ids': ids, 'status': 1}, function (res) {
+                        var icon = 5;
+                        var anim = 6;
+                        if (res.code === 0) {
+                            icon = 6
+                            anim = 0;
                         }
-                        if (res['code'] == 2) {
-                            anim = 6;
-                        }
-                        layer.msg(res['msg'], {
+                        layer.msg(res.message, {
                             icon: icon
                             , anim: anim
                             , time: 1000
@@ -295,14 +292,13 @@
                         var nowPage = $('.layui-laypage-skip>.layui-input').val();
                         active.reload(nowPage);
                     });
-
                 },
                 //批量停用
                 Close: function () {
                     var checkStatus = table.checkStatus('adsList'),
                         data = checkStatus.data;
                     if (data.length > 0) {
-                        var ids = new Array();
+                        var ids = [];
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
@@ -313,17 +309,14 @@
                         });
                         return false;
                     }
-                    $.post('editstatus.html', {'adids': ids, 'status': 'off'}, function (res) {
-                        //console.log(res);
-                        var icon = 6;//笑脸
-                        var anim = '';//抖动动画初始变量
-                        if (res['code'] == 0) {
-                            icon = 5;//哭脸
+                    $.post('${ backend_api_url `/ad_list/batch_status` }$', {'ids': ids, 'status': 0}, function (res) {
+                        var icon = 5;
+                        var anim = 6;
+                        if (res.code === 0) {
+                            icon = 6
+                            anim = 0;
                         }
-                        if (res['code'] == 2) {
-                            anim = 6;
-                        }
-                        layer.msg(res['msg'], {
+                        layer.msg(res.message, {
                             icon: icon
                             , anim: anim
                             , time: 1000
@@ -332,7 +325,6 @@
                         var nowPage = $('.layui-laypage-skip>.layui-input').val();
                         active.reload(nowPage);
                     });
-
                 },
                 /*排序*/
                 Sort: function () {

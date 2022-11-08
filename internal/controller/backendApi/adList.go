@@ -87,3 +87,13 @@ func (c *cAdList) Delete(ctx context.Context, req *backendApi.AdListDeleteReq) (
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "删除成功", nil)
 	return
 }
+
+// BatchStatus 批量修改广告状态
+func (c *cAdList) BatchStatus(ctx context.Context, req *backendApi.AdListBatchStatusReq) (res *backendApi.AdListBatchStatusRes, err error) {
+	_, err = service.AdList().BatchStatus(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "操作成功", nil)
+	return
+}

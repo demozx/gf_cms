@@ -64,15 +64,16 @@ func backendApiHandle(s *ghttp.Server) {
 			"/recycle_bin/article_batch_destroy": backendApi.RecycleBin.ArticleBatchDestroy, //文章批量永久删除
 			"/recycle_bin/article_batch_restore": backendApi.RecycleBin.ArticleBatchRestore, //文章批量恢复
 			/*广告管理*/
-			"/ad_channel/index":  backendApi.AdChannel.Index,  //广告分类列表
-			"/ad_channel/add":    backendApi.AdChannel.Add,    //添加广告分类
-			"/ad_channel/edit":   backendApi.AdChannel.Edit,   //编辑广告分类
-			"/ad_channel/delete": backendApi.AdChannel.Delete, //删除广告分类
-			"/ad_channel/sort":   backendApi.AdChannel.Sort,   //广告分类排序
-			"/ad_list/index":     backendApi.AdList.Index,     //广告列表
-			"/ad_list/add":       backendApi.AdList.Add,       //添加广告
-			"/ad_list/edit":      backendApi.AdList.Edit,      //编辑广告
-			"/ad_list/delete":    backendApi.AdList.Delete,    //删除广告
+			"/ad_channel/index":     backendApi.AdChannel.Index,    //广告分类列表
+			"/ad_channel/add":       backendApi.AdChannel.Add,      //添加广告分类
+			"/ad_channel/edit":      backendApi.AdChannel.Edit,     //编辑广告分类
+			"/ad_channel/delete":    backendApi.AdChannel.Delete,   //删除广告分类
+			"/ad_channel/sort":      backendApi.AdChannel.Sort,     //广告分类排序
+			"/ad_list/index":        backendApi.AdList.Index,       //广告列表
+			"/ad_list/add":          backendApi.AdList.Add,         //添加广告
+			"/ad_list/edit":         backendApi.AdList.Edit,        //编辑广告
+			"/ad_list/delete":       backendApi.AdList.Delete,      //删除广告
+			"/ad_list/batch_status": backendApi.AdList.BatchStatus, //批量修改广告状态
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

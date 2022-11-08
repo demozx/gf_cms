@@ -4,6 +4,7 @@ import (
 	"context"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
+	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -53,6 +54,22 @@ func (s *sAdList) Edit(ctx context.Context, req *backendApi.AdListEditReq) (out 
 // Delete 删除广告
 func (s *sAdList) Delete(ctx context.Context, req *backendApi.AdListDeleteReq) (out interface{}, err error) {
 	_, err = dao.CmsAd.Ctx(ctx).WhereIn(dao.CmsAd.Columns().Id, req.Ids).Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (s *sAdList) BatchStatus(ctx context.Context, req *backendApi.AdListBatchStatusReq) (out interface{}, err error) {
+	var data []*model.AdBatchStatusItem
+	for _, id := range req.Ids {
+		var item = &model.AdBatchStatusItem{
+			Id:     id,
+			Status: req.Status,
+		}
+		data = append(data, item)
+	}
+	_, err = dao.CmsAd.Ctx(ctx).Data(data).Save()
 	if err != nil {
 		return nil, err
 	}
