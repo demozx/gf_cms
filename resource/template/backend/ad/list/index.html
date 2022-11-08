@@ -16,6 +16,28 @@
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .layui-table-body .layui-table-cell {
+            height: auto;
+            min-height: 110px;
+            max-height: 110px;
+            line-height: 110px;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .sort {
+            width: 80%;
+            height: 40px;
+            margin-top: 30px;
+            margin-left: 10%;
+        }
+
+        body {
+            overflow-y: scroll;
+        }
+    </style>
 </head>
 
 <body>
@@ -137,14 +159,14 @@
                         field: 'id', title: 'ID', width: 60, sort: true
                     }, {
                         field: 'img_url',
-                        width: 110,
                         title: '广告图片',
-                        style: 'height:100px;width:100px;',
+                        width: 110,
+                        style: 'height:110px;width:110px;',
                         templet: '<div><img src="{{ d.img_url }}"></div>'
                     }, {
                         field: 'name', title: '广告名称'
                     }, {
-                        field: 'ad_channel.channel_name', title: '分类'
+                        field: 'channel_name', title: '分类'
                     }, {
                         field: 'link', title: '链接地址'
                     }, {

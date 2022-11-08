@@ -5,6 +5,7 @@ import (
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
+	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
@@ -41,6 +42,9 @@ func (c *cAdList) Index(ctx context.Context, req *backendApi.AdListIndexReq) (re
 			adList[key].StatusDesc = "待生效"
 		} else if item.EndTime < gtime.Datetime() {
 			adList[key].StatusDesc = "已过期"
+		}
+		if item.ImgUrl == "" {
+			adList[key].ImgUrl = service.Util().ImageOrDefaultUrl(item.ImgUrl)
 		}
 	}
 	res = &backendApi.AdListIndexRes{
