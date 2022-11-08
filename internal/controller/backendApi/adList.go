@@ -97,3 +97,13 @@ func (c *cAdList) BatchStatus(ctx context.Context, req *backendApi.AdListBatchSt
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "操作成功", nil)
 	return
 }
+
+// Sort 更新广告排序
+func (c *cAdList) Sort(ctx context.Context, req *backendApi.AdListSortReq) (res *backendApi.AdListSortRes, err error) {
+	_, err = service.AdList().Sort(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "排序成功", nil)
+	return
+}

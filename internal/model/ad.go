@@ -22,3 +22,8 @@ type AdBatchStatusItem struct {
 	Id     int `json:"id"`
 	Status int `json:"status"`
 }
+
+type AdSortItem struct {
+	Id   int `json:"id"`
+	Sort int `json:"sort"`
+}

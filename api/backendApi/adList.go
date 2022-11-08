@@ -49,3 +49,9 @@ type AdListBatchStatusReq struct {
 	Status int   `json:"status" dc:"开启/关闭(1/0)" arg:"true" v:"required|in:0,1#操作必填|操作不合法"`
 }
 type AdListBatchStatusRes struct{}
+
+type AdListSortReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"后台广告排序"`
+	Sort   []string `json:"sort" dc:"排序" arg:"true" v:"required#排序字段必填"`
+}
+type AdListSortRes struct{}

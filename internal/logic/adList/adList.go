@@ -7,7 +7,9 @@ import (
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/text/gstr"
 )
 
 type (
@@ -60,14 +62,36 @@ func (s *sAdList) Delete(ctx context.Context, req *backendApi.AdListDeleteReq) (
 	return
 }
 
+// BatchStatus 批量修改广告状态
 func (s *sAdList) BatchStatus(ctx context.Context, req *backendApi.AdListBatchStatusReq) (out interface{}, err error) {
 	var data []*model.AdBatchStatusItem
 	for _, id := range req.Ids {
-		var item = &model.AdBatchStatusItem{
+		item := &model.AdBatchStatusItem{
 			Id:     id,
 			Status: req.Status,
 		}
 		data = append(data, item)
+	}
+	_, err = dao.CmsAd.Ctx(ctx).Data(data).Save()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// Sort 广告排序
+func (s *sAdList) Sort(ctx context.Context, req *backendApi.AdListSortReq) (out interface{}, err error) {
+	var data []*model.AdSortItem
+	for _, item := range req.Sort {
+		split := gstr.SplitAndTrim(item, "_")
+		if len(split) != 2 {
+			continue
+		}
+		adSortItem := &model.AdSortItem{
+			Id:   gvar.New(split[0]).Int(),
+			Sort: gvar.New(split[1]).Int(),
+		}
+		data = append(data, adSortItem)
 	}
 	_, err = dao.CmsAd.Ctx(ctx).Data(data).Save()
 	if err != nil {
