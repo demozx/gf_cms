@@ -77,3 +77,13 @@ func (c *cAdList) Edit(ctx context.Context, req *backendApi.AdListEditReq) (res 
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "编辑成功", nil)
 	return
 }
+
+// Delete 删除广告
+func (c *cAdList) Delete(ctx context.Context, req *backendApi.AdListDeleteReq) (res *backendApi.AdListDeleteRes, err error) {
+	_, err = service.AdList().Delete(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "删除成功", nil)
+	return
+}

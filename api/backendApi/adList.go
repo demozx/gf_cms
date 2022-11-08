@@ -36,3 +36,9 @@ type AdListEditReq struct {
 	AdListAddReq
 }
 type AdListEditRes struct{}
+
+type AdListDeleteReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"后台广告删除"`
+	Ids    []int `json:"ids" dc:"广告ids" arg:"true" v:"required#广告ids必填"`
+}
+type AdListDeleteRes struct{}

@@ -50,6 +50,15 @@ func (s *sAdList) Edit(ctx context.Context, req *backendApi.AdListEditReq) (out 
 	return
 }
 
+// Delete 删除广告
+func (s *sAdList) Delete(ctx context.Context, req *backendApi.AdListDeleteReq) (out interface{}, err error) {
+	_, err = dao.CmsAd.Ctx(ctx).WhereIn(dao.CmsAd.Columns().Id, req.Ids).Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 // GetAdInfoById 根据广告id获取广告信息
 func (s *sAdList) GetAdInfoById(ctx context.Context, id int) (out interface{}, err error) {
 	var adInfo *entity.CmsAd
