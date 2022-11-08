@@ -17,6 +17,11 @@ backend_view:
           slug: ad_channel.manage
         - title: 广告列表
           slug: ad_list.manage
+    - title: 留言管理
+      slug: guestbook
+      permissions:
+        - title: 留言列表
+          slug: guestbook.manage
     - title: 管理员管理
       slug: admin
       permissions:
@@ -100,6 +105,13 @@ backend_api:
           slug: ad_list.sort
         - title: 广告-批量启用/停用
           slug: ad_list.batch_status
+    - title: 留言管理
+      slug: guestbook
+      permissions:
+        - title: 修改状态
+          slug: guestbook.status
+        - title: 批量删除
+          slug: guestbook.batch_delete
     - title: 管理员管理
       slug: admin
       permissions:

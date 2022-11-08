@@ -15,6 +15,7 @@ type AdminIndexReq struct {
 	model.PageSizeReq
 }
 type AdminIndexRes struct{}
+
 type AdminAddReq struct {
 	g.Meta `tags:"Backend" method:"get" summary:"添加管理员"`
 }

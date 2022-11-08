@@ -20,6 +20,11 @@ backend:
         - title: 广告列表
           route: /ad_list/index
           permission: ad.ad_list.manage
+    - title: 留言管理
+      children:
+        - title: 留言列表
+          route: /guestbook/index
+          permission: guestbook.guestbook.manage
     - title: 管理员管理
       children:
         - title: 管理员列表
@@ -118,6 +123,14 @@ backend_api:
         - title: 广告-批量启用/停用
           route: /ad_list/batch_status
           permission: ad.ad_list.batch_status
+    - title: 留言管理
+      children:
+        - title: 修改状态
+          route: /guestbook/status
+          permission: guestbook.guestbook.status
+        - title: 批量删除
+          route: /guestbook/batch_delete
+          permission: guestbook.guestbook.batch_delete
     - title: 管理员管理
       children:
         - title: 管理员新增
