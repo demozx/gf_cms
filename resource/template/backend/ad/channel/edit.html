@@ -62,7 +62,11 @@
                     }, function () {
                         //刷新父级页面
                         window.parent.layer.closeAll()
-                        $('.layui-laypage-btn', window.parent.document).trigger('click');
+                        if ($('.layui-laypage-btn', window.parent.document).length > 0){
+                            $('.layui-laypage-btn', window.parent.document).trigger('click');
+                        }else{
+                            parent.location.reload()
+                        }
                     });
                 } else {
                     //修改失败

@@ -211,7 +211,11 @@
                     $.post('${ backend_api_url `/ad_channel/sort` }$', {'sort': arr}, function (res) {
                         if (res.code === 0) {
                             layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
-                                $('.layui-laypage-btn').trigger('click');
+                                if ($('.layui-laypage-btn').length > 0){
+                                    $('.layui-laypage-btn').trigger('click');
+                                }else{
+                                    parent.location.reload()
+                                }
                             });
                         } else {
                             layer.msg(res.message, {icon: 5, time: 2000});
