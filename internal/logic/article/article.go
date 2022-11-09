@@ -95,7 +95,7 @@ func (s *sArticle) Flag(ctx context.Context, ids []int, flagType string) (out in
 			wg.Add(1)
 			go func(id int) {
 				_, err = Article().singleFlag(ctx, id, flagType, "open")
-				defer wg.Done()
+				wg.Done()
 				if err != nil {
 					return
 				}
@@ -118,7 +118,7 @@ func (s *sArticle) Status(ctx context.Context, ids []int) (out interface{}, err 
 			wg.Add(1)
 			go func(id int) {
 				_, err = Article().singleStatus(ctx, id, "open")
-				defer wg.Done()
+				wg.Done()
 				if err != nil {
 					return
 				}
