@@ -13,6 +13,7 @@ type (
 	IResponse interface {
 		SuccessJson(ctx context.Context, code int, message string, data interface{})
 		SuccessJsonDefault(ctx context.Context)
+		SuccessJsonDefaultMessage(ctx context.Context, message string)
 		SuccessCodeDefault() int
 		SuccessMessageDefault() string
 		View(ctx context.Context, template string, data map[string]interface{}) (err error)

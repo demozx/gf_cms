@@ -28,6 +28,9 @@ func PageInfo() *sPageInfo {
 
 // LayUiPageInfo layui分页
 func (s *sPageInfo) LayUiPageInfo(ctx context.Context, total int, size int) string {
+	if total == 0 {
+		return ""
+	}
 	page := g.RequestFromCtx(ctx).GetPage(total, size)
 	pageInfo := page.GetContent(3)
 	pageInfo = gstr.ReplaceByMap(pageInfo, map[string]string{

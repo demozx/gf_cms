@@ -18,7 +18,6 @@ func (c *cGuestbook) Index(ctx context.Context, req *backend.GuestbookIndexReq) 
 	if err != nil {
 		return nil, err
 	}
-	g.Dump(list)
 	err = service.Response().View(ctx, "/backend/guestbook/index.html", g.Map{
 		"list":     list,
 		"pageInfo": service.PageInfo().LayUiPageInfo(ctx, list.Total, list.Size),

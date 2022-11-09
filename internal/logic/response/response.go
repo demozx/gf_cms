@@ -43,6 +43,11 @@ func (s *sResponse) SuccessJsonDefault(ctx context.Context) {
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), service.Response().SuccessMessageDefault(), g.Map{})
 }
 
+// SuccessJsonDefaultMessage 返回自定义提示语的成功json
+func (s *sResponse) SuccessJsonDefaultMessage(ctx context.Context, message string) {
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), message, g.Map{})
+}
+
 // SuccessCodeDefault 获取默认成功code码
 func (s *sResponse) SuccessCodeDefault() int {
 	return codeSuccessDefault

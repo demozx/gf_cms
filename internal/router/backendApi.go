@@ -75,6 +75,9 @@ func backendApiHandle(s *ghttp.Server) {
 			"/ad_list/delete":       backendApi.AdList.Delete,      //删除广告
 			"/ad_list/batch_status": backendApi.AdList.BatchStatus, //批量修改广告状态
 			"/ad_list/sort":         backendApi.AdList.Sort,        //批量广告排序
+			/*留言管理*/
+			"/guestbook/status": backendApi.Guestbook.Status, //修改留言状态
+			"/guestbook/delete": backendApi.Guestbook.Delete, //删除留言
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

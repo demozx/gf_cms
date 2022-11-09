@@ -103,49 +103,44 @@
             //console.log(data.elem.checked); //开关是否开启，true或者false
             //console.log(data.value); //开关value值，也可以通过data.elem.value得到
             //console.log(data.othis); //得到美化后的DOM对象
-            $.post('read.html', {'id': data.value}, function (res) {
-                if (res['code'] == 1) {
-                    //已读成功
-                    layer.msg(res['msg'], {icon: 6, time: 1000}, function () {
-                        //self.location.reload();
-                    });
-                } else if (res['code'] == 2) {
-                    //未读成功
-                    layer.msg(res['msg'], {icon: 6, time: 1000}, function () {
-                        //self.location.reload();
+            $.post('${ backend_api_url `/guestbook/status` }$', {'id': data.value}, function (res) {
+                if (res.code === 0) {
+                    layer.msg(res.message, {icon: 6, time: 1000}, function () {
+                        //这里成功不刷新，失败刷新，列表有按状态进行排序
                     });
                 } else {
                     //操作失败
-                    layer.msg(res['msg'], {icon: 5, time: 2000});
+                    layer.msg(res.message, {icon: 5, time: 2000}, function () {
+                        self.location.reload();
+                    });
                 }
             });
         });
         /*删除全部*/
         window.delAll = function () {
             var data = tableCheck.getData();
-            if (data == '') {
-                layer.msg('请选择要删除的分组', {
+            if (data.length === 0) {
+                layer.msg('请选择要删除的留言', {
                     anim: 6
                 });
                 return false;
             }
             layer.confirm('确认要删除ID(' + data + ')吗？', function (index) {
-                $.post('del.html', {'ids': data}, function (res) {
-                    if (res['code'] == 1) {
-                        layer.msg('删除成功!', {
+                $.post('${ backend_api_url `/guestbook/delete` }$', {'ids': data}, function (res) {
+                    if (res.code === 0) {
+                        layer.msg(res.message, {
                             icon: 6,
                             time: 1000
                         }, function () {
                             self.location.reload();
                         });
                     } else {
-                        layer.msg(res['msg'], {
+                        layer.msg(res.message, {
                             icon: 5,
                             time: 2000
                         });
                     }
                 });
-
             });
         }
     });
