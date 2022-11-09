@@ -58,6 +58,7 @@
             <th>状态</th>
         </thead>
         <tbody>
+        ${if gt .list.Total 0}$
         ${range $key, $item := .list.List }$
         <tr>
             <td>
@@ -76,6 +77,11 @@
                 <input type="checkbox" name="status" lay-skin="switch" lay-filter="status" lay-text="已读|未读"
                        value="${ $item.Id }$" ${if eq $item.Status 1 }$checked${end}$>
             </td>
+        </tr>
+        ${end}$
+        ${else}$
+        <tr>
+            <td align="center" colspan="100">暂无数据</td>
         </tr>
         ${end}$
         </tbody>
@@ -126,7 +132,7 @@
                 return false;
             }
             layer.confirm('确认要删除ID(' + data + ')吗？', function (index) {
-                $.post('${ backend_api_url `/guestbook/delete` }$', {'ids': data}, function (res) {
+                $.post('${ backend_api_url `/guestbook/batch_delete` }$', {'ids': data}, function (res) {
                     if (res.code === 0) {
                         layer.msg(res.message, {
                             icon: 6,

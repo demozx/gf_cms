@@ -22,9 +22,9 @@ func (c *cGuestbook) Status(ctx context.Context, req *backendApi.GuestbookStatus
 	return
 }
 
-// Delete 删除留言
-func (c *cGuestbook) Delete(ctx context.Context, req *backendApi.GuestbookDeleteReq) (res *backendApi.GuestbookDeleteRes, err error) {
-	_, err = service.Guestbook().BackendApiDelete(ctx, req)
+// BatchDelete 删除留言
+func (c *cGuestbook) BatchDelete(ctx context.Context, req *backendApi.GuestbookDeleteReq) (res *backendApi.GuestbookDeleteRes, err error) {
+	_, err = service.Guestbook().BackendApiBatchDelete(ctx, req)
 	if err != nil {
 		return nil, err
 	}

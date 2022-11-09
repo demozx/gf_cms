@@ -16,7 +16,7 @@ type (
 	IGuestbook interface {
 		BackendGetList(ctx context.Context, in *backend.GuestbookIndexReq) (out *model.GuestbookGetListOutput, err error)
 		BackendApiStatus(ctx context.Context, in *backendApi.GuestbookStatusReq) (out interface{}, err error)
-		BackendApiDelete(ctx context.Context, in *backendApi.GuestbookDeleteReq) (out interface{}, err error)
+		BackendApiBatchDelete(ctx context.Context, in *backendApi.GuestbookDeleteReq) (out interface{}, err error)
 	}
 )
 

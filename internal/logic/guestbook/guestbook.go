@@ -84,8 +84,8 @@ func (s *sGuestbook) BackendApiStatus(ctx context.Context, in *backendApi.Guestb
 	return
 }
 
-// BackendApiDelete 删除留言
-func (s *sGuestbook) BackendApiDelete(ctx context.Context, in *backendApi.GuestbookDeleteReq) (out interface{}, err error) {
+// BackendApiBatchDelete 批量删除留言
+func (s *sGuestbook) BackendApiBatchDelete(ctx context.Context, in *backendApi.GuestbookDeleteReq) (out interface{}, err error) {
 	_, err = dao.CmsGuestbook.Ctx(ctx).WhereIn(dao.CmsGuestbook.Columns().Id, in.Ids).Delete()
 	if err != nil {
 		return nil, err
