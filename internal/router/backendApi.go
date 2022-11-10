@@ -78,6 +78,8 @@ func backendApiHandle(s *ghttp.Server) {
 			/*留言管理*/
 			"/guestbook/status":       backendApi.Guestbook.Status,      //修改留言状态
 			"/guestbook/batch_delete": backendApi.Guestbook.BatchDelete, //批量删除留言
+			/*友情链接*/
+			"/friendly_link/status": backendApi.FriendlyLink.Status, //修改状态
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

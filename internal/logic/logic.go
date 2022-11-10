@@ -14,6 +14,7 @@ import (
 	_ "gf_cms/internal/logic/casbinPolicy"
 	_ "gf_cms/internal/logic/channel"
 	_ "gf_cms/internal/logic/channelModel"
+	_ "gf_cms/internal/logic/friendlyLink"
 	_ "gf_cms/internal/logic/guestbook"
 	_ "gf_cms/internal/logic/menu"
 	_ "gf_cms/internal/logic/middleware"

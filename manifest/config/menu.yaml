@@ -39,8 +39,8 @@ backend:
           route: /quick/index
           permission: setting.quick.manage
         - title: 友情链接
-          route: /link/index
-          permission: setting.link.manage
+          route: /friendly_link/index
+          permission: setting.friendly_link.manage
         - title: 站点配置
           route: /setting/index
           permission: setting.setting.manage

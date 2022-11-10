@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>友情链接-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/resource/backend/css/font.css">
+    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">系统设置</a>
+        <a>
+          <cite>友情链接</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe669;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 we-search layui-form-pane">
+
+            <div class="layui-inline">
+                <label class="layui-form-label">链接名称</label>
+                <div class="layui-input-block">
+                    <input style="width: 300px" type="text" name="name" value="" lay-verify="required"
+                           autocomplete="off" placeholder="请填写链接名称" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">链接地址</label>
+                <div class="layui-input-block">
+                    <input style="width: 500px" type="text" name="url" value="" lay-verify="required|url"
+                           autocomplete="off" placeholder="请填写链接地址" class="layui-input">
+                </div>
+            </div>
+
+            <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon"></i>增加友情链接</button>
+        </form>
+    </div>
+    <div class="weadmin-block">
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="sort()">更新排序</button>
+        <span class="fr" style="line-height:40px">共有数据：${ .total }$ 条</span>
+    </div>
+    <table class="layui-table layui-form">
+        <thead>
+        <tr>
+            <th>
+                <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
+                        class="layui-icon">&#xe605;</i></div>
+            </th>
+            <th>链接ID</th>
+            <th>链接名称</th>
+            <th>链接地址</th>
+            <th>排序</th>
+            <th>状态</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        ${ range $key, $item := .list }$
+        <tr>
+            <td>
+                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${ $item.Id }$'><i
+                        class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>${ $item.Id }$</td>
+            <td>${ $item.Name }$</td>
+            <td>${ $item.Url }$</td>
+            <td width="100">
+                <input type="number" name="sort" data-id="${ $item.Id }$" value="${ $item.Sort }$"
+                       lay-verify="required|number" autocomplete="off" class="layui-input sort"
+                       id="sort_${ $item.Id }$">
+            </td>
+            <td width="100">
+                <input type="checkbox" name="status" lay-skin="switch" lay-filter="status" lay-text="启用|停用"
+                       value="${ $item.Id }$" ${ if eq $item.Status 1 }$ checked ${end}$>
+            </td>
+            <td class="td-manage">
+                <a title="编辑"
+                   onclick="WeAdminShow('编辑','{:url(\'admin/friendlylink/edit\',[\'friId\'=>$list.id])}','460','240')"
+                   href="javascript:;">
+                    <i class="layui-icon">&#xe642;</i>
+                </a>
+                <a title="删除" onclick="member_del(this,'${ $item.Id }$')" href="javascript:;">
+                    <i class="layui-icon">&#xe640;</i>
+                </a>
+            </td>
+        </tr>
+        ${ end }$
+        </tbody>
+    </table>
+</div>
+<script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.extend({
+        admin: '{/}../../resource/backend/js/admin'
+    });
+    layui.use(['laydate', 'jquery', 'admin', 'form'], function () {
+        var laydate = layui.laydate,
+            $ = layui.jquery,
+            form = layui.form,
+            admin = layui.admin;
+
+        //监听submit
+        form.on('submit(add)', function (data) {
+            //console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            //console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            //console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            $.post('add.html', data.field, function (res) {
+                if (res['code'] == 1) {
+                    //添加成功
+                    layer.msg(res['msg'], {icon: 6, time: 1000}, function () {
+                        self.location.reload();
+                    });
+                } else {
+                    //添加失败
+                    layer.msg(res['msg'], {icon: 5, time: 2000});
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        /*修改启用状态*/
+        form.on('switch(status)', function (data) {
+            //console.log(data.elem); //得到checkbox原始DOM对象
+            //console.log(data.elem.checked); //开关是否开启，true或者false
+            //console.log(data.value); //开关value值，也可以通过data.elem.value得到
+            //console.log(data.othis); //得到美化后的DOM对象
+            $.post('${ backend_api_url `/friendly_link/status` }$', {'id': data.value}, function (res) {
+                if (res.code === 0) {
+                    //启用成功
+                    layer.msg(res.message, {icon: 6, time: 1000}, function () {
+                        // window.location.reload()
+                    });
+                } else {
+                    //操作失败
+                    layer.msg(res.message, {icon: 5, time: 2000}, function () {
+                        window.location.reload()
+                    });
+                }
+            });
+        });
+        //自定义url验证规则
+        form.verify({
+            url: function (value) {
+                if (!(value.substr(0, 7).toLowerCase() == "http://" || value.substr(0, 8).toLowerCase() == "https://")) {
+                    return '友情链接应该以"http://"或"https://"开头';
+                }
+            }
+        });
+        /*用户-删除*/
+        window.member_del = function (obj, id) {
+            layer.confirm('确认要删除吗？', function (index) {
+                $.post('del.html', {'friIds': id}, function (res) {
+                    if (res['code'] == 1) {
+                        layer.msg('删除成功!', {
+                            icon: 6,
+                            time: 1000
+                        }, function () {
+                            self.location.reload();
+                        });
+                    } else {
+                        layer.msg(res['msg'], {
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                });
+
+            });
+        }
+        /*删除全部*/
+        window.delAll = function () {
+            var data = tableCheck.getData();
+            if (data == '') {
+                layer.msg('请选择要删除的分组', {
+                    anim: 6
+                });
+                return false;
+            }
+            layer.confirm('确认要删除ID(' + data + ')吗？', function (index) {
+                //console.log(data);
+                $.post('del.html', {'friIds': data}, function (res) {
+                    if (res['code'] == 1) {
+                        layer.msg('删除成功!', {
+                            icon: 6,
+                            time: 1000
+                        }, function () {
+                            self.location.reload();
+                        });
+                    } else {
+                        layer.msg(res['msg'], {
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                });
+
+            });
+        }
+        /*排序*/
+        window.sort = function () {
+            var arr = new Array();
+            var work = false;
+            $('.sort').each(function () {
+                if ($(this).val() == '') {
+                    layer.tips('不能为空', '#sort_' + $(this).attr('data-id'), {
+                        tips: [4, '#78BA32']
+                        , tipsMore: false
+                    });
+                    work = false;
+                    return false;
+                } else if ($(this).val() < 0) {
+                    layer.tips('必须为大于等于0的数字', '#sort_' + $(this).attr('data-id'), {
+                        tips: [4, '#78BA32']
+                        , tipsMore: false
+                    });
+                    work = false;
+                    return false;
+                } else {
+                    arr.push({'id': $(this).attr('data-id'), 'sort': $(this).val()});
+                    work = true;
+                }
+            });
+            if (work == true) {
+                $.post('sort.html', {'data': arr}, function (res) {
+                    if (res['code'] == 1) {
+                        layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
+                            self.location.reload();
+                        });
+                    } else {
+                        layer.msg(res['msg'], {icon: 5, time: 2000});
+                    }
+                }, 'json');
+            }
+
+        }
+    });
+</script>
+</body>
+</html>

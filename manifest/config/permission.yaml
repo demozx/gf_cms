@@ -39,7 +39,7 @@ backend_view:
         - title: 快捷方式
           slug: quick.manage
         - title: 友情链接
-          slug: link.manage
+          slug: friendly_link.manage
         - title: 站点配置
           slug: setting.manage
 backend_api:

@@ -31,8 +31,10 @@ func backendViewHandle(s *ghttp.Server) {
 			"/": backend.Index.Index,
 			/*后台欢迎页*/
 			"/welcome/index": backend.Welcome.Index,
-			/*后台设置*/
-			"/setting/index": backend.Setting.Index,
+			/*站点配置*/
+			"/setting/index": backend.Setting.Index, //站点配置
+			/*友情链接*/
+			"/friendly_link/index": backend.FriendlyLink.Index, //友情链接列表
 			/*管理员列表*/
 			"/admin/index": backend.Admin.Index, //管理员列表
 			"/admin/add":   backend.Admin.Add,   //添加
