@@ -29,7 +29,7 @@ func FriendlyLink() *sFriendlyLink {
 }
 
 // BackendApiStatus 修改友情链接状态
-func (s *sFriendlyLink) BackendApiStatus(ctx context.Context, req *backendApi.FriendlyLinkStatusReq) (res *backendApi.FriendlyLinkStatusRes, err error) {
+func (s *sFriendlyLink) BackendApiStatus(ctx context.Context, req *backendApi.FriendlyLinkStatusReq) (res interface{}, err error) {
 	var friendlyLink *entity.CmsFriendlyLink
 	err = dao.CmsFriendlyLink.Ctx(ctx).Where(dao.CmsFriendlyLink.Columns().Id, req.Id).Scan(&friendlyLink)
 	if err != nil {
@@ -47,6 +47,23 @@ func (s *sFriendlyLink) BackendApiStatus(ctx context.Context, req *backendApi.Fr
 		"status": status,
 	}
 	_, err = dao.CmsFriendlyLink.Ctx(ctx).Where(dao.CmsFriendlyLink.Columns().Id, req.Id).Data(data).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// BackendApiAdd 添加友情链接
+func (s *sFriendlyLink) BackendApiAdd(ctx context.Context, req *backendApi.FriendlyLinkAddReq) (res interface{}, err error) {
+	var cmsFriendlyLink *entity.CmsFriendlyLink
+	err = dao.CmsFriendlyLink.Ctx(ctx).Where(dao.CmsFriendlyLink.Columns().Url, req.Url).Scan(&cmsFriendlyLink)
+	if err != nil {
+		return nil, err
+	}
+	if cmsFriendlyLink != nil {
+		return nil, gerror.New("链接地址已存在")
+	}
+	_, err = dao.CmsFriendlyLink.Ctx(ctx).Data(req).Insert()
 	if err != nil {
 		return nil, err
 	}

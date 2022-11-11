@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon"></i>增加友情链接</button>
+            <button class="layui-btn" lay-submit="" lay-filter="add"><i class="layui-icon"></i>添加友情链接</button>
         </form>
     </div>
     <div class="weadmin-block">
@@ -121,15 +121,15 @@
             //console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
             //console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             //console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-            $.post('add.html', data.field, function (res) {
-                if (res['code'] == 1) {
+            $.post('${ backend_api_url `/friendly_link/add` }$', data.field, function (res) {
+                if (res.code === 0) {
                     //添加成功
-                    layer.msg(res['msg'], {icon: 6, time: 1000}, function () {
+                    layer.msg(res.message, {icon: 6, time: 1000}, function () {
                         self.location.reload();
                     });
                 } else {
                     //添加失败
-                    layer.msg(res['msg'], {icon: 5, time: 2000});
+                    layer.msg(res.message, {icon: 5, time: 2000});
                 }
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -157,7 +157,7 @@
         //自定义url验证规则
         form.verify({
             url: function (value) {
-                if (!(value.substr(0, 7).toLowerCase() == "http://" || value.substr(0, 8).toLowerCase() == "https://")) {
+                if (!(value.substr(0, 7).toLowerCase() === "http://" || value.substr(0, 8).toLowerCase() === "https://")) {
                     return '友情链接应该以"http://"或"https://"开头';
                 }
             }

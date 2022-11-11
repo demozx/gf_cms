@@ -80,6 +80,7 @@ func backendApiHandle(s *ghttp.Server) {
 			"/guestbook/batch_delete": backendApi.Guestbook.BatchDelete, //批量删除留言
 			/*友情链接*/
 			"/friendly_link/status": backendApi.FriendlyLink.Status, //修改状态
+			"/friendly_link/add":    backendApi.FriendlyLink.Add,    //添加
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传
