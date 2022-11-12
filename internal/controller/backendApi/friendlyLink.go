@@ -31,3 +31,13 @@ func (c *cFriendlyLink) Add(ctx context.Context, req *backendApi.FriendlyLinkAdd
 	service.Response().SuccessJsonDefaultMessage(ctx, "添加成功")
 	return
 }
+
+// Edit 编辑友情链接
+func (c *cFriendlyLink) Edit(ctx context.Context, req *backendApi.FriendlyLinkEditReq) (res *backendApi.FriendlyLinkEditRes, err error) {
+	_, err = service.FriendlyLink().BackendApiEdit(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefaultMessage(ctx, "编辑成功")
+	return
+}

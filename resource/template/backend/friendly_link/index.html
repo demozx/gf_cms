@@ -92,7 +92,7 @@
             </td>
             <td class="td-manage">
                 <a title="编辑"
-                   onclick="WeAdminShow('编辑','{:url(\'admin/friendlylink/edit\',[\'friId\'=>$list.id])}','460','240')"
+                   onclick="WeAdminShow('编辑','${ backend_url `/friendly_link/edit` }$?id=${ $item.Id }$','800','300')"
                    href="javascript:;">
                     <i class="layui-icon">&#xe642;</i>
                 </a>

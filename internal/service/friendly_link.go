@@ -14,6 +14,7 @@ type (
 	IFriendlyLink interface {
 		BackendApiStatus(ctx context.Context, req *backendApi.FriendlyLinkStatusReq) (res interface{}, err error)
 		BackendApiAdd(ctx context.Context, req *backendApi.FriendlyLinkAddReq) (res interface{}, err error)
+		BackendApiEdit(ctx context.Context, req *backendApi.FriendlyLinkEditReq) (res interface{}, err error)
 	}
 )
 

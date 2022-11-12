@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/v2/net/ghttp"
 )
 
-//后台view路由分组
+// 后台view路由分组
 func backendViewHandle(s *ghttp.Server) {
 	var backendGroup = util.Util().BackendGroup()
 	s.Group(backendGroup, func(group *ghttp.RouterGroup) {
@@ -33,8 +33,6 @@ func backendViewHandle(s *ghttp.Server) {
 			"/welcome/index": backend.Welcome.Index,
 			/*站点配置*/
 			"/setting/index": backend.Setting.Index, //站点配置
-			/*友情链接*/
-			"/friendly_link/index": backend.FriendlyLink.Index, //友情链接列表
 			/*管理员列表*/
 			"/admin/index": backend.Admin.Index, //管理员列表
 			"/admin/add":   backend.Admin.Add,   //添加
@@ -63,6 +61,9 @@ func backendViewHandle(s *ghttp.Server) {
 			"/ad_list/edit":     backend.AdList.Edit,     //编辑广告
 			/*留言管理*/
 			"/guestbook/index": backend.Guestbook.Index, //留言列表
+			/*友情链接*/
+			"/friendly_link/index": backend.FriendlyLink.Index, //友情链接列表
+			"/friendly_link/edit":  backend.FriendlyLink.Edit,  //编辑友情链接
 		})
 	})
 }

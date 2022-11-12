@@ -69,3 +69,22 @@ func (s *sFriendlyLink) BackendApiAdd(ctx context.Context, req *backendApi.Frien
 	}
 	return
 }
+
+func (s *sFriendlyLink) BackendApiEdit(ctx context.Context, req *backendApi.FriendlyLinkEditReq) (res interface{}, err error) {
+	var cmsFriendlyLink *entity.CmsFriendlyLink
+	err = dao.CmsFriendlyLink.Ctx(ctx).Where(dao.CmsFriendlyLink.Columns().Url, req.Url).WhereNot(dao.CmsFriendlyLink.Columns().Id, req.Id).Scan(&cmsFriendlyLink)
+	if err != nil {
+		return nil, err
+	}
+	if cmsFriendlyLink != nil {
+		return nil, gerror.New("链接地址已存在")
+	}
+	affected, err := dao.CmsFriendlyLink.Ctx(ctx).Where(dao.CmsFriendlyLink.Columns().Id, req.Id).Data(req).UpdateAndGetAffected()
+	if err != nil {
+		return nil, err
+	}
+	if affected == 0 {
+		return nil, gerror.New("友情链接不存在")
+	}
+	return
+}
