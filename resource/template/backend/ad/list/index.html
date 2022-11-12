@@ -352,7 +352,7 @@
                         }
                     });
                     if (work === true) {
-                        $.post('${ backend_api_url `/ad_list/sort` }$', {'sort': arr}, function (res) {
+                        $.post('${ backend_api_url `/friendly/sort` }$', {'sort': arr}, function (res) {
                             if (res.code === 0) {
                                 layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
                                     var nowPage = $('.layui-laypage-skip>.layui-input').val();

@@ -22,3 +22,9 @@ type FriendlyLinkEditReq struct {
 	Url    string `json:"url" dc:"链接地址" v:"required|url#链接地址必填|链接地址格式错误"`
 }
 type FriendlyLinkEditRes struct{}
+
+type FriendlyLinkSortReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"友情链接排序"`
+	Sort   []string `json:"sort" dc:"排序" arg:"true" v:"required#排序字段必填"`
+}
+type FriendlyLinkSortRes struct{}

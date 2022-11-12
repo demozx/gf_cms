@@ -4,10 +4,13 @@ import (
 	"context"
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
+	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/text/gstr"
 )
 
 var (
@@ -70,6 +73,7 @@ func (s *sFriendlyLink) BackendApiAdd(ctx context.Context, req *backendApi.Frien
 	return
 }
 
+// BackendApiEdit 编辑友情链接
 func (s *sFriendlyLink) BackendApiEdit(ctx context.Context, req *backendApi.FriendlyLinkEditReq) (res interface{}, err error) {
 	var cmsFriendlyLink *entity.CmsFriendlyLink
 	err = dao.CmsFriendlyLink.Ctx(ctx).Where(dao.CmsFriendlyLink.Columns().Url, req.Url).WhereNot(dao.CmsFriendlyLink.Columns().Id, req.Id).Scan(&cmsFriendlyLink)
@@ -85,6 +89,27 @@ func (s *sFriendlyLink) BackendApiEdit(ctx context.Context, req *backendApi.Frie
 	}
 	if affected == 0 {
 		return nil, gerror.New("友情链接不存在")
+	}
+	return
+}
+
+// BackendApiSort 友情链接排序
+func (s *sFriendlyLink) BackendApiSort(ctx context.Context, req *backendApi.FriendlyLinkSortReq) (res interface{}, err error) {
+	var data []*model.FriendlyLinkSortItem
+	for _, item := range req.Sort {
+		split := gstr.SplitAndTrim(item, "_")
+		if len(split) != 2 {
+			continue
+		}
+		friendlyLinkSortItem := &model.FriendlyLinkSortItem{
+			Id:   gvar.New(split[0]).Int(),
+			Sort: gvar.New(split[1]).Int(),
+		}
+		data = append(data, friendlyLinkSortItem)
+	}
+	_, err = dao.CmsFriendlyLink.Ctx(ctx).Data(data).Save()
+	if err != nil {
+		return nil, err
 	}
 	return
 }

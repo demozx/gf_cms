@@ -82,6 +82,7 @@ func backendApiHandle(s *ghttp.Server) {
 			"/friendly_link/status": backendApi.FriendlyLink.Status, //修改状态
 			"/friendly_link/add":    backendApi.FriendlyLink.Add,    //添加
 			"/friendly_link/edit":   backendApi.FriendlyLink.Edit,   //编辑
+			"/friendly_link/sort":   backendApi.FriendlyLink.Sort,   //排序
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传
 			"/upload/single_image": backendApi.Upload.SingleImage, //图片上传

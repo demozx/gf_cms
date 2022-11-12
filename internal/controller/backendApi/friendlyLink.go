@@ -41,3 +41,13 @@ func (c *cFriendlyLink) Edit(ctx context.Context, req *backendApi.FriendlyLinkEd
 	service.Response().SuccessJsonDefaultMessage(ctx, "编辑成功")
 	return
 }
+
+// Sort 友情链接排序
+func (c *cFriendlyLink) Sort(ctx context.Context, req *backendApi.FriendlyLinkSortReq) (res *backendApi.FriendlyLinkSortRes, err error) {
+	_, err = service.FriendlyLink().BackendApiSort(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefaultMessage(ctx, "排序成功")
+	return
+}
