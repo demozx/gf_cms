@@ -37,4 +37,4 @@ temp/
 /deploy/
 /log/
 /resource/public/upload/
-/manifest/config/config.yaml
+/config.yaml
