@@ -165,16 +165,16 @@
         /*用户-删除*/
         window.member_del = function (obj, id) {
             layer.confirm('确认要删除吗？', function (index) {
-                $.post('del.html', {'friIds': id}, function (res) {
-                    if (res['code'] == 1) {
-                        layer.msg('删除成功!', {
+                $.post('${ backend_api_url `/friendly_link/batch_delete` }$', {'ids': id}, function (res) {
+                    if (res.code === 0) {
+                        layer.msg(res.message, {
                             icon: 6,
                             time: 1000
                         }, function () {
                             self.location.reload();
                         });
                     } else {
-                        layer.msg(res['msg'], {
+                        layer.msg(res.message, {
                             icon: 5,
                             time: 2000
                         });
@@ -186,7 +186,7 @@
         /*删除全部*/
         window.delAll = function () {
             var data = tableCheck.getData();
-            if (data == '') {
+            if (data.length === 0) {
                 layer.msg('请选择要删除的分组', {
                     anim: 6
                 });
