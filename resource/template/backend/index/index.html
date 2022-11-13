@@ -30,10 +30,14 @@
             <a href="javascript:;">快捷方式</a>
             <dl class="layui-nav-child">
                 <!-- 快捷方式列表 -->
+                ${ if .shortcutList|len }$
                 ${ range $key,$item:=.shortcutList }$
                 <dd>
                     <a onclick="WeAdminShow('${ $item.Name }$','${ $item.Route }$')">${ $item.Name }$</a>
                 </dd>
+                ${ end }$
+                ${ else }$
+                <dd><a href="javascript:;">暂无快捷方式</a></dd>
                 ${ end }$
             </dl>
         </li>

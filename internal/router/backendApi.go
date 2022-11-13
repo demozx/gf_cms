@@ -88,6 +88,7 @@ func backendApiHandle(s *ghttp.Server) {
 			"/shortcut/add":          backendApi.Shortcut.Add,         //添加
 			"/shortcut/edit":         backendApi.Shortcut.Edit,        //编辑
 			"/shortcut/batch_delete": backendApi.Shortcut.BatchDelete, //编辑
+			"/shortcut/sort":         backendApi.Shortcut.Sort,        //排序
 
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传

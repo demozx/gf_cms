@@ -41,3 +41,13 @@ func (c *cShortcut) BatchDelete(ctx context.Context, req *backendApi.ShortcutBat
 	service.Response().SuccessJsonDefaultMessage(ctx, "删除成功")
 	return
 }
+
+// Sort 排序
+func (c *cShortcut) Sort(ctx context.Context, req *backendApi.ShortcutSortReq) (res *backendApi.ShortcutSortRes, err error) {
+	_, err = service.Shortcut().BackendApiSort(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefaultMessage(ctx, "排序成功")
+	return
+}

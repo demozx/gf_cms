@@ -22,3 +22,9 @@ type ShortcutBatchDeleteReq struct {
 	Ids    []int `json:"ids" v:"required#快捷方式ids必填"`
 }
 type ShortcutBatchDeleteRes struct{}
+
+type ShortcutSortReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"快捷方式排序"`
+	Sort   []string `json:"sort" dc:"排序" arg:"true" v:"required#排序字段必填"`
+}
+type ShortcutSortRes struct{}

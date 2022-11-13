@@ -194,10 +194,10 @@
         }
         /*排序*/
         window.sort = function () {
-            var arr = new Array();
+            var arr = [];
             var work = false;
             $('.sort').each(function () {
-                if ($(this).val() == '') {
+                if ($(this).val() === '') {
                     layer.tips('不能为空', '#sort_' + $(this).attr('data-id'), {
                         tips: [4, '#78BA32']
                         , tipsMore: false
@@ -212,22 +212,22 @@
                     work = false;
                     return false;
                 } else {
-                    arr.push({'id': $(this).attr('data-id'), 'sort': $(this).val()});
+                    // arr.push({'id': $(this).attr('data-id'), 'sort': $(this).val()});
+                    arr.push($(this).attr('data-id') + "_" + $(this).val())
                     work = true;
                 }
             });
-            if (work == true) {
-                $.post('sort.html', {'data': arr}, function (res) {
-                    if (res['code'] == 1) {
-                        layer.msg('更新排序成功，请手动刷新页面', {icon: 6, time: 1000}, function () {
-                            self.location.reload();
+            if (work === true) {
+                $.post('${ backend_api_url `/shortcut/sort` }$', {'sort': arr}, function (res) {
+                    if (res.code === 0) {
+                        layer.msg('更新排序成功', {icon: 6, time: 1000}, function () {
+                            window.location.reload()
                         });
                     } else {
-                        layer.msg(res['msg'], {icon: 5, time: 2000});
+                        layer.msg(res.message, {icon: 5, time: 2000});
                     }
                 }, 'json');
             }
-
         }
     });
 </script>

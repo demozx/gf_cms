@@ -6,8 +6,10 @@ import (
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
+	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
@@ -143,6 +145,27 @@ func (s *sShortcut) BackendApiBatchDelete(ctx context.Context, in *backendApi.Sh
 		WhereIn(dao.CmsShortcut.Columns().Id, in.Ids).
 		Where(dao.CmsShortcut.Columns().AccountId, cmsAdmin.Id).
 		Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// BackendApiSort 排序
+func (s *sShortcut) BackendApiSort(ctx context.Context, in *backendApi.ShortcutSortReq) (out interface{}, err error) {
+	var data []*model.ShortcutSortItem
+	for _, item := range in.Sort {
+		split := gstr.SplitAndTrim(item, "_")
+		if len(split) != 2 {
+			continue
+		}
+		shortcutSortItem := &model.ShortcutSortItem{
+			Id:   gvar.New(split[0]).Int(),
+			Sort: gvar.New(split[1]).Int(),
+		}
+		data = append(data, shortcutSortItem)
+	}
+	_, err = dao.CmsShortcut.Ctx(ctx).Data(data).Save()
 	if err != nil {
 		return nil, err
 	}
