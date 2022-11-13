@@ -79,10 +79,11 @@ func backendApiHandle(s *ghttp.Server) {
 			"/guestbook/status":       backendApi.Guestbook.Status,      //修改留言状态
 			"/guestbook/batch_delete": backendApi.Guestbook.BatchDelete, //批量删除留言
 			/*友情链接*/
-			"/friendly_link/status": backendApi.FriendlyLink.Status, //修改状态
-			"/friendly_link/add":    backendApi.FriendlyLink.Add,    //添加
-			"/friendly_link/edit":   backendApi.FriendlyLink.Edit,   //编辑
-			"/friendly_link/sort":   backendApi.FriendlyLink.Sort,   //排序
+			"/friendly_link/status":       backendApi.FriendlyLink.Status,      //修改状态
+			"/friendly_link/add":          backendApi.FriendlyLink.Add,         //添加
+			"/friendly_link/edit":         backendApi.FriendlyLink.Edit,        //编辑
+			"/friendly_link/sort":         backendApi.FriendlyLink.Sort,        //排序
+			"/friendly_link/batch_delete": backendApi.FriendlyLink.BatchDelete, //批量删除
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传
 			"/upload/single_image": backendApi.Upload.SingleImage, //图片上传

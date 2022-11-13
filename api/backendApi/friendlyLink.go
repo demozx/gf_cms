@@ -28,3 +28,9 @@ type FriendlyLinkSortReq struct {
 	Sort   []string `json:"sort" dc:"排序" arg:"true" v:"required#排序字段必填"`
 }
 type FriendlyLinkSortRes struct{}
+
+type FriendlyLinkBatchDeleteReq struct {
+	g.Meta `tags:"Backend" method:"post" summary:"友情链接批量删除"`
+	Ids    []int `json:"ids" v:"required#id必填"`
+}
+type FriendlyLinkBatchDeleteRes struct{}

@@ -113,3 +113,12 @@ func (s *sFriendlyLink) BackendApiSort(ctx context.Context, req *backendApi.Frie
 	}
 	return
 }
+
+// BackendApiBatchDelete 批量删除
+func (s *sFriendlyLink) BackendApiBatchDelete(ctx context.Context, req *backendApi.FriendlyLinkBatchDeleteReq) (res interface{}, err error) {
+	_, err = dao.CmsFriendlyLink.Ctx(ctx).WhereIn(dao.CmsFriendlyLink.Columns().Id, req.Ids).Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}

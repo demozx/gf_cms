@@ -51,3 +51,13 @@ func (c *cFriendlyLink) Sort(ctx context.Context, req *backendApi.FriendlyLinkSo
 	service.Response().SuccessJsonDefaultMessage(ctx, "排序成功")
 	return
 }
+
+// BatchDelete 友情链接批量删除
+func (c *cFriendlyLink) BatchDelete(ctx context.Context, req *backendApi.FriendlyLinkBatchDeleteReq) (res *backendApi.FriendlyLinkBatchDeleteRes, err error) {
+	_, err = service.FriendlyLink().BackendApiBatchDelete(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefaultMessage(ctx, "删除成功")
+	return
+}
