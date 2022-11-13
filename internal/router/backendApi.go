@@ -84,6 +84,10 @@ func backendApiHandle(s *ghttp.Server) {
 			"/friendly_link/edit":         backendApi.FriendlyLink.Edit,        //编辑
 			"/friendly_link/sort":         backendApi.FriendlyLink.Sort,        //排序
 			"/friendly_link/batch_delete": backendApi.FriendlyLink.BatchDelete, //批量删除
+			/*快捷方式*/
+			"/shortcut/add":  backendApi.Shortcut.Add,  //添加快捷方式
+			"/shortcut/edit": backendApi.Shortcut.Edit, //编辑快捷方式
+
 			/*上传*/
 			"/upload/single_file":  backendApi.Upload.SingleFile,  //文件上传
 			"/upload/single_image": backendApi.Upload.SingleImage, //图片上传

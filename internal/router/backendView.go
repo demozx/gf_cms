@@ -64,6 +64,9 @@ func backendViewHandle(s *ghttp.Server) {
 			/*友情链接*/
 			"/friendly_link/index": backend.FriendlyLink.Index, //友情链接列表
 			"/friendly_link/edit":  backend.FriendlyLink.Edit,  //编辑友情链接
+			/*快捷方式*/
+			"/shortcut/index": backend.Shortcut.Index, //快捷方式列表
+			"/shortcut/edit":  backend.Shortcut.Edit,  //编辑快捷方式
 		})
 	})
 }

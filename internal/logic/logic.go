@@ -25,6 +25,7 @@ import (
 	_ "gf_cms/internal/logic/role"
 	_ "gf_cms/internal/logic/runtime"
 	_ "gf_cms/internal/logic/setting"
+	_ "gf_cms/internal/logic/shortcut"
 	_ "gf_cms/internal/logic/upload"
 	_ "gf_cms/internal/logic/util"
 	_ "gf_cms/internal/logic/viewBindFun"

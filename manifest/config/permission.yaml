@@ -37,7 +37,7 @@ backend_view:
       slug: setting
       permissions:
         - title: 快捷方式
-          slug: quick.manage
+          slug: shortcut.manage
         - title: 友情链接
           slug: friendly_link.manage
         - title: 站点配置

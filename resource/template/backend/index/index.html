@@ -30,11 +30,11 @@
             <a href="javascript:;">快捷方式</a>
             <dl class="layui-nav-child">
                 <!-- 快捷方式列表 -->
-                {volist name='shortcutList' id='vo'}
+                ${ range $key,$item:=.shortcutList }$
                 <dd>
-                    <a onclick="WeAdminShow('{$vo.name}','{:url($vo.route)}')">{$vo.name}</a>
+                    <a onclick="WeAdminShow('${ $item.Name }$','${ $item.Route }$')">${ $item.Name }$</a>
                 </dd>
-                {/volist}
+                ${ end }$
             </dl>
         </li>
     </ul>
