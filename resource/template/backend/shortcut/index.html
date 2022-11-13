@@ -71,6 +71,7 @@
             <th>操作</th>
         </thead>
         <tbody>
+        ${ if .list|len }$
         ${ range $key, $item:=.list }$
         <tr>
             <td>
@@ -94,6 +95,13 @@
                 <a title="删除" onclick="member_del(this,'${ $item.Id }$')" href="javascript:;">
                     <i class="layui-icon">&#xe640;</i>
                 </a>
+            </td>
+        </tr>
+        ${ end }$
+        ${ else }$
+        <tr>
+            <td align="center" colspan="100">
+                暂无数据
             </td>
         </tr>
         ${ end }$
@@ -137,16 +145,16 @@
         /*用户-删除*/
         window.member_del = function (obj, id) {
             layer.confirm('确认要删除吗？', function (index) {
-                $.post('del.html', {'ids': id}, function (res) {
-                    if (res['code'] == 1) {
-                        layer.msg('删除成功，请手动刷新页面!', {
+                $.post('${ backend_api_url `/shortcut/batch_delete` }$', {'ids': id}, function (res) {
+                    if (res.code === 0) {
+                        layer.msg(res.message, {
                             icon: 6,
                             time: 1000
                         }, function () {
                             self.location.reload();
                         });
                     } else {
-                        layer.msg(res['msg'], {
+                        layer.msg(res.message, {
                             icon: 5,
                             time: 2000
                         });
@@ -158,7 +166,7 @@
         /*删除全部*/
         window.delAll = function () {
             var data = tableCheck.getData();
-            if (data == '') {
+            if (data.length === 0) {
                 layer.msg('请选择要删除的分组', {
                     anim: 6
                 });
@@ -166,16 +174,16 @@
             }
             layer.confirm('确认要删除ID(' + data + ')吗？', function (index) {
                 //console.log(data);
-                $.post('del.html', {'ids': data}, function (res) {
-                    if (res['code'] == 1) {
-                        layer.msg('删除成功，请手动刷新页面!', {
+                $.post('${ backend_api_url `/shortcut/batch_delete` }$', {'ids': data}, function (res) {
+                    if (res.code === 0) {
+                        layer.msg(res.message, {
                             icon: 6,
                             time: 1000
                         }, function () {
                             self.location.reload();
                         });
                     } else {
-                        layer.msg(res['msg'], {
+                        layer.msg(res.message, {
                             icon: 5,
                             time: 2000
                         });

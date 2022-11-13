@@ -18,6 +18,7 @@ type (
 		BackendEdit(ctx context.Context, in *backend.ShortcutEditReq) (out *entity.CmsShortcut, err error)
 		BackendApiAdd(ctx context.Context, in *backendApi.ShortcutAddReq) (out interface{}, err error)
 		BackendApiEdit(ctx context.Context, in *backendApi.ShortcutEditReq) (out interface{}, err error)
+		BackendApiBatchDelete(ctx context.Context, in *backendApi.ShortcutBatchDeleteReq) (out interface{}, err error)
 	}
 )
 

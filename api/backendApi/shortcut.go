@@ -16,3 +16,9 @@ type ShortcutEditReq struct {
 	Route  string `json:"route" v:"required#快捷方式路由必填"`
 }
 type ShortcutEditRes struct{}
+
+type ShortcutBatchDeleteReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"批量删除快捷方式"`
+	Ids    []int `json:"ids" v:"required#快捷方式ids必填"`
+}
+type ShortcutBatchDeleteRes struct{}

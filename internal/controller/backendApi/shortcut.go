@@ -31,3 +31,13 @@ func (c *cShortcut) Edit(ctx context.Context, req *backendApi.ShortcutEditReq) (
 	service.Response().SuccessJsonDefaultMessage(ctx, "编辑成功")
 	return
 }
+
+// BatchDelete 批量删除
+func (c *cShortcut) BatchDelete(ctx context.Context, req *backendApi.ShortcutBatchDeleteReq) (res *backendApi.ShortcutBatchDeleteRes, err error) {
+	_, err = service.Shortcut().BackendApiBatchDelete(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefaultMessage(ctx, "删除成功")
+	return
+}

@@ -133,6 +133,22 @@ func (s *sShortcut) BackendApiEdit(ctx context.Context, in *backendApi.ShortcutE
 	return
 }
 
+// BackendApiBatchDelete 删除快捷方式
+func (s *sShortcut) BackendApiBatchDelete(ctx context.Context, in *backendApi.ShortcutBatchDeleteReq) (out interface{}, err error) {
+	cmsAdmin, err := Shortcut().backendGetUserFromSession(ctx)
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsShortcut.Ctx(ctx).
+		WhereIn(dao.CmsShortcut.Columns().Id, in.Ids).
+		Where(dao.CmsShortcut.Columns().AccountId, cmsAdmin.Id).
+		Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 // 从session获取当前登录用户
 func (s *sShortcut) backendGetUserFromSession(ctx context.Context) (out *entity.CmsAdmin, err error) {
 	var adminSession, _ = g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
