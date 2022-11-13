@@ -140,3 +140,11 @@ backend_api:
       permissions:
         - title: 站点配置-保存
           slug: setting.save
+        - title: 友情链接-添加
+          slug: friendly_link.add
+        - title: 友情链接-编辑
+          slug: friendly_link.edit
+        - title: 友情链接-排序
+          slug: friendly_link.sort
+        - title: 友情链接-删除、批量删除
+          slug: friendly_link.batch_delete

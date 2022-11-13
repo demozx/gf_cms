@@ -165,6 +165,18 @@ backend_api:
           permission: admin.role.delete_batch
     - title: 系统设置
       children:
-        - title: 保存配置
+        - title: 站点配置-保存
           route: /setting/save
           permission: setting.setting.save
+        - title: 友情链接-添加
+          route: /friendly_link/add
+          permission: friendly_link.add
+        - title: 友情链接-编辑
+          route: /friendly_link/edit
+          permission: friendly_link.edit
+        - title: 友情链接-排序
+          route: /friendly_link/sort
+          permission: friendly_link.sort
+        - title: 友情链接-删除、批量删除
+          route: /friendly_link/batch_delete
+          permission: friendly_link.batch_delete
