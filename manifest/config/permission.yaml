@@ -138,8 +138,14 @@ backend_api:
     - title: 系统设置
       slug: setting
       permissions:
-        - title: 站点配置-保存
-          slug: setting.save
+        - title: 快捷方式-添加
+          slug: shortcut.add
+        - title: 快捷方式-编辑
+          slug: shortcut.edit
+        - title: 快捷方式-排序
+          slug: shortcut.sort
+        - title: 快捷方式-删除、批量删除
+          slug: shortcut.batch_delete
         - title: 友情链接-添加
           slug: friendly_link.add
         - title: 友情链接-编辑
@@ -148,3 +154,5 @@ backend_api:
           slug: friendly_link.sort
         - title: 友情链接-删除、批量删除
           slug: friendly_link.batch_delete
+        - title: 站点配置-保存
+          slug: setting.save

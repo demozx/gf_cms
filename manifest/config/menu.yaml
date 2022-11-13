@@ -165,9 +165,18 @@ backend_api:
           permission: admin.role.delete_batch
     - title: 系统设置
       children:
-        - title: 站点配置-保存
-          route: /setting/save
-          permission: setting.setting.save
+        - title: 快捷方式-添加
+          route: /shortcut/add
+          permission: shortcut.add
+        - title: 快捷方式-编辑
+          route: /shortcut/edit
+          permission: shortcut.edit
+        - title: 快捷方式-排序
+          route: /shortcut/sort
+          permission: shortcut.sort
+        - title: 快捷方式-删除、批量删除
+          route: /shortcut/batch_delete
+          permission: shortcut.batch_delete
         - title: 友情链接-添加
           route: /friendly_link/add
           permission: friendly_link.add
@@ -180,3 +189,6 @@ backend_api:
         - title: 友情链接-删除、批量删除
           route: /friendly_link/batch_delete
           permission: friendly_link.batch_delete
+        - title: 站点配置-保存
+          route: /setting/save
+          permission: setting.setting.save
