@@ -167,28 +167,28 @@ backend_api:
       children:
         - title: 快捷方式-添加
           route: /shortcut/add
-          permission: shortcut.add
+          permission: setting.shortcut.add
         - title: 快捷方式-编辑
           route: /shortcut/edit
-          permission: shortcut.edit
+          permission: setting.shortcut.edit
         - title: 快捷方式-排序
           route: /shortcut/sort
-          permission: shortcut.sort
+          permission: setting.shortcut.sort
         - title: 快捷方式-删除、批量删除
           route: /shortcut/batch_delete
-          permission: shortcut.batch_delete
+          permission: setting.shortcut.batch_delete
         - title: 友情链接-添加
           route: /friendly_link/add
-          permission: friendly_link.add
+          permission: setting.friendly_link.add
         - title: 友情链接-编辑
           route: /friendly_link/edit
-          permission: friendly_link.edit
+          permission: setting.friendly_link.edit
         - title: 友情链接-排序
           route: /friendly_link/sort
-          permission: friendly_link.sort
+          permission: setting.friendly_link.sort
         - title: 友情链接-删除、批量删除
           route: /friendly_link/batch_delete
-          permission: friendly_link.batch_delete
+          permission: setting.friendly_link.batch_delete
         - title: 站点配置-保存
           route: /setting/save
           permission: setting.setting.save

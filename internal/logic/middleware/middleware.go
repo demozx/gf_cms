@@ -174,6 +174,7 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 		}
 		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
 			g.Log().Warning(util.Ctx, "没有权限"+act)
+			g.Dump("没有权限操作", accountId, obj, routePermission)
 			r.Response.WriteJsonExit(g.Map{
 				"code":    401,
 				"message": "没有权限操作 " + ruleName,

@@ -126,17 +126,14 @@ func (*sMenu) BackendMyMenu(accountId string) []model.MenuGroups {
 func (*sMenu) BackendMyApi(accountId string) []model.MenuGroups {
 	//accountId := Middleware().GetAdminUserID(r)
 	backendMyPermissions := permission.Permission().BackendMyApi(accountId)
-	//g.Log().Info(Ctx, "backendMyPermissions", backendMyPermissions)
 	backendApiMenus := Menu().BackendApi()
 	var backendMyMenus []model.MenuGroups
-
 	for _, menu := range backendApiMenus {
 		var title = menu.Title
 		var children = menu.Children
 		var backendMyMenusChildren []model.MenuChildren
 		for _, item := range children {
 			var childrenPermission = item.Permission
-			//g.Log().Info(Ctx, "childrenPermission", childrenPermission)
 			for _, myPermission := range backendMyPermissions {
 				//g.Log().Info(Ctx, "myPermission.String()", myPermission.String(), childrenPermission, myPermission.String() == childrenPermission)
 				if myPermission.String() == childrenPermission {
