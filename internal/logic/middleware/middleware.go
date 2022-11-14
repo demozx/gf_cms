@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/v2/errors/gcode"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/util/gconv"
+	"net/http"
 
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
@@ -51,7 +52,7 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 	if adminSession.IsEmpty() {
 		adminRoute := "/" + backendPrefix
 		// 如果没有session且是get请求且当前页面不是后台入口，跳转到后台入口
-		r.Response.RedirectTo(adminRoute + "/admin/login")
+		r.Response.RedirectTo(adminRoute+"/admin/login", http.StatusFound)
 	}
 	r.Middleware.Next()
 	if r.Response.BufferLength() > 0 {

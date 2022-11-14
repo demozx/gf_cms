@@ -2,15 +2,18 @@ package permission
 
 import (
 	"context"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/admin"
+	"gf_cms/internal/logic/casbinPolicy"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
+	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
-	"github.com/gogf/gf/v2/util/gconv"
-
+	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/util/gconv"
 )
 
 type sPermission struct{}
@@ -190,6 +193,37 @@ func (*sPermission) GetAllApiPermissionsArray() []string {
 		}
 	}
 	return permissionsArray
+}
+
+// BackendUserViewCan 检测后台用户有无视图的操作权限
+func (*sPermission) BackendUserViewCan(ctx context.Context, routePermission string) bool {
+	cmsAdmin, err := Permission().BackendGetUserFromSession(ctx)
+	if err != nil {
+		return false
+	}
+	obj := casbinPolicy.CasbinPolicy().ObjBackend()
+	return casbinPolicy.CasbinPolicy().CheckByAccountId(gvar.New(cmsAdmin.Id).String(), obj, routePermission)
+}
+
+// BackendUserApiCan 检测后台用户有无接口的操作权限
+func (*sPermission) BackendUserApiCan(ctx context.Context, routePermission string) bool {
+	cmsAdmin, err := Permission().BackendGetUserFromSession(ctx)
+	if err != nil {
+		return false
+	}
+	obj := casbinPolicy.CasbinPolicy().ObjBackendApi()
+	return casbinPolicy.CasbinPolicy().CheckByAccountId(gvar.New(cmsAdmin.Id).String(), obj, routePermission)
+}
+
+// BackendGetUserFromSession 从session获取当前登录用户
+func (s *sPermission) BackendGetUserFromSession(ctx context.Context) (out *entity.CmsAdmin, err error) {
+	var adminSession, _ = g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
+	var cmsAdmin *entity.CmsAdmin
+	err = gconv.Scan(adminSession, &cmsAdmin)
+	if err != nil {
+		return nil, err
+	}
+	return cmsAdmin, nil
 }
 
 //判断slug是否在model.PermissionGroups数组中

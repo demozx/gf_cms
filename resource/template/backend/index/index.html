@@ -26,6 +26,7 @@
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
     <ul class="layui-nav left fast-add" lay-filter="">
+        ${if .permissions.manage }$
         <li class="layui-nav-item">
             <a href="javascript:;">快捷方式</a>
             <dl class="layui-nav-child">
@@ -41,6 +42,7 @@
                 ${ end }$
             </dl>
         </li>
+        ${ end }$
     </ul>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">

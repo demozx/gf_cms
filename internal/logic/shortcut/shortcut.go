@@ -4,7 +4,6 @@ import (
 	"context"
 	"gf_cms/api/backend"
 	"gf_cms/api/backendApi"
-	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
@@ -13,7 +12,6 @@ import (
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
-	"github.com/gogf/gf/v2/util/gconv"
 )
 
 var (
@@ -174,9 +172,7 @@ func (s *sShortcut) BackendApiSort(ctx context.Context, in *backendApi.ShortcutS
 
 // 从session获取当前登录用户
 func (s *sShortcut) backendGetUserFromSession(ctx context.Context) (out *entity.CmsAdmin, err error) {
-	var adminSession, _ = g.RequestFromCtx(ctx).Session.Get(consts.AdminSessionKeyPrefix)
-	var cmsAdmin *entity.CmsAdmin
-	err = gconv.Scan(adminSession, &cmsAdmin)
+	cmsAdmin, err := service.Permission().BackendGetUserFromSession(ctx)
 	if err != nil {
 		return nil, err
 	}

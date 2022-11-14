@@ -6,7 +6,9 @@
 package service
 
 import (
+	"context"
 	"gf_cms/internal/model"
+	"gf_cms/internal/model/entity"
 
 	"github.com/gogf/gf/v2/database/gdb"
 )
@@ -20,6 +22,9 @@ type (
 		BackendMyApi(accountId string) []gdb.Value
 		GetAllViewPermissionsArray() []string
 		GetAllApiPermissionsArray() []string
+		BackendUserViewCan(ctx context.Context, routePermission string) bool
+		BackendUserApiCan(ctx context.Context, routePermission string) bool
+		BackendGetUserFromSession(ctx context.Context) (out *entity.CmsAdmin, err error)
 	}
 )
 
