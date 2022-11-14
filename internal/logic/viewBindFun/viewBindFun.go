@@ -3,7 +3,6 @@ package viewBindFun
 import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/service"
-
 	"github.com/gogf/gf/v2/frame/g"
 )
 
