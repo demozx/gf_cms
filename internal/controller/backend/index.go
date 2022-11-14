@@ -35,7 +35,7 @@ func (c *cIndex) Index(ctx context.Context, req *backend.IndexReq) (res *backend
 		"admin_session": gconv.Map(adminSession),
 		"backend_menu":  backendMenu,
 		"shortcutList":  shortcutList,
-		"permissions": g.Map{
+		"can": g.Map{
 			"manage": service.Permission().BackendUserViewCan(ctx, "setting.shortcut.manage"),
 		},
 	})
