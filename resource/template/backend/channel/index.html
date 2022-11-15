@@ -138,11 +138,13 @@
                     return '<a onclick="member_stop(this,' + row.id + ')" href="javascript:;" title="启用"><i class="layui-icon">&#xe601;</i></a>' +
                         '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'${backend_url `/channel/add`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
                         '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'${backend_url `/channel/edit`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
+                        '<a title="管理内容" onclick="ShowContent(' + row.id + ')"><i class="layui-icon">&#xe629;</i></a>' +
                         '<a title="删除" onclick="del(' + row.id + ')" href="javascript:;">\<i class="layui-icon">&#xe640;</i></a>';
                 }
                 return '<a onclick="member_stop(this,' + row.id + ')" href="javascript:;" title="停用"><i class="layui-icon">&#xe62f;</i></a>' +
                     '<a title="添加子类" onclick="WeAdminEdit(\'添加\',\'${backend_url `/channel/add`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe654;</i></a>' +
                     '<a title="编辑" onclick="WeAdminEdit(\'编辑\',\'${backend_url `/channel/edit`}$?id=' + row.id + '\')" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
+                    '<a title="管理内容" onclick="ShowContent(' + row.id + ')"><i class="layui-icon">&#xe629;</i></a>' +
                     '<a title="删除" onclick="del(' + row.id + ')" href="javascript:;">\<i class="layui-icon">&#xe640;</i></a>';
             }
         },
@@ -218,8 +220,8 @@
             //WeAdminEdit(title,'../article/index.html?catid='+cateId);
             var index = layer.open({
                 type: 2,
-                content: '${backend_url `/channel_model/index`}$' +'?type='+type+'&channel_id='+ cateId+'&with_tab=false',
-                title:'栏目 '+cateId+' 数据',
+                content: '${backend_url `/channel_model/index`}$' + '?type=' + type + '&channel_id=' + cateId + '&with_tab=false',
+                title: '栏目 ' + cateId + ' 数据',
                 area: ['90%', '90%'],
                 maxmin: true
             });
@@ -236,7 +238,6 @@
                     return;
                 }
             }
-            ;
 
             tab.tabAdd(title, url, index + 1);
             tab.tabChange(index + 1);
@@ -274,6 +275,12 @@
                 }
             });
         }
+    }
+
+    // 展示栏目内容
+    function ShowContent(id) {
+        var $ = layui.$;
+        $('#id_' + id).parents('cite').trigger('click');
     }
 </script>
 </html>
