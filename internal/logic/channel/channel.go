@@ -267,9 +267,10 @@ func (*sChannel) GetOneById(ctx context.Context, id int) (out *entity.CmsChannel
 }
 
 func (*sChannel) BackendModelMap() map[string]string {
-	var modelMap = make(map[string]string)
-	modelMap[consts.ChannelModelArticle] = consts.ChannelModelArticleDesc
-	return modelMap
+	return map[string]string{
+		consts.ChannelModelArticle: consts.ChannelModelArticleDesc,
+		consts.ChannelModelImage:   consts.ChannelModelImageDesc,
+	}
 }
 
 func (*sChannel) BackendModelDesc(model string) string {

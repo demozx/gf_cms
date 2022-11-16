@@ -21,6 +21,8 @@ func (c *cChannelModel) Index(ctx context.Context, req *backend.ChannelModelInde
 	}
 	if req.Type == consts.ChannelModelArticle {
 		_, err = service.ChannelModel().ModelArticle(ctx, req)
+	} else if req.Type == consts.ChannelModelImage {
+		_, err = service.ChannelModel().ModelImage(ctx, req)
 	} else {
 		return nil, gerror.New("不支持的模型")
 	}

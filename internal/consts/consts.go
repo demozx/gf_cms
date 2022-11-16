@@ -6,4 +6,6 @@ const (
 
 	ChannelModelArticle     = "article"
 	ChannelModelArticleDesc = "文章"
+	ChannelModelImage       = "image"
+	ChannelModelImageDesc   = "图集"
 )

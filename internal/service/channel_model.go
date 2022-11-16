@@ -14,6 +14,7 @@ import (
 type (
 	IChannelModel interface {
 		ModelArticle(ctx context.Context, in *backend.ChannelModelIndexReq) (out []*model.ChannelBackendApiListItem, err error)
+		ModelImage(ctx context.Context, in *backend.ChannelModelIndexReq) (out []*model.ChannelBackendApiListItem, err error)
 	}
 )
 
