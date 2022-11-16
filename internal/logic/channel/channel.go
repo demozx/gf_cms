@@ -36,7 +36,7 @@ func Channel() *sChannel {
 }
 
 // BackendIndex 获取后台栏目分类接口数据
-func (*sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
+func (s *sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -60,7 +60,7 @@ func (*sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendA
 	return channelBackendApiList, nil
 }
 
-func (*sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (out []*model.ChannelBackendApiListItem) {
+func (s *sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (out []*model.ChannelBackendApiListItem) {
 	res := make([]*model.ChannelBackendApiListItem, 0)
 	for _, item := range list {
 		if item.Pid == pid {
@@ -76,7 +76,7 @@ func (*sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (ou
 }
 
 // BackendChannelTree 获取栏目分类树
-func (*sChannel) BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
+func (s *sChannel) BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -94,7 +94,7 @@ func (*sChannel) BackendChannelTree(ctx context.Context, channelId int) (out []*
 	return channelBackendApiList, err
 }
 
-func (*sChannel) BackendChannelModelTree(ctx context.Context, modelType string, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
+func (s *sChannel) BackendChannelModelTree(ctx context.Context, modelType string, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
 	tree, err := service.Channel().BackendChannelTree(ctx, channelId)
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func (*sChannel) BackendChannelModelTree(ctx context.Context, modelType string, 
 }
 
 // 递归生成栏目分类树
-func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPid int) (out []*model.ChannelBackendApiListItem) {
+func (s *sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPid int) (out []*model.ChannelBackendApiListItem) {
 	var hasChildren = false
 	newList := make([]*model.ChannelBackendApiListItem, 0)
 	for _, item := range list {
@@ -146,7 +146,7 @@ func (*sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPi
 }
 
 // BackendApiStatus 状态禁用启用
-func (*sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error) {
+func (s *sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error) {
 	var first *entity.CmsChannel
 	var m = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, in.Id)
 	err = m.Scan(&first)
@@ -169,7 +169,7 @@ func (*sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelSta
 	return
 }
 
-func (*sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error) {
+func (s *sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error) {
 	var first *entity.CmsChannel
 	var m = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, in.Id)
 	err = m.Scan(&first)
@@ -195,7 +195,7 @@ func (*sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelDel
 	return
 }
 
-func (*sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error) {
+func (s *sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error) {
 	var entityData *entity.CmsChannel
 	err = gconv.Scan(in, &entityData)
 	if err != nil {
@@ -217,7 +217,7 @@ func (*sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApi
 	return
 }
 
-func (*sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditApiReq) (out *backendApi.ChannelEditApiRes, err error) {
+func (s *sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditApiReq) (out *backendApi.ChannelEditApiRes, err error) {
 	var oldLevel = 0
 	var newLevel = 0
 	var newPid = 0
@@ -254,7 +254,7 @@ func (*sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditA
 	return
 }
 
-func (*sChannel) GetOneById(ctx context.Context, id int) (out *entity.CmsChannel, err error) {
+func (s *sChannel) GetOneById(ctx context.Context, id int) (out *entity.CmsChannel, err error) {
 	var channel *entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, id).Scan(&channel)
 	if err != nil {
@@ -266,14 +266,14 @@ func (*sChannel) GetOneById(ctx context.Context, id int) (out *entity.CmsChannel
 	return channel, nil
 }
 
-func (*sChannel) BackendModelMap() map[string]string {
+func (s *sChannel) BackendModelMap() map[string]string {
 	return map[string]string{
 		consts.ChannelModelArticle: consts.ChannelModelArticleDesc,
 		consts.ChannelModelImage:   consts.ChannelModelImageDesc,
 	}
 }
 
-func (*sChannel) BackendModelDesc(model string) string {
+func (s *sChannel) BackendModelDesc(model string) string {
 	modelMap := Channel().BackendModelMap()
 	out, isOk := modelMap[model]
 	if isOk == false {
