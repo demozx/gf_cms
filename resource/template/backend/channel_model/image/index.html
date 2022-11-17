@@ -129,11 +129,15 @@ ${end}$
     </script>
 
     <script type="text/html" id="otherImages">
-        {{# layui.each(d.other_images, function(index, image){ }}
-        {{# let len = d.other_images.length }}
-        {{# let width = 160/len }}
-        <img src="{{ image }}" style="width:{{width}}px">
-        {{# }); }}
+        <div style="line-height: 0;text-align: left;margin: 4px;">
+            {{# layui.each(d.other_images, function(index, image){ }}
+            {{# let len = d.other_images.length }}
+            {{# if (len > 5){len=5} }}
+            {{# let width = 180/len }}
+            {{# let key = index+1 }}
+            <img src="{{ image }}" style="width:{{width}}px">{{# if(key%5===0){ }}<br>{{# } }}
+            {{# }); }}
+        </div>
     </script>
 
     <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
@@ -186,7 +190,7 @@ ${end}$
                     }, {
                         field: 'other_images',
                         title: '其他图',
-                        width: 200,
+                        width: 210,
                         templet: '#otherImages'
                     }, {
                         field: 'title', title: '标题', width: 200, templet: '#usernameTpl'
@@ -565,7 +569,7 @@ ${end}$
                 , type: 'datetime'
             });
             /*图片放大预览*/
-            $('body').on('mouseenter', '.layui-table-cell>img', function () {
+            $('body').on('mouseenter', '.layui-table-cell img', function () {
                 //console.log('显示大图');
                 var index = layer.open({
                     type: 1,
@@ -578,7 +582,7 @@ ${end}$
                     content: "<img style='max-width:600px;' src='" + $(this).prop('src') + "'>"
                 });
             });
-            $('body').on('mouseleave', '.layui-table-cell>img', function () {
+            $('body').on('mouseleave', '.layui-table-cell img', function () {
                 //console.log('取消显示大图');
                 layer.close(layer.index);
             });
