@@ -15,10 +15,9 @@ type CmsImage struct {
 	Id          interface{} // 图片id
 	Title       interface{} // 标题
 	ChannelId   interface{} // 所属栏目id
-	Thumb       interface{} // 主图
 	Images      interface{} // 图片们
 	Description interface{} // 图片描述
-	Flag        interface{} // 属性(p:带图,r:推荐,t:置顶)
+	Flag        interface{} // 属性(r:推荐,t:置顶)
 	Status      interface{} // 审核状态(1:启用,0:停用)
 	ClickNum    interface{} // 点击数
 	Sort        interface{} // 排序

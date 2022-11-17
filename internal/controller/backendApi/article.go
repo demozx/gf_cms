@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
+// 文章模型
 type cArticle struct{}
 
 var (

@@ -13,10 +13,9 @@ type CmsImage struct {
 	Id          uint64      `json:"id"          ` // 图片id
 	Title       string      `json:"title"       ` // 标题
 	ChannelId   int         `json:"channelId"   ` // 所属栏目id
-	Thumb       string      `json:"thumb"       ` // 主图
 	Images      string      `json:"images"      ` // 图片们
 	Description string      `json:"description" ` // 图片描述
-	Flag        string      `json:"flag"        ` // 属性(p:带图,r:推荐,t:置顶)
+	Flag        string      `json:"flag"        ` // 属性(r:推荐,t:置顶)
 	Status      int         `json:"status"      ` // 审核状态(1:启用,0:停用)
 	ClickNum    int         `json:"clickNum"    ` // 点击数
 	Sort        int         `json:"sort"        ` // 排序

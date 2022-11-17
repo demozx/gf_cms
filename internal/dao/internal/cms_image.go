@@ -23,10 +23,9 @@ type CmsImageColumns struct {
 	Id          string // 图片id
 	Title       string // 标题
 	ChannelId   string // 所属栏目id
-	Thumb       string // 主图
 	Images      string // 图片们
 	Description string // 图片描述
-	Flag        string // 属性(p:带图,r:推荐,t:置顶)
+	Flag        string // 属性(r:推荐,t:置顶)
 	Status      string // 审核状态(1:启用,0:停用)
 	ClickNum    string // 点击数
 	Sort        string // 排序
@@ -40,7 +39,6 @@ var cmsImageColumns = CmsImageColumns{
 	Id:          "id",
 	Title:       "title",
 	ChannelId:   "channel_id",
-	Thumb:       "thumb",
 	Images:      "images",
 	Description: "description",
 	Flag:        "flag",
