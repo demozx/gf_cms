@@ -58,18 +58,20 @@ backend:
           name: tongji_m
           tip: 请输入手机版统计代码
 
-    - title: 文章设置
+    - title: 系统设置
       children:
-        - title: 文章回收站
+        - title: 回收站
           type: radio
           name: recycle_bin
-          tip: 是否开启文章回收站
+          tip: 是否开启回收站
           options:
             - title: 开启
               value: 1
             - title: 关闭
               value: 0
 
+    - title: 文章设置
+      children:
         - title: 自动获取文章缩略图
           type: radio
           name: auto_art_pic

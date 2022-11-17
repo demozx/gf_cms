@@ -64,7 +64,7 @@ func (c *cArticle) Flag(ctx context.Context, req *backendApi.ArticleFlagReq) (re
 	return
 }
 
-func (c *cArticle) Status(ctx context.Context, req *backendApi.ArticleStatusReq) (res *backendApi.AdminStatusRes, err error) {
+func (c *cArticle) Status(ctx context.Context, req *backendApi.ArticleStatusReq) (res *backendApi.ArticleStatusRes, err error) {
 	_, err = service.Article().Status(ctx, req.Ids)
 	if err != nil {
 		return nil, err

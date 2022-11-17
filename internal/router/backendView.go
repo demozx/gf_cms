@@ -51,6 +51,8 @@ func backendViewHandle(s *ghttp.Server) {
 			"/article/move": backend.Article.Move, //移动文章
 			"/article/add":  backend.Article.Add,  //新增文章
 			"/article/edit": backend.Article.Edit, //编辑文章
+			/*图集*/
+			"/image/move": backend.Image.Move, //移动图集
 			/*回收站*/
 			"/recycle_bin/index": backend.RecycleBin.Index, //回收站列表
 			/*广告*/

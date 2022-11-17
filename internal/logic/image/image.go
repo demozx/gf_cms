@@ -4,7 +4,12 @@ import (
 	"context"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
+	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/text/gstr"
+	"sync"
 )
 
 type (
@@ -69,6 +74,169 @@ func (s *sImage) BackendImageGetList(ctx context.Context, in *model.ImageGetList
 		}
 		out.List[key].Thumb = thumb             // 主图
 		out.List[key].OtherImages = otherImages // 其他图
+	}
+	return
+}
+
+func (s *sImage) Sort(ctx context.Context, in []*model.ImageSortMap) (out interface{}, err error) {
+	update, err := dao.CmsImage.Ctx(ctx).Save(in)
+	if err != nil {
+		return false, err
+	}
+	return update, nil
+}
+
+func (s *sImage) Flag(ctx context.Context, ids []int, flagType string) (out interface{}, err error) {
+	if len(ids) == 1 {
+		_, err = Image().singleFlag(ctx, ids[0], flagType, "auto")
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		var wg sync.WaitGroup
+		for _, id := range ids {
+			wg.Add(1)
+			go func(id int) {
+				_, err = Image().singleFlag(ctx, id, flagType, "open")
+				wg.Done()
+				if err != nil {
+					return
+				}
+			}(id)
+		}
+		wg.Wait()
+	}
+	return
+}
+
+func (s *sImage) Status(ctx context.Context, ids []int) (out interface{}, err error) {
+	if len(ids) == 1 {
+		_, err = Image().singleStatus(ctx, ids[0], "auto")
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		var wg sync.WaitGroup
+		for _, id := range ids {
+			wg.Add(1)
+			go func(id int) {
+				_, err = Image().singleStatus(ctx, id, "open")
+				wg.Done()
+				if err != nil {
+					return
+				}
+			}(id)
+		}
+		wg.Wait()
+	}
+	return
+}
+
+func (s *sImage) Delete(ctx context.Context, ids []int) (out interface{}, err error) {
+	m := dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().Id, ids)
+	if service.Util().GetSetting("recycle_bin") == "1" {
+		_, err = m.Delete()
+	} else {
+		_, err = m.Unscoped().Delete()
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (s *sImage) Move(ctx context.Context, channelId int, ids []string) (out interface{}, err error) {
+	if channelId <= 0 {
+		return nil, gerror.New("频道ID错误")
+	}
+	if len(ids) == 0 {
+		return nil, gerror.New("要移动的图集不能为空")
+	}
+	_, err = dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().Id, ids).Data(g.Map{
+		dao.CmsImage.Columns().ChannelId: channelId,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (s *sImage) singleFlag(ctx context.Context, id int, flagType string, targetType string) (out interface{}, err error) {
+	m := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, id)
+	var image *entity.CmsImage
+	err = m.Scan(&image)
+	if err != nil {
+		return nil, err
+	}
+	if image == nil {
+		return nil, gerror.New("数据不存在")
+	}
+	split := gstr.SplitAndTrim(image.Flag, ",")
+	if targetType == "auto" {
+		if gstr.InArray(split, flagType) {
+			for index, value := range split {
+				if value == flagType {
+					split = append(split[:index], split[index+1:]...)
+					break
+				}
+			}
+		} else {
+			split = append(split, flagType)
+		}
+	} else if targetType == "open" {
+		if !gstr.InArray(split, flagType) {
+			split = append(split, flagType)
+		}
+	} else if targetType == "close" {
+		if gstr.InArray(split, flagType) {
+			for index, value := range split {
+				if value == flagType {
+					split = append(split[:index], split[index+1:]...)
+					break
+				}
+			}
+		}
+	} else {
+		return nil, gerror.New("操作目的错误")
+	}
+	flag := gstr.Implode(",", split)
+	_, err = m.Data(g.Map{
+		dao.CmsImage.Columns().Flag: flag,
+	}).Update()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (s *sImage) singleStatus(ctx context.Context, id int, targetType string) (out interface{}, err error) {
+	m := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, id)
+	var image *entity.CmsImage
+	err = m.Scan(&image)
+	if err != nil {
+		return nil, err
+	}
+	if image == nil {
+		return nil, gerror.New("数据不存在")
+	}
+	status := 0
+	if targetType == "auto" {
+		if image.Status == 0 {
+			status = 1
+		}
+	} else if targetType == "open" {
+		status = 1
+	} else if targetType == "close" {
+		status = 0
+	} else {
+		return nil, gerror.New("操作目的错误")
+	}
+	_, err = m.Data(g.Map{
+		dao.CmsImage.Columns().Status: status,
+	}).Update()
+	if err != nil {
+		return nil, err
 	}
 	return
 }

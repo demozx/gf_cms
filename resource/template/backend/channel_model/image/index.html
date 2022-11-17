@@ -99,7 +99,7 @@ ${end}$
         <button class="layui-btn layui-btn-normal" data-type="move"><i class="layui-icon">&#xe609;</i>移动</button>
         <button class="layui-btn" data-type="Recommend"><i class="layui-icon">&#xe6c6;</i>推荐</button>
         <button class="layui-btn" data-type="Top"><i class="layui-icon">&#xe619;</i>置顶</button>
-        <button class="layui-btn" data-type="Review"><i class="layui-icon">&#xe6b2;</i>审核</button>
+        <button class="layui-btn" data-type="Review"><i class="layui-icon">&#xe6b2;</i>启用</button>
         <button class="layui-btn" data-type="Sort"><i class="layui-icon">&#xe60e;</i>更新排序</button>
         <button class="layui-btn" data-type="Add"><i class="layui-icon">&#xe61f;</i>添加图集</button>
     </div>
@@ -114,7 +114,7 @@ ${end}$
                lay-filter="flag" lay-text="已置顶|未置顶" {{d.flag.indexOf('t')!=-1 ? 'checked' : ''}}>
     </script>
     <script type="text/html" id="reviewTpl">
-        <input type="checkbox" id="review_{{d.id}}" class="review" name="review" value="{{d.id}}" title="审核"
+        <input type="checkbox" id="review_{{d.id}}" class="review" name="review" value="{{d.id}}" title="启用"
                lay-filter="review" {{ d.status== 1 ? 'checked' : '' }}>
     </script>
 
@@ -135,7 +135,7 @@ ${end}$
             {{# if (len > 5){len=5} }}
             {{# let width = 180/len }}
             {{# let key = index+1 }}
-            <img src="{{ image }}" style="width:{{width}}px">{{# if(key%5===0){ }}<br>{{# } }}
+            <img src="{{ image }}" style="width:{{width}}px;padding-top: 4px;">{{# if(key%5===0){ }}<br>{{# } }}
             {{# }); }}
         </div>
     </script>
@@ -203,7 +203,7 @@ ${end}$
                     }, {
                         field: 'flag', title: '置顶', templet: '#topTpl', unresize: true
                     }, {
-                        field: 'status', title: '审核', templet: '#reviewTpl', unresize: true
+                        field: 'status', title: '启用', templet: '#reviewTpl', unresize: true
                     }, {
                         field: 'click_num', title: '点击', width: 80, sort: true
                     }, {

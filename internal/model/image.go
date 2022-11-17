@@ -34,3 +34,8 @@ type ImageGetListOutPut struct {
 	Size  int             `json:"size" description:"分页数量"`
 	Total int             `json:"total" description:"数据总数"`
 }
+
+type ImageSortMap struct {
+	Id   int `json:"id"`
+	Sort int `json:"sort"`
+}

@@ -60,12 +60,12 @@ func backendApiHandle(s *ghttp.Server) {
 			"/article/add":    backendApi.Article.Add,    // 新增
 			"/article/edit":   backendApi.Article.Edit,   // 编辑
 			/*图集模型*/
-			"/image/index": backendApi.Image.Index, // 图集列表
-			//"/image/sort":   backendApi.Image.Sort,   // 图集排序
-			//"/image/flag":   backendApi.Image.Flag,   // flag
-			//"/image/status": backendApi.Image.Status, // 审核状态
-			//"/image/delete": backendApi.Image.Delete, // 删除
-			//"/image/move":   backendApi.Image.Move,   // 移动
+			"/image/index":  backendApi.Image.Index,  // 图集列表
+			"/image/sort":   backendApi.Image.Sort,   // 图集排序
+			"/image/flag":   backendApi.Image.Flag,   // flag
+			"/image/status": backendApi.Image.Status, // 启用状态
+			"/image/delete": backendApi.Image.Delete, // 删除
+			"/image/move":   backendApi.Image.Move,   // 移动
 			//"/image/add":    backendApi.Image.Add,    // 新增
 			//"/image/edit":   backendApi.Image.Edit,   // 编辑
 			/*回收站*/
