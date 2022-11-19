@@ -1,0 +1,414 @@
+@charset "utf-8";
+/*-----图片列表----*/
+.imglist {
+    margin-right: -20px;
+    position: relative;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.imglist .item {
+    margin-right: 20px;
+    width: 150px;
+    height: 150px;
+    margin-top: 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: solid 1px #ddd;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #fff;
+}
+
+.imglist .checkbox {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    margin: 3px;
+}
+
+.imglist .picbox {
+    margin: auto;
+}
+
+.imglist .picbox > a {
+    height: 0;
+    display: block;
+    padding-bottom: 100%;
+    position: relative;
+}
+
+.imglist .picbox img {
+    position: absolute;
+    /*left: 20px;
+    top: 20px;
+    right: 20px;
+    bottom: 20px;*/
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.imglist .textbox {
+    text-align: center;
+    /*margin-top: -10px;*/
+    padding-bottom: 5px;
+    display: none;
+}
+
+.imglist .item:hover {
+    height: auto;
+    box-shadow: 0 1px 3px rgba(68, 68, 68, 0.3);
+    -moz-box-shadow: 0 1px 3px rgba(68, 68, 68, 0.3);
+    -webkit-box-shadow: 0 1px 3px rgba(68, 68, 68, 0.3);
+    z-index: 9;
+}
+
+.imglist .item:hover .textbox {
+    display: block;
+}
+
+.imglist .ident {
+    background-color: #c33;
+    width: 2px;
+    position: absolute;
+    left: 2px;
+    top: 0;
+    z-index: 0;
+    height: 100px;
+    margin-top: 10px;
+    margin-left: -10px;
+    display: none;
+}
+
+.imglist .morexy {
+    border: solid 1px #f22;
+    background-color: #fdd;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 11;
+    opacity: 0.5;
+    margin: 10px 0 0 -10px;
+    display: none;
+}
+
+/*-图片查看-*/
+.chak_box {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.618);
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: none;
+}
+
+.chak_title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.chak_img {
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    right: 50px;
+    bottom: 100px;
+    margin: auto;
+    border: solid 1px rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chak_img > p {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: auto;
+    padding: 10px 20px;
+    background-color: #eee;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 20px;
+    border-radius: 5px;
+    display: none;
+}
+
+.chak_img > img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 10px;
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+}
+
+.chak_btn {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+.chak_btn > .btn {
+    border: solid 1px #fff;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.33);
+    border-radius: 5px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;
+    padding: 0 15px;
+    font-size: 16px;
+    margin: 20px 5px;
+    min-width: 50px;
+    cursor: pointer;
+}
+
+.chak_btn > button:hover {
+    background-color: rgba(0, 0, 0, 0.66);
+}
+
+/*-/-*/
+
+.btn {
+    padding: 4px 12px;
+    background-color: #f6f6f6;
+    border: solid 1px #ddd;
+    cursor: pointer;
+}
+
+/*-/-*/
+
+.clear {
+    clear: both;
+}
+
+.clearb:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+img {
+    max-width: 100%;
+}
+
+.overh {
+    overflow: hidden;
+    position: relative;
+}
+
+.f_wein {
+    font-weight: normal;
+}
+
+.br_b {
+    border-bottom: solid 1px #eee;
+}
+
+.br_t {
+    border-top: solid 1px #eee;
+}
+
+.br_n {
+    border: 0;
+}
+
+.con_br {
+    background-color: #fff;
+    border-top: solid 4px #d5dbe5;
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.05);
+}
+
+.con_br_b {
+    border-color: #45a7cf;
+}
+
+.con_br_g {
+    border-color: #49a361;
+}
+
+.con_br_o {
+    border-color: #e89f3c;
+}
+
+.con_br_r {
+    border-color: #cd5542;
+}
+
+.con_br_c {
+    border-color: #62cda6;
+}
+
+.con_br_n {
+    border-top: 0;
+}
+
+.w-p100 {
+    width: 100%;
+}
+
+.ft_l {
+    float: left;
+}
+
+.ft_r {
+    float: right;
+}
+
+.pg_3 {
+    padding: 3px;
+}
+
+.pg_5 {
+    padding: 5px;
+}
+
+.pg_tb5 {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.pg_tb6 {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.pg_tb8 {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.pg_tb10 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.pg_tb15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.pg_tb20 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.pg_10 {
+    padding: 10px;
+}
+
+.pg_15 {
+    padding: 15px;
+}
+
+.pg_20 {
+    padding: 20px;
+}
+
+.pg_lr15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.pg_lr25 {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.pg_l15 {
+    padding-left: 15px;
+}
+
+.pg_l25 {
+    padding-left: 25px;
+}
+
+.pg_r25 {
+    padding-right: 25px;
+}
+
+.pg_b15 {
+    padding-bottom: 15px;
+}
+
+.pg_b25 {
+    padding-bottom: 25px;
+}
+
+.pg_bn {
+    padding-bottom: 0 !important;
+}
+
+.pg_n {
+    padding: 0 !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.mn_5 {
+    margin: 5px;
+}
+
+.mn_n {
+    margin: 0 !important;
+}
+
+.mb_n {
+    margin-bottom: 0 !important;
+}
+
+.mb-25 {
+    margin-bottom: 25px;
+}
+
+.dis_n {
+    display: none;
+}
+
+.dis_block {
+    display: block;
+}

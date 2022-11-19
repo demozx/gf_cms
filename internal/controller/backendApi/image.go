@@ -91,3 +91,21 @@ func (c *cImage) Move(ctx context.Context, req *backendApi.ImageMoveReq) (res *b
 	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "移动成功", g.Map{})
 	return
 }
+
+func (c *cImage) Add(ctx context.Context, req *backendApi.ImageAddReq) (res *backendApi.ImageAddRes, err error) {
+	_, err = service.Image().Add(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "添加成功", g.Map{})
+	return
+}
+
+func (c *cImage) Edit(ctx context.Context, req *backendApi.ImageEditReq) (res *backendApi.ImageEditRes, err error) {
+	_, err = service.Image().Edit(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, gcode.CodeOK.Code(), "编辑成功", g.Map{})
+	return
+}

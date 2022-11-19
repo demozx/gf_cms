@@ -53,6 +53,8 @@ func backendViewHandle(s *ghttp.Server) {
 			"/article/edit": backend.Article.Edit, //编辑文章
 			/*图集*/
 			"/image/move": backend.Image.Move, //移动图集
+			"/image/add":  backend.Image.Add,  //新增图集
+			"/image/edit": backend.Image.Edit, //编辑图集
 			/*回收站*/
 			"/recycle_bin/index": backend.RecycleBin.Index, //回收站列表
 			/*广告*/

@@ -66,8 +66,8 @@ func backendApiHandle(s *ghttp.Server) {
 			"/image/status": backendApi.Image.Status, // 启用状态
 			"/image/delete": backendApi.Image.Delete, // 删除
 			"/image/move":   backendApi.Image.Move,   // 移动
-			//"/image/add":    backendApi.Image.Add,    // 新增
-			//"/image/edit":   backendApi.Image.Edit,   // 编辑
+			"/image/add":    backendApi.Image.Add,    // 新增
+			"/image/edit":   backendApi.Image.Edit,   // 编辑
 			/*回收站*/
 			"/recycle_bin/article_list":          backendApi.RecycleBin.ArticleList,         //文章列表
 			"/recycle_bin/article_batch_destroy": backendApi.RecycleBin.ArticleBatchDestroy, //文章批量永久删除

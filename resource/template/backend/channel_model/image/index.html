@@ -119,7 +119,7 @@ ${end}$
     </script>
 
     <script type="text/html" id="operateTpl">
-        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/article/edit` }$?id={{d.id}}', '', 1200, 700)"
+        <a title="编辑" onclick="WeAdminEdit('编辑','${ backend_url `/image/edit` }$?id={{d.id}}', '', 1200, 700)"
            href="javascript:;">
             <i class="layui-icon">&#xe642;</i>
         </a>
@@ -217,9 +217,9 @@ ${end}$
 
                 event: true,
                 page: {
-                    layout: ['prev', 'next', 'page', 'count', 'skip', 'limit'] //自定义分页布局
+                    // layout: ['prev', 'next', 'page', 'count', 'skip', 'limit'] //自定义分页布局
                     //,curr: 5 //设定初始在第 5 页
-                    , groups: 5 //只显示 N 个连续页码
+                     groups: 5 //只显示 N 个连续页码
                     , first: false //不显示首页
                     , last: false //不显示尾页
 

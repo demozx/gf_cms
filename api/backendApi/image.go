@@ -51,3 +51,32 @@ type ImageMoveReq struct {
 	StrIds    string `name:"str_ids" dc:"ids，英文逗号拼接" v:"required#必填项不能为空" arg:"true"`
 }
 type ImageMoveRes struct{}
+
+type ImageAddReq struct {
+	g.Meta      `tags:"BackendApi" method:"post" summary:"新增图集"`
+	ChannelId   int    `name:"channel_id" dc:"频道ID" v:"required#频道ID必填" arg:"true"`
+	Title       string `name:"title" dc:"图集标题" v:"required#图集标题必填" arg:"true"`
+	Images      string `name:"images" dc:"图片们" v:"required#图片必传" arg:"true"`
+	Description string `name:"description" dc:"文章摘要" v:"" arg:"true"`
+	FlagR       int    `name:"flag_r" dc:"文章属性-推荐" v:"in:0,1#推荐属性不合法" arg:"true"`
+	FlagT       int    `name:"flag_t" dc:"文章属性-置顶" v:"in:0,1#置顶属性不合法" arg:"true"`
+	Status      int    `name:"status" dc:"审核状态" v:"in:0,1#审核状态不合法" arg:"true"`
+	CreatedAt   string `name:"created_at" dc:"发布时间" v:"date-format:Y-m-d H:i:s" arg:"true"`
+	ClickNum    int    `name:"copy_from" dc:"点击数" v:"" arg:"true"`
+}
+type ImageAddRes struct{}
+
+type ImageEditReq struct {
+	g.Meta      `tags:"BackendApi" method:"post" summary:"新增图集"`
+	Id          int    `name:"id" dc:"图集id" v:"required#图集id必填" arg:"true"`
+	ChannelId   int    `name:"channel_id" dc:"频道ID" v:"required#频道ID必填" arg:"true"`
+	Title       string `name:"title" dc:"图集标题" v:"required#图集标题必填" arg:"true"`
+	Images      string `name:"images" dc:"图片们" v:"required#图片必传" arg:"true"`
+	Description string `name:"description" dc:"文章摘要" v:"" arg:"true"`
+	FlagR       int    `name:"flag_r" dc:"文章属性-推荐" v:"in:0,1#推荐属性不合法" arg:"true"`
+	FlagT       int    `name:"flag_t" dc:"文章属性-置顶" v:"in:0,1#置顶属性不合法" arg:"true"`
+	Status      int    `name:"status" dc:"审核状态" v:"in:0,1#审核状态不合法" arg:"true"`
+	CreatedAt   string `name:"created_at" dc:"发布时间" v:"date-format:Y-m-d H:i:s" arg:"true"`
+	ClickNum    int    `name:"copy_from" dc:"点击数" v:"" arg:"true"`
+}
+type ImageEditRes struct{}

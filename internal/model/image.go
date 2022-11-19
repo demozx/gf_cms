@@ -12,20 +12,29 @@ type ImageGetListInPut struct {
 }
 
 type ImageListItem struct {
-	Id          uint64      `json:"id"`           // 图集id
-	Title       string      `json:"title"`        // 标题
-	ChannelId   int         `json:"channel_id"`   // 所属栏目id
-	ChannelName string      `json:"channel_name"` // 栏目名称
-	Description string      `json:"description"`  // 图集摘要
-	Flag        string      `json:"flag"`         // 属性(r:推荐,t:置顶)
-	Status      int         `json:"status"`       // 审核状态(1:已审核,0:未审核)
-	Thumb       string      `json:"thumb"`        // 主图
-	OtherImages []string    `json:"other_images"` // 其他图
-	Images      []string    `json:"images"`       // 图集
-	ClickNum    int         `json:"click_num"`    // 点击数
-	Sort        int         `json:"sort"`         // 排序
-	CreatedAt   *gtime.Time `json:"created_at"`   // 发布时间
-	UpdatedAt   *gtime.Time `json:"updated_at"`   // 编辑时间
+	Id            uint64      `json:"id"`           // 图集id
+	Title         string      `json:"title"`        // 标题
+	ChannelId     int         `json:"channel_id"`   // 所属栏目id
+	ChannelName   string      `json:"channel_name"` // 栏目名称
+	Description   string      `json:"description"`  // 图集摘要
+	Flag          string      `json:"flag"`         // 属性(r:推荐,t:置顶)
+	Status        int         `json:"status"`       // 审核状态(1:已审核,0:未审核)
+	Thumb         string      `json:"thumb"`        // 主图
+	OtherImages   []string    `json:"other_images"` // 其他图
+	Images        []string    `json:"images"`       // 图集
+	ClickNum      int         `json:"click_num"`    // 点击数
+	Sort          int         `json:"sort"`         // 排序
+	CreatedAt     *gtime.Time `json:"created_at"`   // 发布时间
+	UpdatedAt     *gtime.Time `json:"updated_at"`   // 编辑时间
+	FlagR         int         `json:"flag_r" description:"flag推荐"`
+	FlagT         int         `json:"flag_t" description:"flag置顶"`
+	ImagesStr     string      `json:"images_str"`
+	ImagesSrcJson string      `json:"images_src_json"`
+}
+
+type ImagesSrcArrItem struct {
+	Src   string `json:"src"`
+	Title string `json:"title"`
 }
 
 type ImageGetListOutPut struct {

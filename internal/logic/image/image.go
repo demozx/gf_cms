@@ -2,6 +2,7 @@ package image
 
 import (
 	"context"
+	"gf_cms/api/backendApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
@@ -159,6 +160,78 @@ func (s *sImage) Move(ctx context.Context, channelId int, ids []string) (out int
 	if err != nil {
 		return nil, err
 	}
+	return
+}
+
+func (s *sImage) Add(ctx context.Context, in *backendApi.ImageAddReq) (out interface{}, err error) {
+	// 生成图片数组
+	imagesArr, err := Image().buildImagesArr(ctx, in.Images)
+	if err != nil {
+		return nil, err
+	}
+	// 构建flag
+	flagStr, err := Image().buildFlagData(ctx, in.FlagT, in.FlagR)
+	if err != nil {
+		return nil, err
+	}
+	_, err = dao.CmsImage.Ctx(ctx).Data(g.Map{
+		"channelId":   in.ChannelId,
+		"title":       in.Title,
+		"images":      imagesArr,
+		"description": in.Description,
+		"flag":        flagStr,
+		"status":      in.Status,
+		"clickNum":    in.ClickNum,
+	}).Insert()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (s *sImage) Edit(ctx context.Context, in *backendApi.ImageEditReq) (out interface{}, err error) {
+	// 生成图片数组
+	imagesArr, err := Image().buildImagesArr(ctx, in.Images)
+	if err != nil {
+		return nil, err
+	}
+	// 构建flag
+	flagStr, err := Image().buildFlagData(ctx, in.FlagT, in.FlagR)
+	if err != nil {
+		return nil, err
+	}
+	affected, err := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, in.Id).Data(g.Map{
+		"channelId":   in.ChannelId,
+		"title":       in.Title,
+		"images":      imagesArr,
+		"description": in.Description,
+		"flag":        flagStr,
+		"status":      in.Status,
+		"clickNum":    in.ClickNum,
+	}).UpdateAndGetAffected()
+	if err != nil {
+		return nil, err
+	}
+	if affected == 0 {
+		return nil, gerror.New("图集不存在")
+	}
+	return
+}
+
+func (s *sImage) buildImagesArr(ctx context.Context, images string) (imagesArr []string, err error) {
+	imagesArr = gstr.SplitAndTrim(images, ",")
+	return
+}
+
+func (s *sImage) buildFlagData(ctx context.Context, flagT, flagR int) (flagData string, err error) {
+	var data []string
+	if flagT == 1 {
+		data = append(data, "t")
+	}
+	if flagR == 1 {
+		data = append(data, "r")
+	}
+	flagData = gstr.Implode(",", data)
 	return
 }
 
