@@ -113,7 +113,6 @@ backend_api:
         - title: 图集移动
           route: /image/move
           permission: channel.image.move
-
         - title: 回收站-文章列表
           route: /recycle_bin/article_list
           permission: channel.recycle_bin.article_list
@@ -123,7 +122,15 @@ backend_api:
         - title: 回收站-文章批量恢复
           route: /recycle_bin/article_batch_restore
           permission: channel.recycle_bin.article_batch_restore
-
+        - title: 回收站-图集列表
+          route: /recycle_bin/image_list
+          permission: channel.recycle_bin.image_list
+        - title: 回收站-图集批量永久删除
+          route: /recycle_bin/image_batch_destroy
+          permission: channel.recycle_bin.image_batch_destroy
+        - title: 回收站-图集批量恢复
+          route: /recycle_bin/image_batch_restore
+          permission: channel.recycle_bin.image_batch_restore
     - title: 广告管理
       children:
         - title: 广告分类-列表

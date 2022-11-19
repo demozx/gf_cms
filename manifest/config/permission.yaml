@@ -90,13 +90,18 @@ backend_api:
           slug: image.status
         - title: 图集-移动
           slug: image.move
-
         - title: 回收站-文章列表
           slug: recycle_bin.article_list
         - title: 回收站-文章批量永久删除
           slug: recycle_bin.article_batch_destroy
         - title: 回收站-文章批量恢复
           slug: recycle_bin.article_batch_restore
+        - title: 回收站-图集列表
+          slug: recycle_bin.image_list
+        - title: 回收站-图集批量永久删除
+          slug: recycle_bin.image_batch_destroy
+        - title: 回收站-图集批量恢复
+          slug: recycle_bin.image_batch_restore
     - title: 广告管理
       slug: ad
       permissions:
