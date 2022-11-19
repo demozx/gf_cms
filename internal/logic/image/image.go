@@ -218,6 +218,70 @@ func (s *sImage) Edit(ctx context.Context, in *backendApi.ImageEditReq) (out int
 	return
 }
 
+// BackendRecycleBinImageGetList 回收站图集列表
+func (s *sImage) BackendRecycleBinImageGetList(ctx context.Context, in *model.ImageGetListInPut) (out *model.ImageGetListOutPut, err error) {
+	m := dao.CmsImage.Ctx(ctx).
+		As("image").OrderAsc("image.sort").OrderDesc("image.id").WhereNotNull("image.deleted_at").Unscoped()
+	out = &model.ImageGetListOutPut{
+		Page: in.Page,
+		Size: in.Size,
+	}
+	if in.Keyword != "" {
+		m = m.WhereLike("image.title", "%"+in.Keyword+"%")
+	}
+	listModel := m.LeftJoin(dao.CmsChannel.Table(), "channel", "channel.id=image.channel_id").
+		Fields("image.*, channel.name channel_name").
+		Page(in.Page, in.Size)
+
+	var list []*model.ImageListItem
+	err = listModel.Scan(&list)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return out, nil
+	}
+	out.Total, err = m.Count()
+	if err != nil {
+		return out, err
+	}
+	if err = listModel.Scan(&out.List); err != nil {
+		return out, err
+	}
+	//g.Dump("out.List", out.List)
+	for key, item := range out.List {
+		thumb := service.Util().ImageOrDefaultUrl("")
+		var otherImages []string
+		if len(item.Images) > 0 {
+			thumb = item.Images[0]
+			otherImages = item.Images[1:]
+		}
+		out.List[key].Thumb = thumb             // 主图
+		out.List[key].OtherImages = otherImages // 其他图
+	}
+	return
+}
+
+// BackendRecycleBinImageBatchDestroy 回收站-图集批量永久删除
+func (s *sImage) BackendRecycleBinImageBatchDestroy(ctx context.Context, ids []int) (out interface{}, err error) {
+	_, err = dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().Id, ids).Unscoped().Delete()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// BackendRecycleBinImageBatchRestore 回收站-图集批量恢复
+func (s *sImage) BackendRecycleBinImageBatchRestore(ctx context.Context, ids []int) (out interface{}, err error) {
+	_, err = dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().Id, ids).Unscoped().Update(g.Map{
+		dao.CmsImage.Columns().DeletedAt: nil,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 func (s *sImage) buildImagesArr(ctx context.Context, images string) (imagesArr []string, err error) {
 	imagesArr = gstr.SplitAndTrim(images, ",")
 	return

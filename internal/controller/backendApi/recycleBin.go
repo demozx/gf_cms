@@ -49,3 +49,38 @@ func (*cRecycleBin) ArticleBatchRestore(ctx context.Context, req *backendApi.Art
 	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "恢复成功", g.Map{})
 	return
 }
+
+// ImageList 回收站-图集列表
+func (*cRecycleBin) ImageList(ctx context.Context, req *backendApi.ImageListReq) (res *backendApi.ImageListRes, err error) {
+	var in *model.ImageGetListInPut
+	err = gconv.Scan(req, &in)
+	if err != nil {
+		return nil, err
+	}
+	list, err := service.Image().BackendRecycleBinImageGetList(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "返回成功", list)
+	return
+}
+
+// ImageBatchDestroy 回收站-文章批量永久删除
+func (*cRecycleBin) ImageBatchDestroy(ctx context.Context, req *backendApi.ImageBatchDestroyReq) (res *backendApi.ImageBatchDestroyRes, err error) {
+	_, err = service.Image().BackendRecycleBinImageBatchDestroy(ctx, req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "删除成功", g.Map{})
+	return
+}
+
+// ImageBatchRestore 回收站-文章批量恢复
+func (*cRecycleBin) ImageBatchRestore(ctx context.Context, req *backendApi.ImageBatchRestoreReq) (res *backendApi.ImageBatchRestoreRes, err error) {
+	_, err = service.Image().BackendRecycleBinImageBatchRestore(ctx, req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJson(ctx, service.Response().SuccessCodeDefault(), "恢复成功", g.Map{})
+	return
+}

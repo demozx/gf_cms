@@ -21,8 +21,10 @@ func (c *cRecycleBin) Index(ctx context.Context, req *backend.RecycleBinIndexReq
 	}
 	if req.Type == consts.ChannelModelArticle {
 		_, err = service.RecycleBin().ModelArticle(ctx, req)
+	} else if req.Type == consts.ChannelModelImage {
+		_, err = service.RecycleBin().ModelImage(ctx, req)
 	} else {
-		return nil, gerror.New("不支持的模型")
+		return nil, gerror.New("未知的模型")
 	}
 	if err != nil {
 		return nil, err

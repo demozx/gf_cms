@@ -74,6 +74,23 @@ backend_api:
           slug: article.status
         - title: 文章-移动
           slug: article.move
+        - title: 图集-列表
+          slug: image.index
+        - title: 图集-添加
+          slug: image.add
+        - title: 图集-编辑
+          slug: image.edit
+        - title: 图集-删除
+          slug: image.delete
+        - title: 图集-排序
+          slug: image.sort
+        - title: 图集-flag(推荐、置顶)
+          slug: image.flag
+        - title: 图集-启用/停用
+          slug: image.status
+        - title: 图集-移动
+          slug: image.move
+
         - title: 回收站-文章列表
           slug: recycle_bin.article_list
         - title: 回收站-文章批量永久删除

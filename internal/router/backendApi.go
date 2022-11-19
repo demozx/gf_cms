@@ -72,6 +72,9 @@ func backendApiHandle(s *ghttp.Server) {
 			"/recycle_bin/article_list":          backendApi.RecycleBin.ArticleList,         //文章列表
 			"/recycle_bin/article_batch_destroy": backendApi.RecycleBin.ArticleBatchDestroy, //文章批量永久删除
 			"/recycle_bin/article_batch_restore": backendApi.RecycleBin.ArticleBatchRestore, //文章批量恢复
+			"/recycle_bin/image_list":            backendApi.RecycleBin.ImageList,           //图集列表
+			"/recycle_bin/image_batch_destroy":   backendApi.RecycleBin.ImageBatchDestroy,   //图集批量永久删除
+			"/recycle_bin/image_batch_restore":   backendApi.RecycleBin.ImageBatchRestore,   //图集批量恢复
 			/*广告管理*/
 			"/ad_channel/index":     backendApi.AdChannel.Index,    //广告分类列表
 			"/ad_channel/add":       backendApi.AdChannel.Add,      //添加广告分类

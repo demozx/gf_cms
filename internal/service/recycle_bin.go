@@ -14,6 +14,7 @@ import (
 type (
 	IRecycleBin interface {
 		ModelArticle(ctx context.Context, req *backend.RecycleBinIndexReq) (out []*model.ChannelBackendApiListItem, err error)
+		ModelImage(ctx context.Context, req *backend.RecycleBinIndexReq) (out []*model.ChannelBackendApiListItem, err error)
 	}
 )
 

@@ -92,6 +92,5 @@ func (c *cImage) Edit(ctx context.Context, req *backend.ImageEditReq) (res *back
 	if err != nil {
 		return nil, err
 	}
-	g.Dump("imagesInfo", imagesInfo)
 	return
 }

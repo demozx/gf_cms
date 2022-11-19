@@ -69,25 +69,61 @@ backend_api:
           route: /article/index
           permission: channel.article.index
         - title: 文章添加
+          route: /article/add
           permission: channel.article.add
         - title: 文章编辑
+          route: /article/edit
           permission: channel.article.edit
         - title: 文章删除
+          route: /article/delete
           permission: channel.article.delete
         - title: 文章排序
+          route: /article/sort
           permission: channel.article.sort
         - title: 文章flag(推荐、置顶)
+          route: /article/flag
           permission: channel.article.flag
         - title: 文章审核
+          route: /article/status
           permission: channel.article.status
         - title: 文章移动
+          route: /article/move
           permission: channel.article.move
+        - title: 图集列表
+          route: /image/index
+          permission: channel.image.index
+        - title: 图集添加
+          route: /image/add
+          permission: channel.image.add
+        - title: 图集编辑
+          route: /image/edit
+          permission: channel.image.edit
+        - title: 图集删除
+          route: /image/delete
+          permission: channel.image.delete
+        - title: 图集排序
+          route: /image/sort
+          permission: channel.image.sort
+        - title: 图集flag(推荐、置顶)
+          route: /image/flag
+          permission: channel.image.flag
+        - title: 图集启用/停用
+          route: /image/status
+          permission: channel.image.status
+        - title: 图集移动
+          route: /image/move
+          permission: channel.image.move
+
         - title: 回收站-文章列表
+          route: /recycle_bin/article_list
           permission: channel.recycle_bin.article_list
         - title: 回收站-文章批量永久删除
+          route: /recycle_bin/article_batch_destroy
           permission: channel.recycle_bin.article_batch_destroy
         - title: 回收站-文章批量恢复
+          route: /recycle_bin/article_batch_restore
           permission: channel.recycle_bin.article_batch_restore
+
     - title: 广告管理
       children:
         - title: 广告分类-列表

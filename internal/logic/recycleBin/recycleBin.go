@@ -29,7 +29,22 @@ func RecycleBin() *sRecycleBin {
 
 func (*sRecycleBin) ModelArticle(ctx context.Context, req *backend.RecycleBinIndexReq) (out []*model.ChannelBackendApiListItem, err error) {
 	err = service.Response().View(ctx, "backend/recycle_bin/article/index.html", g.Map{
-		"modelMap": service.Channel().BackendModelMap(),
+		"modelMap":  service.Channel().BackendModelMap(),
+		"modelType": req.Type,
 	})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func (*sRecycleBin) ModelImage(ctx context.Context, req *backend.RecycleBinIndexReq) (out []*model.ChannelBackendApiListItem, err error) {
+	err = service.Response().View(ctx, "backend/recycle_bin/image/index.html", g.Map{
+		"modelMap":  service.Channel().BackendModelMap(),
+		"modelType": req.Type,
+	})
+	if err != nil {
+		return nil, err
+	}
 	return
 }

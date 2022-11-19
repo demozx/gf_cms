@@ -21,6 +21,9 @@ type (
 		Move(ctx context.Context, channelId int, ids []string) (out interface{}, err error)
 		Add(ctx context.Context, in *backendApi.ImageAddReq) (out interface{}, err error)
 		Edit(ctx context.Context, in *backendApi.ImageEditReq) (out interface{}, err error)
+		BackendRecycleBinImageGetList(ctx context.Context, in *model.ImageGetListInPut) (out *model.ImageGetListOutPut, err error)
+		BackendRecycleBinImageBatchDestroy(ctx context.Context, ids []int) (out interface{}, err error)
+		BackendRecycleBinImageBatchRestore(ctx context.Context, ids []int) (out interface{}, err error)
 	}
 )
 

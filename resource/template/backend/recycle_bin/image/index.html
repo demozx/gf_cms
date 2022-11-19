@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>文章列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <title>图集列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
     <meta name="Description" content="基于layUI数据表格操作"/>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -57,7 +57,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
         <a href="">栏目管理</a>
         <a href="">内容回收站</a>
         <a>
-          <cite>文章列表</cite></a>
+          <cite>图集列表</cite></a>
       </span>
     <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
        href="javascript:location.replace(location.href);" title="刷新">
@@ -78,7 +78,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
         <input type="hidden" id="delType" value="${ .deleteType }$">
         <button class="layui-btn layui-btn-danger" data-type="BatchDestroy"><i class="layui-icon">&#xe640;</i>批量删除
         </button>
-        <button class="layui-btn" data-type="BatchRestore"><i class="layui-icon">&#xe609;</i>恢复文章</button>
+        <button class="layui-btn" data-type="BatchRestore"><i class="layui-icon">&#xe609;</i>恢复图集</button>
     </div>
     <table class="layui-hide" id="articleList"></table>
 
@@ -97,6 +97,17 @@ ${include "backend/recycle_bin/public/tab.html" .}$
         <input type="checkbox" id="review_{{d.id}}" class="review" name="review" value="{{d.id}}" title="审核" disabled
                lay-filter="review" {{ d.status== 1 ? 'checked' : '' }}>
     </script>
+    <script type="text/html" id="otherImages">
+        <div style="line-height: 0;text-align: left;margin: 4px;">
+            {{# layui.each(d.other_images, function(index, image){ }}
+            {{# let len = d.other_images.length }}
+            {{# if (len > 5){len=5} }}
+            {{# let width = 180/len }}
+            {{# let key = index+1 }}
+            <img src="{{ image }}" style="width:{{width}}px;padding-top: 4px;">{{# if(key%5===0){ }}<br>{{# } }}
+            {{# }); }}
+        </div>
+    </script>
     <script src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
     <script>
         layui.extend({
@@ -114,7 +125,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                 elem: '#articleList',
                 cellMinWidth: 100,
                 cellMinHeight: 100,
-                url: '${ backend_api_url `/recycle_bin/article_list` }$',
+                url: '${ backend_api_url `/recycle_bin/image_list` }$',
                 method: "post",
                 request: {
                     pageName: 'page'
@@ -140,10 +151,15 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                         field: 'id', title: 'ID', width: 70, sort: true, fixed: 'left'
                     }, {
                         field: 'thumb',
-                        title: '缩略图',
+                        title: '主图',
                         width: 110,
                         style: 'height:110px;width:110px;',
                         templet: '<div><img src="{{ d.thumb }}"></div>'
+                    }, {
+                        field: 'other_images',
+                        title: '其他图',
+                        width: 210,
+                        templet: '#otherImages'
                     }, {
                         field: 'title', title: '标题', width: 200, templet: '#usernameTpl'
                     }, {
@@ -169,7 +185,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                 page: {
                     // layout: ['prev', 'next', 'page', 'count', 'skip', 'limit'] //自定义分页布局
                     //,curr: 5 //设定初始在第 5 页
-                     groups: 5 //只显示 N 个连续页码
+                    groups: 5 //只显示 N 个连续页码
                     , first: false //不显示首页
                     , last: false //不显示尾页
 
@@ -217,7 +233,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                             ids.push(data[i]['id']);
                         }
                         layer.confirm('确认要永久删除吗？' + 'ID:(' + ids + ')', function (index) {
-                            $.post('${ backend_api_url `/recycle_bin/article_batch_destroy` }$', {'ids': ids}, function (res) {
+                            $.post('${ backend_api_url `/recycle_bin/image_batch_destroy` }$', {'ids': ids}, function (res) {
                                 if (res.code === 0) {
                                     //删除成功
                                     layer.msg(res.message, {
@@ -237,12 +253,12 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                             });
                         });
                     } else {
-                        layer.msg("请先选择需要删除的文章！", {
+                        layer.msg("请先选择需要删除的图集！", {
                             anim: 6
                         });
                     }
                 },
-                //还原文章
+                //还原图集
                 BatchRestore: function () {
                     var checkStatus = table.checkStatus('articleList'),
                         data = checkStatus.data;
@@ -251,8 +267,8 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                         for (var i = 0; i < data.length; i++) {
                             ids.push(data[i]['id']);
                         }
-                        layer.confirm('确定要恢复文章吗？' + 'ID:(' + ids + ')', function (index) {
-                            $.post('${ backend_api_url `/recycle_bin/article_batch_restore` }$', {'ids': ids}, function (res) {
+                        layer.confirm('确定要恢复图集吗？' + 'ID:(' + ids + ')', function (index) {
+                            $.post('${ backend_api_url `/recycle_bin/image_batch_restore` }$', {'ids': ids}, function (res) {
                                 if (res.code === 0) {
                                     layer.msg(res.message, {
                                         icon: 6
@@ -270,7 +286,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                             });
                         });
                     } else {
-                        layer.msg("请先选择需要恢复的文章！", {
+                        layer.msg("请先选择需要恢复的图集！", {
                             anim: 6
                         });
                     }
@@ -282,7 +298,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                 active[type] ? active[type].call(this) : '';
             });
             /*图片放大预览*/
-            $('body').on('mouseenter', '.layui-table-cell>img', function () {
+            $('body').on('mouseenter', '.layui-table-cell img', function () {
                 //console.log('显示大图');
                 var index = layer.open({
                     type: 1,
@@ -295,7 +311,7 @@ ${include "backend/recycle_bin/public/tab.html" .}$
                     content: "<img style='max-width:600px;' src='" + $(this).prop('src') + "'>"
                 });
             });
-            $('body').on('mouseleave', '.layui-table-cell>img', function () {
+            $('body').on('mouseleave', '.layui-table-cell img', function () {
                 //console.log('取消显示大图');
                 layer.close(layer.index);
             });

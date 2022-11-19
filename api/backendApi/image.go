@@ -80,3 +80,15 @@ type ImageEditReq struct {
 	ClickNum    int    `name:"copy_from" dc:"点击数" v:"" arg:"true"`
 }
 type ImageEditRes struct{}
+
+type ImageBatchDestroyReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"回收站-批量删除图集"`
+	Ids    []int `name:"ids" dc:"图集ID们" v:"required#图集ID必填" arg:"true"`
+}
+type ImageBatchDestroyRes struct{}
+
+type ImageBatchRestoreReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"回收站-批量恢复图集"`
+	Ids    []int `name:"ids" dc:"图集ID们" v:"required#图集ID必填" arg:"true"`
+}
+type ImageBatchRestoreRes struct{}
