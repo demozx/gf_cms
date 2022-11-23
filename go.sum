@@ -62,6 +62,8 @@ github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.1 h1:O3GF8PIuvECnB0BdsJnVNj+KKY
 github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.1/go.mod h1:z+/0qiOwMroAnj5ESuobTv0l5P83rf+XR3r6Fj8WJyk=
 github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.2 h1:93FP18bid15qLeWmtAu184u1tp0dctQ06PBrJAyrdbc=
 github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.2/go.mod h1:z+/0qiOwMroAnj5ESuobTv0l5P83rf+XR3r6Fj8WJyk=
+github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.4 h1:dUT1BbQ6RRiEDiBLj57jBx0y/WkD9KiDbmcCp9vE0w8=
+github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.4/go.mod h1:z+/0qiOwMroAnj5ESuobTv0l5P83rf+XR3r6Fj8WJyk=
 github.com/gogf/gf/v2 v2.0.0-rc3/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
 github.com/gogf/gf/v2 v2.0.0/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
 github.com/gogf/gf/v2 v2.1.4 h1:zebl7kahNnU+0o7hcLx81svcTdp5fYdW9ZnZagXyLt4=
@@ -72,6 +74,8 @@ github.com/gogf/gf/v2 v2.2.1 h1:SmwGoRbZEBsiRI48tOf+bH0MLidznFPKpHyynHyBW4Q=
 github.com/gogf/gf/v2 v2.2.1/go.mod h1:thvkyb43RWUu/m05sRm4CbH9r7t7/FrW2M56L9Ystwk=
 github.com/gogf/gf/v2 v2.2.2 h1:ew4k/VSr/gcPdMZcI8/HZYBYPjB0KOk6bQqA61M8bYE=
 github.com/gogf/gf/v2 v2.2.2/go.mod h1:thvkyb43RWUu/m05sRm4CbH9r7t7/FrW2M56L9Ystwk=
+github.com/gogf/gf/v2 v2.2.4 h1:Y2c0F4dDDYlQswHPtoGJ0l9kvQjE0a9jmM02qCAZoqo=
+github.com/gogf/gf/v2 v2.2.4/go.mod h1:thvkyb43RWUu/m05sRm4CbH9r7t7/FrW2M56L9Ystwk=
 github.com/golang-jwt/jwt/v4 v4.3.0/go.mod h1:/xlHOz8bRuivTWchD4jCa+NbatV+wEUSzwAxVc6locg=
 github.com/golang-jwt/jwt/v4 v4.4.2 h1:rcc4lwaZgFMCZ5jxF9ABolDcIHdBytAFgqFPbSJQAYs=
 github.com/golang-jwt/jwt/v4 v4.4.2/go.mod h1:m21LjoU+eqJr34lmDMbreY2eSTRJ1cv77w39/MY0Ch0=
@@ -142,6 +146,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.4.2 h1:YwD0ulJSJytLpiaWua0sBDusfsCZohxjxzVTYjwxfV8=
 github.com/rivo/uniseg v0.4.2/go.mod h1:FN3SvrM+Zdj16jyLfmOkMNblXMcoc8DfTHruCPUcx88=
+github.com/rivo/uniseg v0.4.3 h1:utMvzDsuh3suAEnhH0RdHmoPbU648o6CvXxTx4SBMOw=
+github.com/rivo/uniseg v0.4.3/go.mod h1:FN3SvrM+Zdj16jyLfmOkMNblXMcoc8DfTHruCPUcx88=
 github.com/shirou/gopsutil v2.18.10/go.mod h1:5b4v6he4MtMOwMlS0TUMTu2PcXUg8+E1lC7eC3UO/RA=
 github.com/shirou/gopsutil v3.21.11+incompatible h1:+1+c1VGhc88SSonWP6foOcLhvnKlUeu/erjjvaPEYiI=
 github.com/shirou/gopsutil v3.21.11+incompatible/go.mod h1:5b4v6he4MtMOwMlS0TUMTu2PcXUg8+E1lC7eC3UO/RA=
