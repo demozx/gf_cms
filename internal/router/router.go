@@ -8,6 +8,6 @@ func Register(s *ghttp.Server) {
 	//后台路由
 	backendViewHandle(s)
 	backendApiHandle(s)
-	//前台路由
-	webViewHandle(s)
+	//前台pc路由
+	pcViewHandle(s)
 }
