@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/Blank-Xu/sql-adapter v0.0.0-20210714092925-0bdd0d548758
-	github.com/casbin/casbin/v2 v2.57.0
+	github.com/casbin/casbin/v2 v2.57.1
 	github.com/gogf/gf-jwt/v2 v2.0.1
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.4
 	github.com/gogf/gf/v2 v2.2.4

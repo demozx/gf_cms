@@ -14,6 +14,7 @@ import (
 
 type (
 	IChannel interface {
+		PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error)
 		BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
 		BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error)
 		BackendChannelModelTree(ctx context.Context, modelType string, channelId int) (out []*model.ChannelBackendApiListItem, err error)
@@ -24,6 +25,7 @@ type (
 		GetOneById(ctx context.Context, id int) (out *entity.CmsChannel, err error)
 		BackendModelMap() map[string]string
 		BackendModelDesc(model string) string
+		UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error)
 	}
 )
 

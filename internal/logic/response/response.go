@@ -67,6 +67,7 @@ func (s *sResponse) View(ctx context.Context, template string, data map[string]i
 	return
 }
 
+// ErrorTpl 错误页面
 func (s *sResponse) ErrorTpl(ctx context.Context, code int, message string) (err error) {
 	template := "tpl/error.html"
 	data := g.Map{

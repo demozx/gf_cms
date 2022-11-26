@@ -32,6 +32,10 @@ func init() {
 	service.RegisterAdList(New())
 }
 
+func (s *sAdList) PcHomeList(ctx context.Context, req *backendApi.AdListAddReq) (out interface{}, err error) {
+	return
+}
+
 // Add 添加广告
 func (s *sAdList) Add(ctx context.Context, req *backendApi.AdListAddReq) (out interface{}, err error) {
 	_, err = dao.CmsAd.Ctx(ctx).Data(req).Insert()

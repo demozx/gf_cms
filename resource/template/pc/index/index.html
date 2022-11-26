@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <title>${ system_setting `web_name` }$</title>
+    <meta name="keywords" content="${ system_setting `keywords` }$"/>
+    <meta name="description" content="${ system_setting `description` }$"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_cart.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_atm.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/master.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/subpage.css"/>
+    <script type="text/javascript" src="/resource/pc/js/jquery.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/child_atm.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/lihe.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/superslide.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/select_beauty.js"></script>
+    <!--[if IE 6]>
+    <script type="text/javascript" src="/resource/pc/js/png.js"></script>
+    <script>DD_belatedPNG.fix('div,img,span,li,a,a:hover,dd,p,input,select')</script>
+    <![endif]-->
+</head>
+<body>
+<!-- 头部 -->
+${include "/pc/public/head_index.html" .}$
+<!-- 头部 end -->
+<!-- banner -->
+<div id="slideBox" class="slideBox">
+    <div class="hd">
+        <div>
+            <ul>
+                {volist name='banner' id='vo'}
+                <li></li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <div class="bd">
+        <ul>
+            {volist name='banner' id='vo'}
+            <li>
+                <a href="{$vo.link|default='javascript:;'}">
+                    <img src="{$vo.img_url}"/>
+                </a>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+</div>
+<div class="h_mid_news_c_nnbg">
+    <div class="h_mid_news_c_nn">
+        <div class="txtMarquee-left">
+            <div class="hd"><a class="next"></a> <a class="prev"></a></div>
+            <div class="pgcnm fl">新闻滚动：</div>
+            <div class="bd fl">
+                <ul class="infoList">
+                    {volist name='rollNews' id='vo'}
+                    <li><a href="{$vo.art_url}">{$vo.title}</a></li>
+                    {/volist}
+                </ul>
+            </div>
+            <div class="c"></div>
+        </div>
+    </div>
+</div>
+<!-- banner end -->
+<!-- 四个展品展示 -->
+<div class="fourcols">
+    <ul>
+        {volist name='topThreeProductList' id='vo'}
+        <li>
+            <a href="{$vo.art_url}" title="{$vo.title}">
+                <div class="img"><img src="/images/loading.gif" data-original="{$vo.litpic}" alt="{$vo.title}"/></div>
+                <div class="title">{$vo.title}</div>
+            </a>
+        </li>
+        {/volist}
+        <li>
+            <a href="{:getCatUrl(93)}" title="查看更多">
+                <div class="imgb"><img src="/images/loading.gif" data-original="/resource/pc/images/more_products.gif" alt="查看更多"/></div>
+                <div class="title">查看更多</div>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- 四个产品展示 end -->
+<!-- 关于我们 -->
+<div class="abme_bg">
+    <div class="title">
+        <div>关于我们</div>
+    </div>
+    <div class="text">
+        <div class="title">{$sys_config.corporate_name}</div>
+        <a href="{:getCatUrl(91)}" title="查看详细" class="more">查看详细</a>
+        <div class="msg">
+            {:mb_substr(html2text($about.cat_description),0,217)}...
+        </div>
+    </div>
+    <div class="img atm_mid">
+        <img src="/images/loading.gif" data-original="{$about.cat_pic}" alt="{$sys_config.webname}"/>
+    </div>
+
+</div>
+<!-- 关于我们 end -->
+<!-- 产品中心 -->
+<div class="product">
+    <div class="head">
+        <div class="w_980">
+            <div class="title_b">
+                <div class="a">产品中心</div>
+                <div class="b">PRODUCT CENTER</div>
+            </div>
+            <!-- search -->
+            <div class="search">
+                <form name="formsearch" action="{:url('home.search')}" id="search_form">
+                    <div class="s_c">
+                        <input type="text" name="keyword" id="q" value="" class="search_text" placeholder="请输入关键词！"/>
+                    </div>
+                    <input type="button" class="search_submit" value=""/>
+                </form>
+            </div>
+            <!-- search end -->
+            <div class="phone_b">
+                <div>
+                    <div class="msg">全国客服电话</div>
+                    <div class="num">{$sys_config.tel}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cont">
+        <ul class="lnav">
+            {volist name='productList' id='vo'}
+            <li>
+                <a href="{:getCatUrl($vo.cat_id)}">
+                    <div class="title">{$vo.cat_name}</div>
+                </a>
+            </li>
+            {/volist}
+        </ul>
+        {volist name='groupProductList' id='item'}
+        <ul class="rdata">
+            {volist name='item' id='vo'}
+            <li>
+                <a href="{$vo.art_url}" title="{$vo.title}" target="_self">
+                    <div class="img"><img src="/images/loading.gif" data-original="{$vo.litpic}" alt="{$vo.title}"/></div>
+                    <div class="title">{$vo.title}</div>
+                </a>
+            </li>
+            {/volist}
+        </ul>
+        {/volist}
+    </div>
+</div>
+<!-- 产品中心 end -->
+<!-- 最新资讯 -->
+<div class="news_b">
+    <div class="head">
+        <div class="title">最新资讯</div>
+        <div class="line">
+            <div></div>
+        </div>
+        <div class="en">THE LATESET INFORMATION</div>
+        <a href="{:getCatUrl(92)}" title="查看详细" class="more" target="_self">查看详细</a>
+    </div>
+    <div class="w_980">
+        <div class="lnews">
+            {volist name='bottomNews' id='vo'}
+            {if condition='$key===0'}
+            <div class="fir">
+                <div class="time">
+                    <div class="day">{:date('d', strtotime($vo.createdate))}</div>
+                    <div class="year">{:date('Y-m', strtotime($vo.createdate))}</div>
+                </div>
+                <div class="info">
+                    <div class="title"><a href="{$vo.art_url}">{$vo.title|msubstr=###,0,20}</a></div>
+                    <div class="msg">{$vo.description|msubstr=###,0,50}...</div>
+                </div>
+            </div>
+            {else /}
+            <div class="item">
+                <a href="{$vo.art_url}" title="{$vo.title}" class="title">{$vo.title|msubstr=###,0,30}</a>
+                <div class="time">{:date('Y/m/d', strtotime($vo.createdate))}</div>
+            </div>
+            {/if}
+            {/volist}
+        </div>
+        <div id="rimgs" class="rimgs">
+            <div class="hd">
+                <ul>
+                    {volist name='bottomNewsPic' id='vo'}
+                    <li>{$key+1}</li>
+                    {/volist}
+                </ul>
+            </div>
+            <div class="bd" style="background:url('/images/loading.gif');">
+                <ul>
+                    {volist name='bottomNewsPic' id='vo'}
+                    <li>
+                        <a href="{$vo.art_url}" title="{$vo.title}" target="_self">
+                            <img src="/images/loading.gif" data-original="{$vo.litpic}">
+                        </a>
+                    </li>
+                    {/volist}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- 最新资讯 end -->
+<!-- footer -->
+${include "/pc/public/foot.html" .}$
+</body>
+</html>

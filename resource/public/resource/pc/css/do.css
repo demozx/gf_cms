@@ -1,0 +1,87 @@
+a,a:hover{
+    text-decoration: none;
+}
+/*操作页面*/
+.logout_con{
+    text-align:right;
+    
+}
+.header{ background: #f7f7f7;padding:0px 10px; }
+.header p{
+    height:30px;
+    line-height: 30px;
+    margin:0;
+    font-size: 16px;
+}
+.view{
+    margin-top: 14px;
+}
+#txt{background: beige;min-width: 100%;max-width: 100%;width:100%;height: 300px;min-height: 300px;font-size: 26px;line-height: 46px}
+#tels{min-width:86%;max-width:86%;min-height:381px;height:383px;line-height: 26px;}
+.btn-block{
+    width:180px;
+    height:36px;
+    color:#fff;
+    border:0;
+    border-radius: 2px;
+    background: #2ebc6d;
+}
+.btn{margin:12px 0;}
+.btn-block:hover{ color:#fff; }
+#format_tel{
+    width:48%;
+    height:36px;
+    line-height: 36px;
+    background: #2ebc6d;
+    color:#fff;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0;
+    margin-left: 1%;
+}
+#empty_tel{
+    width:48%;
+    height:36px;
+    line-height: 36px;
+    background: #FF5722;
+    color:#fff;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0;
+    margin-right: 1%;
+}
+#txt_msg{
+   color:red; 
+}
+#send{
+    width: 20%;
+}
+#btn_logout{color:#2ebc6d;}
+/*重写layer样式*/
+.layui-layer-btn .layui-layer-btn0{
+	border-color: #2ebc6d!important;
+    background-color: #2ebc6d!important;
+}
+.templateParamArr{
+    border: solid 1px #d4d2d2;
+    margin: 0 10px;
+    padding: 0 6px;
+    color: red;
+}
+#textarea-rows>ul{
+    position: relative;
+}
+#textarea-rows>ul>div{
+    line-height: 26px;
+}
+#textarea-rows>ul>div:first-child{
+    margin-top: 6px;
+}
+.variable{
+    color:red;
+    padding: 0 6px;
+}

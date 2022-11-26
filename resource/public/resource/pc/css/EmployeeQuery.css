@@ -1,0 +1,59 @@
+﻿@charset "utf-8";
+html{height:100%;}
+body { background-color:#f3f3f3;
+ min-height:100%;
+_height:100%;
+    font-size: 12px;
+    line-height: 24px;
+    margin: 0; position:relative; color:#656565;
+}
+/*去除文本框获取焦点时的边框样式*/
+.content input{outline:none}
+#result{
+    display:none;
+}
+img {
+    border: 0 none;
+}
+a {
+    color: #656565;
+    text-decoration: none;
+}
+a:hover {
+    font-family: sans-serif;
+    text-decoration: none;
+}
+body, div, dl, dt, dd, ol, h1, h2, h3, h4, h5, h6, form, input, p, th, td {
+    margin: 0;
+    padding: 0;
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    list-style: none outside none;
+}
+a {
+    text-decoration: none;
+}
+
+
+.content{ width:546px; margin:0px auto; padding-top:130px;}
+.title{ width:546px; height:101px; background:url(../images/titile.gif) no-repeat scroll 0 0 transparent}
+.neirong{ background:url(../images/bg.gif); overflow:hidden; clear:both; padding:20px;}
+.bg_b{ background:url(../images/bg_b.gif); height:24px;}
+.wenbenk{ background:url(../images/wbk.gif) no-repeat scroll 0 0 transparent; height:40px; line-height:40px; width:277px; border:none; padding-left:10px; margin-right:10px; color:#999;}
+.wenbenk2{ background:url(../images/wbk2.gif) no-repeat scroll 0 0 transparent; height:40px; line-height:40px; width:127px; border:none; padding-left:10px; margin-right:10px; color:#999;}
+.register li {
+    height: 40px;
+    line-height: 40px;
+    margin: 15px 0;
+    padding-left:60px;
+}
+.register li span{ float:left; width:80px; text-align:right; padding-right:10px; font-size:14px;}
+.btn{ width:143px; height:38px; background:url(../images/btn.gif); cursor:pointer; border:none; margin-left:70px;}
+.bottom{bottom:0;width:100%;line-height:40px; text-align:center;position:absolute;overflow:hidden; color:#676767; border-top:1px solid #c4c4c4;}
+.cxjg{ text-align:center; line-height:40px;}
+.mingzi{ color:#cc1300; margin-right:20px; font-weight:bold; font-size:24px;font-family: "Microsoft YaHei" }
+.title2{ width:546px; height:101px; background:url(../images/titile2.gif) no-repeat scroll 0 0 transparent}                                                                              

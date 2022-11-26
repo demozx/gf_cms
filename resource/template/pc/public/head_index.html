@@ -1,0 +1,39 @@
+<div class="header">
+    <!-- 顶部 -->
+    <div class="h_top_c">
+        <div class="h_top">
+            <div class="logo"><a href="/" title="{${ system_setting `web_name` }$"> <img
+                    src="/resource/pc/images/logo.png" alt="${ system_setting `web_name` }$"/> </a></div>
+            <div class="tel_index_top">
+                <div class="top_msg">全国客服电话</div>
+                <div class="num">${ system_setting `tel` }$</div>
+            </div>
+            <div class="c"></div>
+        </div>
+    </div>
+    <!-- 顶部 end-->
+    <!-- 导航 -->
+    <div class="nav_c">
+        <div class="zz_nav"></div>
+        <div class="nav">
+            <ul>
+                <li class='on'>
+                    <a href="/">网站首页</a>
+                </li>
+                ${ range $key, $item := .navigation }$
+                <li ${ if $item.Highlight }$ class="on" ${ end }$>
+                    <a href="${ $item.ChannelRouter }$" title="${ $item.Name }$" target="${ $item.TriggerType }$">${ $item.Name }$</a>
+                    ${ if $item.HasChildren }$
+                    <div class="nav_dd dn">
+                        ${ range $_key, $_item := $item.Children }$
+                        <a href="${ $_item.ChannelRouter }$" title="${ $item.Name }$" target="${ $item.TriggerType }$">${ $item.Name }$</a>
+                        ${ end }$
+                    </div>
+                    ${ end }$
+                </li>
+                ${ end }$
+            </ul>
+        </div>
+    </div>
+    <!-- 导航 end-->
+</div>

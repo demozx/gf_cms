@@ -12,7 +12,10 @@ func pcViewHandle(s *ghttp.Server) {
 			ghttp.MiddlewareHandlerResponse,
 		)
 		group.ALLMap(g.Map{
-			"/": pc.Index.Index,
+			"/":                         pc.Index.Index,
+			"/article/list/{id}.html":   pc.Article.List,
+			"/news.html":                pc.Article.List,
+			"/article/detail/{id}.html": pc.Article.Detail,
 		})
 	})
 }

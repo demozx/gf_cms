@@ -12,6 +12,7 @@ import (
 
 type (
 	IAdList interface {
+		PcHomeList(ctx context.Context, req *backendApi.AdListAddReq) (out interface{}, err error)
 		Add(ctx context.Context, req *backendApi.AdListAddReq) (out interface{}, err error)
 		Edit(ctx context.Context, req *backendApi.AdListEditReq) (out interface{}, err error)
 		Delete(ctx context.Context, req *backendApi.AdListDeleteReq) (out interface{}, err error)

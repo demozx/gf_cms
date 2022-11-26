@@ -9,6 +9,7 @@ import (
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
+	"github.com/gogf/gf/v2/text/gstr"
 
 	"github.com/gogf/gf/v2/frame/g"
 
@@ -35,6 +36,35 @@ func Channel() *sChannel {
 	return &insChannel
 }
 
+// PcNavigation pc导航
+func (s *sChannel) PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error) {
+	var allOpenChannel []*entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Status, 1).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allOpenChannel)
+	if err != nil {
+		return nil, err
+	}
+	out, err = Channel().pcNavigationListRecursion(allOpenChannel, 0, 0)
+	return
+}
+
+func (s *sChannel) pcChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
+	var allChannels []*entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
+	if err != nil {
+		return nil, err
+	}
+	var channelBackendApiList []*model.ChannelBackendApiListItem
+	err = gconv.Scan(allChannels, &channelBackendApiList)
+	if err != nil {
+		return nil, err
+	}
+	channelBackendApiList = Channel().channelBackendApiListRecursion(channelBackendApiList, 0)
+	//g.Dump(channelBackendApiList)
+	channelBackendApiList = Channel().backendTree(channelBackendApiList, channelId)
+
+	return channelBackendApiList, err
+}
+
 // BackendIndex 获取后台栏目分类接口数据
 func (s *sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
@@ -56,15 +86,15 @@ func (s *sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBacken
 	if err != nil {
 		return nil, err
 	}
-	channelBackendApiList = Channel().recursion(channelBackendApiList, 0)
+	channelBackendApiList = Channel().channelBackendApiListRecursion(channelBackendApiList, 0)
 	return channelBackendApiList, nil
 }
 
-func (s *sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (out []*model.ChannelBackendApiListItem) {
+func (s *sChannel) channelBackendApiListRecursion(list []*model.ChannelBackendApiListItem, pid int) (out []*model.ChannelBackendApiListItem) {
 	res := make([]*model.ChannelBackendApiListItem, 0)
 	for _, item := range list {
 		if item.Pid == pid {
-			item.Children = Channel().recursion(list, item.Id)
+			item.Children = Channel().channelBackendApiListRecursion(list, item.Id)
 			if item.Children == nil {
 				item.Children = make([]*model.ChannelBackendApiListItem, 0)
 			}
@@ -73,6 +103,52 @@ func (s *sChannel) recursion(list []*model.ChannelBackendApiListItem, pid int) (
 		}
 	}
 	return res
+}
+
+func (s *sChannel) pcNavigationListRecursion(list []*entity.CmsChannel, pid int, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error) {
+	var res []*model.ChannelPcNavigationListItem
+	for _, item := range list {
+		var naviItem *model.ChannelPcNavigationListItem
+		_ = gconv.Scan(item, &naviItem)
+		// 根据频道类型处理url
+		switch item.Type {
+		case 1:
+			// 频道类型
+			fallthrough
+		case 2:
+			// 单页类型
+			naviItem.ChannelRouter = item.ListRouter
+			if gstr.Contains(item.ListRouter, "{id}") {
+				// 如果路由中有{id}，替换id
+				naviItem.ChannelRouter = gstr.Replace(item.ListRouter, "{id}", gconv.String(item.Id), 1)
+			}
+		case 3:
+			// 链接类型
+			naviItem.ChannelRouter = item.LinkUrl
+		default:
+			return nil, gerror.New("栏目类型错误")
+		}
+		// 处理链接打开方式
+		naviItem.TriggerType = "_self"
+		if item.LinkTrigger == 1 {
+			// 新标签打开
+			naviItem.TriggerType = "_blank"
+		}
+		// 判断是否是当前栏目
+		if currChannelId > 0 && currChannelId == gconv.Int(naviItem.Id) {
+			naviItem.Current = true
+		}
+		if item.Pid == pid {
+			naviItem.Children, err = Channel().pcNavigationListRecursion(list, gvar.New(item.Id).Int(), currChannelId)
+			if naviItem.Children == nil {
+				naviItem.Children = make([]*model.ChannelPcNavigationListItem, 0)
+			} else {
+				naviItem.HasChildren = true
+			}
+			res = append(res, naviItem)
+		}
+	}
+	return res, err
 }
 
 // BackendChannelTree 获取栏目分类树
@@ -87,7 +163,7 @@ func (s *sChannel) BackendChannelTree(ctx context.Context, channelId int) (out [
 	if err != nil {
 		return nil, err
 	}
-	channelBackendApiList = Channel().recursion(channelBackendApiList, 0)
+	channelBackendApiList = Channel().channelBackendApiListRecursion(channelBackendApiList, 0)
 	//g.Dump(channelBackendApiList)
 	channelBackendApiList = Channel().backendTree(channelBackendApiList, channelId)
 
@@ -210,7 +286,11 @@ func (s *sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddA
 	if parent != nil {
 		entityData.Level = parent.Level + 1
 	}
-	_, err = dao.CmsChannel.Ctx(ctx).Data(entityData).Insert()
+	id, err := dao.CmsChannel.Ctx(ctx).Data(entityData).InsertAndGetId()
+	if err != nil {
+		return nil, err
+	}
+	_, err = service.Channel().UpdateRelation(ctx, gconv.Int(id))
 	if err != nil {
 		return nil, err
 	}
@@ -251,6 +331,10 @@ func (s *sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEdi
 	if err != nil {
 		return nil, err
 	}
+	_, err = service.Channel().UpdateRelation(ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 
@@ -280,4 +364,90 @@ func (s *sChannel) BackendModelDesc(model string) string {
 		return ""
 	}
 	return out
+}
+
+// UpdateRelation 更新关联关系字段
+func (s *sChannel) UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error) {
+	_, err = Channel().updateTid(ctx, originChannelId, 0)
+	if err != nil {
+		return nil, err
+	}
+	_, err = Channel().updateChildren(ctx, []string{gconv.String(originChannelId)}, []string{})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// UpdateTid 更新tid
+func (s *sChannel) updateTid(ctx context.Context, originChannelId int, pid int) (out interface{}, err error) {
+	tid := originChannelId
+	if pid > 0 {
+		tid = pid
+	}
+	var channelInfo *entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, tid).Scan(&channelInfo)
+	if err != nil {
+		return false, err
+	}
+	if channelInfo == nil {
+		return nil, gerror.New("栏目不存在")
+	}
+	if channelInfo.Pid == 0 {
+		// 自己就是顶级了，所以顶级是自己
+		_, err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, originChannelId).Data(g.Map{
+			dao.CmsChannel.Columns().Tid: tid,
+		}).Update()
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		_, err = Channel().updateTid(ctx, originChannelId, channelInfo.Pid)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return
+}
+
+func (s *sChannel) updateChildren(ctx context.Context, channelIds []string, childrenIdAndMeArr []string) (out interface{}, err error) {
+	//g.Dump("channelIds", channelIds)
+	//g.Dump("ChildrenIdAndMeArr", childrenIdAndMeArr)
+	if len(channelIds) == 0 {
+		if len(childrenIdAndMeArr) > 0 {
+			originChannelId := childrenIdAndMeArr[len(childrenIdAndMeArr)-1:]
+			childrenIdsArr := childrenIdAndMeArr[0 : len(childrenIdAndMeArr)-1]
+			childrenIds := gstr.Implode(",", childrenIdsArr)
+			_, err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, originChannelId).Data(g.Map{
+				dao.CmsChannel.Columns().ChildrenIds: childrenIds,
+			}).Update()
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		array, err := dao.CmsChannel.Ctx(ctx).WhereIn(dao.CmsChannel.Columns().Pid, channelIds).Array(dao.CmsChannel.Columns().Id)
+		if err != nil {
+			return nil, err
+		}
+		originId := channelIds[0]
+		var newChannelIds []string
+		for _, id := range array {
+			newChannelIds = append(newChannelIds, gconv.String(id))
+		}
+		if len(childrenIdAndMeArr) == 0 {
+			childrenIdAndMeArr = append(childrenIdAndMeArr, originId)
+			g.Dump("0", childrenIdAndMeArr)
+		} else {
+			for _, id := range newChannelIds {
+				childrenIdAndMeArr = append(childrenIdAndMeArr, id)
+			}
+			g.Dump("1", childrenIdAndMeArr)
+		}
+		_, err = Channel().updateChildren(ctx, newChannelIds, childrenIdAndMeArr)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return
 }

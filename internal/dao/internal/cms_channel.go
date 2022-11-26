@@ -20,48 +20,52 @@ type CmsChannelDao struct {
 
 // CmsChannelColumns defines and stores column names for table cms_channel.
 type CmsChannelColumns struct {
-	Id               string // 频道ID
-	Pid              string // 父级ID
-	Level            string // 分类层次
-	Name             string // 名称
-	Thumb            string // 缩略图
-	Sort             string // 排名
-	Status           string // 状态(0:停用;1:启用;)
-	Type             string // 类型(1:频道;2:单页;3:链接)
-	LinkUrl          string // 链接地址
-	LinkTrigger      string // 链接打开方式(0:当前窗口打开;1:新窗口打开;)
-	ListController   string // 列表页控制器
-	DetailController string // 详情页控制器
-	ListTemplate     string // 列表页模板
-	DetailTemplate   string // 详情页模板
-	Description      string // 频道描述
-	Model            string // 模型
-	CreatedAt        string // 创建时间
-	UpdatedAt        string // 修改时间
-	DeletedAt        string // 删除时间
+	Id             string // 频道ID
+	Pid            string // 父级ID
+	Tid            string // 顶级id(已经是顶级则为自己)
+	ChildrenIds    string // 所有子栏目id们
+	Level          string // 分类层次
+	Name           string // 名称
+	Thumb          string // 缩略图
+	Sort           string // 排名
+	Status         string // 状态(0:停用;1:启用;)
+	Type           string // 类型(1:频道;2:单页;3:链接)
+	LinkUrl        string // 链接地址
+	LinkTrigger    string // 链接打开方式(0:当前窗口打开;1:新窗口打开;)
+	ListRouter     string // 列表页路由
+	DetailRouter   string // 详情页路由
+	ListTemplate   string // 列表页模板
+	DetailTemplate string // 详情页模板
+	Description    string // 频道描述
+	Model          string // 模型
+	CreatedAt      string // 创建时间
+	UpdatedAt      string // 修改时间
+	DeletedAt      string // 删除时间
 }
 
 // cmsChannelColumns holds the columns for table cms_channel.
 var cmsChannelColumns = CmsChannelColumns{
-	Id:               "id",
-	Pid:              "pid",
-	Level:            "level",
-	Name:             "name",
-	Thumb:            "thumb",
-	Sort:             "sort",
-	Status:           "status",
-	Type:             "type",
-	LinkUrl:          "link_url",
-	LinkTrigger:      "link_trigger",
-	ListController:   "list_controller",
-	DetailController: "detail_controller",
-	ListTemplate:     "list_template",
-	DetailTemplate:   "detail_template",
-	Description:      "description",
-	Model:            "model",
-	CreatedAt:        "created_at",
-	UpdatedAt:        "updated_at",
-	DeletedAt:        "deleted_at",
+	Id:             "id",
+	Pid:            "pid",
+	Tid:            "tid",
+	ChildrenIds:    "children_ids",
+	Level:          "level",
+	Name:           "name",
+	Thumb:          "thumb",
+	Sort:           "sort",
+	Status:         "status",
+	Type:           "type",
+	LinkUrl:        "link_url",
+	LinkTrigger:    "link_trigger",
+	ListRouter:     "list_router",
+	DetailRouter:   "detail_router",
+	ListTemplate:   "list_template",
+	DetailTemplate: "detail_template",
+	Description:    "description",
+	Model:          "model",
+	CreatedAt:      "created_at",
+	UpdatedAt:      "updated_at",
+	DeletedAt:      "deleted_at",
 }
 
 // NewCmsChannelDao creates and returns a new DAO object for table data access.

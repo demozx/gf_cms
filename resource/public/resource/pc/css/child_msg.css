@@ -1,0 +1,135 @@
+﻿@charset "utf-8";
+/* msg 留言板 */
+.msg {
+	width: 100%;
+	margin: 16px auto;
+	height: auto;
+	overflow: hidden;
+}
+.msg li {
+	width: 100%;
+	height: auto;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+.msg_top {
+	width: 100%;
+	height: auto;
+	font: 14px/30px "microsoft yahei";
+	background: #ededed;
+	color: #333333;
+	text-indent: 14px;
+	overflow: hidden;
+	border-radius: 3px 3px 0 0;
+	font-weight: bold;
+}
+.msg_top span {
+	margin-right: 14px;
+}
+.msg_con {
+	border: 1px solid #ebebeb;
+	background: #f3f3f3;
+	overflow: hidden;
+	padding-bottom: 12px;
+}
+.msg_consult {
+	width: 96%;
+	margin: 0 auto;
+	font: 14px/36px "microsoft yahei";
+	color: #7b7b7b;
+}
+.msg_reply {
+	width: 96%;
+	margin: 0 auto;
+	font: 14px/36px "microsoft yahei";
+	border: 1px solid #ebebeb;
+	border-radius: 3px;
+	background: #fff;
+	color: #ff5958;
+	text-indent: 14px;
+}
+.msg_now {
+	width: 100%;
+	height: 34px;
+	background: url(../images/msg_line1.png) center center no-repeat;
+	overflow: hidden;
+	margin: 15px 0 0 0;
+}
+.msg_title {
+	width: 155px;
+	height: 34px;
+	background-image: url(../images/msg_btn.png);
+	background-position: 7px center;
+	background-repeat: no-repeat;
+	text-indent: 43px;
+	margin: 0 auto;
+	color: #fff;
+	font: 22px/34px "microsoft yahei";
+}
+.msg_ul {
+	width: 580px;
+	height: auto;
+	overflow: hidden;
+	margin: 20px auto;
+}
+.msg_ul li {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	position: relative;
+	margin-bottom: 6px;
+}
+.msg_ul li p {
+	width: 90px;
+	float: left;
+	height: 36px;
+	font: 14px/36px "microsoft yahei";
+	color: #333;
+	vertical-align: top;
+	text-align: right;
+	margin: 0 6px 0 0;
+}
+.msg_ul li p span {
+	color: red;
+	margin-top: 2px;
+	vertical-align: middle;
+	font-weight: bold
+}
+.msg_input {
+	width:300px;
+	height: 34px;
+	border: 1px solid #d9d9d9;
+	border-radius: 2px;
+	padding: 0 10px;
+}
+.msg_pin {
+	width: 164px;
+	height: 34px;
+	border: 1px solid #d9d9d9;
+	border-radius: 2px;
+	padding: 0 10px;
+	float: left;
+}
+.msg_pin img {
+	float: left;
+	margin-left: 14px;
+}
+.msg_textarea {
+	width: 264px;
+	height: 80px;
+	border: 1px solid #d9d9d9;
+	border-radius: 2px;
+	padding: 10px;
+	resize: none
+}
+.msg_submit {
+	width: 322px;
+	height: 36px;
+	margin: 20px auto;
+	border-radius: 3px;
+	border: 0;
+	text-align: center;
+	font: 18px/36px "microsoft yahei";
+	color: #fff;
+	cursor: pointer
+}
