@@ -32,21 +32,21 @@ ${include "/pc/public/head_index.html" .}$
     <div class="hd">
         <div>
             <ul>
-                {volist name='banner' id='vo'}
+                ${ range $key, $item := .adList }$
                 <li></li>
-                {/volist}
+                ${ end }$
             </ul>
         </div>
     </div>
     <div class="bd">
         <ul>
-            {volist name='banner' id='vo'}
+            ${ range $key, $item := .adList }$
             <li>
-                <a href="{$vo.link|default='javascript:;'}">
-                    <img src="{$vo.img_url}"/>
+                <a href="${$item.Link}$">
+                    <img src="${ $item.ImgUrl }$"/>
                 </a>
             </li>
-            {/volist}
+            ${ end }$
         </ul>
     </div>
 </div>

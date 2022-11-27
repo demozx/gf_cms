@@ -16,7 +16,7 @@ type (
 	IChannel interface {
 		PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error)
 		BackendApiIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
-		BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error)
+		BackendChannelTree(ctx context.Context, selectedId int) (out []*model.ChannelBackendApiListItem, err error)
 		BackendChannelModelTree(ctx context.Context, modelType string, channelId int) (out []*model.ChannelBackendApiListItem, err error)
 		BackendApiStatus(ctx context.Context, in *backendApi.ChannelStatusApiReq) (out *backendApi.ChannelStatusApiRes, err error)
 		BackendApiDelete(ctx context.Context, in *backendApi.ChannelDeleteApiReq) (out *backendApi.ChannelDeleteApiRes, err error)

@@ -134,6 +134,7 @@ func (s *sChannel) pcNavigationListRecursion(list []*entity.CmsChannel, pid int,
 		// 判断是否是当前栏目
 		if currChannelId > 0 && currChannelId == gconv.Int(naviItem.Id) {
 			naviItem.Current = true
+			// todo 顶级栏目高亮
 		}
 		if item.Pid == pid {
 			naviItem.Children, err = Channel().pcNavigationListRecursion(list, gvar.New(item.Id).Int(), currChannelId)
