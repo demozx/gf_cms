@@ -14,7 +14,7 @@ type cChannel struct{}
 
 // Index 获取后台栏目分类接口数据
 func (c *cChannel) Index(ctx context.Context, req *backendApi.ChannelIndexApiReq) (res *backendApi.ChannelIndexApiRes, err error) {
-	data, err := service.Channel().BackendIndex(ctx)
+	data, err := service.Channel().BackendApiIndex(ctx)
 	if err != nil {
 		return nil, err
 	}

@@ -9,12 +9,9 @@ import (
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
-	"github.com/gogf/gf/v2/text/gstr"
-
-	"github.com/gogf/gf/v2/frame/g"
-
 	"github.com/gogf/gf/v2/errors/gerror"
-
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -65,8 +62,8 @@ func (s *sChannel) pcChannelTree(ctx context.Context, channelId int) (out []*mod
 	return channelBackendApiList, err
 }
 
-// BackendIndex 获取后台栏目分类接口数据
-func (s *sChannel) BackendIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
+// BackendApiIndex 获取后台栏目分类接口数据
+func (s *sChannel) BackendApiIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -152,7 +149,7 @@ func (s *sChannel) pcNavigationListRecursion(list []*entity.CmsChannel, pid int,
 }
 
 // BackendChannelTree 获取栏目分类树
-func (s *sChannel) BackendChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
+func (s *sChannel) BackendChannelTree(ctx context.Context, selectedId int) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
 	if err != nil {
@@ -165,7 +162,7 @@ func (s *sChannel) BackendChannelTree(ctx context.Context, channelId int) (out [
 	}
 	channelBackendApiList = Channel().channelBackendApiListRecursion(channelBackendApiList, 0)
 	//g.Dump(channelBackendApiList)
-	channelBackendApiList = Channel().backendTree(channelBackendApiList, channelId)
+	channelBackendApiList = Channel().backendTree(channelBackendApiList, selectedId)
 
 	return channelBackendApiList, err
 }
@@ -372,7 +369,7 @@ func (s *sChannel) UpdateRelation(ctx context.Context, originChannelId int) (out
 	if err != nil {
 		return nil, err
 	}
-	_, err = Channel().updateChildren(ctx, []string{gconv.String(originChannelId)}, []string{})
+	_, err = Channel().updateChildren(ctx, originChannelId, []int{}, []int{}, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -410,41 +407,57 @@ func (s *sChannel) updateTid(ctx context.Context, originChannelId int, pid int) 
 	return
 }
 
-func (s *sChannel) updateChildren(ctx context.Context, channelIds []string, childrenIdAndMeArr []string) (out interface{}, err error) {
-	//g.Dump("channelIds", channelIds)
-	//g.Dump("ChildrenIdAndMeArr", childrenIdAndMeArr)
-	if len(channelIds) == 0 {
-		if len(childrenIdAndMeArr) > 0 {
-			originChannelId := childrenIdAndMeArr[len(childrenIdAndMeArr)-1:]
-			childrenIdsArr := childrenIdAndMeArr[0 : len(childrenIdAndMeArr)-1]
-			childrenIds := gstr.Implode(",", childrenIdsArr)
-			_, err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, originChannelId).Data(g.Map{
-				dao.CmsChannel.Columns().ChildrenIds: childrenIds,
-			}).Update()
-			if err != nil {
-				return nil, err
-			}
-		}
+func (s *sChannel) updateChildren(ctx context.Context, originChannelId int, lastBatchIdsArr []int, allIdsArr []int, level int) (out interface{}, err error) {
+	//g.Dump("idsArr", lastBatchIdsArr)
+	//g.Dump("allIdsArr", allIdsArr)
+	//g.Dump("level", level)
+	var array []*gvar.Var
+	if level == 0 {
+		array, err = dao.CmsChannel.Ctx(ctx).WhereIn(dao.CmsChannel.Columns().Pid, []int{originChannelId}).Array(dao.CmsChannel.Columns().Id)
 	} else {
-		array, err := dao.CmsChannel.Ctx(ctx).WhereIn(dao.CmsChannel.Columns().Pid, channelIds).Array(dao.CmsChannel.Columns().Id)
+		array, err = dao.CmsChannel.Ctx(ctx).WhereIn(dao.CmsChannel.Columns().Pid, lastBatchIdsArr).Array(dao.CmsChannel.Columns().Id)
+	}
+	if err != nil {
+		return nil, err
+	}
+	//g.Dump("array", array)
+	//time.Sleep(time.Second * 2)
+	var arrayInt []int
+	for _, id := range array {
+		arrayInt = append(arrayInt, gconv.Int(id))
+	}
+	//g.Dump("arrayInt", arrayInt)
+	//time.Sleep(time.Second * 2)
+	if level == 0 {
+		// 第一次
+		//g.Dump("第一次递归")
+		_, err = Channel().updateChildren(ctx, originChannelId, arrayInt, arrayInt, level+1)
 		if err != nil {
 			return nil, err
 		}
-		originId := channelIds[0]
-		var newChannelIds []string
-		for _, id := range array {
-			newChannelIds = append(newChannelIds, gconv.String(id))
+	}
+	if level != 0 && len(arrayInt) == 0 {
+		// 最后一次递归
+		//g.Dump("最后一次递归")
+		//g.Dump("allIdsArr", allIdsArr)
+		var arrayStr []string
+		for _, id := range allIdsArr {
+			arrayStr = append(arrayStr, gconv.String(id))
 		}
-		if len(childrenIdAndMeArr) == 0 {
-			childrenIdAndMeArr = append(childrenIdAndMeArr, originId)
-			g.Dump("0", childrenIdAndMeArr)
-		} else {
-			for _, id := range newChannelIds {
-				childrenIdAndMeArr = append(childrenIdAndMeArr, id)
-			}
-			g.Dump("1", childrenIdAndMeArr)
+		//g.Dump("arrayStr", arrayStr)
+		_, err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, originChannelId).Data(g.Map{
+			dao.CmsChannel.Columns().ChildrenIds: gstr.Implode(",", arrayStr),
+		}).Update()
+		if err != nil {
+			return nil, err
 		}
-		_, err = Channel().updateChildren(ctx, newChannelIds, childrenIdAndMeArr)
+		return
+	} else {
+		for _, id := range arrayInt {
+			allIdsArr = append(allIdsArr, id)
+		}
+		//g.Dump("allIdsArr", allIdsArr)
+		_, err = Channel().updateChildren(ctx, originChannelId, arrayInt, allIdsArr, level+1)
 		if err != nil {
 			return nil, err
 		}
