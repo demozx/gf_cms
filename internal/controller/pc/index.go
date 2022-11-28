@@ -28,12 +28,14 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	go func() (out []*model.ChannelPcNavigationListItem) {
 		navigation, _ := service.Channel().PcNavigation(ctx)
 		chNavigation <- navigation
+		close(chNavigation)
 		return
 	}()
 	// banner广告
 	go func() (out []*entity.CmsAd) {
 		adList, _ := service.AdList().PcHomeListByChannelId(ctx, pcHomeAdChannelId)
 		chAdList <- adList
+		close(chAdList)
 		return
 	}()
 	navigation := <-chNavigation
