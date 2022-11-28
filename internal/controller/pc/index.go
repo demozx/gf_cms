@@ -25,14 +25,14 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	var chNavigation = make(chan []*model.ChannelPcNavigationListItem, 1)
 	var chAdList = make(chan []*entity.CmsAd, 1)
 	// 导航栏
-	go func() (out []*model.ChannelPcNavigationListItem) {
+	go func() {
 		navigation, _ := service.Channel().PcNavigation(ctx)
 		chNavigation <- navigation
 		close(chNavigation)
 		return
 	}()
 	// banner广告
-	go func() (out []*entity.CmsAd) {
+	go func() {
 		adList, _ := service.AdList().PcHomeListByChannelId(ctx, pcHomeAdChannelId)
 		chAdList <- adList
 		close(chAdList)
