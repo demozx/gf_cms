@@ -27,14 +27,12 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	// 导航栏
 	go func() (out []*model.ChannelPcNavigationListItem) {
 		navigation, _ := service.Channel().PcNavigation(ctx)
-		//g.Dump("navigation", navigation)
 		chNavigation <- navigation
 		return
 	}()
 	// banner广告
 	go func() (out []*entity.CmsAd) {
 		adList, _ := service.AdList().PcHomeListByChannelId(ctx, pcHomeAdChannelId)
-		//g.Dump("adList", adList)
 		chAdList <- adList
 		return
 	}()
