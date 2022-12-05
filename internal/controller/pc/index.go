@@ -3,6 +3,7 @@ package pc
 import (
 	"context"
 	"gf_cms/api/pc"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
@@ -15,15 +16,11 @@ var (
 
 type cIndex struct{}
 
-const (
-	// pc首页广告分类id
-	pcHomeAdChannelId = 1
-)
-
 // Index pc首页
 func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes, err error) {
 	var chNavigation = make(chan []*model.ChannelPcNavigationListItem, 1)
 	var chAdList = make(chan []*entity.CmsAd, 1)
+	var chScrollNewsList = make(chan []*model.ArticleListItem, 1)
 	// 导航栏
 	go func() {
 		navigation, _ := service.Channel().PcNavigation(ctx)
@@ -33,16 +30,24 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	}()
 	// banner广告
 	go func() {
-		adList, _ := service.AdList().PcHomeListByChannelId(ctx, pcHomeAdChannelId)
+		adList, _ := service.AdList().PcHomeListByChannelId(ctx, consts.PcHomeAdChannelId)
 		chAdList <- adList
 		close(chAdList)
 		return
 	}()
-	navigation := <-chNavigation
-	adList := <-chAdList
+	// 首页新闻滚动
+	go func() {
+		scrollNewsList, _ := service.Article().PcHomeScrollNewsBelongChannelId(ctx, consts.PcHomeScrollNewsBelongChannelId)
+		chScrollNewsList <- scrollNewsList
+		close(chScrollNewsList)
+		return
+	}()
+	// 首页3个随机图集
+
 	err = service.Response().View(ctx, "/pc/index/index.html", g.Map{
-		"navigation": navigation,
-		"adList":     adList,
+		"navigation":     <-chNavigation,
+		"adList":         <-chAdList,
+		"scrollNewsList": <-chScrollNewsList,
 	})
 	if err != nil {
 		return nil, err

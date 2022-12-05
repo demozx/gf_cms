@@ -15,6 +15,7 @@ import (
 	_ "gf_cms/internal/logic/channel"
 	_ "gf_cms/internal/logic/channelModel"
 	_ "gf_cms/internal/logic/friendlyLink"
+	_ "gf_cms/internal/logic/genUrl"
 	_ "gf_cms/internal/logic/guestbook"
 	_ "gf_cms/internal/logic/image"
 	_ "gf_cms/internal/logic/menu"

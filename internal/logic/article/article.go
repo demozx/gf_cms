@@ -3,6 +3,7 @@ package article
 import (
 	"context"
 	"gf_cms/api/backendApi"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
@@ -10,7 +11,9 @@ import (
 	"github.com/gogf/gf/v2/encoding/ghtml"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
+	"github.com/gogf/gf/v2/util/gconv"
 	"regexp"
 	"sync"
 )
@@ -487,5 +490,42 @@ func (s *sArticle) BackendRecycleBinArticleBatchRestore(ctx context.Context, ids
 	if err != nil {
 		return nil, err
 	}
+	return
+}
+
+func (s *sArticle) PcHomeScrollNewsBelongChannelId(ctx context.Context, belongChannelId int) (out []*model.ArticleListItem, err error) {
+	startTime := gtime.TimestampMilli()
+	// 获取当前栏目的所有子栏目
+	strChildrenIds, err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, belongChannelId).Value(dao.CmsChannel.Columns().ChildrenIds)
+	if err != nil {
+		return nil, err
+	}
+	// 将所有子栏目转成数组
+	arrChildrenIds := gstr.Split(strChildrenIds.String(), ",")
+	// 定义新的全部栏目id数组
+	var arrAllIds = make([]int, 0)
+	// 将当前指定的最完成栏目id存进数组
+	arrAllIds = append(arrAllIds, belongChannelId)
+	for _, id := range arrChildrenIds {
+		// 将子栏目id们存进数组
+		arrAllIds = append(arrAllIds, gconv.Int(id))
+	}
+	var scrollNewsList []*model.ArticleListItem
+	err = dao.CmsArticle.Ctx(ctx).
+		WhereIn(dao.CmsArticle.Columns().ChannelId, arrAllIds).
+		OrderRandom().
+		Limit(50).
+		Fields(dao.CmsArticle.Columns().Id, dao.CmsArticle.Columns().Title).
+		Scan(&scrollNewsList)
+	if err != nil {
+		return nil, err
+	}
+	for key, item := range scrollNewsList {
+		detailUrl, _ := service.GenUrl().DetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(item.Id))
+		scrollNewsList[key].Router = detailUrl
+	}
+	out = scrollNewsList
+	endTime := gtime.TimestampMilli()
+	g.Log().Info(ctx, "pc首页新闻滚动耗时"+gconv.String(endTime-startTime)+"毫秒")
 	return
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 )
@@ -35,12 +36,15 @@ func Channel() *sChannel {
 
 // PcNavigation pc导航
 func (s *sChannel) PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error) {
+	startTime := gtime.TimestampMilli()
 	var allOpenChannel []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Status, 1).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allOpenChannel)
 	if err != nil {
 		return nil, err
 	}
-	out, err = Channel().pcNavigationListRecursion(allOpenChannel, 0, 0)
+	out, err = Channel().pcNavigationListRecursion(ctx, allOpenChannel, 0, 0)
+	endTime := gtime.TimestampMilli()
+	g.Log().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 	return
 }
 
@@ -102,7 +106,7 @@ func (s *sChannel) channelBackendApiListRecursion(list []*model.ChannelBackendAp
 	return res
 }
 
-func (s *sChannel) pcNavigationListRecursion(list []*entity.CmsChannel, pid int, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error) {
+func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity.CmsChannel, pid int, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error) {
 	var res []*model.ChannelPcNavigationListItem
 	for _, item := range list {
 		var naviItem *model.ChannelPcNavigationListItem
@@ -117,7 +121,7 @@ func (s *sChannel) pcNavigationListRecursion(list []*entity.CmsChannel, pid int,
 			naviItem.ChannelRouter = item.ListRouter
 			if gstr.Contains(item.ListRouter, "{id}") {
 				// 如果路由中有{id}，替换id
-				naviItem.ChannelRouter = gstr.Replace(item.ListRouter, "{id}", gconv.String(item.Id), 1)
+				naviItem.ChannelRouter, _ = service.GenUrl().ChannelUrl(ctx, item.ListRouter, gconv.Int(item.Id))
 			}
 		case 3:
 			// 链接类型
@@ -137,7 +141,7 @@ func (s *sChannel) pcNavigationListRecursion(list []*entity.CmsChannel, pid int,
 			// todo 顶级栏目高亮
 		}
 		if item.Pid == pid {
-			naviItem.Children, err = Channel().pcNavigationListRecursion(list, gvar.New(item.Id).Int(), currChannelId)
+			naviItem.Children, err = Channel().pcNavigationListRecursion(ctx, list, gvar.New(item.Id).Int(), currChannelId)
 			if naviItem.Children == nil {
 				naviItem.Children = make([]*model.ChannelPcNavigationListItem, 0)
 			} else {

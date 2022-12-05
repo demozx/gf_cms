@@ -18,6 +18,7 @@ type ArticleListItem struct {
 	ChannelName string      `json:"channel_name"`
 	Keyword     string      `json:"keyword"`     // 关键词
 	Description string      `json:"description"` // 文章摘要
+	Model       string      `json:"model"`       // 模型
 	Flag        string      `json:"flag"`        // 属性(p:带图,r:推荐,t:置顶)
 	Status      int         `json:"status"`      // 审核状态(1:已审核,0:未审核)
 	Thumb       string      `json:"thumb"`       // 缩略图
@@ -26,6 +27,7 @@ type ArticleListItem struct {
 	Sort        int         `json:"sort"`        // 排序
 	CreatedAt   *gtime.Time `json:"created_at"`  // 发布时间
 	UpdatedAt   *gtime.Time `json:"updated_at"`  // 编辑时间
+	Router      string      `json:"router"`
 }
 
 type ArticleGetListOutPut struct {
