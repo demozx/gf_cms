@@ -121,7 +121,7 @@ func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity
 			naviItem.ChannelRouter = item.ListRouter
 			if gstr.Contains(item.ListRouter, "{id}") {
 				// 如果路由中有{id}，替换id
-				naviItem.ChannelRouter, _ = service.GenUrl().ChannelUrl(ctx, item.ListRouter, gconv.Int(item.Id))
+				naviItem.ChannelRouter, _ = service.GenUrl().PcChannelUrl(ctx, item.ListRouter, gconv.Int(item.Id))
 			}
 		case 3:
 			// 链接类型

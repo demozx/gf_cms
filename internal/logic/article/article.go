@@ -521,7 +521,7 @@ func (s *sArticle) PcHomeScrollNewsBelongChannelId(ctx context.Context, belongCh
 		return nil, err
 	}
 	for key, item := range scrollNewsList {
-		detailUrl, _ := service.GenUrl().DetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(item.Id))
+		detailUrl, _ := service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(item.Id))
 		scrollNewsList[key].Router = detailUrl
 	}
 	out = scrollNewsList

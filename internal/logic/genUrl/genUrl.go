@@ -30,8 +30,8 @@ func GenUrl() *sGenUrl {
 	return &insGenUrl
 }
 
-// ChannelUrl 生成栏目url
-func (s *sGenUrl) ChannelUrl(ctx context.Context, router string, channelId int) (newRouter string, err error) {
+// PcChannelUrl 生成pc栏目url
+func (s *sGenUrl) PcChannelUrl(ctx context.Context, router string, channelId int) (newRouter string, err error) {
 	// 路由中有{id}字符串，替换成指定的id
 	if gstr.Contains(router, "{id}") {
 		newRouter = gstr.Replace(router, "{id}", gconv.String(channelId), 1)
@@ -41,8 +41,8 @@ func (s *sGenUrl) ChannelUrl(ctx context.Context, router string, channelId int) 
 	return
 }
 
-// DetailUrl 生成详情页url
-func (s *sGenUrl) DetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error) {
+// PcDetailUrl 生成pc详情页url
+func (s *sGenUrl) PcDetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error) {
 	cacheKey := util.PublicCachePreFix + ":detail_url:" + model + ":" + gconv.String(detailId)
 	exists, err := g.Redis().Do(ctx, "EXISTS", cacheKey)
 	if exists.Bool() {

@@ -11,8 +11,8 @@ import (
 
 type (
 	IGenUrl interface {
-		ChannelUrl(ctx context.Context, router string, channelId int) (newRouter string, err error)
-		DetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error)
+		PcChannelUrl(ctx context.Context, router string, channelId int) (newRouter string, err error)
+		PcDetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error)
 	}
 )
 
