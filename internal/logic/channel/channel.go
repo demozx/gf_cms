@@ -352,7 +352,17 @@ func (s *sChannel) GetOneById(ctx context.Context, id int) (out *entity.CmsChann
 	return channel, nil
 }
 
+// BackendModelMap 后台数据模型映射
 func (s *sChannel) BackendModelMap() map[string]string {
+	return map[string]string{
+		consts.ChannelModelArticle:    consts.ChannelModelArticleDesc,
+		consts.ChannelModelImage:      consts.ChannelModelImageDesc,
+		consts.ChannelModelSinglePage: consts.ChannelModelSinglePageDesc,
+	}
+}
+
+// BackendModelCanAddMap 后台允许填充列表内容的数据模型映射
+func (s *sChannel) BackendModelCanAddMap() map[string]string {
 	return map[string]string{
 		consts.ChannelModelArticle: consts.ChannelModelArticleDesc,
 		consts.ChannelModelImage:   consts.ChannelModelImageDesc,

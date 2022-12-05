@@ -39,7 +39,7 @@ func (s *sChannelModel) ModelArticle(ctx context.Context, in *backend.ChannelMod
 	err = service.Response().View(ctx, "backend/channel_model/article/index.html", g.Map{
 		"channelTree": channelTree,
 		"modelType":   in.Type,
-		"modelMap":    service.Channel().BackendModelMap(),
+		"modelMap":    service.Channel().BackendModelCanAddMap(),
 		"channelId":   in.ChannelId,
 		"withTab":     in.WithTab,
 		"deleteType":  recycleBin,
@@ -57,7 +57,7 @@ func (s *sChannelModel) ModelImage(ctx context.Context, in *backend.ChannelModel
 	err = service.Response().View(ctx, "backend/channel_model/image/index.html", g.Map{
 		"channelTree": channelTree,
 		"modelType":   in.Type,
-		"modelMap":    service.Channel().BackendModelMap(),
+		"modelMap":    service.Channel().BackendModelCanAddMap(),
 		"channelId":   in.ChannelId,
 		"withTab":     in.WithTab,
 	})

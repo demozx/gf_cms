@@ -57,9 +57,9 @@ ${include "/pc/public/head_index.html" .}$
             <div class="pgcnm fl">新闻滚动：</div>
             <div class="bd fl">
                 <ul class="infoList">
-                    {volist name='rollNews' id='vo'}
-                    <li><a href="{$vo.art_url}">{$vo.title}</a></li>
-                    {/volist}
+                    ${ range $key, $item := .scrollNewsList }$
+                    <li><a href="${ $item.Router }$">${ $item.Title }$</a></li>
+                    ${ end }$
                 </ul>
             </div>
             <div class="c"></div>

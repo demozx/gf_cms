@@ -12,6 +12,10 @@ const (
 	ChannelModelImage = "image"
 	// ChannelModelImageDesc 图集模型描述
 	ChannelModelImageDesc = "图集"
+	// ChannelModelSinglePage 单页模型
+	ChannelModelSinglePage = "single_page"
+	// ChannelModelSinglePageDesc 单页模型描述
+	ChannelModelSinglePageDesc = "单页"
 
 	// PcHomeAdChannelId pc首页广告分类id
 	PcHomeAdChannelId = 1

@@ -24,6 +24,7 @@ type (
 		BackendApiEdit(ctx context.Context, in *backendApi.ChannelEditApiReq) (out *backendApi.ChannelEditApiRes, err error)
 		GetOneById(ctx context.Context, id int) (out *entity.CmsChannel, err error)
 		BackendModelMap() map[string]string
+		BackendModelCanAddMap() map[string]string
 		BackendModelDesc(model string) string
 		UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error)
 	}

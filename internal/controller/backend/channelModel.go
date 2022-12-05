@@ -23,9 +23,12 @@ func (c *cChannelModel) Index(ctx context.Context, req *backend.ChannelModelInde
 		_, err = service.ChannelModel().ModelArticle(ctx, req)
 	} else if req.Type == consts.ChannelModelImage {
 		_, err = service.ChannelModel().ModelImage(ctx, req)
+	} else if req.Type == consts.ChannelModelSinglePage {
+		return nil, gerror.New("单页模型不支持添加内容")
 	} else {
 		return nil, gerror.New("未知的模型")
 	}
+
 	if err != nil {
 		return nil, err
 	}
