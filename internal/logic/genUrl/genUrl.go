@@ -4,6 +4,7 @@ import (
 	"context"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/util"
+	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -31,12 +32,40 @@ func GenUrl() *sGenUrl {
 }
 
 // PcChannelUrl 生成pc栏目url
-func (s *sGenUrl) PcChannelUrl(ctx context.Context, router string, channelId int) (newRouter string, err error) {
-	// 路由中有{id}字符串，替换成指定的id
-	if gstr.Contains(router, "{id}") {
-		newRouter = gstr.Replace(router, "{id}", gconv.String(channelId), 1)
+// channelId 栏目id
+// router 可穿空，非空可减少一次查询
+func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string) (newRouter string, err error) {
+	if router != "" {
+		// 路由中有{id}字符串，替换成指定的id
+		if gstr.Contains(router, "{id}") {
+			newRouter = gstr.Replace(router, "{id}", gconv.String(channelId), 1)
+		} else {
+			newRouter = router
+		}
 	} else {
-		newRouter = router
+		var channel *model.ChannelPcNavigationListItem
+		err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channel)
+		if err != nil {
+			return "", err
+		}
+		// 根据频道类型处理url
+		switch channel.Type {
+		case 1:
+			// 频道类型
+			fallthrough
+		case 2:
+			// 单页类型
+			newRouter = channel.ListRouter
+			if gstr.Contains(channel.ListRouter, "{id}") {
+				// 如果路由中有{id}，替换id
+				newRouter, _ = service.GenUrl().PcChannelUrl(ctx, gconv.Int(channel.Id), channel.ListRouter)
+			}
+		case 3:
+			// 链接类型
+			newRouter = channel.LinkUrl
+		default:
+			return "", gerror.New("栏目类型错误")
+		}
 	}
 	return
 }
