@@ -495,24 +495,14 @@ func (s *sArticle) BackendRecycleBinArticleBatchRestore(ctx context.Context, ids
 
 func (s *sArticle) PcHomeScrollNewsBelongChannelId(ctx context.Context, belongChannelId int) (out []*model.ArticleListItem, err error) {
 	startTime := gtime.TimestampMilli()
-	// 获取当前栏目的所有子栏目
-	strChildrenIds, err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, belongChannelId).Value(dao.CmsChannel.Columns().ChildrenIds)
+	arrAllIds, err := service.Channel().GetChildIds(ctx, belongChannelId, true)
 	if err != nil {
 		return nil, err
-	}
-	// 将所有子栏目转成数组
-	arrChildrenIds := gstr.Split(strChildrenIds.String(), ",")
-	// 定义新的全部栏目id数组
-	var arrAllIds = make([]int, 0)
-	// 将当前指定的最完成栏目id存进数组
-	arrAllIds = append(arrAllIds, belongChannelId)
-	for _, id := range arrChildrenIds {
-		// 将子栏目id们存进数组
-		arrAllIds = append(arrAllIds, gconv.Int(id))
 	}
 	var scrollNewsList []*model.ArticleListItem
 	err = dao.CmsArticle.Ctx(ctx).
 		WhereIn(dao.CmsArticle.Columns().ChannelId, arrAllIds).
+		Where(dao.CmsArticle.Columns().Status, 1).
 		OrderRandom().
 		Limit(50).
 		Fields(dao.CmsArticle.Columns().Id, dao.CmsArticle.Columns().Title).

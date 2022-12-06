@@ -21,6 +21,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	var chNavigation = make(chan []*model.ChannelPcNavigationListItem, 1)
 	var chAdList = make(chan []*entity.CmsAd, 1)
 	var chScrollNewsList = make(chan []*model.ArticleListItem, 1)
+	var chRecommendGoodsList = make(chan []*model.ImageListItem, 1)
 	// 导航栏
 	go func() {
 		navigation, _ := service.Channel().PcNavigation(ctx)
@@ -35,19 +36,24 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		close(chAdList)
 		return
 	}()
-	// 首页新闻滚动
+	// 首页50个随机新闻滚动
 	go func() {
 		scrollNewsList, _ := service.Article().PcHomeScrollNewsBelongChannelId(ctx, consts.PcHomeScrollNewsBelongChannelId)
 		chScrollNewsList <- scrollNewsList
 		close(chScrollNewsList)
 		return
 	}()
-	// 首页3个随机图集
-
+	// 首页3个随机产品图集
+	go func() {
+		recommendGoodsList, _ := service.Image().PcHomeRecommendGoodsList(ctx, consts.PcHomeRecommendGoodsChannelId)
+		chRecommendGoodsList <- recommendGoodsList
+		return
+	}()
 	err = service.Response().View(ctx, "/pc/index/index.html", g.Map{
-		"navigation":     <-chNavigation,
-		"adList":         <-chAdList,
-		"scrollNewsList": <-chScrollNewsList,
+		"navigation":         <-chNavigation,
+		"adList":             <-chAdList,
+		"scrollNewsList":     <-chScrollNewsList,
+		"recommendGoodsList": <-chRecommendGoodsList,
 	})
 	if err != nil {
 		return nil, err

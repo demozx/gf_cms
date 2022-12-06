@@ -27,6 +27,7 @@ type (
 		BackendModelCanAddMap() map[string]string
 		BackendModelDesc(model string) string
 		UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error)
+		GetChildIds(ctx context.Context, belongChannelId int, andMe bool) (arrAllIds []int, err error)
 	}
 )
 

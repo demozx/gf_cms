@@ -30,6 +30,7 @@ type ImageListItem struct {
 	FlagT         int         `json:"flag_t" description:"flag置顶"`
 	ImagesStr     string      `json:"images_str"`
 	ImagesSrcJson string      `json:"images_src_json"`
+	Router        string      `json:"router"`
 }
 
 type ImagesSrcArrItem struct {

@@ -479,3 +479,27 @@ func (s *sChannel) updateChildren(ctx context.Context, originChannelId int, last
 	}
 	return
 }
+
+// GetChildIds 获取当前栏目的所有子栏目id
+// belongChannelId 当前栏目
+// andMe 是否包含自身id
+func (s *sChannel) GetChildIds(ctx context.Context, belongChannelId int, andMe bool) (arrAllIds []int, err error) {
+	// 获取当前栏目的所有子栏目
+	strChildrenIds, err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, belongChannelId).Value(dao.CmsChannel.Columns().ChildrenIds)
+	if err != nil {
+		return nil, err
+	}
+	// 将所有子栏目转成数组
+	arrChildrenIds := gstr.SplitAndTrim(strChildrenIds.String(), ",")
+	if belongChannelId > 0 && andMe {
+		// 将当前指定的最完成栏目id存进数组
+		arrAllIds = append(arrAllIds, belongChannelId)
+	}
+	if len(arrChildrenIds) > 0 {
+		for _, id := range arrChildrenIds {
+			// 将子栏目id们存进数组
+			arrAllIds = append(arrAllIds, gconv.Int(id))
+		}
+	}
+	return
+}

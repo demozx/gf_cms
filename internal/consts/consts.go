@@ -21,4 +21,6 @@ const (
 	PcHomeAdChannelId = 1
 	// PcHomeScrollNewsBelongChannelId pc首页滚动新闻隶属分类id
 	PcHomeScrollNewsBelongChannelId = 1
+	// PcHomeRecommendGoodsChannelId pc首页推荐产品
+	PcHomeRecommendGoodsChannelId = 4
 )

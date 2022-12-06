@@ -3,13 +3,16 @@ package image
 import (
 	"context"
 	"gf_cms/api/backendApi"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
+	"github.com/gogf/gf/v2/util/gconv"
 	"sync"
 )
 
@@ -282,6 +285,25 @@ func (s *sImage) BackendRecycleBinImageBatchRestore(ctx context.Context, ids []i
 	return
 }
 
+func (s *sImage) PcHomeRecommendGoodsList(ctx context.Context, belongChannelId int) (out []*model.ImageListItem, err error) {
+	startTime := gtime.TimestampMilli()
+	arrAllIds, err := service.Channel().GetChildIds(ctx, belongChannelId, true)
+	if err != nil {
+		return nil, err
+	}
+	err = dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().ChannelId, arrAllIds).OrderRandom().Where(dao.CmsImage.Columns().Status, 1).Scan(&out)
+	if err != nil {
+		return nil, err
+	}
+	for key, item := range out {
+		out[key], _ = service.Image().BuildThumb(ctx, item)
+		out[key].Router, _ = service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
+	}
+	endTime := gtime.TimestampMilli()
+	g.Log().Info(ctx, "pc首页随机产品耗时"+gconv.String(endTime-startTime)+"毫秒")
+	return
+}
+
 func (s *sImage) buildImagesArr(ctx context.Context, images string) (imagesArr []string, err error) {
 	imagesArr = gstr.SplitAndTrim(images, ",")
 	return
@@ -375,5 +397,16 @@ func (s *sImage) singleStatus(ctx context.Context, id int, targetType string) (o
 	if err != nil {
 		return nil, err
 	}
+	return
+}
+
+// BuildThumb 构建图集缩略图
+func (s *sImage) BuildThumb(ctx context.Context, in *model.ImageListItem) (out *model.ImageListItem, err error) {
+	if len(in.Images) > 0 {
+		in.Thumb = service.Util().ImageOrDefaultUrl(in.Images[0])
+	} else {
+		in.Thumb = service.Util().ImageOrDefaultUrl("")
+	}
+	out = in
 	return
 }
