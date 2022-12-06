@@ -28,6 +28,7 @@ type (
 		BackendModelDesc(model string) string
 		UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error)
 		GetChildIds(ctx context.Context, belongChannelId int, andMe bool) (arrAllIds []int, err error)
+		PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error)
 	}
 )
 

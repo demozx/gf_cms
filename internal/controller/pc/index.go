@@ -23,6 +23,8 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	var chScrollNewsList = make(chan []*model.ArticleListItem, 1)
 	var chRecommendGoodsList = make(chan []*model.ImageListItem, 1)
 	var chRecommendGoodsMoreUrl = make(chan string, 1)
+	var chAbout = make(chan *entity.CmsChannel, 1)
+	var chAboutMoreUrl = make(chan string, 1)
 	// 导航栏
 	go func() {
 		navigation, _ := service.Channel().PcNavigation(ctx)
@@ -53,12 +55,26 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		chRecommendGoodsMoreUrl <- recommendGoodsMoreUrl
 		close(chRecommendGoodsMoreUrl)
 	}()
+	// 关于我们
+	go func() {
+		about, _ := service.Channel().PcHomeAboutChannel(ctx, consts.AbortChannelId)
+		chAbout <- about
+		close(chAbout)
+	}()
+	// 关于我们查看更多
+	go func() {
+		aboutMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.AbortChannelId, "")
+		chAboutMoreUrl <- aboutMoreUrl
+		close(chAboutMoreUrl)
+	}()
 	err = service.Response().View(ctx, "/pc/index/index.html", g.Map{
 		"navigation":            <-chNavigation,            // 导航
 		"adList":                <-chAdList,                // banner
 		"scrollNewsList":        <-chScrollNewsList,        // 新闻滚动
 		"recommendGoodsList":    <-chRecommendGoodsList,    // 推荐商品
 		"recommendGoodsMoreUrl": <-chRecommendGoodsMoreUrl, // 推荐商品查看更多
+		"about":                 <-chAbout,                 // 关于我们
+		"aboutMoreUrl":          <-chAboutMoreUrl,          // 关于我们查看更多
 	})
 	if err != nil {
 		return nil, err

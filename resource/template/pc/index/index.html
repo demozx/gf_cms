@@ -93,14 +93,12 @@ ${include "/pc/public/head_index.html" .}$
         <div>关于我们</div>
     </div>
     <div class="text">
-        <div class="title">{$sys_config.corporate_name}</div>
-        <a href="{:getCatUrl(91)}" title="查看详细" class="more">查看详细</a>
-        <div class="msg">
-            {:mb_substr(html2text($about.cat_description),0,217)}...
-        </div>
+        <div class="title">${ system_setting `corporate_name` }$</div>
+        <a href="${ .aboutMoreUrl }$" title="查看详细" class="more">查看详细</a>
+        <div class="msg">${ .about.Description|text|substr 0 200 }$...</div>
     </div>
     <div class="img atm_mid">
-        <img src="/images/loading.gif" data-original="{$about.cat_pic}" alt="{$sys_config.webname}"/>
+        <img src="/images/loading.gif" data-original="${ .about.Thumb }$" alt="${ system_setting `corporate_name` }$"/>
     </div>
 
 </div>

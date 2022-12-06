@@ -503,3 +503,15 @@ func (s *sChannel) GetChildIds(ctx context.Context, belongChannelId int, andMe b
 	}
 	return
 }
+
+// PcHomeAboutChannel 关于我们
+func (s *sChannel) PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error) {
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channel)
+	if err != nil {
+		return nil, err
+	}
+	if channel == nil {
+		return nil, gerror.New("栏目不存在")
+	}
+	return
+}
