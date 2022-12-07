@@ -8,6 +8,7 @@ package service
 import (
 	"context"
 	"gf_cms/api/backendApi"
+	"gf_cms/internal/model/entity"
 )
 
 type (
@@ -17,6 +18,7 @@ type (
 		BackendApiEdit(ctx context.Context, req *backendApi.FriendlyLinkEditReq) (res interface{}, err error)
 		BackendApiSort(ctx context.Context, req *backendApi.FriendlyLinkSortReq) (res interface{}, err error)
 		BackendApiBatchDelete(ctx context.Context, req *backendApi.FriendlyLinkBatchDeleteReq) (res interface{}, err error)
+		PcList(ctx context.Context) (out []*entity.CmsFriendlyLink, err error)
 	}
 )
 
