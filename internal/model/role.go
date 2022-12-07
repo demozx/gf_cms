@@ -39,5 +39,5 @@ type RoleGetListOutput struct {
 	List  []RoleListItem `json:"list" description:"列表"`
 	Page  int            `json:"page" description:"分页码"`
 	Size  int            `json:"size" description:"分页数量"`
-	Total int            `json:"total" description:"数据总数"`
+	Total int64          `json:"total" description:"数据总数"`
 }

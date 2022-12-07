@@ -11,7 +11,7 @@ import (
 
 type (
 	IPageInfo interface {
-		LayUiPageInfo(ctx context.Context, total int, size int) string
+		LayUiPageInfo(ctx context.Context, total int64, size int) string
 	}
 )
 

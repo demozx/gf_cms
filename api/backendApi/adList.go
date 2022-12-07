@@ -14,7 +14,7 @@ type AdListIndexRes struct {
 	List  []*model.AdListItem `json:"list" description:"后台广告列表接口结果"`
 	Page  int                 `json:"page" description:"分页码"`
 	Size  int                 `json:"size" description:"分页数量"`
-	Total int                 `json:"total" description:"数据总数"`
+	Total int64               `json:"total" description:"数据总数"`
 }
 
 type AdListAddReq struct {
