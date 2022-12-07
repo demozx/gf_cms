@@ -3,7 +3,7 @@ package model
 import "gf_cms/internal/model/entity"
 
 type ChannelPcNavigationListItem struct {
-	*entity.CmsChannel
+	entity.CmsChannel
 	HasChildren   bool                           `json:"has_children"`   // 是否有子集
 	Children      []*ChannelPcNavigationListItem `json:"children"`       // 子集
 	ChannelRouter string                         `json:"channel_router"` // 处理后的可以直接使用的url地址

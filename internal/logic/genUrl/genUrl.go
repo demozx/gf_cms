@@ -48,6 +48,9 @@ func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string
 		if err != nil {
 			return "", err
 		}
+		if channel == nil {
+			return "", gerror.New("栏目不存在")
+		}
 		// 根据频道类型处理url
 		switch channel.Type {
 		case 1:
