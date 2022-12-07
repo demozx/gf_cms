@@ -11,7 +11,6 @@ import (
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 )
@@ -36,15 +35,12 @@ func Channel() *sChannel {
 
 // PcNavigation pc导航
 func (s *sChannel) PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error) {
-	startTime := gtime.TimestampMilli()
 	var allOpenChannel []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Status, 1).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allOpenChannel)
 	if err != nil {
 		return nil, err
 	}
 	out, err = Channel().pcNavigationListRecursion(ctx, allOpenChannel, 0, 0)
-	endTime := gtime.TimestampMilli()
-	g.Log().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 	return
 }
 

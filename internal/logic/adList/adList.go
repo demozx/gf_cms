@@ -9,10 +9,8 @@ import (
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
-	"github.com/gogf/gf/v2/util/gconv"
 )
 
 type (
@@ -36,7 +34,6 @@ func init() {
 }
 
 func (s *sAdList) PcHomeListByChannelId(ctx context.Context, channelId int) (out []*entity.CmsAd, err error) {
-	startTime := gtime.TimestampMilli()
 	var adList []*entity.CmsAd
 	m := dao.CmsAd.Ctx(ctx)
 	err = m.Where(dao.CmsAd.Columns().Status, 1).
@@ -57,8 +54,6 @@ func (s *sAdList) PcHomeListByChannelId(ctx context.Context, channelId int) (out
 		}
 	}
 	out = adList
-	endTime := gtime.TimestampMilli()
-	g.Log().Info(ctx, "pc首页广告耗时"+gconv.String(endTime-startTime)+"毫秒")
 	return
 }
 

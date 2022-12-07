@@ -10,7 +10,6 @@ import (
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 	"sync"
@@ -286,7 +285,6 @@ func (s *sImage) BackendRecycleBinImageBatchRestore(ctx context.Context, ids []i
 }
 
 func (s *sImage) PcHomeRecommendGoodsList(ctx context.Context, belongChannelId int) (out []*model.ImageListItem, err error) {
-	startTime := gtime.TimestampMilli()
 	arrAllIds, err := service.Channel().GetChildIds(ctx, belongChannelId, true)
 	if err != nil {
 		return nil, err
@@ -299,8 +297,6 @@ func (s *sImage) PcHomeRecommendGoodsList(ctx context.Context, belongChannelId i
 		out[key], _ = service.Image().BuildThumb(ctx, item)
 		out[key].Router, _ = service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
 	}
-	endTime := gtime.TimestampMilli()
-	g.Log().Info(ctx, "pc首页随机产品耗时"+gconv.String(endTime-startTime)+"毫秒")
 	return
 }
 

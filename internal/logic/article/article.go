@@ -11,7 +11,6 @@ import (
 	"github.com/gogf/gf/v2/encoding/ghtml"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 	"regexp"
@@ -494,7 +493,6 @@ func (s *sArticle) BackendRecycleBinArticleBatchRestore(ctx context.Context, ids
 }
 
 func (s *sArticle) PcHomeScrollNewsBelongChannelId(ctx context.Context, belongChannelId int) (out []*model.ArticleListItem, err error) {
-	startTime := gtime.TimestampMilli()
 	arrAllIds, err := service.Channel().GetChildIds(ctx, belongChannelId, true)
 	if err != nil {
 		return nil, err
@@ -515,7 +513,5 @@ func (s *sArticle) PcHomeScrollNewsBelongChannelId(ctx context.Context, belongCh
 		scrollNewsList[key].Router = detailUrl
 	}
 	out = scrollNewsList
-	endTime := gtime.TimestampMilli()
-	g.Log().Info(ctx, "pc首页新闻滚动耗时"+gconv.String(endTime-startTime)+"毫秒")
 	return
 }
