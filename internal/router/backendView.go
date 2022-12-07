@@ -1,6 +1,7 @@
 package router
 
 import (
+	"gf_cms/internal/consts"
 	"gf_cms/internal/controller/backend"
 	"gf_cms/internal/logic/middleware"
 	"gf_cms/internal/logic/util"
@@ -12,6 +13,12 @@ import (
 // 后台view路由分组
 func backendViewHandle(s *ghttp.Server) {
 	var backendGroup = util.Util().BackendGroup()
+	s.Group("", func(group *ghttp.RouterGroup) {
+		// 自定义SwaggerUI
+		group.GET("/swagger", func(r *ghttp.Request) {
+			r.Response.Write(consts.SwaggerUIPageContent)
+		})
+	})
 	s.Group(backendGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
