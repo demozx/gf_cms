@@ -82,6 +82,9 @@ func (s *sGenUrl) PcDetailUrl(ctx context.Context, model string, detailId int) (
 		if err != nil {
 			panic(err)
 		}
+		if value == nil {
+			return "", nil
+		}
 		return value.String(), nil
 	}
 	var channel *entity.CmsChannel
