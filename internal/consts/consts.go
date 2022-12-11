@@ -21,10 +21,10 @@ const (
 	PcHomeAdChannelId = 1
 	// PcHomeScrollNewsBelongChannelId pc首页滚动新闻隶属栏目id
 	PcHomeScrollNewsBelongChannelId = 1
-	// GoodsChannelId 产品栏目id
-	GoodsChannelId = 4
-	// AbortChannelId 关于我们栏目id
-	AbortChannelId = 8
+	// GoodsChannelTid 产品栏目顶级id
+	GoodsChannelTid = 4
+	// AbortChannelTid 关于我们栏目顶级id
+	AbortChannelTid = 8
 
 	// SwaggerUIPageContent 自定义SwaggerUI
 	SwaggerUIPageContent = `

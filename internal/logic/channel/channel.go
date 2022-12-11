@@ -300,14 +300,32 @@ func (s *sChannel) BackendModelDesc(model string) string {
 
 // UpdateRelation 更新关联关系字段
 func (s *sChannel) UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error) {
-	_, err = Channel().updateTid(ctx, originChannelId, 0)
+	var chUpdateRelation = make(chan int, 2)
+	go func() {
+		_, err := Channel().updateTid(ctx, originChannelId, 0)
+		if err != nil {
+			return
+		}
+		chUpdateRelation <- 1
+	}()
+	<-chUpdateRelation
+	channelTid := 0
+	value, err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, originChannelId).Value(dao.CmsChannel.Columns().Tid)
 	if err != nil {
 		return nil, err
 	}
-	_, err = Channel().updateChildren(ctx, originChannelId, []int{}, []int{}, 0)
-	if err != nil {
-		return nil, err
+	if !value.IsEmpty() {
+		channelTid = value.Int()
 	}
+	go func() {
+		_, err := Channel().updateChildren(ctx, channelTid, []int{}, []int{}, 0)
+		if err != nil {
+			return
+		}
+		chUpdateRelation <- 1
+	}()
+	<-chUpdateRelation
+	defer close(chUpdateRelation)
 	return
 }
 
@@ -342,13 +360,13 @@ func (s *sChannel) updateTid(ctx context.Context, originChannelId int, pid int) 
 	return
 }
 
-func (s *sChannel) updateChildren(ctx context.Context, originChannelId int, lastBatchIdsArr []int, allIdsArr []int, level int) (out interface{}, err error) {
+func (s *sChannel) updateChildren(ctx context.Context, channelTid int, lastBatchIdsArr []int, allIdsArr []int, level int) (out interface{}, err error) {
 	//g.Dump("idsArr", lastBatchIdsArr)
 	//g.Dump("allIdsArr", allIdsArr)
 	//g.Dump("level", level)
 	var array []*gvar.Var
 	if level == 0 {
-		array, err = dao.CmsChannel.Ctx(ctx).WhereIn(dao.CmsChannel.Columns().Pid, []int{originChannelId}).Array(dao.CmsChannel.Columns().Id)
+		array, err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Pid, channelTid).Array(dao.CmsChannel.Columns().Id)
 	} else {
 		array, err = dao.CmsChannel.Ctx(ctx).WhereIn(dao.CmsChannel.Columns().Pid, lastBatchIdsArr).Array(dao.CmsChannel.Columns().Id)
 	}
@@ -366,7 +384,7 @@ func (s *sChannel) updateChildren(ctx context.Context, originChannelId int, last
 	if level == 0 {
 		// 第一次
 		//g.Dump("第一次递归")
-		_, err = Channel().updateChildren(ctx, originChannelId, arrayInt, arrayInt, level+1)
+		_, err = Channel().updateChildren(ctx, channelTid, arrayInt, arrayInt, level+1)
 		if err != nil {
 			return nil, err
 		}
@@ -380,7 +398,7 @@ func (s *sChannel) updateChildren(ctx context.Context, originChannelId int, last
 			arrayStr = append(arrayStr, gconv.String(id))
 		}
 		//g.Dump("arrayStr", arrayStr)
-		_, err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, originChannelId).Data(g.Map{
+		_, err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelTid).Data(g.Map{
 			dao.CmsChannel.Columns().ChildrenIds: gstr.Implode(",", arrayStr),
 		}).Update()
 		if err != nil {
@@ -392,7 +410,7 @@ func (s *sChannel) updateChildren(ctx context.Context, originChannelId int, last
 			allIdsArr = append(allIdsArr, id)
 		}
 		//g.Dump("allIdsArr", allIdsArr)
-		_, err = Channel().updateChildren(ctx, originChannelId, arrayInt, allIdsArr, level+1)
+		_, err = Channel().updateChildren(ctx, channelTid, arrayInt, allIdsArr, level+1)
 		if err != nil {
 			return nil, err
 		}

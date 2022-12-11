@@ -42,7 +42,11 @@ func (s *sArticle) BackendArticleGetList(ctx context.Context, in *model.ArticleG
 		Size: in.Size,
 	}
 	if in.ChannelId > 0 {
-		m = m.Where("article.channel_id", in.ChannelId)
+		allIds, err := service.Channel().GetChildIds(ctx, in.ChannelId, true)
+		if err != nil {
+			return nil, err
+		}
+		m = m.WhereIn("article.channel_id", allIds)
 	}
 	if in.StartAt != "" && in.EndAt != "" {
 		m = m.WhereGTE("article.created_at", in.StartAt).WhereLT("article.created_at", in.EndAt)

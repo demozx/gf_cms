@@ -25,3 +25,29 @@ func (s *sImage) PcHomeRecommendGoodsList(ctx context.Context, belongChannelId i
 	}
 	return
 }
+
+func (s *sImage) PcHomeGoodsGroupList(ctx context.Context, belongChannelId int) (out [][]*model.ImageListItem, err error) {
+	arrAllIds, err := service.Channel().GetChildIds(ctx, belongChannelId, false)
+	var list = make([][]*model.ImageListItem, 0)
+	for _, channelId := range arrAllIds {
+		var imageListItems []*model.ImageListItem
+		err := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().ChannelId, channelId).
+			Where(dao.CmsImage.Columns().Status, 1).
+			OrderAsc(dao.CmsImage.Columns().Sort).
+			OrderDesc(dao.CmsImage.Columns().Id).
+			Limit(3).
+			Scan(&imageListItems)
+		if err != nil {
+			return nil, err
+		}
+		if len(imageListItems) > 0 {
+			for key, item := range imageListItems {
+				imageListItems[key].Router, _ = service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
+				imageListItems[key], _ = service.Image().BuildThumb(ctx, item)
+			}
+		}
+		list = append(list, imageListItems)
+	}
+	out = list
+	return
+}

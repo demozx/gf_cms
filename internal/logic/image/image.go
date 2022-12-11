@@ -40,7 +40,11 @@ func (s *sImage) BackendImageGetList(ctx context.Context, in *model.ImageGetList
 		Size: in.Size,
 	}
 	if in.ChannelId > 0 {
-		m = m.Where("image.channel_id", in.ChannelId)
+		allIds, err := service.Channel().GetChildIds(ctx, in.ChannelId, true)
+		if err != nil {
+			return nil, err
+		}
+		m = m.WhereIn("image.channel_id", allIds)
 	}
 	if in.StartAt != "" && in.EndAt != "" {
 		m = m.WhereGTE("image.created_at", in.StartAt).WhereLT("image.created_at", in.EndAt)

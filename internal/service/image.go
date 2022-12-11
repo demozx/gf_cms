@@ -26,6 +26,7 @@ type (
 		BackendRecycleBinImageBatchRestore(ctx context.Context, ids []int) (out interface{}, err error)
 		BuildThumb(ctx context.Context, in *model.ImageListItem) (out *model.ImageListItem, err error)
 		PcHomeRecommendGoodsList(ctx context.Context, belongChannelId int) (out []*model.ImageListItem, err error)
+		PcHomeGoodsGroupList(ctx context.Context, belongChannelId int) (out [][]*model.ImageListItem, err error)
 	}
 )
 

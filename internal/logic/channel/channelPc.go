@@ -37,9 +37,32 @@ func (s *sChannel) PcHomeAboutChannel(ctx context.Context, channelId int) (chann
 	return
 }
 
+func (s *sChannel) PcHomeGoodsChannelList(ctx context.Context, channelId int) (out []*model.ChannelPcNavigationListItem, err error) {
+	var list []*entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).
+		Where(dao.CmsChannel.Columns().Tid, channelId).
+		Where(dao.CmsChannel.Columns().Status, 1).
+		OrderAsc(dao.CmsChannel.Columns().Sort).
+		OrderDesc(dao.CmsChannel.Columns().Id).
+		Scan(&list)
+	if err != nil {
+		return nil, err
+	}
+	if list == nil {
+		return nil, gerror.New("栏目数据不存在")
+	}
+	res, err := Channel().pcNavigationListRecursion(ctx, list, channelId, 0)
+	if err != nil {
+		return nil, err
+	}
+	out = res
+	return
+}
+
+// 递归生成pc导航
 func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity.CmsChannel, pid int, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error) {
 	var res []*model.ChannelPcNavigationListItem
-	cacheKey := util.PublicCachePreFix + ":pc_navigation_list:pid_0_curr_channel_id_" + gconv.String(currChannelId)
+	cacheKey := util.PublicCachePreFix + ":pc_navigation_list:pid_" + gconv.String(pid) + "_curr_channel_id_" + gconv.String(currChannelId)
 	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
 	if err != nil {
 		return nil, err

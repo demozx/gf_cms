@@ -29,6 +29,7 @@ type (
 		GetChildIds(ctx context.Context, belongChannelId int, andMe bool) (arrAllIds []int, err error)
 		PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error)
 		PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error)
+		PcHomeGoodsChannelList(ctx context.Context, channelId int) (out []*model.ChannelPcNavigationListItem, err error)
 	}
 )
 

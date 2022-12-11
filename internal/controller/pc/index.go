@@ -28,6 +28,8 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	var chAbout = make(chan *entity.CmsChannel, 1)
 	var chAboutMoreUrl = make(chan string, 1)
 	var chFriendlyLinkList = make(chan []*entity.CmsFriendlyLink, 1)
+	var chPcHomeGoodsChannelList = make(chan []*model.ChannelPcNavigationListItem, 1)
+	var chPcHomeGoodsGroupList = make(chan [][]*model.ImageListItem, 1)
 	// 导航栏
 	go func() {
 		startTime := gtime.TimestampMilli()
@@ -58,7 +60,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	// 首页3个随机产品图集
 	go func() {
 		startTime := gtime.TimestampMilli()
-		recommendGoodsList, _ := service.Image().PcHomeRecommendGoodsList(ctx, consts.GoodsChannelId)
+		recommendGoodsList, _ := service.Image().PcHomeRecommendGoodsList(ctx, consts.GoodsChannelTid)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页随机产品耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chRecommendGoodsList <- recommendGoodsList
@@ -67,7 +69,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	// 推荐商品查看更多
 	go func() {
 		startTime := gtime.TimestampMilli()
-		recommendGoodsMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GoodsChannelId, "")
+		recommendGoodsMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GoodsChannelTid, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页推荐商品查看更多耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chRecommendGoodsMoreUrl <- recommendGoodsMoreUrl
@@ -76,7 +78,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	// 关于我们
 	go func() {
 		startTime := gtime.TimestampMilli()
-		about, _ := service.Channel().PcHomeAboutChannel(ctx, consts.AbortChannelId)
+		about, _ := service.Channel().PcHomeAboutChannel(ctx, consts.AbortChannelTid)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页关于我们耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chAbout <- about
@@ -85,7 +87,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	// 关于我们查看更多
 	go func() {
 		startTime := gtime.TimestampMilli()
-		aboutMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.AbortChannelId, "")
+		aboutMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.AbortChannelTid, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页关于我们查看更多耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chAboutMoreUrl <- aboutMoreUrl
@@ -93,7 +95,21 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	}()
 	// 产品中心栏目列表
 	go func() {
-
+		startTime := gtime.TimestampMilli()
+		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelTid)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc首页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chPcHomeGoodsChannelList <- goodsChannelList
+		defer close(chPcHomeGoodsChannelList)
+	}()
+	// 产品中心产品分组列表
+	go func() {
+		startTime := gtime.TimestampMilli()
+		goodsGroupList, _ := service.Image().PcHomeGoodsGroupList(ctx, consts.GoodsChannelTid)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc首页产品中心产品分组列表耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chPcHomeGoodsGroupList <- goodsGroupList
+		defer close(chPcHomeGoodsGroupList)
 	}()
 	// 友情链接
 	go func() {
@@ -105,14 +121,16 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chFriendlyLinkList)
 	}()
 	err = service.Response().View(ctx, "/pc/index/index.html", g.Map{
-		"navigation":            <-chNavigation,            // 导航
-		"adList":                <-chAdList,                // banner
-		"scrollNewsList":        <-chScrollNewsList,        // 新闻滚动
-		"recommendGoodsList":    <-chRecommendGoodsList,    // 推荐商品
-		"recommendGoodsMoreUrl": <-chRecommendGoodsMoreUrl, // 推荐商品查看更多
-		"about":                 <-chAbout,                 // 关于我们
-		"aboutMoreUrl":          <-chAboutMoreUrl,          // 关于我们查看更多
-		"friendlyLinkList":      <-chFriendlyLinkList,      // 友情链接列表
+		"navigation":            <-chNavigation,             // 导航
+		"adList":                <-chAdList,                 // banner
+		"scrollNewsList":        <-chScrollNewsList,         // 新闻滚动
+		"recommendGoodsList":    <-chRecommendGoodsList,     // 推荐商品
+		"recommendGoodsMoreUrl": <-chRecommendGoodsMoreUrl,  // 推荐商品查看更多
+		"about":                 <-chAbout,                  // 关于我们
+		"aboutMoreUrl":          <-chAboutMoreUrl,           // 关于我们查看更多
+		"friendlyLinkList":      <-chFriendlyLinkList,       // 友情链接列表
+		"goodsChannelList":      <-chPcHomeGoodsChannelList, // 产品中心栏目列表
+		"goodsGroupList":        <-chPcHomeGoodsGroupList,   // 产品中心产品分组列表
 	})
 	if err != nil {
 		return nil, err

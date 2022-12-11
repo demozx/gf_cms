@@ -135,27 +135,27 @@ ${include "/pc/public/head_index.html" .}$
     </div>
     <div class="cont">
         <ul class="lnav">
-            {volist name='productList' id='vo'}
+            ${ range $key, $item := .goodsChannelList }$
             <li>
-                <a href="{:getCatUrl($vo.cat_id)}">
-                    <div class="title">{$vo.cat_name}</div>
+                <a href="${ $item.ChannelRouter }$">
+                    <div class="title">${ $item.Name }$</div>
                 </a>
             </li>
-            {/volist}
+            ${ end }$
         </ul>
-        {volist name='groupProductList' id='item'}
+        ${ range $key, $items := .goodsGroupList }$
         <ul class="rdata">
-            {volist name='item' id='vo'}
+            ${ range $key, $item := $items }$
             <li>
-                <a href="{$vo.art_url}" title="{$vo.title}" target="_self">
-                    <div class="img"><img src="/resource/images/loading.gif" data-original="{$vo.litpic}"
-                                          alt="{$vo.title}"/></div>
-                    <div class="title">{$vo.title}</div>
+                <a href="${ $item.Router }$" title="${ $item.Title }$" target="_self">
+                    <div class="img"><img src="/resource/images/loading.gif" data-original="${ $item.Thumb }$"
+                                          alt="${ $item.Title }$"/></div>
+                    <div class="title">${ $item.Title }$</div>
                 </a>
             </li>
-            {/volist}
+            ${ end }$
         </ul>
-        {/volist}
+        ${ end }$
     </div>
 </div>
 <!-- 产品中心 end -->
