@@ -43,7 +43,7 @@ ${include "/pc/public/head_index.html" .}$
             ${ range $key, $item := .adList }$
             <li>
                 <a href="${$item.Link}$">
-                    <img src="${ $item.ImgUrl }$"/>
+                    <img src="/resource/images/loading.gif" data-original="${ $item.ImgUrl }$"/>
                 </a>
             </li>
             ${ end }$
@@ -73,14 +73,16 @@ ${include "/pc/public/head_index.html" .}$
         ${ range $key, $item := .recommendGoodsList }$
         <li>
             <a href="${ $item.Router }$" title="${ $item.Title }$">
-                <div class="img"><img src="/resource/images/loading.gif" data-original="${ $item.Thumb }$" alt="${ $item.Title }$"/></div>
+                <div class="img"><img src="/resource/images/loading.gif" data-original="${ $item.Thumb }$"
+                                      alt="${ $item.Title }$"/></div>
                 <div class="title">${ $item.Title }$</div>
             </a>
         </li>
         ${ end }$
         <li>
             <a href="${ .recommendGoodsMoreUrl }$" title="查看更多">
-                <div class="imgb"><img src="/resource/images/loading.gif" data-original="/resource/pc/images/more_products.gif" alt="查看更多"/></div>
+                <div class="imgb"><img src="/resource/images/loading.gif"
+                                       data-original="/resource/pc/images/more_products.gif" alt="查看更多"/></div>
                 <div class="title">查看更多</div>
             </a>
         </li>
@@ -98,7 +100,8 @@ ${include "/pc/public/head_index.html" .}$
         <div class="msg">${ .about.Description|text|substr 0 200 }$...</div>
     </div>
     <div class="img atm_mid">
-        <img src="/resource/images/loading.gif" data-original="${ .about.Thumb }$" alt="${ system_setting `corporate_name` }$"/>
+        <img src="/resource/images/loading.gif" data-original="${ .about.Thumb }$"
+             alt="${ system_setting `corporate_name` }$"/>
     </div>
 
 </div>
@@ -115,7 +118,8 @@ ${include "/pc/public/head_index.html" .}$
             <div class="search">
                 <form name="formsearch" action="{:url('home.search')}" id="search_form">
                     <div class="s_c">
-                        <input type="text" name="keyword" id="q" value="" class="search_text" placeholder="请输入关键词！"/>
+                        <input type="text" name="keyword" id="q" value="" class="search_text"
+                               placeholder="请输入关键词！"/>
                     </div>
                     <input type="button" class="search_submit" value=""/>
                 </form>
@@ -144,7 +148,8 @@ ${include "/pc/public/head_index.html" .}$
             {volist name='item' id='vo'}
             <li>
                 <a href="{$vo.art_url}" title="{$vo.title}" target="_self">
-                    <div class="img"><img src="/resource/images/loading.gif" data-original="{$vo.litpic}" alt="{$vo.title}"/></div>
+                    <div class="img"><img src="/resource/images/loading.gif" data-original="{$vo.litpic}"
+                                          alt="{$vo.title}"/></div>
                     <div class="title">{$vo.title}</div>
                 </a>
             </li>

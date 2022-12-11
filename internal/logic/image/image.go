@@ -3,7 +3,6 @@ package image
 import (
 	"context"
 	"gf_cms/api/backendApi"
-	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
@@ -11,7 +10,6 @@ import (
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
-	"github.com/gogf/gf/v2/util/gconv"
 	"sync"
 )
 
@@ -280,22 +278,6 @@ func (s *sImage) BackendRecycleBinImageBatchRestore(ctx context.Context, ids []i
 	})
 	if err != nil {
 		return nil, err
-	}
-	return
-}
-
-func (s *sImage) PcHomeRecommendGoodsList(ctx context.Context, belongChannelId int) (out []*model.ImageListItem, err error) {
-	arrAllIds, err := service.Channel().GetChildIds(ctx, belongChannelId, true)
-	if err != nil {
-		return nil, err
-	}
-	err = dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().ChannelId, arrAllIds).OrderRandom().Where(dao.CmsImage.Columns().Status, 1).Scan(&out)
-	if err != nil {
-		return nil, err
-	}
-	for key, item := range out {
-		out[key], _ = service.Image().BuildThumb(ctx, item)
-		out[key].Router, _ = service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
 	}
 	return
 }

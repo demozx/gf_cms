@@ -58,7 +58,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	// 首页3个随机产品图集
 	go func() {
 		startTime := gtime.TimestampMilli()
-		recommendGoodsList, _ := service.Image().PcHomeRecommendGoodsList(ctx, consts.PcHomeRecommendGoodsChannelId)
+		recommendGoodsList, _ := service.Image().PcHomeRecommendGoodsList(ctx, consts.GoodsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页随机产品耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chRecommendGoodsList <- recommendGoodsList
@@ -67,7 +67,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	// 推荐商品查看更多
 	go func() {
 		startTime := gtime.TimestampMilli()
-		recommendGoodsMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.PcHomeRecommendGoodsChannelId, "")
+		recommendGoodsMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GoodsChannelId, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页推荐商品查看更多耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chRecommendGoodsMoreUrl <- recommendGoodsMoreUrl
@@ -90,6 +90,10 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		g.Log().Async().Info(ctx, "pc首页关于我们查看更多耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chAboutMoreUrl <- aboutMoreUrl
 		defer close(chAboutMoreUrl)
+	}()
+	// 产品中心栏目列表
+	go func() {
+
 	}()
 	// 友情链接
 	go func() {

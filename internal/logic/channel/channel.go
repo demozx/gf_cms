@@ -33,35 +33,6 @@ func Channel() *sChannel {
 	return &insChannel
 }
 
-// PcNavigation pc导航
-func (s *sChannel) PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error) {
-	var allOpenChannel []*entity.CmsChannel
-	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Status, 1).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allOpenChannel)
-	if err != nil {
-		return nil, err
-	}
-	out, err = Channel().pcNavigationListRecursion(ctx, allOpenChannel, 0, 0)
-	return
-}
-
-func (s *sChannel) pcChannelTree(ctx context.Context, channelId int) (out []*model.ChannelBackendApiListItem, err error) {
-	var allChannels []*entity.CmsChannel
-	err = dao.CmsChannel.Ctx(ctx).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allChannels)
-	if err != nil {
-		return nil, err
-	}
-	var channelBackendApiList []*model.ChannelBackendApiListItem
-	err = gconv.Scan(allChannels, &channelBackendApiList)
-	if err != nil {
-		return nil, err
-	}
-	channelBackendApiList = Channel().channelBackendApiListRecursion(channelBackendApiList, 0)
-	//g.Dump(channelBackendApiList)
-	channelBackendApiList = Channel().backendTree(channelBackendApiList, channelId)
-
-	return channelBackendApiList, err
-}
-
 // BackendApiIndex 获取后台栏目分类接口数据
 func (s *sChannel) BackendApiIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error) {
 	var allChannels []*entity.CmsChannel
@@ -100,53 +71,6 @@ func (s *sChannel) channelBackendApiListRecursion(list []*model.ChannelBackendAp
 		}
 	}
 	return res
-}
-
-func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity.CmsChannel, pid int, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error) {
-	var res []*model.ChannelPcNavigationListItem
-	for _, item := range list {
-		var naviItem *model.ChannelPcNavigationListItem
-		_ = gconv.Scan(item, &naviItem)
-		// 根据频道类型处理url
-		switch item.Type {
-		case 1:
-			// 频道类型
-			fallthrough
-		case 2:
-			// 单页类型
-			naviItem.ChannelRouter = item.ListRouter
-			if gstr.Contains(item.ListRouter, "{id}") {
-				// 如果路由中有{id}，替换id
-				naviItem.ChannelRouter, _ = service.GenUrl().PcChannelUrl(ctx, gconv.Int(item.Id), item.ListRouter)
-			}
-		case 3:
-			// 链接类型
-			naviItem.ChannelRouter = item.LinkUrl
-		default:
-			return nil, gerror.New("栏目类型错误")
-		}
-		// 处理链接打开方式
-		naviItem.TriggerType = "_self"
-		if item.LinkTrigger == 1 {
-			// 新标签打开
-			naviItem.TriggerType = "_blank"
-		}
-		// 判断是否是当前栏目
-		if currChannelId > 0 && currChannelId == gconv.Int(naviItem.Id) {
-			naviItem.Current = true
-			// todo 顶级栏目高亮
-		}
-		if item.Pid == pid {
-			naviItem.Children, err = Channel().pcNavigationListRecursion(ctx, list, gvar.New(item.Id).Int(), currChannelId)
-			if naviItem.Children == nil {
-				naviItem.Children = make([]*model.ChannelPcNavigationListItem, 0)
-			} else {
-				naviItem.HasChildren = true
-			}
-			res = append(res, naviItem)
-		}
-	}
-	return res, err
 }
 
 // BackendChannelTree 获取栏目分类树
@@ -496,18 +420,6 @@ func (s *sChannel) GetChildIds(ctx context.Context, belongChannelId int, andMe b
 			// 将子栏目id们存进数组
 			arrAllIds = append(arrAllIds, gconv.Int(id))
 		}
-	}
-	return
-}
-
-// PcHomeAboutChannel 关于我们
-func (s *sChannel) PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error) {
-	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channel)
-	if err != nil {
-		return nil, err
-	}
-	if channel == nil {
-		return nil, gerror.New("栏目不存在")
 	}
 	return
 }

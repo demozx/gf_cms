@@ -33,7 +33,7 @@ func GenUrl() *sGenUrl {
 
 // PcChannelUrl 生成pc栏目url
 // channelId 栏目id
-// router 可穿空，非空可减少一次查询
+// router 可传空，非空可减少一次查询
 func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string) (newRouter string, err error) {
 	if router != "" {
 		// 路由中有{id}字符串，替换成指定的id
@@ -44,12 +44,28 @@ func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string
 		}
 	} else {
 		var channel *model.ChannelPcNavigationListItem
-		err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channel)
+		cacheKey := util.PublicCachePreFix + ":channel_url:" + gconv.String(channelId)
+		exists, err := g.Redis().Do(ctx, "EXISTS", cacheKey)
 		if err != nil {
 			return "", err
 		}
-		if channel == nil {
-			return "", gerror.New("栏目不存在")
+		if exists.Bool() {
+			cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+			if err != nil {
+				return "", err
+			}
+			if cached.String() == "" {
+				return "", gerror.New("栏目不存在")
+			}
+			return cached.String(), nil
+		} else {
+			err := dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channel)
+			if err != nil {
+				return "", err
+			}
+			if channel == nil {
+				return "", gerror.New("栏目不存在")
+			}
 		}
 		// 根据频道类型处理url
 		switch channel.Type {
@@ -69,6 +85,10 @@ func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string
 		default:
 			return "", gerror.New("栏目类型错误")
 		}
+		_, err = g.Redis().Do(ctx, "SET", cacheKey, newRouter)
+		if err != nil {
+			return "", err
+		}
 	}
 	return
 }
@@ -76,16 +96,12 @@ func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string
 // PcDetailUrl 生成pc详情页url
 func (s *sGenUrl) PcDetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error) {
 	cacheKey := util.PublicCachePreFix + ":detail_url:" + model + ":" + gconv.String(detailId)
-	exists, err := g.Redis().Do(ctx, "EXISTS", cacheKey)
-	if exists.Bool() {
-		value, err := g.Redis().Do(ctx, "GET", cacheKey)
-		if err != nil {
-			panic(err)
-		}
-		if value == nil {
-			return "", nil
-		}
-		return value.String(), nil
+	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	if err != nil {
+		panic(err)
+	}
+	if !cached.IsEmpty() {
+		return cached.String(), nil
 	}
 	var channel *entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Model, model).Fields(dao.CmsChannel.Columns().Model, dao.CmsChannel.Columns().DetailRouter).Scan(&channel)

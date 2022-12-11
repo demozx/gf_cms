@@ -122,15 +122,3 @@ func (s *sFriendlyLink) BackendApiBatchDelete(ctx context.Context, req *backendA
 	}
 	return
 }
-
-// PcList pc友情链接
-func (s *sFriendlyLink) PcList(ctx context.Context) (out []*entity.CmsFriendlyLink, err error) {
-	err = dao.CmsFriendlyLink.Ctx(ctx).
-		Where(dao.CmsFriendlyLink.Columns().Status, 1).
-		OrderAsc(dao.CmsFriendlyLink.Columns().Sort).
-		OrderDesc(dao.CmsFriendlyLink.Columns().Id).Scan(&out)
-	if err != nil {
-		return nil, err
-	}
-	return
-}
