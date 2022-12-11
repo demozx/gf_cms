@@ -24,7 +24,9 @@ type (
 		BackendRecycleBinArticleGetList(ctx context.Context, in *model.ArticleGetListInPut) (out *model.ArticleGetListOutPut, err error)
 		BackendRecycleBinArticleBatchDestroy(ctx context.Context, ids []int) (out interface{}, err error)
 		BackendRecycleBinArticleBatchRestore(ctx context.Context, ids []int) (out interface{}, err error)
-		PcHomeScrollNewsBelongChannelId(ctx context.Context, belongChannelId int) (out []*model.ArticleListItem, err error)
+		PcHomeScrollNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
+		PcHomeTextNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
+		PcHomePicNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
 	}
 )
 

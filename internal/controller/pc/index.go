@@ -20,17 +20,8 @@ type cIndex struct{}
 
 // Index pc首页
 func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes, err error) {
-	var chNavigation = make(chan []*model.ChannelPcNavigationListItem, 1)
-	var chAdList = make(chan []*entity.CmsAd, 1)
-	var chScrollNewsList = make(chan []*model.ArticleListItem, 1)
-	var chRecommendGoodsList = make(chan []*model.ImageListItem, 1)
-	var chRecommendGoodsMoreUrl = make(chan string, 1)
-	var chAbout = make(chan *entity.CmsChannel, 1)
-	var chAboutMoreUrl = make(chan string, 1)
-	var chFriendlyLinkList = make(chan []*entity.CmsFriendlyLink, 1)
-	var chPcHomeGoodsChannelList = make(chan []*model.ChannelPcNavigationListItem, 1)
-	var chPcHomeGoodsGroupList = make(chan [][]*model.ImageListItem, 1)
 	// 导航栏
+	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		navigation, _ := service.Channel().PcNavigation(ctx)
@@ -40,6 +31,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chNavigation)
 	}()
 	// banner广告
+	chAdList := make(chan []*entity.CmsAd, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		adList, _ := service.AdList().PcHomeListByChannelId(ctx, consts.PcHomeAdChannelId)
@@ -49,15 +41,17 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chAdList)
 	}()
 	// 首页50个随机新闻滚动
+	chScrollNewsList := make(chan []*model.ArticleListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		scrollNewsList, _ := service.Article().PcHomeScrollNewsBelongChannelId(ctx, consts.PcHomeScrollNewsBelongChannelId)
+		scrollNewsList, _ := service.Article().PcHomeScrollNewsList(ctx, consts.NewsChannelTid)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页新闻滚动耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chScrollNewsList <- scrollNewsList
 		defer close(chScrollNewsList)
 	}()
 	// 首页3个随机产品图集
+	chRecommendGoodsList := make(chan []*model.ImageListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		recommendGoodsList, _ := service.Image().PcHomeRecommendGoodsList(ctx, consts.GoodsChannelTid)
@@ -67,6 +61,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chRecommendGoodsList)
 	}()
 	// 推荐商品查看更多
+	chRecommendGoodsMoreUrl := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		recommendGoodsMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GoodsChannelTid, "")
@@ -76,6 +71,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chRecommendGoodsMoreUrl)
 	}()
 	// 关于我们
+	chAbout := make(chan *entity.CmsChannel, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		about, _ := service.Channel().PcHomeAboutChannel(ctx, consts.AbortChannelTid)
@@ -85,6 +81,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chAbout)
 	}()
 	// 关于我们查看更多
+	chAboutMoreUrl := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		aboutMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.AbortChannelTid, "")
@@ -94,24 +91,57 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chAboutMoreUrl)
 	}()
 	// 产品中心栏目列表
+	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelTid)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
-		chPcHomeGoodsChannelList <- goodsChannelList
-		defer close(chPcHomeGoodsChannelList)
+		chGoodsChannelList <- goodsChannelList
+		defer close(chGoodsChannelList)
 	}()
 	// 产品中心产品分组列表
+	chGoodsGroupList := make(chan [][]*model.ImageListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		goodsGroupList, _ := service.Image().PcHomeGoodsGroupList(ctx, consts.GoodsChannelTid)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页产品中心产品分组列表耗时"+gconv.String(endTime-startTime)+"毫秒")
-		chPcHomeGoodsGroupList <- goodsGroupList
-		defer close(chPcHomeGoodsGroupList)
+		chGoodsGroupList <- goodsGroupList
+		defer close(chGoodsGroupList)
+	}()
+	// 最新资讯查看更多
+	chNewsMoreUrl := make(chan string, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		newsMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.NewsChannelTid, "")
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc首页最新资讯查看更多耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chNewsMoreUrl <- newsMoreUrl
+		defer close(chNewsMoreUrl)
+	}()
+	// 最新资讯-文字新闻
+	chTextNewsList := make(chan []*model.ArticleListItem, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelTid)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc首页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
+		chTextNewsList <- textNewsList
+		defer close(chTextNewsList)
+	}()
+	// 最新资讯-图片新闻
+	chPicNewsList := make(chan []*model.ArticleListItem, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		picNewsList, _ := service.Article().PcHomePicNewsList(ctx, consts.NewsChannelTid)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc首页最新资讯图片新闻列表"+gconv.String(endTime-startTime)+"毫秒")
+		chPicNewsList <- picNewsList
+		defer close(chPicNewsList)
 	}()
 	// 友情链接
+	chFriendlyLinkList := make(chan []*entity.CmsFriendlyLink, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
 		friendlyLinkList, _ := service.FriendlyLink().PcList(ctx)
@@ -120,17 +150,21 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		chFriendlyLinkList <- friendlyLinkList
 		defer close(chFriendlyLinkList)
 	}()
+
 	err = service.Response().View(ctx, "/pc/index/index.html", g.Map{
-		"navigation":            <-chNavigation,             // 导航
-		"adList":                <-chAdList,                 // banner
-		"scrollNewsList":        <-chScrollNewsList,         // 新闻滚动
-		"recommendGoodsList":    <-chRecommendGoodsList,     // 推荐商品
-		"recommendGoodsMoreUrl": <-chRecommendGoodsMoreUrl,  // 推荐商品查看更多
-		"about":                 <-chAbout,                  // 关于我们
-		"aboutMoreUrl":          <-chAboutMoreUrl,           // 关于我们查看更多
-		"friendlyLinkList":      <-chFriendlyLinkList,       // 友情链接列表
-		"goodsChannelList":      <-chPcHomeGoodsChannelList, // 产品中心栏目列表
-		"goodsGroupList":        <-chPcHomeGoodsGroupList,   // 产品中心产品分组列表
+		"navigation":            <-chNavigation,            // 导航
+		"adList":                <-chAdList,                // banner
+		"scrollNewsList":        <-chScrollNewsList,        // 新闻滚动
+		"recommendGoodsList":    <-chRecommendGoodsList,    // 推荐商品
+		"recommendGoodsMoreUrl": <-chRecommendGoodsMoreUrl, // 推荐商品查看更多
+		"about":                 <-chAbout,                 // 关于我们
+		"aboutMoreUrl":          <-chAboutMoreUrl,          // 关于我们查看更多
+		"goodsChannelList":      <-chGoodsChannelList,      // 产品中心栏目列表
+		"goodsGroupList":        <-chGoodsGroupList,        // 产品中心产品分组列表
+		"newsMoreUrl":           <-chNewsMoreUrl,           // 最新资讯查看更多
+		"textNewsList":          <-chTextNewsList,          // 最新资讯-文字新闻
+		"picNewsList":           <-chPicNewsList,           // 最新资讯-文字新闻
+		"friendlyLinkList":      <-chFriendlyLinkList,      // 友情链接列表
 	})
 	if err != nil {
 		return nil, err

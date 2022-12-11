@@ -167,47 +167,47 @@ ${include "/pc/public/head_index.html" .}$
             <div></div>
         </div>
         <div class="en">THE LATESET INFORMATION</div>
-        <a href="{:getCatUrl(92)}" title="查看详细" class="more" target="_self">查看详细</a>
+        <a href="${ .newsMoreUrl }$" title="查看详细" class="more" target="_self">查看详细</a>
     </div>
     <div class="w_980">
         <div class="lnews">
-            {volist name='bottomNews' id='vo'}
-            {if condition='$key===0'}
+            ${ range $key, $item := .textNewsList }$
+            ${ if eq $key 0 }$
             <div class="fir">
                 <div class="time">
-                    <div class="day">{:date('d', strtotime($vo.createdate))}</div>
-                    <div class="year">{:date('Y-m', strtotime($vo.createdate))}</div>
+                    <div class="day">${ $item.CreatedAt | date "d" }$</div>
+                    <div class="year">${ $item.CreatedAt | date "Y-m" }$</div>
                 </div>
                 <div class="info">
-                    <div class="title"><a href="{$vo.art_url}">{$vo.title|msubstr=###,0,20}</a></div>
-                    <div class="msg">{$vo.description|msubstr=###,0,50}...</div>
+                    <div class="title"><a href="${ $item.Router }$">${ $item.Title | substr 0 40 }$</a></div>
+                    <div class="msg">${ $item.Description | substr 0 100 }$...</div>
                 </div>
             </div>
-            {else /}
+            ${ else }$
             <div class="item">
-                <a href="{$vo.art_url}" title="{$vo.title}" class="title">{$vo.title|msubstr=###,0,30}</a>
-                <div class="time">{:date('Y/m/d', strtotime($vo.createdate))}</div>
+                <a href="${ $item.Router }$" title="${ $item.Title }$" class="title">${ $item.Title | substr 0 60 }$</a>
+                <div class="time">${ $item.CreatedAt | date "Y/m/d"  }$</div>
             </div>
-            {/if}
-            {/volist}
+            ${ end }$
+            ${ end }$
         </div>
         <div id="rimgs" class="rimgs">
             <div class="hd">
                 <ul>
-                    {volist name='bottomNewsPic' id='vo'}
-                    <li>{$key+1}</li>
-                    {/volist}
+                    ${ range $key, $item := .picNewsList }$
+                    <li> ${ $key | plus 1 }$</li>
+                    ${ end }$
                 </ul>
             </div>
             <div class="bd" style="background:url('/resource/images/loading.gif');">
                 <ul>
-                    {volist name='bottomNewsPic' id='vo'}
+                    ${ range $key, $item := .picNewsList }$
                     <li>
-                        <a href="{$vo.art_url}" title="{$vo.title}" target="_self">
-                            <img src="/resource/images/loading.gif" data-original="{$vo.litpic}">
+                        <a href="${ $item.Router }$" title="${ $item.Title }$" target="_self">
+                            <img src="/resource/images/loading.gif" data-original="${ $item.Thumb }$">
                         </a>
                     </li>
-                    {/volist}
+                    ${ end }$
                 </ul>
             </div>
         </div>

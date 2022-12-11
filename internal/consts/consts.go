@@ -19,12 +19,12 @@ const (
 
 	// PcHomeAdChannelId pc首页广告分类id
 	PcHomeAdChannelId = 1
-	// PcHomeScrollNewsBelongChannelId pc首页滚动新闻隶属栏目id
-	PcHomeScrollNewsBelongChannelId = 1
 	// GoodsChannelTid 产品栏目顶级id
 	GoodsChannelTid = 4
 	// AbortChannelTid 关于我们栏目顶级id
 	AbortChannelTid = 8
+	// NewsChannelTid 新闻栏目顶级id
+	NewsChannelTid = 1
 
 	// SwaggerUIPageContent 自定义SwaggerUI
 	SwaggerUIPageContent = `
