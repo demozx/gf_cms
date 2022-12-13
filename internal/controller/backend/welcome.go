@@ -5,6 +5,7 @@ import (
 	"gf_cms/api/backend"
 	runtime2 "gf_cms/internal/logic/runtime"
 	"gf_cms/internal/logic/util"
+	"github.com/gogf/gf/v2"
 	"runtime"
 	"time"
 
@@ -28,6 +29,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 		"host_info":             runtime2.Runtime().GetHostInfo(),
 		"cpu_info":              runtime2.Runtime().GetCpuInfo(),
 		"go_version":            runtime.Version(),
+		"gf_version":            gf.VERSION,
 		"go_root":               runtime.GOROOT(),
 		"cpu_num":               runtime.NumCPU(),
 		"ip":                    ip,
