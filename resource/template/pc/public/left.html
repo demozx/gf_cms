@@ -1,0 +1,40 @@
+<div class="sp_left" id="contentLeft">
+  <!-- nav -->
+  <div class="sub_nav sub_common">
+    <div class="con1-left">
+      <div class="con1_class product">
+        <ul id="left-type" class="lnavb ">
+          ${ range $key, $item := .goodsChannelList }$
+          <li>
+            <a href="${ $item.ChannelRouter }$">
+              <div class="title">${ $item.Name }$</div>
+            </a>
+          </li>
+          ${ end }$
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="sub_common">
+    <div class="c_title">
+      <h2>最新资讯</h2>
+      <span>INFORMATION</span> </div>
+    <div class="syl_list sub_common_padding">
+      <ul>
+        ${ range $key, $item := .textNewsList }$
+        <li> <a href="${ $item.Router }$" title="${ $item.Title }$">${ $item.Title | substr 0 40 }$</a> </li>
+        ${ end }$
+      </ul>
+    </div>
+  </div>
+  <!-- 联系我们 -->
+  <div class="sub_content sub_common">
+    <div class="contact_title">
+      <h2>咨询热线</h2>
+      <span>${ system_setting `tel` }$</span> </div>
+    <div class="sub_content_list sub_common_padding"> 地址：${ system_setting `address` }$<br />
+      Q Q：${ system_setting `qq` }$<br />
+      邮箱：${ system_setting `email` }$ <br />
+    </div>
+  </div>
+</div>

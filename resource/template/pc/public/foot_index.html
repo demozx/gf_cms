@@ -12,6 +12,12 @@
 </div>
 <div class="footer_c">
     <div class="footer">
+        <div class="links">
+            <span>友情链接：</span>
+            ${ range $key, $item := .friendlyLinkList }$
+            <a href="${ $item.Url }$" target="_blank">${ $item.Name }$</a>
+            ${ end }$
+        </div>
         <div class="f_content">
             <p>地址：${ system_setting `address` }$ &nbsp;电话：${ system_setting `tel` }$&nbsp;邮箱：${ system_setting
                 `email` }$</p>

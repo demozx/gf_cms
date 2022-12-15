@@ -23,6 +23,11 @@ backend:
           name: tel
           tip: 请输入电话号码
 
+        - title: QQ
+          type: text
+          name: qq
+          tip: 请输入QQ号码
+
         - title: 电子邮箱
           type: text
           name: email

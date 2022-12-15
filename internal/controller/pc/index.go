@@ -24,7 +24,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		navigation, _ := service.Channel().PcNavigation(ctx)
+		navigation, _ := service.Channel().PcNavigation(ctx, 0)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation

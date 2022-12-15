@@ -14,6 +14,8 @@ import (
 
 type (
 	IChannel interface {
+		PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error)
+		PcHomeGoodsChannelList(ctx context.Context, channelId int) (out []*model.ChannelPcNavigationListItem, err error)
 		BackendApiIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)
 		BackendChannelTree(ctx context.Context, selectedId int) (out []*model.ChannelBackendApiListItem, err error)
 		BackendChannelModelTree(ctx context.Context, modelType string, channelId int) (out []*model.ChannelBackendApiListItem, err error)
@@ -27,9 +29,8 @@ type (
 		BackendModelDesc(model string) string
 		UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error)
 		GetChildIds(ctx context.Context, belongChannelId int, andMe bool) (arrAllIds []int, err error)
-		PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error)
-		PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error)
-		PcHomeGoodsChannelList(ctx context.Context, channelId int) (out []*model.ChannelPcNavigationListItem, err error)
+		PcNavigation(ctx context.Context, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error)
+		PcTDK(ctx context.Context, channelId, detailId int) (out []*model.ChannelPcNavigationListItem, err error)
 	}
 )
 

@@ -16,6 +16,7 @@ func pcViewHandle(s *ghttp.Server) {
 			"/article/list/{id}.html":   pc.Article.List,
 			"/news.html":                pc.Article.List,
 			"/article/detail/{id}.html": pc.Article.Detail,
+			"/single_page/{id}.html":    pc.SinglePage.Detail,
 		})
 	})
 }

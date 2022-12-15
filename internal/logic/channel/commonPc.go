@@ -15,47 +15,22 @@ import (
 )
 
 // PcNavigation pc导航
-func (s *sChannel) PcNavigation(ctx context.Context) (out []*model.ChannelPcNavigationListItem, err error) {
+func (s *sChannel) PcNavigation(ctx context.Context, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error) {
 	var allOpenChannel []*entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Status, 1).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allOpenChannel)
 	if err != nil {
 		return nil, err
 	}
-	out, err = Channel().pcNavigationListRecursion(ctx, allOpenChannel, 0, 0)
+	out, err = Channel().pcNavigationListRecursion(ctx, allOpenChannel, 0, currChannelId)
 	return
 }
 
-// PcHomeAboutChannel 关于我们
-func (s *sChannel) PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error) {
-	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channel)
-	if err != nil {
-		return nil, err
-	}
-	if channel == nil {
-		return nil, gerror.New("栏目不存在")
-	}
-	return
-}
-
-func (s *sChannel) PcHomeGoodsChannelList(ctx context.Context, channelId int) (out []*model.ChannelPcNavigationListItem, err error) {
-	var list []*entity.CmsChannel
-	err = dao.CmsChannel.Ctx(ctx).
-		Where(dao.CmsChannel.Columns().Tid, channelId).
-		Where(dao.CmsChannel.Columns().Status, 1).
-		OrderAsc(dao.CmsChannel.Columns().Sort).
-		OrderDesc(dao.CmsChannel.Columns().Id).
-		Scan(&list)
-	if err != nil {
-		return nil, err
-	}
-	if list == nil {
-		return nil, gerror.New("栏目数据不存在")
-	}
-	res, err := Channel().pcNavigationListRecursion(ctx, list, channelId, 0)
-	if err != nil {
-		return nil, err
-	}
-	out = res
+// PcTDK 生成pcTKD
+// channelId 栏目id
+// detailId  内容页id
+func (s *sChannel) PcTDK(ctx context.Context, channelId, detailId int) (out []*model.ChannelPcNavigationListItem, err error) {
+	// 列表页TDK
+	// 详情页TDK
 	return
 }
 
@@ -74,6 +49,8 @@ func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity
 		}
 		return res, nil
 	}
+	// 高亮栏目id
+	highlightChannelId := 0
 	for _, item := range list {
 		var naviItem *model.ChannelPcNavigationListItem
 		_ = gconv.Scan(item, &naviItem)
@@ -104,7 +81,8 @@ func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity
 		// 判断是否是当前栏目
 		if currChannelId > 0 && currChannelId == gconv.Int(naviItem.Id) {
 			naviItem.Current = true
-			// todo 顶级栏目高亮
+			// 顶级栏目高亮
+			highlightChannelId = naviItem.Tid
 		}
 		if item.Pid == pid {
 			naviItem.Children, err = Channel().pcNavigationListRecursion(ctx, list, gvar.New(item.Id).Int(), currChannelId)
@@ -114,6 +92,14 @@ func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity
 				naviItem.HasChildren = true
 			}
 			res = append(res, naviItem)
+		}
+	}
+	if highlightChannelId > 0 {
+		// 设置栏目高亮
+		for key, item := range res {
+			if highlightChannelId == gconv.Int(item.Id) {
+				res[key].Highlight = true
+			}
 		}
 	}
 	_, err = g.Redis().Do(ctx, "SET", cacheKey, res)

@@ -4,7 +4,6 @@ import (
 	"context"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gcode"
-
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -78,5 +77,10 @@ func (s *sResponse) ErrorTpl(ctx context.Context, code int, message string) (err
 	if err != nil {
 		return err
 	}
+	return
+}
+
+func (s *sResponse) Pc404(ctx context.Context) {
+	g.RequestFromCtx(ctx).Response.WriteStatusExit(404, " ")
 	return
 }

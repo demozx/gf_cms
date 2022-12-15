@@ -7,6 +7,7 @@ import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/logic/viewBindFun"
 	"gf_cms/internal/router"
+	"github.com/gogf/gf/v2/net/ghttp"
 	"time"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -39,6 +40,12 @@ var (
 
 			//路由
 			router.Register(s)
+
+			s.BindStatusHandlerByMap(map[int]ghttp.HandlerFunc{
+				404: func(r *ghttp.Request) {
+					_ = r.Response.WriteTpl(consts.Pc404Page)
+				},
+			})
 
 			s.Run()
 
