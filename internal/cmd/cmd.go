@@ -23,32 +23,26 @@ var (
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			// 设置模板标签分隔符
 			g.View().SetDelimiters("${", "}$")
-
 			//设置服务启动时间
 			runtime.Runtime().SetServerStartAt()
 			s := g.Server()
-
 			//session使用redis
 			_ = s.SetConfigWithMap(g.Map{
 				// session一天过期
 				"SessionMaxAge":  time.Hour * 24,
 				"SessionStorage": gsession.NewStorageRedis(g.Redis(), util.Util().ProjectName()+":"+consts.AdminSessionKeyPrefix+":"),
 			})
-
 			//给模板视图全局绑定方法
 			viewBindFun.ViewBindFun().Register()
-
 			//路由
 			router.Register(s)
-
 			s.BindStatusHandlerByMap(map[int]ghttp.HandlerFunc{
 				404: func(r *ghttp.Request) {
+					// 输出pc端404页面
 					_ = r.Response.WriteTpl(consts.Pc404Page)
 				},
 			})
-
 			s.Run()
-
 			return nil
 		},
 	}

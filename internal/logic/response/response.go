@@ -80,6 +80,7 @@ func (s *sResponse) ErrorTpl(ctx context.Context, code int, message string) (err
 	return
 }
 
+// Pc404 pc404页面
 func (s *sResponse) Pc404(ctx context.Context) {
 	g.RequestFromCtx(ctx).Response.WriteStatusExit(404, " ")
 	return
