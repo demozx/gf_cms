@@ -167,6 +167,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		"friendlyLinkList":      <-chFriendlyLinkList,      // 友情链接列表
 	})
 	if err != nil {
+		service.Response().Status500(ctx)
 		return nil, err
 	}
 	return

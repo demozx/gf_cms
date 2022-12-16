@@ -2,12 +2,14 @@ package packed
 
 import (
 	"context"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
+	"github.com/gogf/gf/v2/encoding/ghtml"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
@@ -25,12 +27,90 @@ func (s *sChannel) PcNavigation(ctx context.Context, currChannelId int) (out []*
 	return
 }
 
-// PcTDK 生成pcTKD
+// PcTDK 生成pcTDK
 // channelId 栏目id
 // detailId  内容页id
-func (s *sChannel) PcTDK(ctx context.Context, channelId, detailId int) (out []*model.ChannelPcNavigationListItem, err error) {
-	// 列表页TDK
-	// 详情页TDK
+func (s *sChannel) PcTDK(ctx context.Context, channelId uint, detailId int64) (out *model.ChannelTDK, err error) {
+	// 首页
+	if channelId == 0 {
+		out = &model.ChannelTDK{
+			Title:       service.Util().GetSetting("web_name"),
+			Description: service.Util().GetSetting("description"),
+			Keywords:    service.Util().GetSetting("keywords"),
+		}
+		return
+	}
+	var channelInfo *entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channelInfo)
+	if err != nil {
+		return nil, err
+	}
+	if channelInfo == nil {
+		return nil, gerror.New("栏目不存在")
+	}
+	title := ""
+	description := ""
+	keywords := ""
+	if detailId == 0 {
+		description = gstr.SubStr(ghtml.StripTags(channelInfo.Description), 0, 255)
+	}
+	title, err = Channel().pcChannelTitleRecursion(ctx, gconv.Uint(channelInfo.Pid), channelInfo.Name)
+	if err != nil {
+		return nil, err
+	}
+	// 有详情页，比如文章详情、图集详情，title要拼接上详情页的title，description要使用详情页的，keyword要使用详情页的
+	if detailId > 0 {
+		detailInfo, err := service.ChannelModel().GetDetailOneByChannelId(ctx, channelInfo.Id, detailId)
+		if err != nil {
+			return nil, err
+		}
+		switch channelInfo.Model {
+		case consts.ChannelModelArticle:
+			var article *entity.CmsArticle
+			err := gconv.Scan(detailInfo, &article)
+			if err != nil {
+				return nil, err
+			}
+			title = article.Title + "_" + title
+			keywords = article.Keyword
+			description = article.Description
+		case consts.ChannelModelImage:
+			var image *entity.CmsImage
+			err := gconv.Scan(detailInfo, &image)
+			if err != nil {
+				return nil, err
+			}
+			title = image.Title + "_" + title
+			description = image.Description
+		}
+	}
+	out = &model.ChannelTDK{
+		Title:       title,
+		Keywords:    keywords,
+		Description: description,
+	}
+	return
+}
+
+// pc栏目title递归组成（仅栏目，不含内容详情页的title）
+func (s *sChannel) pcChannelTitleRecursion(ctx context.Context, channelPid uint, title string) (out string, err error) {
+	// 顶级，返回
+	if channelPid == 0 {
+		return title + "-" + service.Util().GetSetting("web_name"), nil
+	}
+	var channelInfo *entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelPid).Scan(&channelInfo)
+	if err != nil {
+		return "", err
+	}
+	if channelInfo == nil {
+		return "", gerror.New("栏目不存在")
+	}
+	title = title + "_" + channelInfo.Name
+	out, err = Channel().pcChannelTitleRecursion(ctx, gconv.Uint(channelInfo.Pid), title)
+	if err != nil {
+		return "", err
+	}
 	return
 }
 

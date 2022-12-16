@@ -3,11 +3,14 @@ package channelModel
 import (
 	"context"
 	"gf_cms/api/backend"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
+	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/util/gconv"
 )
 
 type sChannelModel struct{}
@@ -74,6 +77,43 @@ func (s *sChannelModel) checkChannel(ctx context.Context, channelId int) (out in
 		if one == nil {
 			return nil, gerror.New("频道不存在")
 		}
+	}
+	return
+}
+
+// GetDetailOneByChannelId 根据栏目id，详情页id，获取一条对应的详情
+func (s *sChannelModel) GetDetailOneByChannelId(ctx context.Context, channelId uint, detailId int64) (out interface{}, err error) {
+	var channelInfo *entity.CmsChannel
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channelInfo)
+	if err != nil {
+		return nil, err
+	}
+	if channelInfo == nil {
+		return nil, gerror.New("栏目不存在")
+	}
+	switch channelInfo.Model {
+	case consts.ChannelModelArticle:
+		var article *entity.CmsArticle
+		err := dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, detailId).Scan(&article)
+		if err != nil {
+			return nil, err
+		}
+		if article == nil {
+			return nil, gerror.New("文章不存在 " + gconv.String(detailId))
+		}
+		out = article
+	case consts.ChannelModelImage:
+		var image *entity.CmsImage
+		err := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, detailId).Scan(&image)
+		if err != nil {
+			return nil, err
+		}
+		if image == nil {
+			return nil, gerror.New("图集不存在 " + gconv.String(detailId))
+		}
+		out = image
+	case consts.ChannelModelSinglePage:
+		return nil, gerror.New("单页模型不支持详情内容")
 	}
 	return
 }

@@ -38,3 +38,9 @@ type ChannelTreeItem struct {
 	Name  string `json:"name"`
 	Level int    `json:"level"`
 }
+
+type ChannelTDK struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Keywords    string `json:"keywords"`
+}

@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta http-equiv="Cache-Control" content="no-transform"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <title>{$categoryInfo.cat_name}-{$sys_config.webname}</title>
-    <meta name="description" content="{$categoryInfo.cat_description|raw|html2text|msubstr=###,0,255}"/>
+    <title>${ .tdk.Title }$</title>
+    <meta name="description" content="${ .tdk.Description }$"/>
     <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_cart.css"/>
     <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_atm.css"/>
     <link rel="stylesheet" type="text/css" href="/resource/pc/css/master.css"/>
@@ -75,12 +75,12 @@ ${include "/pc/public/head.html" .}$
         <!-- 内容部分 -->
         <div class="sp_content" id="contentRight">
             <div class="content_com_title">
-                <h2>{$categoryInfo.cat_name}</h2>
+                <h2>${ .channelInfo.Name }$</h2>
                 <div class="bread"> 当前位置：<a href='/'>网站首页</a> > <a href="{$categoryInfo.cat_url}">{$categoryInfo.cat_name}</a>
                 </div>
             </div>
             <div class="content">
-                {$categoryInfo.cat_description|raw}
+                ${ .channelInfo.Description }$
             </div>
         </div>
         <!-- 内容部分 end-->

@@ -15,6 +15,7 @@ type (
 	IChannelModel interface {
 		ModelArticle(ctx context.Context, in *backend.ChannelModelIndexReq) (out []*model.ChannelBackendApiListItem, err error)
 		ModelImage(ctx context.Context, in *backend.ChannelModelIndexReq) (out []*model.ChannelBackendApiListItem, err error)
+		GetDetailOneByChannelId(ctx context.Context, channelId uint, detailId int64) (out interface{}, err error)
 	}
 )
 

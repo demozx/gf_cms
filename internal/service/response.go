@@ -18,7 +18,8 @@ type (
 		SuccessMessageDefault() string
 		View(ctx context.Context, template string, data map[string]interface{}) (err error)
 		ErrorTpl(ctx context.Context, code int, message string) (err error)
-		Pc404(ctx context.Context)
+		Status404(ctx context.Context)
+		Status500(ctx context.Context)
 	}
 )
 
