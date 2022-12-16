@@ -47,6 +47,9 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		defer close(chTDK)
 	}()
 	// 面包屑导航
+	go func() {
+
+	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
 	go func() {

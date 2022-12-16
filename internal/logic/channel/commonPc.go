@@ -52,7 +52,7 @@ func (s *sChannel) PcTDK(ctx context.Context, channelId uint, detailId int64) (o
 	description := ""
 	keywords := ""
 	if detailId == 0 {
-		description = gstr.SubStr(ghtml.StripTags(channelInfo.Description), 0, 255)
+		description = channelInfo.Description
 	}
 	title, err = Channel().pcChannelTitleRecursion(ctx, gconv.Uint(channelInfo.Pid), channelInfo.Name)
 	if err != nil {
@@ -84,6 +84,7 @@ func (s *sChannel) PcTDK(ctx context.Context, channelId uint, detailId int64) (o
 			description = image.Description
 		}
 	}
+	description = gstr.SubStrRune(ghtml.StripTags(description), 0, 255)
 	out = &model.ChannelTDK{
 		Title:       title,
 		Keywords:    keywords,
