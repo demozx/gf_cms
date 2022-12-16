@@ -104,7 +104,7 @@ func (s *sChannel) PcCrumbs(ctx context.Context, channelId uint) (out []*model.C
 	return
 }
 
-// PcChannelTemplate 获取栏目模板
+// PcChannelTemplate 获取pc栏目模板
 func (s *sChannel) PcChannelTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error) {
 	switch channel.Type {
 	case 1:
