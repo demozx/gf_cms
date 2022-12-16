@@ -62,7 +62,7 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		startTime := gtime.TimestampMilli()
 		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelTid)
 		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc首页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
+		g.Log().Async().Info(ctx, "pc栏目页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
 		defer close(chGoodsChannelList)
 	}()
@@ -72,15 +72,20 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		startTime := gtime.TimestampMilli()
 		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelTid)
 		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc首页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
+		g.Log().Async().Info(ctx, "pc栏目页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
 		chTextNewsList <- textNewsList
 		defer close(chTextNewsList)
 	}()
-	var template = "/pc/single_page/detail.html"
-	if len(channelInfo.ListTemplate) > 0 {
-		template = channelInfo.ListTemplate
-	}
-	err = service.Response().View(ctx, template, g.Map{
+	// 获取模板
+	chChannelTemplate := make(chan string, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		channelTemplate, _ := service.Channel().PcChannelTemplate(ctx, channelInfo)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc获取栏目模板"+gconv.String(endTime-startTime)+"毫秒")
+		chChannelTemplate <- channelTemplate
+	}()
+	err = service.Response().View(ctx, <-chChannelTemplate, g.Map{
 		"channelInfo":      channelInfo,          // 栏目信息
 		"navigation":       <-chNavigation,       // 导航
 		"tdk":              <-chTDK,              // TDK

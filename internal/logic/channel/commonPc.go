@@ -104,6 +104,29 @@ func (s *sChannel) PcCrumbs(ctx context.Context, channelId uint) (out []*model.C
 	return
 }
 
+// PcChannelTemplate 获取栏目模板
+func (s *sChannel) PcChannelTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error) {
+	switch channel.Type {
+	case 1:
+		// 频道
+		switch channel.Model {
+		case consts.ChannelModelArticle:
+			// 文章
+			template = "/pc/article/list.html"
+		case consts.ChannelModelImage:
+			// 图集
+			template = "/pc/image/list.html"
+		}
+	case 2:
+		// 单页
+		template = "/pc/single_page/detail.html"
+	}
+	if len(channel.ListTemplate) > 0 {
+		template = channel.ListTemplate
+	}
+	return
+}
+
 // 递归生成面包屑导航
 func (s *sChannel) pcCrumbsRecursion(ctx context.Context, channelId uint, crumbs []*model.ChannelCrumbs) (out []*model.ChannelCrumbs, err error) {
 	if channelId == 0 {
