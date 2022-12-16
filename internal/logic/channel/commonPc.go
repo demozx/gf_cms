@@ -40,6 +40,18 @@ func (s *sChannel) PcTDK(ctx context.Context, channelId uint, detailId int64) (o
 		}
 		return
 	}
+	cacheKey := util.PublicCachePreFix + ":pc_tdk:channel_" + gconv.String(channelId) + "_detail_" + gconv.String(detailId)
+	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	if err != nil {
+		return nil, err
+	}
+	if !cached.IsEmpty() {
+		err := cached.Scan(&out)
+		if err != nil {
+			return nil, err
+		}
+		return out, nil
+	}
 	var channelInfo *entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channelInfo)
 	if err != nil {
@@ -90,6 +102,10 @@ func (s *sChannel) PcTDK(ctx context.Context, channelId uint, detailId int64) (o
 		Keywords:    keywords,
 		Description: description,
 	}
+	_, err = g.Redis().Do(ctx, "SET", cacheKey, out)
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 
@@ -97,10 +113,23 @@ func (s *sChannel) PcTDK(ctx context.Context, channelId uint, detailId int64) (o
 // channelId 栏目id
 // detailId  内容页id
 func (s *sChannel) PcCrumbs(ctx context.Context, channelId uint) (out []*model.ChannelCrumbs, err error) {
+	cacheKey := util.PublicCachePreFix + ":pc_crumbs:channel_" + gconv.String(channelId)
+	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	if err != nil {
+		return nil, err
+	}
+	if !cached.IsEmpty() {
+		err := cached.Scan(&out)
+		if err != nil {
+			return nil, err
+		}
+		return out, nil
+	}
 	out, err = Channel().pcCrumbsRecursion(ctx, channelId, nil)
 	if err != nil {
 		return nil, err
 	}
+	_, err = g.Redis().Do(ctx, "SET", cacheKey, out)
 	return
 }
 
