@@ -43,7 +43,7 @@ ${include "/pc/public/head_index.html" .}$
             ${ range $key, $item := .adList }$
             <li>
                 <a href="${$item.Link}$">
-                    <img src="/resource/images/loading.gif" data-original="${ $item.ImgUrl }$"/>
+                    <img src="${ $item.ImgUrl }$"/>
                 </a>
             </li>
             ${ end }$
