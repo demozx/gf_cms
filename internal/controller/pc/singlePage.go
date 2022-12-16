@@ -47,8 +47,14 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		defer close(chTDK)
 	}()
 	// 面包屑导航
+	chCrumbs := make(chan []*model.ChannelCrumbs, 1)
 	go func() {
-
+		startTime := gtime.TimestampMilli()
+		pcCrumbs, _ := service.Channel().PcCrumbs(ctx, channelInfo.Id)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc面包屑导航耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chCrumbs <- pcCrumbs
+		defer close(chCrumbs)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
@@ -78,6 +84,7 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		"channelInfo":      channelInfo,          // 栏目信息
 		"navigation":       <-chNavigation,       // 导航
 		"tdk":              <-chTDK,              // TDK
+		"crumbs":           <-chCrumbs,           // 面包屑导航
 		"goodsChannelList": <-chGoodsChannelList, // 产品中心栏目列表
 		"textNewsList":     <-chTextNewsList,     // 最新资讯-文字新闻
 	})

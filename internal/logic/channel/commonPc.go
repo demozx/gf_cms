@@ -93,6 +93,47 @@ func (s *sChannel) PcTDK(ctx context.Context, channelId uint, detailId int64) (o
 	return
 }
 
+// PcCrumbs 生成pc面包屑导航
+// channelId 栏目id
+// detailId  内容页id
+func (s *sChannel) PcCrumbs(ctx context.Context, channelId uint) (out []*model.ChannelCrumbs, err error) {
+	out, err = Channel().pcCrumbsRecursion(ctx, channelId, nil)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// 递归生成面包屑导航
+func (s *sChannel) pcCrumbsRecursion(ctx context.Context, channelId uint, crumbs []*model.ChannelCrumbs) (out []*model.ChannelCrumbs, err error) {
+	if channelId == 0 {
+		return crumbs, nil
+	}
+	var channelInfo *model.ChannelPcNavigationListItem
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channelInfo)
+	if err != nil {
+		return nil, err
+	}
+	if channelInfo == nil {
+		return nil, gerror.New("栏目不存在")
+	}
+	channelRouter, err := service.GenUrl().PcChannelUrl(ctx, gconv.Int(channelInfo.Id), "")
+	if err != nil {
+		return nil, err
+	}
+	crumbs = append(crumbs, &model.ChannelCrumbs{
+		Name:   channelInfo.Name,
+		Router: channelRouter,
+	})
+	// 将原面包屑切片倒叙
+	var invertedCrumbs = make([]*model.ChannelCrumbs, 0)
+	for key, _ := range crumbs {
+		index := len(crumbs) - key - 1
+		invertedCrumbs = append(invertedCrumbs, crumbs[index])
+	}
+	return Channel().pcCrumbsRecursion(ctx, gconv.Uint(channelInfo.Pid), invertedCrumbs)
+}
+
 // pc栏目title递归组成（仅栏目，不含内容详情页的title）
 func (s *sChannel) pcChannelTitleRecursion(ctx context.Context, channelPid uint, title string) (out string, err error) {
 	// 顶级，返回

@@ -44,3 +44,8 @@ type ChannelTDK struct {
 	Description string `json:"description"`
 	Keywords    string `json:"keywords"`
 }
+
+type ChannelCrumbs struct {
+	Name   string `json:"name"`
+	Router string `json:"router"`
+}

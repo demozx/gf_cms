@@ -76,7 +76,11 @@ ${include "/pc/public/head.html" .}$
         <div class="sp_content" id="contentRight">
             <div class="content_com_title">
                 <h2>${ .channelInfo.Name }$</h2>
-                <div class="bread"> 当前位置：<a href='/'>网站首页</a> > <a href="{$categoryInfo.cat_url}">{$categoryInfo.cat_name}</a>
+                <div class="bread"> 当前位置：
+                    <a href='/'>网站首页</a>
+                    ${ range $key, $item := .crumbs }$
+                    > <a href="${ $item.Router }$">${ $item.Name }$</a>
+                    ${ end }$
                 </div>
             </div>
             <div class="content">

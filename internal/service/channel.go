@@ -31,6 +31,7 @@ type (
 		GetChildIds(ctx context.Context, belongChannelId int, andMe bool) (arrAllIds []int, err error)
 		PcNavigation(ctx context.Context, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error)
 		PcTDK(ctx context.Context, channelId uint, detailId int64) (out *model.ChannelTDK, err error)
+		PcCrumbs(ctx context.Context, channelId uint) (out []*model.ChannelCrumbs, err error)
 	}
 )
 
