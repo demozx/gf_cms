@@ -178,7 +178,7 @@ func (s *sChannel) pcCrumbsRecursion(ctx context.Context, channelId uint, crumbs
 		Router: channelRouter,
 	})
 	// 将原面包屑切片倒叙
-	var invertedCrumbs = make([]*model.ChannelCrumbs, 0)
+	var invertedCrumbs = make([]*model.ChannelCrumbs, 0, len(crumbs))
 	for key, _ := range crumbs {
 		index := len(crumbs) - key - 1
 		invertedCrumbs = append(invertedCrumbs, crumbs[index])

@@ -34,7 +34,7 @@ func (c *cImage) Index(ctx context.Context, req *backendApi.ImageListReq) (res *
 }
 
 func (c *cImage) Sort(ctx context.Context, req *backendApi.ImageSortReq) (res *backendApi.ImageSortRes, err error) {
-	sortSlice := make([]*model.ImageSortMap, 0)
+	sortSlice := make([]*model.ImageSortMap, 0, len(req.Sort))
 	for _, item := range req.Sort {
 		split := gstr.SplitAndTrim(item, "_")
 		if len(split) != 2 {

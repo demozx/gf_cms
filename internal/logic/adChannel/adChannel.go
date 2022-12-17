@@ -87,7 +87,7 @@ func (s *sAdChannel) Delete(ctx context.Context, in *backendApi.AdChannelDeleteR
 }
 
 func (s *sAdChannel) Sort(ctx context.Context, in *backendApi.AdChannelSortReq) (out interface{}, err error) {
-	sortSlice := make([]*model.AdChannelSortMap, 0)
+	sortSlice := make([]*model.AdChannelSortMap, 0, len(in.Sort))
 	for _, value := range in.Sort {
 		split := gstr.SplitAndTrim(value, "_")
 		if len(split) != 2 {

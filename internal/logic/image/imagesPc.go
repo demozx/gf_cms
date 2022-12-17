@@ -28,7 +28,7 @@ func (s *sImage) PcHomeRecommendGoodsList(ctx context.Context, belongChannelId i
 
 func (s *sImage) PcHomeGoodsGroupList(ctx context.Context, belongChannelId int) (out [][]*model.ImageListItem, err error) {
 	arrAllIds, err := service.Channel().GetChildIds(ctx, belongChannelId, false)
-	var list = make([][]*model.ImageListItem, 0)
+	var list = make([][]*model.ImageListItem, 0, len(arrAllIds))
 	for _, channelId := range arrAllIds {
 		var imageListItems []*model.ImageListItem
 		err := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().ChannelId, channelId).

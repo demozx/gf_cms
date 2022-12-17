@@ -172,7 +172,7 @@ func (*sPermission) BackendMyApi(accountId string) []gdb.Value {
 // GetAllViewPermissionsArray 获取全部视图权限数组
 func (*sPermission) GetAllViewPermissionsArray() []string {
 	backendViewAllPermissions := service.Permission().BackendViewAll()
-	var permissionsArray = make([]string, 0)
+	var permissionsArray = make([]string, 0, len(backendViewAllPermissions))
 	for _, _item := range backendViewAllPermissions {
 		for _, _permission := range _item.Permissions {
 			permission := gconv.String(_item.Slug) + "." + gconv.String(_permission.Slug)
@@ -185,7 +185,7 @@ func (*sPermission) GetAllViewPermissionsArray() []string {
 // GetAllApiPermissionsArray 获取全部接口权限数组
 func (*sPermission) GetAllApiPermissionsArray() []string {
 	backendApiAllPermissions := service.Permission().BackendApiAll()
-	var permissionsArray = make([]string, 0)
+	var permissionsArray = make([]string, 0, len(backendApiAllPermissions))
 	for _, _item := range backendApiAllPermissions {
 		for _, _permission := range _item.Permissions {
 			permission := gconv.String(_item.Slug) + "." + gconv.String(_permission.Slug)

@@ -34,7 +34,7 @@ func (c *cArticle) Index(ctx context.Context, req *backendApi.ArticleListReq) (r
 }
 
 func (c *cArticle) Sort(ctx context.Context, req *backendApi.ArticleSortReq) (res *backendApi.ArticleSortRes, err error) {
-	sortSlice := make([]*model.ArticleSortMap, 0)
+	sortSlice := make([]*model.ArticleSortMap, 0, len(req.Sort))
 	for _, item := range req.Sort {
 		split := gstr.SplitAndTrim(item, "_")
 		if len(split) != 2 {

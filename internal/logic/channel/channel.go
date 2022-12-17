@@ -59,12 +59,12 @@ func (s *sChannel) BackendApiIndex(ctx context.Context) (out []*model.ChannelBac
 }
 
 func (s *sChannel) channelBackendApiListRecursion(list []*model.ChannelBackendApiListItem, pid int) (out []*model.ChannelBackendApiListItem) {
-	res := make([]*model.ChannelBackendApiListItem, 0)
+	res := make([]*model.ChannelBackendApiListItem, 0, len(list))
 	for _, item := range list {
 		if item.Pid == pid {
 			item.Children = Channel().channelBackendApiListRecursion(list, item.Id)
 			if item.Children == nil {
-				item.Children = make([]*model.ChannelBackendApiListItem, 0)
+				item.Children = make([]*model.ChannelBackendApiListItem, 0, len(list))
 			}
 			item.ModelDesc = service.Channel().BackendModelDesc(item.Model)
 			res = append(res, item)
@@ -97,7 +97,7 @@ func (s *sChannel) BackendChannelModelTree(ctx context.Context, modelType string
 	if err != nil {
 		return nil, err
 	}
-	out = make([]*model.ChannelBackendApiListItem, 0)
+	out = make([]*model.ChannelBackendApiListItem, 0, len(tree))
 	for _, item := range tree {
 		if item.Model == modelType {
 			out = append(out, item)
@@ -109,7 +109,7 @@ func (s *sChannel) BackendChannelModelTree(ctx context.Context, modelType string
 // 递归生成栏目分类树
 func (s *sChannel) backendTree(list []*model.ChannelBackendApiListItem, selectedPid int) (out []*model.ChannelBackendApiListItem) {
 	var hasChildren = false
-	newList := make([]*model.ChannelBackendApiListItem, 0)
+	newList := make([]*model.ChannelBackendApiListItem, 0, len(list))
 	for _, item := range list {
 		newItem := new(model.ChannelBackendApiListItem)
 		newItem.Id = item.Id

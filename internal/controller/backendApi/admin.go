@@ -49,7 +49,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 			}
 			allViewPermissionsArray := service.Permission().GetAllViewPermissionsArray()
 			allApiPermissionsArray := service.Permission().GetAllApiPermissionsArray()
-			insertData := make([]interface{}, 0)
+			insertData := make([]interface{}, 0, len(allViewPermissionsArray)+len(allApiPermissionsArray))
 			for _, permission := range allViewPermissionsArray {
 				row := g.Map{
 					"p_type": "p",
