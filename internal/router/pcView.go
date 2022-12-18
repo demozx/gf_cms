@@ -11,12 +11,14 @@ func pcViewHandle(s *ghttp.Server) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 		)
+		// pc路由
 		group.ALLMap(g.Map{
-			"/":                         pc.Index.Index,
-			"/article/list/{id}.html":   pc.Article.List,
+			"/":                         pc.Index.Index,  // 首页
+			"/index.html":               pc.Index.Index,  // 首页
+			"/article/list/{id}.html":   pc.Article.List, // 文章列表
 			"/news.html":                pc.Article.List,
-			"/article/detail/{id}.html": pc.Article.Detail,
-			"/single_page/{id}.html":    pc.SinglePage.Detail,
+			"/article/detail/{id}.html": pc.Article.Detail,    // 文章详情
+			"/single_page/{id}.html":    pc.SinglePage.Detail, // 单页
 		})
 	})
 }

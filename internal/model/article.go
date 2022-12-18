@@ -27,7 +27,7 @@ type ArticleListItem struct {
 	Sort        int         `json:"sort"`        // 排序
 	CreatedAt   *gtime.Time `json:"created_at"`  // 发布时间
 	UpdatedAt   *gtime.Time `json:"updated_at"`  // 编辑时间
-	Router      string      `json:"router"`
+	Router      string      `json:"router"`      // 可直接使用的路由
 }
 
 type ArticleGetListOutPut struct {
