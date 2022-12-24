@@ -80,7 +80,7 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 	chChannelTemplate := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		channelTemplate, _ := service.Channel().PcChannelTemplate(ctx, channelInfo)
+		channelTemplate, _ := service.Channel().PcListTemplate(ctx, channelInfo)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc获取栏目模板"+gconv.String(endTime-startTime)+"毫秒")
 		chChannelTemplate <- channelTemplate

@@ -32,7 +32,8 @@ type (
 		PcNavigation(ctx context.Context, currChannelId int) (out []*model.ChannelPcNavigationListItem, err error)
 		PcTDK(ctx context.Context, channelId uint, detailId int64) (out *model.ChannelTDK, err error)
 		PcCrumbs(ctx context.Context, channelId uint) (out []*model.ChannelCrumbs, err error)
-		PcChannelTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error)
+		PcListTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error)
+		PcDetailTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error)
 	}
 )
 

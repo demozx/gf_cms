@@ -133,8 +133,8 @@ func (s *sChannel) PcCrumbs(ctx context.Context, channelId uint) (out []*model.C
 	return
 }
 
-// PcChannelTemplate 获取pc栏目模板
-func (s *sChannel) PcChannelTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error) {
+// PcListTemplate 获取pc栏目列表模板
+func (s *sChannel) PcListTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error) {
 	switch channel.Type {
 	case 1:
 		// 频道
@@ -152,6 +152,22 @@ func (s *sChannel) PcChannelTemplate(ctx context.Context, channel *entity.CmsCha
 	}
 	if len(channel.ListTemplate) > 0 {
 		template = channel.ListTemplate
+	}
+	return
+}
+
+// PcDetailTemplate 获取pc栏目详情模板
+func (s *sChannel) PcDetailTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error) {
+	switch channel.Model {
+	case consts.ChannelModelArticle:
+		// 文章
+		template = "/pc/article/detail.html"
+	case consts.ChannelModelImage:
+		// 图集
+		template = "/pc/image/detail.html"
+	}
+	if len(channel.DetailTemplate) > 0 {
+		template = channel.DetailTemplate
 	}
 	return
 }

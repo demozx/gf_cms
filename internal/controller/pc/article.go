@@ -93,7 +93,7 @@ func (c *cArticle) List(ctx context.Context, req *pc.ArticleListReq) (res *pc.Ar
 	chChannelTemplate := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		channelTemplate, _ := service.Channel().PcChannelTemplate(ctx, channelInfo)
+		channelTemplate, _ := service.Channel().PcListTemplate(ctx, channelInfo)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc获取栏目模板"+gconv.String(endTime-startTime)+"毫秒")
 		chChannelTemplate <- channelTemplate
@@ -117,8 +117,97 @@ func (c *cArticle) List(ctx context.Context, req *pc.ArticleListReq) (res *pc.Ar
 	return
 }
 
+// Detail pc文章详情页面
 func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *pc.ArticleDetailRes, err error) {
-	g.Dump("pc.article_detail")
+	// 文章详情
+	var articleInfo *model.ArticleWithBody
+	err = dao.CmsArticle.Ctx(ctx).
+		Where(dao.CmsArticle.Columns().Id, req.Id).
+		Where(dao.CmsArticle.Columns().Status, 1).
+		With(model.ArticleBodyItem{}).
+		Scan(&articleInfo)
+	if err != nil {
+		return nil, err
+	}
+	if articleInfo == nil {
+		service.Response().Status404(ctx)
+	}
+	// 栏目详情
+	channelInfo, err := Article.channelInfo(ctx, articleInfo.ChannelId)
+	if err != nil {
+		return nil, err
+	}
+	// 导航栏
+	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		navigation, _ := service.Channel().PcNavigation(ctx, gconv.Int(channelInfo.Id))
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chNavigation <- navigation
+		defer close(chNavigation)
+	}()
+	// TKD
+	chTDK := make(chan *model.ChannelTDK, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		pcTDK, _ := service.Channel().PcTDK(ctx, gconv.Uint(articleInfo.ChannelId), gconv.Int64(articleInfo.Id))
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pcTDK耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chTDK <- pcTDK
+		defer close(chTDK)
+	}()
+	// 面包屑导航
+	chCrumbs := make(chan []*model.ChannelCrumbs, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		pcCrumbs, _ := service.Channel().PcCrumbs(ctx, channelInfo.Id)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc面包屑导航耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chCrumbs <- pcCrumbs
+		defer close(chCrumbs)
+	}()
+	// 产品中心栏目列表
+	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelTid)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc文章详情页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chGoodsChannelList <- goodsChannelList
+		defer close(chGoodsChannelList)
+	}()
+	// 最新资讯-文字新闻
+	chTextNewsList := make(chan []*model.ArticleListItem, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelTid)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc文章详情页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
+		chTextNewsList <- textNewsList
+		defer close(chTextNewsList)
+	}()
+	// 获取模板
+	chChannelTemplate := make(chan string, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		channelTemplate, _ := service.Channel().PcDetailTemplate(ctx, channelInfo)
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc获取文章详情模板"+gconv.String(endTime-startTime)+"毫秒")
+		chChannelTemplate <- channelTemplate
+	}()
+	err = service.Response().View(ctx, <-chChannelTemplate, g.Map{
+		"navigation":       <-chNavigation,       // 导航
+		"tdk":              <-chTDK,              // TDK
+		"crumbs":           <-chCrumbs,           // 面包屑导航
+		"goodsChannelList": <-chGoodsChannelList, // 产品中心栏目列表
+		"textNewsList":     <-chTextNewsList,     // 最新资讯-文字新闻
+		"articleInfo":      articleInfo,          // 文章详情
+	})
+	if err != nil {
+		service.Response().Status500(ctx)
+		return nil, err
+	}
 	return
 }
 
