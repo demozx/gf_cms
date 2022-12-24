@@ -132,6 +132,11 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 	if articleInfo == nil {
 		service.Response().Status404(ctx)
 	}
+	articleInfo.ClickNum++
+	// 更新连击量
+	go func() {
+		_, err = dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, articleInfo.Id).Increment(dao.CmsArticle.Columns().ClickNum, 1)
+	}()
 	// 栏目详情
 	channelInfo, err := Article.channelInfo(ctx, articleInfo.ChannelId)
 	if err != nil {
@@ -187,6 +192,18 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 		chTextNewsList <- textNewsList
 		defer close(chTextNewsList)
 	}()
+	// 上一篇
+	chPrevArticle := make(chan *model.ArticleLink, 1)
+	go func() {
+		prevArticle, _ := service.Article().PcPrevArticle(ctx, articleInfo.ChannelId, articleInfo.Id)
+		chPrevArticle <- prevArticle
+	}()
+	// 下一篇
+	chNextArticle := make(chan *model.ArticleLink, 1)
+	go func() {
+		nextArticle, _ := service.Article().PcNextArticle(ctx, articleInfo.ChannelId, articleInfo.Id)
+		chNextArticle <- nextArticle
+	}()
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)
 	go func() {
@@ -203,6 +220,8 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 		"goodsChannelList": <-chGoodsChannelList, // 产品中心栏目列表
 		"textNewsList":     <-chTextNewsList,     // 最新资讯-文字新闻
 		"articleInfo":      articleInfo,          // 文章详情
+		"prevArticle":      <-chPrevArticle,      // 上一篇
+		"nextArticle":      <-chNextArticle,      // 下一篇
 	})
 	if err != nil {
 		service.Response().Status500(ctx)

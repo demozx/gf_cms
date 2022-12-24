@@ -27,6 +27,8 @@ type (
 		PcHomeScrollNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
 		PcHomeTextNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
 		PcHomePicNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
+		PcPrevArticle(ctx context.Context, channelId int, articleId uint64) (out *model.ArticleLink, err error)
+		PcNextArticle(ctx context.Context, channelId int, articleId uint64) (out *model.ArticleLink, err error)
 	}
 )
 

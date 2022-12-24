@@ -49,3 +49,8 @@ type ArticleWithBody struct {
 	FlagT int             `json:"flag_t" description:"flag置顶"`
 	Body  ArticleBodyItem `orm:"with:article_id=id"`
 }
+
+type ArticleLink struct {
+	Title  string `json:"title" description:"文章标题"`
+	Router string `json:"router" description:"文章路由"`
+}
