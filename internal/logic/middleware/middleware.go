@@ -125,6 +125,51 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 	}
 }
 
+func (s *sMiddleware) PcResponse(r *ghttp.Request) {
+	r.Middleware.Next()
+
+	// There's custom buffer content, it then exits current handler.
+	if r.Response.BufferLength() > 0 {
+		return
+	}
+
+	var (
+		msg  string
+		err  = r.GetError()
+		res  = r.GetHandlerResponse()
+		code = gerror.Code(err)
+	)
+	if err != nil {
+		if code == gcode.CodeNil {
+			code = gcode.CodeInternalError
+		}
+		msg = err.Error()
+	} else {
+		if r.Response.Status > 0 && r.Response.Status != http.StatusOK {
+			msg = http.StatusText(r.Response.Status)
+			switch r.Response.Status {
+			case http.StatusNotFound:
+				code = gcode.CodeNotFound
+			case http.StatusForbidden:
+				code = gcode.CodeNotAuthorized
+			default:
+				code = gcode.CodeUnknown
+			}
+			// It creates error as it can be retrieved by other middlewares.
+			err = gerror.NewCode(code, msg)
+			r.SetError(err)
+		} else {
+			code = gcode.CodeOK
+		}
+	}
+
+	r.Response.WriteTpl("tpl/error.html", g.Map{
+		"code":    code.Code(),
+		"message": msg,
+		"res":     res,
+	})
+}
+
 // BackendApiCheckPolicy 检测后台接口用户有无某个请求权限
 func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 	//先取session，没有session走jwt

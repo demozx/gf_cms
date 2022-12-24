@@ -2,6 +2,7 @@ package router
 
 import (
 	"gf_cms/internal/controller/pc"
+	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 )
@@ -9,7 +10,7 @@ import (
 func pcViewHandle(s *ghttp.Server) {
 	s.Group("", func(group *ghttp.RouterGroup) {
 		group.Middleware(
-			ghttp.MiddlewareHandlerResponse,
+			service.Middleware().PcResponse,
 		)
 		// pc路由
 		group.ALLMap(g.Map{
