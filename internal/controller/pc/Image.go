@@ -203,6 +203,16 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 		nextImage, _ := service.Image().PcNextImage(ctx, imageInfo.ChannelId, imageInfo.Id)
 		chNextImage <- nextImage
 	}()
+	// 在线留言栏目链接
+	chGuestbookUrl := make(chan string, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		guestbookUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GuestbookChannelTid, "")
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chGuestbookUrl <- guestbookUrl
+		defer close(chGuestbookUrl)
+	}()
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)
 	go func() {
@@ -221,6 +231,7 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 		"imageInfo":        imageInfo,            // 图集详情
 		"prevImage":        <-chPrevImage,        // 上一篇
 		"nextImage":        <-chNextImage,        // 下一篇
+		"guestbookUrl":     <-chGuestbookUrl,     // 在线留言栏目url
 	})
 	if err != nil {
 		service.Response().Status500(ctx)

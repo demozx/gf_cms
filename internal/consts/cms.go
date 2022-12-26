@@ -22,4 +22,6 @@ const (
 	AbortChannelTid = 8
 	// NewsChannelTid 新闻栏目顶级id
 	NewsChannelTid = 1
+	// GuestbookChannelTid 在线留言栏目顶级id
+	GuestbookChannelTid = 10
 )

@@ -76,6 +76,16 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		chTextNewsList <- textNewsList
 		defer close(chTextNewsList)
 	}()
+	// 在线留言栏目链接
+	chGuestbookUrl := make(chan string, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		guestbookUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GuestbookChannelTid, "")
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chGuestbookUrl <- guestbookUrl
+		defer close(chGuestbookUrl)
+	}()
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)
 	go func() {
@@ -92,6 +102,7 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		"crumbs":           <-chCrumbs,           // 面包屑导航
 		"goodsChannelList": <-chGoodsChannelList, // 产品中心栏目列表
 		"textNewsList":     <-chTextNewsList,     // 最新资讯-文字新闻
+		"guestbookUrl":     <-chGuestbookUrl,     // 在线留言栏目url
 	})
 	if err != nil {
 		service.Response().Status500(ctx)
