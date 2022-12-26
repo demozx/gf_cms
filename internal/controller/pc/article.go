@@ -215,6 +215,16 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 		nextArticle, _ := service.Article().PcNextArticle(ctx, articleInfo.ChannelId, articleInfo.Id)
 		chNextArticle <- nextArticle
 	}()
+	// 在线留言栏目链接
+	chGuestbookUrl := make(chan string, 1)
+	go func() {
+		startTime := gtime.TimestampMilli()
+		guestbookUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GuestbookChannelTid, "")
+		endTime := gtime.TimestampMilli()
+		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
+		chGuestbookUrl <- guestbookUrl
+		defer close(chGuestbookUrl)
+	}()
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)
 	go func() {
@@ -233,6 +243,7 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 		"articleInfo":      articleInfo,          // 文章详情
 		"prevArticle":      <-chPrevArticle,      // 上一篇
 		"nextArticle":      <-chNextArticle,      // 下一篇
+		"guestbookUrl":     <-chGuestbookUrl,     // 在线留言栏目url
 	})
 	if err != nil {
 		service.Response().Status500(ctx)
