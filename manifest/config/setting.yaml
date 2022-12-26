@@ -28,6 +28,11 @@ backend:
           name: qq
           tip: 请输入QQ号码
 
+        - title: 微信二维码
+          type: image
+          name: wechat_img
+          tip: 请上传微信二维码
+
         - title: 电子邮箱
           type: text
           name: email

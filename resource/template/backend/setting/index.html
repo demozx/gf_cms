@@ -80,11 +80,9 @@
                                 <i class="layui-icon"></i>
                                 上传图片
                             </button><input class="layui-upload-file" type="file" accept="undefined" name="file">
-                            ${ if system_setting $config.Name  }$
                             <div class="layui-upload-list" style="margin-left: 50px;">
-                                <img class="layui-upload-img" id="weixin_qr_code" src="${ system_setting $config.Name }$" style="width: 100px;">
+                                <img class="layui-upload-img" id="${ $config.Name }$_code" src="${ system_setting $config.Name }$" style="width: 100px;">
                             </div>
-                            ${ end }$
                         </div>
                         <script>
                             layui.use(['upload', 'jquery'], function() {
@@ -93,14 +91,14 @@
                                 //执行实例
                                 var uploadInst = upload.render({
                                     elem    : '#${ $config.Name }$_button' //绑定元素
-                                    , url   : '/mgr-page.php/article/litpic.html' //上传接口
+                                    , url   : '${ backend_api_url `/upload/single_image` }$' //上传接口
                                     , done  : function(res) {
                                         //上传完毕回调
-                                        if (res['code'] == 0) {
-                                            $('#${ $config.Name }$_code').attr('src', res['path']);
-                                            $('#${ $config.Name }$_text').val(res['path']);
+                                        if (res.code === 0) {
+                                            $('#${ $config.Name }$_code').attr('src', res.data['url']);
+                                            $('#${ $config.Name }$_text').val(res.data['url']);
                                         } else {
-                                            layer.msg(res['error'], {
+                                            layer.msg(res.message, {
                                                 time : 3000,
                                                 icon : 5
                                             });
