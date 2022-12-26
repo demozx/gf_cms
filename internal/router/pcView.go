@@ -20,6 +20,7 @@ func pcViewHandle(s *ghttp.Server) {
 			"/article/detail/{id}.html": pc.Article.Detail,    // 文章详情
 			"/single_page/{id}.html":    pc.SinglePage.Detail, // 单页
 			"/image/list/{id}.html":     pc.Image.List,        // 图集列表
+			"/image/detail/{id}.html":   pc.Image.Detail,      // 图集详情
 
 			"/news.html": pc.Article.List,
 		})

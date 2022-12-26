@@ -2,12 +2,14 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta http-equiv="Cache-Control" content="no-transform"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <title>${ .tdk.Title }$</title>
     <meta name="description" content="${ .tdk.Description }$"/>
+    <meta name="keywords" content="${ .tdk.Keywords }$"/>
     <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_cart.css"/>
     <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_atm.css"/>
     <link rel="stylesheet" type="text/css" href="/resource/pc/css/master.css"/>
@@ -22,32 +24,6 @@
     <script>DD_belatedPNG.fix('div,img,span,li,a,a:hover,dd,p,input,select')</script>
     <![endif]-->
     <script type="text/javascript" src="/resource/pc/js/zoom.js"></script>
-    <script type="text/javascript">
-        window.onload = function () {
-            imgZoomRun("product3", "p", "prod-zoom", "li"); // 图片放大
-            imgZoomRun("product7", "p", "prod-zoom", "li");
-            imgZoomRun("product8", "p", "prod-zoom", "li");
-            newsFontMove("fontjump"); // 鼠标放上，字体上下挪
-            newsFontMove("fontjumpcolor"); // 鼠标放上，字体上下挪
-            colorChange("fontjumpcolor"); // 隔行换色
-            colorChange("news5"); // 隔行换色
-            listImgZoom("product1", "215"); // 图片缩放，需要给定宽度
-            listImgZoom("product2", "215"); // 图片缩放，需要给定宽度
-            listImgZoom("product3", "215"); // 图片缩放，需要给定宽度
-            listImgZoom("product4", "215"); // 图片缩放，需要给定宽度
-            listImgZoom("product5", "215"); // 图片缩放，需要给定宽度
-            listImgZoom("product6", "215"); // 图片缩放，需要给定宽度
-            listImgZoom("product8", "200"); // 图片缩放，需要给定宽度
-            enterAnimation("news_fadein");
-            if (typeof (data) != "undefined") {
-                var lefttype = new LeftType(data, "left-type", 0); // 多级分类
-            }
-            afx.conHeightAuto();
-        };
-        window.addEventListener("resize", function () {
-            afx.conHeightAuto();
-        }, false);
-    </script>
 </head>
 
 <!-- 头部 -->
@@ -108,31 +84,28 @@ ${include "/pc/public/head.html" .}$
                     ${ end }$
                 </div>
             </div>
-
             <div class="content">
-                <ul class="product3" id="product3">
-                    ${ range $key, $item := .imagePageList.List }$
-                    <li>
-                        <div>
-                            <a href="${ $item.Router }$" title="${ $item.Title }$">
-                                <img src="/images/loading.gif" data-original="${ $item.Thumb }$" alt="${ $item.Title }$"
-                                     height="161" width="214" style="padding: 0px;">
-                            </a>
-                            <p class="prod-zoom"></p>
-                        </div>
-                        <p><a href="${ $item.Router }$" title="${ $item.Title }$" class="pg-color">${ $item.Title }$</a>
-                        </p>
-                    </li>
-                    ${ end }$
-                </ul>
-                <!-- 分页开始 -->
-                <div class="pagess">
-                    <ul class="pagination">
-                        ${ .pageInfo }$
-                    </ul>
+                <div class="view">
+                    <h1 class="view-title">${ .imageInfo.Title }$</h1>
+                    <div class="view-date">
+                        <span>发布时间：${ .imageInfo.CreatedAt }$</span>
+                        <span>点击量：
+							<span id="clicksArea">
+                              ${ .imageInfo.ClickNum }$
+							</span>
+						</span>
+                    </div>
+                    <div class="boxcen">
+                        ${ range $key, $image:= .imageInfo.Images }$
+                        <img src="${ $image }$">
+                        ${ end }$
+                    </div>
+                    <div class="page">
+                        <p>上一篇：<a href='${ .prevImage.Router }$'>${ .prevImage.Title }$</a></p>
+                        <p>下一篇：<a href='${ .nextImage.Router }$'>${ .nextImage.Title }$</a></p>
+                        <a href="javascript:void(0);" title="返回" class="back" onclick="javascript:history.back(-1);">返回</a>
+                    </div>
                 </div>
-                <!-- 分页结束 -->
-                <!-- /pagess -->
             </div>
         </div>
         <!-- 内容部分 end-->

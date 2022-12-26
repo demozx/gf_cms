@@ -13,6 +13,8 @@ import (
 
 type (
 	IImage interface {
+		PcPrevImage(ctx context.Context, channelId int, imageId uint64) (out *model.ImageLink, err error)
+		PcNextImage(ctx context.Context, channelId int, imageId uint64) (out *model.ImageLink, err error)
 		BackendImageGetList(ctx context.Context, in *model.ImageGetListInPut) (out *model.ImageGetListOutPut, err error)
 		Sort(ctx context.Context, in []*model.ImageSortMap) (out interface{}, err error)
 		Flag(ctx context.Context, ids []int, flagType string) (out interface{}, err error)

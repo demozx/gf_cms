@@ -10,7 +10,7 @@ import (
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
-// PcPrevArticle 上一篇
+// PcPrevArticle 上一篇文章
 func (s *sArticle) PcPrevArticle(ctx context.Context, channelId int, articleId uint64) (out *model.ArticleLink, err error) {
 	var prevArticle *entity.CmsArticle
 	err = dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().ChannelId, channelId).Where(dao.CmsArticle.Columns().Status, 1).WhereLT(dao.CmsArticle.Columns().Id, articleId).OrderAsc(dao.CmsArticle.Columns().Sort).OrderDesc(dao.CmsArticle.Columns().Id).Scan(&prevArticle)
@@ -29,7 +29,7 @@ func (s *sArticle) PcPrevArticle(ctx context.Context, channelId int, articleId u
 	return
 }
 
-// PcNextArticle 下一篇
+// PcNextArticle 下一篇文章
 func (s *sArticle) PcNextArticle(ctx context.Context, channelId int, articleId uint64) (out *model.ArticleLink, err error) {
 	var nextArticle *entity.CmsArticle
 	err = dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().ChannelId, channelId).Where(dao.CmsArticle.Columns().Status, 1).WhereGT(dao.CmsArticle.Columns().Id, articleId).OrderAsc(dao.CmsArticle.Columns().Sort).OrderAsc(dao.CmsArticle.Columns().Id).Scan(&nextArticle)

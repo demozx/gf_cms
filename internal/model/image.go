@@ -49,3 +49,8 @@ type ImageSortMap struct {
 	Id   int `json:"id"`
 	Sort int `json:"sort"`
 }
+
+type ImageLink struct {
+	Title  string `json:"title" description:"文章标题"`
+	Router string `json:"router" description:"文章路由"`
+}
