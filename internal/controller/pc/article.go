@@ -261,9 +261,6 @@ func (c *cArticle) articlePageList(ctx context.Context, in *pc.ArticleListReq) (
 	if err != nil {
 		return
 	}
-	if count == 0 {
-		return
-	}
 	var articleList []*model.ArticleListItem
 	err = m.OrderAsc(dao.CmsArticle.Columns().Sort).
 		OrderDesc(dao.CmsArticle.Columns().Id).
