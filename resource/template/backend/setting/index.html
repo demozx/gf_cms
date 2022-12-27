@@ -42,6 +42,22 @@
                     <!-- 文本框结束 -->
                     ${ end }$
 
+                    ${ if eq $config.Type "password" }$
+                    <!-- 密码框开始 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 160px;">${ $config.Title }$</label>
+                        <div class="layui-input-block" style="margin-left: 160px;">
+                            <input type="password"
+                                   name="${ $config.Name }$"
+                                   value="${system_setting $config.Name}$"
+                                   autocomplete="off"
+                                   placeholder="${ $config.Tip }$"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <!-- 密码框结束 -->
+                    ${ end }$
+
                     ${ if eq $config.Type "textarea" }$
                     <!-- 文本域开始 -->
                     <div class="layui-form-item layui-form-text">

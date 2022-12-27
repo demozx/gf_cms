@@ -18,9 +18,9 @@ func pcViewHandle(s *ghttp.Server) {
 			"/index.html":               pc.Index.Index,       // 首页
 			"/article/list/{id}.html":   pc.Article.List,      // 文章列表
 			"/article/detail/{id}.html": pc.Article.Detail,    // 文章详情
-			"/single_page/{id}.html":    pc.SinglePage.Detail, // 单页
 			"/image/list/{id}.html":     pc.Image.List,        // 图集列表
 			"/image/detail/{id}.html":   pc.Image.Detail,      // 图集详情
+			"/single_page/{id}.html":    pc.SinglePage.Detail, // 单页
 			"/search.html":              pc.Search.Index,      // 搜索
 
 			"/news.html": pc.Article.List,

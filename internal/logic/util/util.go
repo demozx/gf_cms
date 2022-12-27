@@ -26,6 +26,8 @@ var (
 	SystemRoot        string
 	BackendGroup      string
 	BackendApiGroup   string
+	PcApiGroup        string
+	MApiGroup         string
 	PublicCachePreFix string
 	ServerRoot        *gvar.Var
 )
@@ -41,6 +43,8 @@ func init() {
 	BackendGroup = "/" + BackendPrefix.String()
 	//BackendApiGroup 后台api分组
 	BackendApiGroup = "/" + BackendPrefix.String() + "_api"
+	PcApiGroup = "/api"
+	MApiGroup = "/m_api"
 	//公共缓存前缀
 	PublicCachePreFix = ProjectName.String() + ":public"
 	//项目目录
@@ -77,17 +81,27 @@ func (*sUtil) BackendApiPrefix() string {
 	return service.Util().BackendPrefix() + "_api"
 }
 
-//BackendGroup 后台view分组
+// BackendGroup 后台view分组
 func (*sUtil) BackendGroup() string {
 	return "/" + Util().BackendPrefix()
 }
 
-//BackendApiGroup 后台api分组
+// BackendApiGroup 后台api分组
 func (*sUtil) BackendApiGroup() string {
 	return "/" + Util().BackendPrefix() + "_api"
 }
 
-//ServerRoot 服务目录
+// PcApiGroup pcApi分组
+func (*sUtil) PcApiGroup() string {
+	return PcApiGroup
+}
+
+// MApiGroup 移动Api分组
+func (*sUtil) MApiGroup() string {
+	return MApiGroup
+}
+
+// ServerRoot 服务目录
 func (s *sUtil) ServerRoot() string {
 	return ServerRoot.String()
 }

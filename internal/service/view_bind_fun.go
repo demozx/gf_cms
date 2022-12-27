@@ -12,6 +12,8 @@ type (
 		SystemConfig(name string) string
 		BackendUrl(route string) string
 		BackendApiUrl(route string) string
+		PcApiUrl(route string) string
+		MApiUrl(route string) string
 	}
 )
 

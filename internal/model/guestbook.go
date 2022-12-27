@@ -20,3 +20,14 @@ type GuestbookGetListOutput struct {
 	Size  int   `json:"size" description:"分页数量"`
 	Total int64 `json:"total" description:"数据总数"`
 }
+
+type BaiduAddressByIp struct {
+	Address string `json:"address"`
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+	Content BaiduAddressByIpContent
+}
+
+type BaiduAddressByIpContent struct {
+	Address string `json:"address"`
+}

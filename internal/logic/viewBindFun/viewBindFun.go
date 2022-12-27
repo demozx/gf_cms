@@ -32,6 +32,7 @@ func (*sViewBindFun) Register() {
 		"system_config":   ViewBindFun().SystemConfig,
 		"backend_url":     ViewBindFun().BackendUrl,
 		"backend_api_url": ViewBindFun().BackendApiUrl,
+		"pc_api_url":      ViewBindFun().PcApiUrl,
 	})
 }
 
@@ -53,4 +54,14 @@ func (*sViewBindFun) BackendUrl(route string) string {
 // BackendApiUrl 生成后台api的url
 func (*sViewBindFun) BackendApiUrl(route string) string {
 	return util.BackendApiGroup + route
+}
+
+// PcApiUrl 生成pcApi发的路由
+func (*sViewBindFun) PcApiUrl(route string) string {
+	return util.PcApiGroup + route
+}
+
+// MApiUrl 生成MApi发的路由
+func (*sViewBindFun) MApiUrl(route string) string {
+	return util.MApiGroup + route
 }

@@ -94,7 +94,39 @@ backend:
 
     - title: 留言设置
       children:
-    - title: 邮件设置
+        - title: 留言邮件提醒管理员
+          type: radio
+          name: guestbook_email_notice
+          tip: 是否开启回收站
+          options:
+            - title: 开启
+              value: 1
+            - title: 关闭
+              value: 0
+        - title: 管理员邮箱
+          type: text
+          name: admin_emails
+          tip: 请输入管理员邮箱，多个用英文逗号分隔
+
+    - title: 邮件服务器设置
       children:
-    - title: 短信设置
-      children:
+        - title: smtp服务器
+          type: text
+          name: smtp_server
+          tip: 请输入smtp服务器
+        - title: 服务器端口
+          type: text
+          name: smtp_port
+          tip: 请输入服务器端口
+        - title: 邮箱账号
+          type: text
+          name: smtp_user
+          tip: 请输入邮箱账号
+        - title: 邮箱密码
+          type: password
+          name: smtp_pass
+          tip: 请输入邮箱密码
+        - title: 发送人地址
+          type: text
+          name: smtp_email_from
+          tip: 请输入发送人地址

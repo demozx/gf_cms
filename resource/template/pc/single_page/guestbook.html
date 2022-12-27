@@ -1,29 +1,29 @@
 <!doctype html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta http-equiv="Cache-Control" content="no-transform"/>
-  <meta http-equiv="Cache-Control" content="no-siteapp"/>
-  <title>${ .tdk.Title }$</title>
-  <meta name="description" content="${ .tdk.Description }$"/>
-  <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_cart.css"/>
-  <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_atm.css"/>
-  <link rel="stylesheet" type="text/css" href="/resource/pc/css/master.css"/>
-  <link rel="stylesheet" type="text/css" href="/resource/pc/css/subpage.css"/>
-  <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_msg.css"/>
-  <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_form.css"/>
-  <script type="text/javascript" src="/resource/pc/js/jquery.js"></script>
-  <script type="text/javascript" src="/resource/pc/js/child_atm.js"></script>
-  <script type="text/javascript" src="/resource/pc/js/lihe.js"></script>
-  <script type="text/javascript" src="/resource/pc/js/superslide.js"></script>
-  <script type="text/javascript" src="/resource/pc/js/select_beauty.js"></script>
-  <script type="text/javascript" src="/resource/pc/layui-v2.4.5/layui/layui.js"></script>
-  <!--[if IE 6]>
-  <script type="text/javascript" src="/resource/pc/js/png.js"></script>
-  <script>DD_belatedPNG.fix('div,img,span,li,a,a:hover,dd,p,input,select')</script>
-  <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <title>${ .tdk.Title }$</title>
+    <meta name="description" content="${ .tdk.Description }$"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_cart.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_atm.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/master.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/subpage.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_msg.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_form.css"/>
+    <script type="text/javascript" src="/resource/pc/js/jquery.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/child_atm.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/lihe.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/superslide.js"></script>
+    <script type="text/javascript" src="/resource/pc/js/select_beauty.js"></script>
+    <script type="text/javascript" src="/resource/pc/layui-v2.4.5/layui/layui.js"></script>
+    <!--[if IE 6]>
+    <script type="text/javascript" src="/resource/pc/js/png.js"></script>
+    <script>DD_belatedPNG.fix('div,img,span,li,a,a:hover,dd,p,input,select')</script>
+    <![endif]-->
 </head>
 
 <!-- 头部 -->
@@ -33,119 +33,124 @@ ${include "/pc/public/head.html" .}$
 <!-- banner -->
 
 <div class="child_top">
-  <div class="sear_b">
-    <div class="head">
-      <div class="title_b">
-        <div class="a">产品中心</div>
-        <div class="b">PRODUCT CENTER</div>
-      </div>
-      <!-- search -->
-      <div class="search">
-        <form name="formsearch" action="/search.html" id="search_form">
-          <div class="s_c">
-            <input type="text" name="keyword" id="q" value="" class="search_text" placeholder="请输入关键词！"/>
-          </div>
-          <input type="button" class="search_submit" value=""/>
-        </form>
-      </div>
-      <!-- search end -->
-      <div class="phone_b">
-        <div>
-          <div class="top_msg">全国客服电话</div>
-          <div class="num">${ system_setting `tel` }$</div>
+    <div class="sear_b">
+        <div class="head">
+            <div class="title_b">
+                <div class="a">产品中心</div>
+                <div class="b">PRODUCT CENTER</div>
+            </div>
+            <!-- search -->
+            <div class="search">
+                <form name="formsearch" action="/search.html" id="search_form">
+                    <div class="s_c">
+                        <input type="text" name="keyword" id="q" value="" class="search_text"
+                               placeholder="请输入关键词！"/>
+                    </div>
+                    <input type="button" class="search_submit" value=""/>
+                </form>
+            </div>
+            <!-- search end -->
+            <div class="phone_b">
+                <div>
+                    <div class="top_msg">全国客服电话</div>
+                    <div class="num">${ system_setting `tel` }$</div>
+
+                </div>
+            </div>
 
         </div>
-      </div>
-
     </div>
-  </div>
 
-  <a href="javascript:;" class="random_pic">
-    <img src="/resource/pc/images/fu_banner.jpg" width="1600" height="330">
-  </a>
+    <a href="javascript:;" class="random_pic">
+        <img src="/resource/pc/images/fu_banner.jpg" width="1600" height="330">
+    </a>
 
 </div>
 <!-- banner -->
 <!-- 图标导航 -->
 <!-- 图标导航 end-->
 <div class="main_c">
-  <div class="main" id="content">
-    <!-- 左侧部分 -->
-    ${include "/pc/public/left.html" .}$
-    <!-- 左侧部分 end-->
-    <!-- 内容部分 -->
-    <div class="sp_content" id="contentRight">
-      <div class="content_com_title">
-        <h2>${ .channelInfo.Name }$</h2>
-        <div class="bread"> 当前位置：
-          <a href='/'>网站首页</a>
-          ${ range $key, $item := .crumbs }$
-          > <a href="${ $item.Router }$">${ $item.Name }$</a>
-          ${ end }$
-        </div>
-      </div>
+    <div class="main" id="content">
+        <!-- 左侧部分 -->
+        ${include "/pc/public/left.html" .}$
+        <!-- 左侧部分 end-->
+        <!-- 内容部分 -->
+        <div class="sp_content" id="contentRight">
+            <div class="content_com_title">
+                <h2>${ .channelInfo.Name }$</h2>
+                <div class="bread"> 当前位置：
+                    <a href='/'>网站首页</a>
+                    ${ range $key, $item := .crumbs }$
+                    > <a href="${ $item.Router }$">${ $item.Name }$</a>
+                    ${ end }$
+                </div>
+            </div>
 
-      <div class="content">
-        <div class="msg_now">
-          <p class="msg_title common_bg">在线留言</p>
-        </div>
-        <form action="#" enctype="multipart/form-data" method="post" class="msgForm">
+            <div class="content">
+                <div class="msg_now">
+                    <p class="msg_title common_bg">在线留言</p>
+                </div>
+                <form action="#" enctype="multipart/form-data" method="post" class="msgForm">
 
-          <ul class="msg_ul">
-            <li>
-              <p>联系人<span> *</span></p>
-              <input name="name" type="text" class="msg_input">
-              <div class="info "><span class="Validform_checktip"></span><span class="dec"><s class="dec1">◆</s><s
-                      class="dec2">◆</s></span></div>
-            </li>
-            <li>
-              <p>电话<span> *</span></p>
-              <input name="tel" type="text" class="msg_input">
-              <div class="info "><span class="Validform_checktip"></span><span class="dec"><s class="dec1">◆</s><s
-                      class="dec2">◆</s></span></div>
-            </li>
-            <li>
-              <p>邮箱<span> *</span></p>
-              <input name="content[email]" type="text" id="youxiang" class="msg_input">
-              <div class="info "><span class="Validform_checktip"></span><span class="dec"><s class="dec1">◆</s><s
-                      class="dec2">◆</s></span></div>
-            </li>
-            <li>
-              <p>内容<span> *</span></p>
-              <textarea name="content[text]" id="neirong"></textarea>
-              <div class="info "><span class="Validform_checktip"></span><span class="dec"><s class="dec1">◆</s><s
-                      class="dec2">◆</s></span></div>
-            </li>
-            <li>
-              <p></p>
-              <input type="button" class="msg_submit common_bg" id="tj" title="提   交" value="提   交">
-            </li>
-          </ul>
-        </form>
-      </div>
+                    <ul class="msg_ul">
+                        <li>
+                            <p>联系人<span> *</span></p>
+                            <input name="name" type="text" class="msg_input">
+                            <div class="info "><span class="Validform_checktip"></span><span class="dec"><s
+                                    class="dec1">◆</s><s
+                                    class="dec2">◆</s></span></div>
+                        </li>
+                        <li>
+                            <p>手机<span> *</span></p>
+                            <input name="tel" type="text" class="msg_input">
+                            <div class="info "><span class="Validform_checktip"></span><span class="dec"><s
+                                    class="dec1">◆</s><s
+                                    class="dec2">◆</s></span></div>
+                        </li>
+                        <li>
+                            <p>邮箱<span> *</span></p>
+                            <input name="email" type="text" id="youxiang" class="msg_input">
+                            <div class="info "><span class="Validform_checktip"></span><span class="dec"><s
+                                    class="dec1">◆</s><s
+                                    class="dec2">◆</s></span></div>
+                        </li>
+                        <li>
+                            <p>内容<span> *</span></p>
+                            <textarea name="content" id="neirong"></textarea>
+                            <div class="info "><span class="Validform_checktip"></span><span class="dec"><s
+                                    class="dec1">◆</s><s
+                                    class="dec2">◆</s></span></div>
+                        </li>
+                        <li>
+                            <p></p>
+                            <input type="button" class="msg_submit common_bg" id="tj" title="提   交" value="提   交">
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <!-- 内容部分 end-->
     </div>
-    <!-- 内容部分 end-->
-  </div>
 </div>
 
 <!-- footer -->
 ${include "/pc/public/foot.html" .}$
 <script type="text/javascript">
-  layui.use('layer', function() {
-    var $ = layui.jquery, layer = layui.layer;
-    $('#tj').click(function() {
-      let url = '{:url("home.guestbook")}';
-      let data = $('.msgForm').serialize()
-      $.post(url, data, function(res) {
-        if (!res.code) {
-          layer.msg(res.msg, {icon : 5, anim : 6});
-          return false;
-        }
-        layer.msg(res.msg, {icon : 6, time : 1000}, function() {
-          window.location.reload();
+    layui.use('layer', function () {
+        var $ = layui.jquery, layer = layui.layer;
+        $('#tj').click(function () {
+            let url = '${ pc_api_url `/guestbook.html` }$';
+            let data = $('.msgForm').serialize()
+            $.post(url, data, function (res) {
+                if (res.code !== 0) {
+                    layer.msg(res.message, {icon: 5, anim: 6});
+                    return false;
+                }
+                layer.msg(res.message, {icon: 6, time: 1000}, function () {
+                    window.location.reload();
+                });
+            });
         });
-      });
     });
-  });
 </script>
 </body></html>

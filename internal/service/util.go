@@ -19,6 +19,8 @@ type (
 		BackendApiPrefix() string
 		BackendGroup() string
 		BackendApiGroup() string
+		PcApiGroup() string
+		MApiGroup() string
 		ServerRoot() string
 		GetConfig(node string) string
 		GetSetting(name string) string

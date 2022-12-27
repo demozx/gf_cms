@@ -9,11 +9,15 @@ import (
 	"context"
 	"gf_cms/api/backend"
 	"gf_cms/api/backendApi"
+	"gf_cms/api/pcApi"
 	"gf_cms/internal/model"
 )
 
 type (
 	IGuestbook interface {
+		PcSubmit(ctx context.Context, in *pcApi.GuestbookReq) (out *pcApi.GuestbookRes, err error)
+		GetAddressByIp(ctx context.Context, ip string) (address string, err error)
+		SendEmail(ctx context.Context, guestbookId int64) (out interface{}, err error)
 		BackendGetList(ctx context.Context, in *backend.GuestbookIndexReq) (out *model.GuestbookGetListOutput, err error)
 		BackendApiStatus(ctx context.Context, in *backendApi.GuestbookStatusReq) (out interface{}, err error)
 		BackendApiBatchDelete(ctx context.Context, in *backendApi.GuestbookDeleteReq) (out interface{}, err error)

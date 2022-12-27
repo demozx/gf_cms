@@ -10,4 +10,5 @@ func Register(s *ghttp.Server) {
 	backendApiHandle(s)
 	//前台pc路由
 	pcViewHandle(s)
+	pcApiHandle(s)
 }
