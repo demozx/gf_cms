@@ -10,6 +10,7 @@ import (
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 	"gopkg.in/gomail.v2"
 )
@@ -99,34 +100,37 @@ func (s *sGuestbook) SendEmail(ctx context.Context, guestbookId int64) (out inte
 		g.Log().Error(ctx, "邮件服务器配置缺失")
 		return
 	}
-	to := adminEmails
-	subject := "留言提醒"
-	guestbookFrom := ""
-	switch guestbook.From {
-	case 1:
-		guestbookFrom = "电脑端"
-	case 2:
-		guestbookFrom = "移动端"
-	}
-	body := "网站有新留言，详细内容如下：<br><br>"
-	body += "姓名：" + guestbook.Name + "<br>"
-	body += "手机：" + guestbook.Tel + "<br>"
-	body += "留言内容：" + guestbook.Content + "<br>"
-	body += "来源：" + guestbookFrom + "<br>"
-	body += "IP：" + guestbook.Ip + "<br>"
-	body += "归属地：" + guestbook.Address + "<br>"
-	body += "<br>以上内容已经同步到网站后台，请登录后进行处理"
-	m := gomail.NewMessage()
-	m.SetHeader(`From`, from)
-	m.SetHeader(`To`, to)
-	m.SetHeader(`Subject`, subject)
-	m.SetBody("text/html", body)
-	// 下面的配置改成你自己的邮箱配置
-	d := gomail.NewDialer(host, gconv.Int(port), from, password)
-	// 修改TLSconfig
-	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-	if err = d.DialAndSend(m); err != nil {
-		return
+	emails := gstr.SplitAndTrim(adminEmails, ",")
+	for _, toEmail := range emails {
+		to := toEmail
+		subject := "留言提醒"
+		guestbookFrom := ""
+		switch guestbook.From {
+		case 1:
+			guestbookFrom = "电脑端"
+		case 2:
+			guestbookFrom = "移动端"
+		}
+		body := "网站有新留言，详细内容如下：<br><br>"
+		body += "姓名：" + guestbook.Name + "<br>"
+		body += "手机：" + guestbook.Tel + "<br>"
+		body += "留言内容：" + guestbook.Content + "<br>"
+		body += "来源：" + guestbookFrom + "<br>"
+		body += "IP：" + guestbook.Ip + "<br>"
+		body += "归属地：" + guestbook.Address + "<br>"
+		body += "<br>以上内容已经同步到网站后台，请登录后进行处理"
+		m := gomail.NewMessage()
+		m.SetHeader(`From`, from)
+		m.SetHeader(`To`, to)
+		m.SetHeader(`Subject`, subject)
+		m.SetBody("text/html", body)
+		// 下面的配置改成你自己的邮箱配置
+		d := gomail.NewDialer(host, gconv.Int(port), from, password)
+		// 修改TLSconfig
+		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+		if err = d.DialAndSend(m); err != nil {
+			return
+		}
 	}
 	return
 }
