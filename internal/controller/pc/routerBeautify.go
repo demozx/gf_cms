@@ -3,6 +3,7 @@ package pc
 import (
 	"context"
 	"gf_cms/api/pc"
+	"gf_cms/internal/consts"
 )
 
 var (
@@ -12,8 +13,8 @@ var (
 type cRouterBeautify struct{}
 
 // About 路由美化-关于我们
-func (c *cRouterBeautify) About(ctx context.Context, req *pc.RouterBeautifyAboutReq) (res *pc.IndexRes, err error) {
-	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: req.Id})
+func (c *cRouterBeautify) About(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.IndexRes, err error) {
+	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: consts.AbortChannelTid})
 	if err != nil {
 		return nil, err
 	}

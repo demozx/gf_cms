@@ -28,7 +28,7 @@ func pcViewHandle(s *ghttp.Server) {
 			"/single_page/{id}.html" + pcHost:    pc.SinglePage.Detail, // 单页
 			"/search.html" + pcHost:              pc.Search.Index,      // 搜索
 			// 路由美化
-			"/about.html": pc.RouterBeautify.About,
+			"/about.html": pc.RouterBeautify.About, // 公司简介
 		})
 	})
 }
