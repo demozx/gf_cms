@@ -1,7 +1,7 @@
 package router
 
 import (
-	"gf_cms/internal/controller/m"
+	"gf_cms/internal/controller/mobile"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
@@ -18,8 +18,8 @@ func mobileViewHandle(s *ghttp.Server) {
 			mobileHost = "@" + mobileHost
 			// mobile路由
 			group.ALLMap(g.Map{
-				"/" + mobileHost:           m.Index.Index, // 首页
-				"/index.html" + mobileHost: m.Index.Index, // 首页
+				"/" + mobileHost:           mobile.Index.Index, // 首页
+				"/index.html" + mobileHost: mobile.Index.Index, // 首页
 			})
 		}
 	})
