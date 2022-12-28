@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/text/gstr"
 	"math"
 	"net"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gogf/gf/v2/container/gvar"
@@ -224,4 +226,55 @@ func (*sUtil) ImageOrDefaultUrl(imgUrl string) string {
 		return "/resource/images/no_pic.jpg"
 	}
 	return imgUrl
+}
+
+// IsMobile 判断是手机端
+func (s *sUtil) IsMobile(ctx context.Context) bool {
+	userAgent := g.RequestFromCtx(ctx).UserAgent()
+	if len(userAgent) == 0 {
+		return false
+	}
+	isMobile := false
+	mobileKeywords := []string{"Mobile", "Android", "Silk/", "Kindle",
+		"BlackBerry", "Opera Mini", "Opera Mobi"}
+	for i := 0; i < len(mobileKeywords); i++ {
+		if strings.Contains(userAgent, mobileKeywords[i]) {
+			isMobile = true
+			break
+		}
+	}
+	return isMobile
+}
+
+// ResponsiveJump 响应跳转
+func (s *sUtil) ResponsiveJump(ctx context.Context) {
+	// 获取配置的域名
+	pcHost := service.Util().GetConfig("server.pcHost")
+	mobileHost := service.Util().GetConfig("server.mobileHost")
+	if mobileHost == "" {
+		return
+	}
+	host := g.RequestFromCtx(ctx).GetHost()
+	uri := g.RequestFromCtx(ctx).RequestURI
+	jumpUrl := ""
+	if service.Util().IsMobile(ctx) {
+		// 是手机访问
+		if host != mobileHost {
+			// 当前访问的域名不是手机域名，跳转手机域名对应路由
+			jumpUrl = mobileHost + uri
+		}
+	} else {
+		// 是pc访问
+		if host == mobileHost {
+			// 当前访问的域名是手机域名，跳转pc域名对应路由
+			jumpUrl = pcHost + uri
+		}
+	}
+	if len(jumpUrl) > 0 {
+		if !gstr.Contains(jumpUrl, "http") {
+			jumpUrl = "http://" + jumpUrl
+		}
+		g.RequestFromCtx(ctx).Response.RedirectTo(jumpUrl)
+	}
+	return
 }

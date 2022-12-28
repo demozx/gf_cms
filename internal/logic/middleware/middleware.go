@@ -126,13 +126,62 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 }
 
 func (s *sMiddleware) PcResponse(r *ghttp.Request) {
+	// pc移动响应跳转
+	service.Util().ResponsiveJump(r.GetCtx())
+
 	r.Middleware.Next()
 
 	// There's custom buffer content, it then exits current handler.
 	if r.Response.BufferLength() > 0 {
 		return
 	}
+	var (
+		msg  string
+		err  = r.GetError()
+		res  = r.GetHandlerResponse()
+		code = gerror.Code(err)
+	)
+	if err != nil {
+		if code == gcode.CodeNil {
+			code = gcode.CodeInternalError
+		}
+		msg = err.Error()
+	} else {
+		if r.Response.Status > 0 && r.Response.Status != http.StatusOK {
+			msg = http.StatusText(r.Response.Status)
+			switch r.Response.Status {
+			case http.StatusNotFound:
+				code = gcode.CodeNotFound
+			case http.StatusForbidden:
+				code = gcode.CodeNotAuthorized
+			default:
+				code = gcode.CodeUnknown
+			}
+			// It creates error as it can be retrieved by other middlewares.
+			err = gerror.NewCode(code, msg)
+			r.SetError(err)
+		} else {
+			code = gcode.CodeOK
+		}
+	}
 
+	r.Response.WriteTpl("tpl/error.html", g.Map{
+		"code":    code.Code(),
+		"message": msg,
+		"res":     res,
+	})
+}
+
+func (s *sMiddleware) MobileResponse(r *ghttp.Request) {
+	// pc移动响应跳转
+	service.Util().ResponsiveJump(r.GetCtx())
+
+	r.Middleware.Next()
+
+	// There's custom buffer content, it then exits current handler.
+	if r.Response.BufferLength() > 0 {
+		return
+	}
 	var (
 		msg  string
 		err  = r.GetError()

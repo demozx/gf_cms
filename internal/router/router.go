@@ -11,4 +11,7 @@ func Register(s *ghttp.Server) {
 	//前台pc路由
 	pcViewHandle(s)
 	pcApiHandle(s)
+	//前台m路由
+	mobileViewHandle(s)
+	mobileApiHandle(s)
 }

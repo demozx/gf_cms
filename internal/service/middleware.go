@@ -16,6 +16,7 @@ type (
 		BackendAuthSession(r *ghttp.Request)
 		BackendCheckPolicy(r *ghttp.Request)
 		PcResponse(r *ghttp.Request)
+		MobileResponse(r *ghttp.Request)
 		BackendApiCheckPolicy(r *ghttp.Request)
 		GetBackendUserID(r *ghttp.Request) string
 	}

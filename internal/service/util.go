@@ -6,6 +6,7 @@
 package service
 
 import (
+	"context"
 	"time"
 
 	"github.com/gogf/gf/v2/container/gvar"
@@ -29,6 +30,8 @@ type (
 		GetLocalIP() (ip string, err error)
 		FriendyTimeFormat(TimeCreate time.Time, TimeEnd time.Time) string
 		ImageOrDefaultUrl(imgUrl string) string
+		IsMobile(ctx context.Context) bool
+		ResponsiveJump(ctx context.Context)
 	}
 )
 

@@ -12,9 +12,14 @@ func pcApiHandle(s *ghttp.Server) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 		)
+		pcHost := service.Util().GetConfig("server.pcHost")
+		if len(pcHost) > 0 {
+			// 如果设置了pc域名，则路由需绑定域名访问
+			pcHost = "@" + pcHost
+		}
 		// pcApi路由
 		group.ALLMap(g.Map{
-			"/guestbook.html": pcApi.Guestbook.Submit,
+			"/guestbook.html" + pcHost: pcApi.Guestbook.Submit,
 		})
 	})
 }
