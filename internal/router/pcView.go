@@ -28,7 +28,10 @@ func pcViewHandle(s *ghttp.Server) {
 			"/single_page/{id}.html" + pcHost:    pc.SinglePage.Detail, // 单页
 			"/search.html" + pcHost:              pc.Search.Index,      // 搜索
 			// 路由美化
-			"/about.html": pc.RouterBeautify.About, // 公司简介
+			"/about.html":         pc.RouterBeautify.About,        // 公司简介
+			"/news.html":          pc.RouterBeautify.News,         // 新闻动态
+			"/news_company.html":  pc.RouterBeautify.NewsCompany,  // 公司新闻
+			"/news_industry.html": pc.RouterBeautify.NewsIndustry, // 行业动态
 		})
 	})
 }
