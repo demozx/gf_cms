@@ -18,8 +18,11 @@ func mobileViewHandle(s *ghttp.Server) {
 			mobileHost = "@" + mobileHost
 			// mobile路由
 			group.ALLMap(g.Map{
-				"/" + mobileHost:           mobile.Index.Index, // 首页
-				"/index.html" + mobileHost: mobile.Index.Index, // 首页
+				"/" + mobileHost:                      mobile.Index.Index,       // 首页
+				"/index.html" + mobileHost:            mobile.Index.Index,       // 首页
+				"/single_page/{id}.html" + mobileHost: mobile.SinglePage.Detail, // 单页
+				// 路由美化
+				"/about.html" + mobileHost: mobile.RouterBeautify.About, // 公司简介
 			})
 		}
 	})

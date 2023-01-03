@@ -34,13 +34,7 @@
     <script type="text/javascript" src="/resource/mobile/js/lihe.js"></script>
 </head>
 <body>
-<ul class="nav">
-    <li><a href="/" title="网站首页"><span class="iconfont">&#xe607;</span>网站首页</a></li>
-    ${ range $key, $item := .navigation }$
-    <li><a href="${ $item.ChannelRouter }$" title="${ $item.Name }$">${ $item.Name }$</a></li>
-    ${ end }$
-</ul>
-
+${include "/mobile/public/navigation.html" .}$
 <div class="allpage">
     <div class="black-fixed commonfont1">&#xe607;</div>
     <div class="header">

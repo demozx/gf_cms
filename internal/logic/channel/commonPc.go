@@ -151,7 +151,11 @@ func (s *sChannel) PcListTemplate(ctx context.Context, channel *entity.CmsChanne
 		template = "/pc/single_page/detail.html"
 	}
 	if len(channel.ListTemplate) > 0 {
+		// 后台配置的时候不需要加“/pc”，程序自动找指定模块下的模板
 		template = channel.ListTemplate
+		if gstr.HasPrefix(template, "/pc") {
+			template = "/pc" + template
+		}
 	}
 	return
 }
@@ -167,7 +171,11 @@ func (s *sChannel) PcDetailTemplate(ctx context.Context, channel *entity.CmsChan
 		template = "/pc/image/detail.html"
 	}
 	if len(channel.DetailTemplate) > 0 {
+		// 后台配置的时候不需要加“/pc”，程序自动找指定模块下的模板
 		template = channel.DetailTemplate
+		if gstr.HasPrefix(template, "/pc") {
+			template = "/pc" + template
+		}
 	}
 	return
 }

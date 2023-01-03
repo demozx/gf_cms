@@ -271,7 +271,7 @@ func (s *sUtil) ResponsiveJump(ctx context.Context) {
 		}
 	}
 	if len(jumpUrl) > 0 {
-		if !gstr.Contains(jumpUrl, "http") {
+		if !gstr.HasPrefix(jumpUrl, "http") {
 			jumpUrl = "http://" + jumpUrl
 		}
 		g.RequestFromCtx(ctx).Response.RedirectTo(jumpUrl)

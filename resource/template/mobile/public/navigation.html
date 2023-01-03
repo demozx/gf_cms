@@ -1,0 +1,6 @@
+<ul class="nav">
+  <li><a href="/" title="网站首页"><span class="iconfont">&#xe607;</span>网站首页</a></li>
+  ${ range $key, $item := .navigation }$
+  <li><a href="${ $item.ChannelRouter }$" title="${ $item.Name }$">${ $item.Name }$</a></li>
+  ${ end }$
+</ul>

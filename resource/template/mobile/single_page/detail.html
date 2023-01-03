@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>{$categoryInfo.cat_name}-{$sys_config.webname}</title>
+    <meta name="description" content="{$categoryInfo.cat_description|raw|html2text|msubstr=###,0,255}"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/subpage.css" />
+    <script type="text/javascript" src="__STATIC__/mobile/js/jquery.js"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/nav.js"></script>
+    <script type="text/javascript" src="__STATIC__/mobile/js/cart_icon.js"></script>
+</head>
+<body>
+<!-- 导航开始 -->
+{include file='public/channel'/}
+<!-- 导航结束 -->
+<div class="allpage">
+    <!-- head开始 -->
+    {include file='public/head'/}
+    <!-- head结束 -->
+    <div class="content">
+        <div class="about">
+            <h1>{$categoryInfo.cat_name}</h1>
+            <span class="picContent">
+				<div>
+					{$categoryInfo.cat_description|raw}
+				</div>
+			</span>
+
+
+        </div>
+        {include file='public/foot'/}
+    </div>
+
+</div>
+</body>
+</html>
