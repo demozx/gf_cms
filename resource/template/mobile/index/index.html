@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <meta content="yes" name="apple-mobile-web-app-capable"/>
     <meta content="telephone=no" name="format-detection"/>
     <meta http-equiv="Cache-Control" content="no-transform"/>
@@ -10,49 +11,52 @@
     <title>${ system_setting `web_name` }$</title>
     <meta name="keywords" content="${ system_setting `keywords` }$"/>
     <meta name="description" content="${ system_setting `description` }$"/>
-    <link rel="stylesheet" type="text/css" href="/resource/mobile//css/subpage.css"/>
-    <script type="text/javascript" src="/resource/mobile//js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/resource/mobile/css/subpage.css"/>
+    <script type="text/javascript" src="/resource/mobile/js/jquery.js"></script>
     <style>
         .foot {
-            background : rgba(98, 141, 227, 0.7);
+            background: rgba(98, 141, 227, 0.7);
         }
+
         .nav {
-            background : #555555
+            background: #555555
         }
+
         .nav_color {
-            background : #000000
+            background: #000000
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="/resource/mobile//css/master.css"/>
-    <link rel="stylesheet" type="text/css" href="/resource/mobile//css/swiper.css"/>
-    <script type="text/javascript" src="/resource/mobile//js/nav.js"></script>
-    <script type="text/javascript" src="/resource/mobile//js/cart_icon.js"></script>
-    <script type="text/javascript" src="/resource/mobile//js/swiper.js"></script>
-    <script type="text/javascript" src="/resource/mobile//js/lihe.js"></script>
+    <link rel="stylesheet" type="text/css" href="/resource/mobile/css/master.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/mobile/css/swiper.css"/>
+    <script type="text/javascript" src="/resource/mobile/js/nav.js"></script>
+    <script type="text/javascript" src="/resource/mobile/js/cart_icon.js"></script>
+    <script type="text/javascript" src="/resource/mobile/js/swiper.js"></script>
+    <script type="text/javascript" src="/resource/mobile/js/lihe.js"></script>
 </head>
 <body>
 <ul class="nav">
     <li><a href="/" title="网站首页"><span class="iconfont">&#xe607;</span>网站首页</a></li>
-    {volist name='channel' id='vo'}
-    <li><a href="{$vo.cat_url}" title="{$vo.cat_name}">{$vo.cat_name}</a></li>
-    {/volist}
+    ${ range $key, $item := .navigation }$
+    <li><a href="${ $item.ChannelRouter }$" title="${ $item.Name }$">${ $item.Name }$</a></li>
+    ${ end }$
 </ul>
 
 <div class="allpage">
     <div class="black-fixed commonfont1">&#xe607;</div>
     <div class="header">
-        <div class="head"><a href="/" title="{$sys_config.webname}" class="logo">
-            <img style="margin-top: 6px;" src="/resource/mobile//images/logo.png" alt=""/>
-        </a>
+        <div class="head">
+            <a href="/" title="${ system_setting `web_name` }$" class="logo">
+                <img style="margin-top: 6px;" src="/resource/mobile/images/logo.png" alt=""/>
+            </a>
             <div class="nav-btn iconfont">&#xe605;</div>
         </div>
     </div>
     <div class="nav_new tpp">
         <ul>
-            <li class="t1"><a href="{:getCatUrl(91)}">公司简介</a></li>
-            <li class="t2"><a href="{:getCatUrl(92)}">新闻动态</a></li>
-            <li class="t3"><a href="{:getCatUrl(93)}">产品展示</a></li>
-            <li class="t4"><a href="{:getCatUrl(98)}">联系我们</a></li>
+            <li class="t1"><a href="${ .aboutChannelUrl }$">公司简介</a></li>
+            <li class="t2"><a href="${ .newsChannelUrl }$">新闻动态</a></li>
+            <li class="t3"><a href="${ .productChannelUrl }$">产品展示</a></li>
+            <li class="t4"><a href="${ .contactChannelUrl }$">联系我们</a></li>
         </ul>
         <div class="c"></div>
     </div>
@@ -60,46 +64,47 @@
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    {volist name='banner' id='vo'}
+                    ${ range $key, $item := .adList }$
                     <div class="swiper-slide">
-                        <a href="{$vo.link|default='javascript:;'}">
-                            <img src="{$vo.img_url}"/>
+                        <a href="${$item.Link}$">
+                            <img src="${ $item.ImgUrl }$"/>
                         </a>
                     </div>
-                    {/volist}
+                    ${ end }$
                 </div>
                 <!-- Add Pagination -->
                 <div class="swfra">
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
-            <p class="boda"><a href="tel:{$sys_config.tel}"><font class="commonfont">&#xe663;</font>咨询热线：{$sys_config.tel}</a></p>
+            <p class="boda"><a href="tel:${ system_setting `tel` }$"><font class="commonfont">&#xe663;</font>咨询热线：${ system_setting `tel` }$</a>
+            </p>
             <div class="icon_nav">
                 <ul>
                     <li class="la1">
-                        <a href="{:getCatUrl(99)}">
-                            <strong class=" iconfont1_ys"><span>{:getCatName(99)}</span></strong>
+                        <a href="${ .productFuJianChannelUrl }$">
+                            <strong class=" iconfont1_ys"><span>附件</span></strong>
                         </a>
                     </li>
                     <li class="la2">
-                        <a href="{:getCatUrl(100)}">
-                            <strong class=" iconfont1_ys"><span>{:getCatName(100)}</span></strong>
+                        <a href="${ .productGangBeiChannelUrl }$">
+                            <strong class=" iconfont1_ys"><span>钢背</span></strong>
                         </a>
                     </li>
                     <li class="la3">
-                        <a href="{:getCatUrl(101)}">
-                            <strong class=" iconfont1_ys"><span>{:getCatName(101)}</span></strong>
+                        <a href="${ .productJianZhenPianChannelUrl }$">
+                            <strong class=" iconfont1_ys"><span>减震片</span></strong>
                         </a>
                     </li>
                     <li class="la4">
-                        <a href="{:getCatUrl(93)}"> <strong class=" iconfont1_ys  ">...</strong> </a>
+                        <a href="${ .productChannelUrl }$"> <strong class=" iconfont1_ys  ">...</strong> </a>
                     </li>
                 </ul>
                 <div class="c"></div>
             </div>
             <div class="clear"></div>
             <div class="honor_i">
-                <div class="more_i "><span>产品展示</span><a href="{:getCatUrl(93)}">查看更多</a></div>
+                <div class="more_i "><span>产品展示</span><a href="${ .productChannelUrl }$">查看更多</a></div>
                 <div class="clear"></div>
                 <div class="honor_i_c">
                     <ul>

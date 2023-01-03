@@ -15,6 +15,14 @@ const (
 	GuestbookChannelTid = 10
 	// ProductChannelTid 产品展示栏目顶级id
 	ProductChannelTid = 4
+	// ProductFujianChannelId 产品-附件栏目id
+	ProductFujianChannelId = 12
+	// ProductGangBeiChannelId 产品-钢背栏目id
+	ProductGangBeiChannelId = 13
+	// ProductJianZhenPianChannelId 产品-减震片栏目id
+	ProductJianZhenPianChannelId = 14
+	// ProductMaoDingChannelId 产品-铆钉、垫片栏目id
+	ProductMaoDingChannelId = 15
 	// HonorChannelTid 荣誉资质栏目顶级id
 	HonorChannelTid = 9
 	// ContactChannelTid 联系我们栏目顶级id
