@@ -74,7 +74,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	chAbout := make(chan *entity.CmsChannel, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		about, _ := service.Channel().PcHomeAboutChannel(ctx, consts.AbortChannelTid)
+		about, _ := service.Channel().PcHomeAboutChannel(ctx, consts.AboutChannelTid)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页关于我们耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chAbout <- about
@@ -84,7 +84,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	chAboutMoreUrl := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		aboutMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.AbortChannelTid, "")
+		aboutMoreUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.AboutChannelTid, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页关于我们查看更多耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chAboutMoreUrl <- aboutMoreUrl

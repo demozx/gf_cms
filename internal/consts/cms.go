@@ -1,6 +1,12 @@
 package consts
 
 const (
+	// AdminSessionKeyPrefix 后台用户session前缀
+	AdminSessionKeyPrefix = "admin_session"
+
+	// Pc404Page pc404页面
+	Pc404Page = "/pc/404/404.html"
+
 	// ChannelModelArticle 文章模型
 	ChannelModelArticle = "article"
 	// ChannelModelArticleDesc 文章模型描述
@@ -16,12 +22,4 @@ const (
 
 	// PcHomeAdChannelId pc首页广告分类id
 	PcHomeAdChannelId = 1
-	// GoodsChannelTid 产品栏目顶级id
-	GoodsChannelTid = 4
-	// AbortChannelTid 关于我们栏目顶级id
-	AbortChannelTid = 8
-	// NewsChannelTid 新闻栏目顶级id
-	NewsChannelTid = 1
-	// GuestbookChannelTid 在线留言栏目顶级id
-	GuestbookChannelTid = 10
 )

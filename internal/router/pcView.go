@@ -32,6 +32,11 @@ func pcViewHandle(s *ghttp.Server) {
 			"/news.html":          pc.RouterBeautify.News,         // 新闻动态
 			"/news_company.html":  pc.RouterBeautify.NewsCompany,  // 公司新闻
 			"/news_industry.html": pc.RouterBeautify.NewsIndustry, // 行业动态
+			"/product.html":       pc.RouterBeautify.Product,      // 产品展示
+			"/product_{id}.html":  pc.Image.List,                  // 子产品
+			"/honor.html":         pc.RouterBeautify.Honor,        // 荣誉资质
+			"/guestbook.html":     pc.RouterBeautify.Guestbook,    // 在线留言
+			"/contact.html":       pc.RouterBeautify.Contact,      // 联系我们
 		})
 	})
 }

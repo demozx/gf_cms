@@ -1,12 +1,6 @@
 package consts
 
 const (
-	// AdminSessionKeyPrefix 后台用户session前缀
-	AdminSessionKeyPrefix = "admin_session"
-
-	// Pc404Page pc404页面
-	Pc404Page = "/pc/404/404.html"
-
 	// SwaggerUIPageContent 自定义SwaggerUI
 	SwaggerUIPageContent = `
 <!DOCTYPE html>
