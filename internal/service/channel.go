@@ -14,6 +14,7 @@ import (
 
 type (
 	IChannel interface {
+		MobileHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error)
 		PcHomeAboutChannel(ctx context.Context, channelId int) (channel *entity.CmsChannel, err error)
 		PcHomeGoodsChannelList(ctx context.Context, channelId int) (out []*model.ChannelPcNavigationListItem, err error)
 		BackendApiIndex(ctx context.Context) (out []*model.ChannelBackendApiListItem, err error)

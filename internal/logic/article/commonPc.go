@@ -20,7 +20,7 @@ func (s *sArticle) PcPrevArticle(ctx context.Context, channelId int, articleId u
 	if prevArticle == nil {
 		out = &model.ArticleLink{Title: "无", Router: "javascript:;"}
 	} else {
-		url, err := service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(prevArticle.Id))
+		url, err := service.GenUrl().DetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(prevArticle.Id))
 		if err != nil {
 			return nil, err
 		}
@@ -39,7 +39,7 @@ func (s *sArticle) PcNextArticle(ctx context.Context, channelId int, articleId u
 	if nextArticle == nil {
 		out = &model.ArticleLink{Title: "无", Router: "javascript:;"}
 	} else {
-		url, err := service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(nextArticle.Id))
+		url, err := service.GenUrl().DetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(nextArticle.Id))
 		if err != nil {
 			return nil, err
 		}

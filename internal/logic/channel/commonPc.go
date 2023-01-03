@@ -185,7 +185,7 @@ func (s *sChannel) pcCrumbsRecursion(ctx context.Context, channelId uint, crumbs
 	if channelInfo == nil {
 		return nil, gerror.New("栏目不存在")
 	}
-	channelRouter, err := service.GenUrl().PcChannelUrl(ctx, gconv.Int(channelInfo.Id), "")
+	channelRouter, err := service.GenUrl().ChannelUrl(ctx, gconv.Int(channelInfo.Id), "")
 	if err != nil {
 		return nil, err
 	}
@@ -254,7 +254,7 @@ func (s *sChannel) pcNavigationListRecursion(ctx context.Context, list []*entity
 			naviItem.ChannelRouter = item.ListRouter
 			if gstr.Contains(item.ListRouter, "{id}") {
 				// 如果路由中有{id}，替换id
-				naviItem.ChannelRouter, _ = service.GenUrl().PcChannelUrl(ctx, gconv.Int(item.Id), item.ListRouter)
+				naviItem.ChannelRouter, _ = service.GenUrl().ChannelUrl(ctx, gconv.Int(item.Id), item.ListRouter)
 			}
 		case 3:
 			// 链接类型

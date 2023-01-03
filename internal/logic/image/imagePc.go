@@ -15,13 +15,13 @@ func (s *sImage) PcHomeRecommendGoodsList(ctx context.Context, belongChannelId i
 	if err != nil {
 		return nil, err
 	}
-	err = dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().ChannelId, arrAllIds).OrderRandom().Where(dao.CmsImage.Columns().Status, 1).Scan(&out)
+	err = dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().ChannelId, arrAllIds).OrderRandom().Where(dao.CmsImage.Columns().Status, 1).Limit(3).Scan(&out)
 	if err != nil {
 		return nil, err
 	}
 	for key, item := range out {
 		out[key], _ = service.Image().BuildThumb(ctx, item)
-		out[key].Router, _ = service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
+		out[key].Router, _ = service.GenUrl().DetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
 	}
 	return
 }
@@ -42,7 +42,7 @@ func (s *sImage) PcHomeGoodsGroupList(ctx context.Context, belongChannelId int) 
 		}
 		if len(imageListItems) > 0 {
 			for key, item := range imageListItems {
-				imageListItems[key].Router, _ = service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
+				imageListItems[key].Router, _ = service.GenUrl().DetailUrl(ctx, consts.ChannelModelImage, gconv.Int(item.Id))
 				imageListItems[key], _ = service.Image().BuildThumb(ctx, item)
 			}
 		}

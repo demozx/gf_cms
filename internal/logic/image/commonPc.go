@@ -20,7 +20,7 @@ func (s *sImage) PcPrevImage(ctx context.Context, channelId int, imageId uint64)
 	if prevImage == nil {
 		out = &model.ImageLink{Title: "无", Router: "javascript:;"}
 	} else {
-		url, err := service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(prevImage.Id))
+		url, err := service.GenUrl().DetailUrl(ctx, consts.ChannelModelImage, gconv.Int(prevImage.Id))
 		if err != nil {
 			return nil, err
 		}
@@ -39,7 +39,7 @@ func (s *sImage) PcNextImage(ctx context.Context, channelId int, imageId uint64)
 	if nextImage == nil {
 		out = &model.ImageLink{Title: "无", Router: "javascript:;"}
 	} else {
-		url, err := service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelImage, gconv.Int(nextImage.Id))
+		url, err := service.GenUrl().DetailUrl(ctx, consts.ChannelModelImage, gconv.Int(nextImage.Id))
 		if err != nil {
 			return nil, err
 		}

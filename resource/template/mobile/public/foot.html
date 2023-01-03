@@ -1,0 +1,67 @@
+<div class="baomingfra">
+  <div class="baoming">
+    <div class="left"><span><font class="commonfont">&#xe663;</font>咨询热线：${ system_setting `tel` }$</span></div>
+    <div class="right"> <span>地址：${ system_setting `address` }$</span>  </div>
+    <div class="c"></div>
+  </div>
+  <script src="/resource/mobile/js/jquery.lazyload.mini.js"></script>
+  <script type="text/javascript">
+    //惰性加载图片
+    $("img").lazyload({
+      threshold: 10,
+      failurelimit: 10,
+      skip_invisible : false,
+      effect: "fadeIn"
+      //effect: "slideDown"
+    });
+
+  </script>
+  <script type="text/javascript">
+    // 搜索
+    $('.common-submit').click(function(){
+      var q_v = $('.common-text').val();
+      $('.am-topbar-form').submit();
+    });
+
+  </script>
+  <!-- 统计 -->
+  <div style="text-align:center;background: #628de3;">
+    ${ system_setting `tongji_m` }$
+  </div>
+  <!--百度自动推送-->
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+</div>
+
+</div>
+<div class="footer">
+  <div class="foot foot-relative" id="foot">
+    <div class="foot-relative">
+      <a href="tel:${ system_setting `tel` }$" target="_blank" title="电话"> <span class="commonfont">&#xe663;</span>
+        <h3>电话</h3>
+      </a>
+      <a href="sms:${ system_setting `tel` }$" target="_blank" title="短信"> <span class="commonfont">&#xe612;</span>
+        <h3>短信</h3>
+      </a>
+      <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=${ system_setting `qq` }$&amp;Site=${ system_setting `web_name` }$&amp;Menu=yes" title="QQ"> <span class="commonfont">&#xe641;</span>
+        <h3>QQ</h3>
+      </a>
+      <a href="${ .guestbookChannelUrl }$" title="留言"> <span class="commonfont">&#xe634;</span>
+        <h3>留言</h3>
+      </a>
+    </div>
+  </div>
+</div>

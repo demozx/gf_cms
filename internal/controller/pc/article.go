@@ -73,7 +73,7 @@ func (c *cArticle) List(ctx context.Context, req *pc.ArticleListReq) (res *pc.Ar
 	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelTid)
+		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc栏目页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
@@ -83,7 +83,7 @@ func (c *cArticle) List(ctx context.Context, req *pc.ArticleListReq) (res *pc.Ar
 	chTextNewsList := make(chan []*model.ArticleListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelTid)
+		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc栏目页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
 		chTextNewsList <- textNewsList
@@ -93,7 +93,7 @@ func (c *cArticle) List(ctx context.Context, req *pc.ArticleListReq) (res *pc.Ar
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		guestbookUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GuestbookChannelTid, "")
+		guestbookUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGuestbookUrl <- guestbookUrl
@@ -187,7 +187,7 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelTid)
+		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc文章详情页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
@@ -197,7 +197,7 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 	chTextNewsList := make(chan []*model.ArticleListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelTid)
+		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc文章详情页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
 		chTextNewsList <- textNewsList
@@ -219,7 +219,7 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		guestbookUrl, _ := service.GenUrl().PcChannelUrl(ctx, consts.GuestbookChannelTid, "")
+		guestbookUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGuestbookUrl <- guestbookUrl
@@ -292,7 +292,7 @@ func (c *cArticle) articlePageList(ctx context.Context, in *pc.ArticleListReq) (
 		return nil, err
 	}
 	for key, item := range articleList {
-		url, err := service.GenUrl().PcDetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(item.Id))
+		url, err := service.GenUrl().DetailUrl(ctx, consts.ChannelModelArticle, gconv.Int(item.Id))
 		if err != nil {
 			return nil, err
 		}

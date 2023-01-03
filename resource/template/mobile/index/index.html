@@ -108,11 +108,11 @@
                 <div class="clear"></div>
                 <div class="honor_i_c">
                     <ul>
-                        {volist name='productList' id='vo'}
-                        <li><a href="{$vo.art_url}" title="{$vo.title}"> <img
-                                src="/images/loading.gif" data-original="{$vo.litpic}" alt="{$vo.title}">
-                            <span>{$vo.title}</span> </a></li>
-                        {/volist}
+                        ${ range $key, $item := .recommendGoodsList }$
+                        <li><a href="${ $item.Router }$" title="${ $item.Title }$"> <img
+                                src="/resource/images/loading.gif" data-original="${ $item.Thumb }$" alt="${ $item.Title }$">
+                            <span>${ $item.Title|substr 0 100 }$</span> </a></li>
+                        ${ end }$
                     </ul>
                     <div class="c"></div>
                 </div>
@@ -120,82 +120,63 @@
             </div>
             <div class="clear"></div>
             <div class="about_i">
-                <div class="more_i"><span>关于我们</span><a href="{:getCatUrl(91)}">查看更多</a></div>
+                <div class="more_i"><span>关于我们</span><a href="${ .aboutChannelUrl }$">查看更多</a></div>
                 <div class="clear"></div>
                 <div class="about_i_c">
-                    {$gywm_desc|htmlspecialchars_decode|html2text|msubstr=###,0,110}...
+                    ${ .aboutChannelDescription|text|substr 0 110 }$
                 </div>
                 <div class="clear"></div>
             </div>
             <div class="clear"></div>
-            <div class="honor_i">
-                <div class="more_i m1"><span>{:getCatName(94)}</span><a href="{:getCatUrl(94)}">查看更多</a></div>
-                <div class="clear"></div>
-                <div class="honor_i_c">
-                    <ul>
-                        {volist name='crcmList' id='vo'}
-                        <li>
-                            <a href="{$vo.art_url}" title="{$vo.title}">
-                                <img src="/images/loading.gif" data-original="{$vo.litpic}" alt="{$vo.title}">
-                                <label>{$vo.title}</label>
-                            </a>
-                        </li>
-                        {/volist}
-                    </ul>
-                    <div class="c"></div>
-                </div>
-                <div class="clear"></div>
-            </div>
-
             <div class="case_i">
-                <div class="more_i"><span>新闻动态</span><a href="{:getCatUrl(92)}">查看更多</a></div>
+                <div class="more_i"><span>新闻动态</span><a href="${ .newsChannelUrl }$">查看更多</a></div>
                 <div class="clear"></div>
                 <div class="youhui">
-                    {volist name='newsListPic' id='vo'}
-                    <a href="{$vo.art_url}">
-                        <label>{$vo.title}</label>
+                    ${ range $key, $item := .picNewsList }$
+                    <a href="${ $item.Router }$">
+                        <label>${ $item.Title }$</label>
                         <div class="yright">
-                            <img src="/images/loading.gif" data-original="{$vo.litpic}"/>
-                            <span>{$vo.description|htmlspecialchars_decode|html2text|msubstr=###,0,110}...</span>
+                            <img src="/resource/images/loading.gif" data-original="${ $item.Thumb }$"/>
+                            <span>${ $item.Description|text|substr 0 110 }$...</span>
                         </div>
                     </a>
-                    {/volist}
+                    ${ end }$
                     <div class="c"></div>
                 </div>
                 <div class="clear"></div>
                 <div class="case_i_c" id="nn1">
                     <ul>
-                        {volist name='newsListNoPic' id='vo'}
+                        ${ range $key, $item := .textNewsList }$
                         <li>
-                            <a href="{$vo.art_url}">
+                            <a href="${ $item.Router }$">
                                 <span class="iconfont">&#xe609;</span>
-                                <h2>{$vo.title}</h2>
+                                <h2>${ $item.Title }$</h2>
                             </a>
                         </li>
-                        {/volist}
+                        ${ end }$
                     </ul>
                 </div>
                 <div class="clear"></div>
             </div>
             <div class="honor_i">
-                <div class="more_i m3"><span>荣誉资质</span><a href="{:getCatUrl(95)}">查看更多</a></div>
+                <div class="more_i m3"><span>荣誉资质</span><a href="${ .honorChannelUrl }$">查看更多</a></div>
                 <div class="clear"></div>
                 <div class="honor_i_h">
                     <ul>
-                        {volist name='honorList' id='vo'}
+                        ${ range $key, $item := .honorList }$
                         <li>
-                            <a href="{$vo.art_url}" title="{$vo.title}">
-                                <img src="/images/loading.gif"
-                                     data-original="{$vo.litpic}" alt="{$vo.title}">
+                            <a href="${ $item.Router }$" title="${ $item.Title }$">
+                                <img src="/resource/images/loading.gif"
+                                     data-original="${ $item.Thumb }$" alt="${ $item.Title }$">
                             </a>
                         </li>
-                        {/volist}
+                        ${ end }$
                     </ul>
                     <div class="c"></div>
                 </div>
             </div>
             <!-- foot -->
-            {include file='public/foot'/}
+            ${include "/mobile/public/foot.html" .}$
         </div>
 </body>
 </html>

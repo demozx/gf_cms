@@ -14,7 +14,7 @@ type cRouterBeautify struct{}
 
 // About 路由美化-关于我们
 func (c *cRouterBeautify) About(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: consts.AboutChannelTid})
+	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: consts.AboutChannelId})
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func (c *cRouterBeautify) About(ctx context.Context, req *pc.RouterBeautifyReq) 
 
 // News 路由美化-新闻动态
 func (c *cRouterBeautify) News(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = Article.List(ctx, &pc.ArticleListReq{ChannelId: consts.NewsChannelTid})
+	_, err = Article.List(ctx, &pc.ArticleListReq{ChannelId: consts.NewsChannelId})
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func (c *cRouterBeautify) News(ctx context.Context, req *pc.RouterBeautifyReq) (
 
 // NewsCompany 路由美化-公司新闻
 func (c *cRouterBeautify) NewsCompany(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = Article.List(ctx, &pc.ArticleListReq{ChannelId: consts.NewsCompanyChannelTid})
+	_, err = Article.List(ctx, &pc.ArticleListReq{ChannelId: consts.NewsCompanyChannelId})
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (c *cRouterBeautify) NewsCompany(ctx context.Context, req *pc.RouterBeautif
 
 // NewsIndustry 路由美化-行业动态
 func (c *cRouterBeautify) NewsIndustry(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = Article.List(ctx, &pc.ArticleListReq{ChannelId: consts.NewsIndustryChannelTid})
+	_, err = Article.List(ctx, &pc.ArticleListReq{ChannelId: consts.NewsIndustryChannelId})
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (c *cRouterBeautify) NewsIndustry(ctx context.Context, req *pc.RouterBeauti
 
 // Product 产品展示
 func (c *cRouterBeautify) Product(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = Image.List(ctx, &pc.ImageListReq{ChannelId: consts.ProductChannelTid})
+	_, err = Image.List(ctx, &pc.ImageListReq{ChannelId: consts.ProductChannelId})
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (c *cRouterBeautify) Product(ctx context.Context, req *pc.RouterBeautifyReq
 
 // Honor 荣誉资质
 func (c *cRouterBeautify) Honor(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = Image.List(ctx, &pc.ImageListReq{ChannelId: consts.HonorChannelTid})
+	_, err = Image.List(ctx, &pc.ImageListReq{ChannelId: consts.HonorChannelId})
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (c *cRouterBeautify) Honor(ctx context.Context, req *pc.RouterBeautifyReq) 
 
 // Guestbook 在线留言
 func (c *cRouterBeautify) Guestbook(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: consts.GuestbookChannelTid})
+	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: consts.GuestbookChannelId})
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (c *cRouterBeautify) Guestbook(ctx context.Context, req *pc.RouterBeautifyR
 
 // Contact 联系我们
 func (c *cRouterBeautify) Contact(ctx context.Context, req *pc.RouterBeautifyReq) (res *pc.RouterBeautifyRes, err error) {
-	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: consts.ContactChannelTid})
+	_, err = SinglePage.Detail(ctx, &pc.SinglePageReq{Id: consts.ContactChannelId})
 	if err != nil {
 		return nil, err
 	}

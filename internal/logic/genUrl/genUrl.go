@@ -31,10 +31,10 @@ func GenUrl() *sGenUrl {
 	return &insGenUrl
 }
 
-// PcChannelUrl 生成pc栏目url
+// ChannelUrl 生成pc栏目url
 // channelId 栏目id
 // router 可传空，非空可减少一次查询
-func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string) (newRouter string, err error) {
+func (s *sGenUrl) ChannelUrl(ctx context.Context, channelId int, router string) (newRouter string, err error) {
 	if router != "" {
 		// 路由中有{id}字符串，替换成指定的id
 		if gstr.Contains(router, "{id}") {
@@ -77,7 +77,7 @@ func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string
 			newRouter = channel.ListRouter
 			if gstr.Contains(channel.ListRouter, "{id}") {
 				// 如果路由中有{id}，替换id
-				newRouter, _ = service.GenUrl().PcChannelUrl(ctx, gconv.Int(channel.Id), channel.ListRouter)
+				newRouter, _ = service.GenUrl().ChannelUrl(ctx, gconv.Int(channel.Id), channel.ListRouter)
 			}
 		case 3:
 			// 链接类型
@@ -93,8 +93,8 @@ func (s *sGenUrl) PcChannelUrl(ctx context.Context, channelId int, router string
 	return
 }
 
-// PcDetailUrl 生成pc详情页url
-func (s *sGenUrl) PcDetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error) {
+// DetailUrl 生成pc详情页url
+func (s *sGenUrl) DetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error) {
 	cacheKey := util.PublicCachePreFix + ":detail_url:" + model + ":" + gconv.String(detailId)
 	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
 	if err != nil {

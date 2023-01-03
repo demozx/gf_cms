@@ -13,6 +13,8 @@ import (
 
 type (
 	IArticle interface {
+		MobileHomeTextNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
+		MobileHomePicNewsList(ctx context.Context, channelTid int) (out []*model.ArticleListItem, err error)
 		BackendArticleGetList(ctx context.Context, in *model.ArticleGetListInPut) (out *model.ArticleGetListOutPut, err error)
 		Sort(ctx context.Context, in []*model.ArticleSortMap) (out interface{}, err error)
 		Flag(ctx context.Context, ids []int, flagType string) (out interface{}, err error)
