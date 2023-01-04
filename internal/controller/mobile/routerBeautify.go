@@ -4,7 +4,6 @@ import (
 	"context"
 	"gf_cms/api/mobile"
 	"gf_cms/internal/consts"
-	"github.com/gogf/gf/v2/frame/g"
 )
 
 var (
@@ -15,7 +14,6 @@ type cRouterBeautify struct{}
 
 // About 路由美化-关于我们
 func (c *cRouterBeautify) About(ctx context.Context, req *mobile.RouterBeautifyReq) (res *mobile.RouterBeautifyRes, err error) {
-	g.Dump("1111111")
 	_, err = SinglePage.Detail(ctx, &mobile.SinglePageReq{Id: consts.AboutChannelId})
 	if err != nil {
 		return nil, err

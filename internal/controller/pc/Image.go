@@ -40,10 +40,10 @@ func (c *cImage) List(ctx context.Context, req *pc.ImageListReq) (res *pc.ImageL
 		defer close(chImagePageList)
 	}()
 	// 导航栏
-	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		navigation, _ := service.Channel().PcNavigation(ctx, gconv.Int(channelInfo.Id))
+		navigation, _ := service.Channel().Navigation(ctx, gconv.Int(channelInfo.Id))
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
@@ -53,7 +53,7 @@ func (c *cImage) List(ctx context.Context, req *pc.ImageListReq) (res *pc.ImageL
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		pcTDK, _ := service.Channel().PcTDK(ctx, channelInfo.Id, 0)
+		pcTDK, _ := service.Channel().TDK(ctx, channelInfo.Id, 0)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pcTDK耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chTDK <- pcTDK
@@ -63,17 +63,17 @@ func (c *cImage) List(ctx context.Context, req *pc.ImageListReq) (res *pc.ImageL
 	chCrumbs := make(chan []*model.ChannelCrumbs, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		pcCrumbs, _ := service.Channel().PcCrumbs(ctx, channelInfo.Id)
+		pcCrumbs, _ := service.Channel().Crumbs(ctx, channelInfo.Id)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc面包屑导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chCrumbs <- pcCrumbs
 		defer close(chCrumbs)
 	}()
 	// 产品中心栏目列表
-	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelId)
+		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc栏目页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
@@ -142,10 +142,10 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 		return nil, err
 	}
 	// 导航栏
-	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		navigation, _ := service.Channel().PcNavigation(ctx, gconv.Int(channelInfo.Id))
+		navigation, _ := service.Channel().Navigation(ctx, gconv.Int(channelInfo.Id))
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
@@ -155,7 +155,7 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		pcTDK, _ := service.Channel().PcTDK(ctx, gconv.Uint(imageInfo.ChannelId), gconv.Int64(imageInfo.Id))
+		pcTDK, _ := service.Channel().TDK(ctx, gconv.Uint(imageInfo.ChannelId), gconv.Int64(imageInfo.Id))
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pcTDK耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chTDK <- pcTDK
@@ -165,17 +165,17 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 	chCrumbs := make(chan []*model.ChannelCrumbs, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		pcCrumbs, _ := service.Channel().PcCrumbs(ctx, channelInfo.Id)
+		pcCrumbs, _ := service.Channel().Crumbs(ctx, channelInfo.Id)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc面包屑导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chCrumbs <- pcCrumbs
 		defer close(chCrumbs)
 	}()
 	// 产品中心栏目列表
-	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelId)
+		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc文章详情页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList

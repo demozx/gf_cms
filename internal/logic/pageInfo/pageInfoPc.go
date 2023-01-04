@@ -8,7 +8,7 @@ import (
 )
 
 // PcPageInfo pc分页
-func (s *sPageInfo) PcPageInfo(ctx context.Context, total int64, size int) string {
+func (s *sPageInfo) PcPageInfo(ctx context.Context, total int, size int) string {
 	if total == 0 {
 		return ""
 	}

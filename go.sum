@@ -76,6 +76,8 @@ github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.4 h1:dUT1BbQ6RRiEDiBLj57jBx0y/W
 github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.4/go.mod h1:z+/0qiOwMroAnj5ESuobTv0l5P83rf+XR3r6Fj8WJyk=
 github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.5 h1:lbktAfOabQV9ZzLdEUK6DkELnq2hcHLd8gAD1a6HfSQ=
 github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.5/go.mod h1:z+/0qiOwMroAnj5ESuobTv0l5P83rf+XR3r6Fj8WJyk=
+github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.6 h1:+wR8nf6FAWU4w0AdRFPixCA69kfpd7aNNP2cR8oAt6s=
+github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.6/go.mod h1:z+/0qiOwMroAnj5ESuobTv0l5P83rf+XR3r6Fj8WJyk=
 github.com/gogf/gf/v2 v2.0.0-rc3/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
 github.com/gogf/gf/v2 v2.0.0/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
 github.com/gogf/gf/v2 v2.1.4 h1:zebl7kahNnU+0o7hcLx81svcTdp5fYdW9ZnZagXyLt4=
@@ -90,6 +92,8 @@ github.com/gogf/gf/v2 v2.2.4 h1:Y2c0F4dDDYlQswHPtoGJ0l9kvQjE0a9jmM02qCAZoqo=
 github.com/gogf/gf/v2 v2.2.4/go.mod h1:thvkyb43RWUu/m05sRm4CbH9r7t7/FrW2M56L9Ystwk=
 github.com/gogf/gf/v2 v2.2.5 h1:XyRSfn/gqdrGb03p1OGhXd4q6kVf1BL/pryT2Y1NyBA=
 github.com/gogf/gf/v2 v2.2.5/go.mod h1:thvkyb43RWUu/m05sRm4CbH9r7t7/FrW2M56L9Ystwk=
+github.com/gogf/gf/v2 v2.2.6 h1:KS8sPTiHzOfIqQNmdXmfEA9F2KWlBEPHKlM7wTDKlF0=
+github.com/gogf/gf/v2 v2.2.6/go.mod h1:thvkyb43RWUu/m05sRm4CbH9r7t7/FrW2M56L9Ystwk=
 github.com/golang-jwt/jwt/v4 v4.3.0/go.mod h1:/xlHOz8bRuivTWchD4jCa+NbatV+wEUSzwAxVc6locg=
 github.com/golang-jwt/jwt/v4 v4.4.2 h1:rcc4lwaZgFMCZ5jxF9ABolDcIHdBytAFgqFPbSJQAYs=
 github.com/golang-jwt/jwt/v4 v4.4.2/go.mod h1:m21LjoU+eqJr34lmDMbreY2eSTRJ1cv77w39/MY0Ch0=

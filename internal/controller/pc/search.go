@@ -20,20 +20,20 @@ type cSearch struct{}
 
 func (c *cSearch) Index(ctx context.Context, req *pc.SearchReq) (res *pc.SearchRes, err error) {
 	// 导航栏
-	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		navigation, _ := service.Channel().PcNavigation(ctx, 0)
+		navigation, _ := service.Channel().Navigation(ctx, 0)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
 		defer close(chNavigation)
 	}()
 	// 产品中心栏目列表
-	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelId)
+		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc文章详情页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList

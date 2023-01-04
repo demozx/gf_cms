@@ -20,10 +20,10 @@ type cIndex struct{}
 
 func (c *cIndex) Index(ctx context.Context, req *mobile.IndexReq) (res *mobile.IndexRes, err error) {
 	// 导航栏
-	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		navigation, _ := service.Channel().PcNavigation(ctx, 0)
+		navigation, _ := service.Channel().Navigation(ctx, 0)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "mobile导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
@@ -109,7 +109,7 @@ func (c *cIndex) Index(ctx context.Context, req *mobile.IndexReq) (res *mobile.I
 	// 关于我们简介
 	chAboutChannelDescription := make(chan string, 1)
 	go func() {
-		channel, _ := service.Channel().MobileHomeAboutChannel(ctx, consts.AboutChannelId)
+		channel, _ := service.Channel().HomeAboutChannel(ctx, consts.AboutChannelId)
 		chAboutChannelDescription <- channel.Description
 	}()
 	// 最新资讯-文字新闻

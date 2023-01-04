@@ -7,35 +7,34 @@
     <meta content="telephone=no" name="format-detection" />
     <meta http-equiv="Cache-Control" content="no-transform" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <title>{$categoryInfo.cat_name}-{$sys_config.webname}</title>
-    <meta name="description" content="{$categoryInfo.cat_description|raw|html2text|msubstr=###,0,255}"/>
-    <link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/subpage.css" />
-    <script type="text/javascript" src="__STATIC__/mobile/js/jquery.js"></script>
-    <script type="text/javascript" src="__STATIC__/mobile/js/nav.js"></script>
-    <script type="text/javascript" src="__STATIC__/mobile/js/cart_icon.js"></script>
+    <title>${ .tdk.Title }$</title>
+    <meta name="description" content="${ .tdk.Description }$"/>
+    <link rel="stylesheet" type="text/css" href="/resource/mobile/css/subpage.css" />
+    <script type="text/javascript" src="/resource/mobile/js/jquery.js"></script>
+    <script type="text/javascript" src="/resource/mobile/js/nav.js"></script>
+    <script type="text/javascript" src="/resource/mobile/js/cart_icon.js"></script>
 </head>
 <body>
 <!-- 导航开始 -->
-{include file='public/channel'/}
+${include "/mobile/public/navigation.html" .}$
 <!-- 导航结束 -->
 <div class="allpage">
     <!-- head开始 -->
-    {include file='public/head'/}
+    ${include "/mobile/public/head.html" .}$
     <!-- head结束 -->
     <div class="content">
         <div class="about">
-            <h1>{$categoryInfo.cat_name}</h1>
+            <h1>${ .channelInfo.Name }$</h1>
             <span class="picContent">
 				<div>
-					{$categoryInfo.cat_description|raw}
+					${ .channelInfo.Description }$
 				</div>
 			</span>
 
 
         </div>
-        {include file='public/foot'/}
+        ${include "/mobile/public/foot.html" .}$
     </div>
-
 </div>
 </body>
 </html>

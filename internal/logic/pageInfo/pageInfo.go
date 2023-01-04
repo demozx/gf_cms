@@ -28,7 +28,7 @@ func PageInfo() *sPageInfo {
 }
 
 // LayUiPageInfo layui分页
-func (s *sPageInfo) LayUiPageInfo(ctx context.Context, total int64, size int) string {
+func (s *sPageInfo) LayUiPageInfo(ctx context.Context, total int, size int) string {
 	if total == 0 {
 		return ""
 	}

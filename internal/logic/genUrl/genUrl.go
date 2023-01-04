@@ -43,7 +43,7 @@ func (s *sGenUrl) ChannelUrl(ctx context.Context, channelId int, router string) 
 			newRouter = router
 		}
 	} else {
-		var channel *model.ChannelPcNavigationListItem
+		var channel *model.ChannelNavigationListItem
 		cacheKey := util.PublicCachePreFix + ":channel_url:" + gconv.String(channelId)
 		exists, err := g.Redis().Do(ctx, "EXISTS", cacheKey)
 		if err != nil {

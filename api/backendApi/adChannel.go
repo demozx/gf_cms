@@ -14,7 +14,7 @@ type AdChannelIndexRes struct {
 	List  []*model.AdChannelListItem `json:"list" dc:"后台广告分类列表接口结果"`
 	Page  int                        `json:"page" dc:"分页码"`
 	Size  int                        `json:"size" dc:"分页数量"`
-	Total int64                      `json:"total" dc:"数据总数"`
+	Total int                        `json:"total" dc:"数据总数"`
 }
 
 type AdChannelAddReq struct {

@@ -1,0 +1,25 @@
+<div class="black-fixed commonfont1">&#xe607;</div>
+<div class="header">
+  <div class="head"> <a href="/" title="首页" class="home-btn iconfont">&#xe607;</a>
+    <p class="top-title">${ .channelInfo.Name }$</p>
+    <div class="class-btn"><span class="commonfont1">&#xe60a;</span></div>
+    <div class="nav-btn commonfont1">&#xe60b;</div>
+  </div>
+  <div class="type">
+    <h1>搜索：</h1>
+    <div class="common-pro-search">
+      <form class="am-topbar-form am-topbar-left am-form-inline am-topbar-right" role="search" action="/search.html">
+        <input type="text" class="common-text" name="keyword" placeholder="请输入搜索关键词"/>
+        <input type="button" class="common-submit commonfont1" value="&#xe602;"/>
+      </form>
+    </div>
+    <h1>产品展示分类：</h1>
+    <ul>
+      ${ range $key, $item := .goodsChannelList }$
+      <li> <a href="${ $item.ChannelRouter }$" title="${ $item.Name }$">${ $item.Name }$</a> <span class="commonfont1 class-down">&#xe60c;</span>
+        <dl></dl>
+      </li>
+      ${ end }$
+    </ul>
+  </div>
+</div>

@@ -2,14 +2,14 @@ package model
 
 import "gf_cms/internal/model/entity"
 
-type ChannelPcNavigationListItem struct {
+type ChannelNavigationListItem struct {
 	entity.CmsChannel
-	HasChildren   bool                           `json:"has_children"`   // 是否有子集
-	Children      []*ChannelPcNavigationListItem `json:"children"`       // 子集
-	ChannelRouter string                         `json:"channel_router"` // 处理后的可以直接使用的url地址
-	TriggerType   string                         `json:"trigger_type"`   // 处理后的可以直接使用的链接打开方式（当前标签，新标签）
-	Current       bool                           `json:"current"`        // 是不是当前栏目id
-	Highlight     bool                           `json:"highlight"`      // 是不是高亮栏目
+	HasChildren   bool                         `json:"has_children"`   // 是否有子集
+	Children      []*ChannelNavigationListItem `json:"children"`       // 子集
+	ChannelRouter string                       `json:"channel_router"` // 处理后的可以直接使用的url地址
+	TriggerType   string                       `json:"trigger_type"`   // 处理后的可以直接使用的链接打开方式（当前标签，新标签）
+	Current       bool                         `json:"current"`        // 是不是当前栏目id
+	Highlight     bool                         `json:"highlight"`      // 是不是高亮栏目
 }
 
 // ChannelBackendApiListItem 后台栏目分类接口列表数据

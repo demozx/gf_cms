@@ -21,10 +21,10 @@ type cIndex struct{}
 // Index pc首页
 func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes, err error) {
 	// 导航栏
-	chNavigation := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		navigation, _ := service.Channel().PcNavigation(ctx, 0)
+		navigation, _ := service.Channel().Navigation(ctx, 0)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
@@ -74,7 +74,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	chAbout := make(chan *entity.CmsChannel, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		about, _ := service.Channel().PcHomeAboutChannel(ctx, consts.AboutChannelId)
+		about, _ := service.Channel().HomeAboutChannel(ctx, consts.AboutChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页关于我们耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chAbout <- about
@@ -101,10 +101,10 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		defer close(chGuestbookUrl)
 	}()
 	// 产品中心栏目列表
-	chGoodsChannelList := make(chan []*model.ChannelPcNavigationListItem, 1)
+	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		goodsChannelList, _ := service.Channel().PcHomeGoodsChannelList(ctx, consts.GoodsChannelId)
+		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc首页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
