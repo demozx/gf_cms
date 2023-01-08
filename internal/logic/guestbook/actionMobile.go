@@ -25,7 +25,7 @@ func (s *sGuestbook) MobileSubmit(ctx context.Context, in *mobileApi.GuestbookRe
 	data := g.Map{
 		dao.CmsGuestbook.Columns().Name:    in.Name,
 		dao.CmsGuestbook.Columns().Tel:     in.Tel,
-		dao.CmsGuestbook.Columns().Content: in.Email + "\n\r" + in.Content,
+		dao.CmsGuestbook.Columns().Content: in.Email + "<br>" + in.Content,
 		dao.CmsGuestbook.Columns().Ip:      ip,
 		dao.CmsGuestbook.Columns().From:    2,
 	}
