@@ -2,6 +2,7 @@ package genUrl
 
 import (
 	"context"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
@@ -103,8 +104,31 @@ func (s *sGenUrl) DetailUrl(ctx context.Context, model string, detailId int) (ne
 	if !cached.IsEmpty() {
 		return cached.String(), nil
 	}
+	channelId := 0
+	if model == consts.ChannelModelArticle {
+		var article *entity.CmsArticle
+		err := dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, detailId).Scan(&article)
+		if err != nil {
+			return "", err
+		}
+		if article != nil {
+			channelId = article.ChannelId
+		}
+	} else if model == consts.ChannelModelImage {
+		var image *entity.CmsImage
+		err := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, detailId).Scan(&image)
+		if err != nil {
+			return "", err
+		}
+		if image != nil {
+			channelId = image.ChannelId
+		}
+	} else {
+		return "", nil
+	}
+
 	var channel *entity.CmsChannel
-	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Model, model).Fields(dao.CmsChannel.Columns().Model, dao.CmsChannel.Columns().DetailRouter).Scan(&channel)
+	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Model, model).Where(dao.CmsChannel.Columns().Id, channelId).Scan(&channel)
 	if err != nil {
 		return "", err
 	}

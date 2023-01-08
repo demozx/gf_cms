@@ -75,6 +75,24 @@ func (c *cRouterBeautify) NewsDetail(ctx context.Context, req *mobile.RouterBeau
 	return
 }
 
+// NewsCompanyDetail 路由美化-公司新闻详情
+func (c *cRouterBeautify) NewsCompanyDetail(ctx context.Context, req *mobile.RouterBeautifyDetailReq) (res *mobile.RouterBeautifyDefaultRes, err error) {
+	_, err = Article.Detail(ctx, &mobile.ArticleDetailReq{Id: req.Id})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// NewsIndustryDetail 路由美化-行业动态详情
+func (c *cRouterBeautify) NewsIndustryDetail(ctx context.Context, req *mobile.RouterBeautifyDetailReq) (res *mobile.RouterBeautifyDefaultRes, err error) {
+	_, err = Article.Detail(ctx, &mobile.ArticleDetailReq{Id: req.Id})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 // Product 路由美化-产品展示
 func (c *cRouterBeautify) Product(ctx context.Context, req *mobile.RouterBeautifyPageSizeReq) (res *mobile.RouterBeautifyDefaultRes, err error) {
 	_, err = Image.List(ctx, &mobile.ImageListReq{ChannelId: consts.ProductChannelId, Page: req.Page, Size: req.Size})
@@ -96,6 +114,15 @@ func (c *cRouterBeautify) ProductDetail(ctx context.Context, req *mobile.RouterB
 // Honor 路由美化-荣誉资质
 func (c *cRouterBeautify) Honor(ctx context.Context, req *mobile.RouterBeautifyDefaultReq) (res *mobile.RouterBeautifyDefaultRes, err error) {
 	_, err = Image.List(ctx, &mobile.ImageListReq{ChannelId: consts.HonorChannelId})
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+// HonorDetail 路由美化-荣誉资质详情
+func (c *cRouterBeautify) HonorDetail(ctx context.Context, req *mobile.RouterBeautifyDetailReq) (res *mobile.RouterBeautifyDefaultRes, err error) {
+	_, err = Image.Detail(ctx, &mobile.ImageDetailReq{Id: req.Id})
 	if err != nil {
 		return nil, err
 	}

@@ -36,8 +36,8 @@ ${include "/mobile/public/navigation.html" .}$
 					${ .articleInfo.Body.Body }$
 				</div>
 			</span>
-      <p class="xia">上一篇：<a href='${ .prevArticle.Router }$'>${ .prevArticle.Title }$</a></p>
-      <p class="xia">下一篇：<a href='${ .nextArticle.Router }$'>${ .nextArticle.Title }$</a></p>
+      <p class="xia">上一篇：<a href='${ .prevArticle.Router }$'>${ .prevArticle.Title|substr 0 30 }$</a></p>
+      <p class="xia">下一篇：<a href='${ .nextArticle.Router }$'>${ .nextArticle.Title|substr 0 30 }$</a></p>
 
     </div>
     ${include "/mobile/public/foot.html" .}$

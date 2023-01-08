@@ -27,17 +27,20 @@ func mobileViewHandle(s *ghttp.Server) {
 				"/single_page/{id}.html" + mobileHost:    mobile.SinglePage.Detail, // 单页
 				"/search.html" + mobileHost:              mobile.Search.Index,      // 搜索
 				// 路由美化
-				"/about.html" + mobileHost:         mobile.RouterBeautify.About,         // 公司简介
-				"/contact.html" + mobileHost:       mobile.RouterBeautify.Contact,       // 联系我们
-				"/guestbook.html" + mobileHost:     mobile.RouterBeautify.Guestbook,     // 在线留言
-				"/news.html" + mobileHost:          mobile.RouterBeautify.News,          // 新闻动态
-				"/news_company.html" + mobileHost:  mobile.RouterBeautify.NewsCompany,   // 公司新闻
-				"/news_industry.html" + mobileHost: mobile.RouterBeautify.NewsIndustry,  // 行业动态
-				"/news/{id}.html" + mobileHost:     mobile.RouterBeautify.NewsDetail,    // 新闻详情
-				"/product.html" + mobileHost:       mobile.RouterBeautify.Product,       // 产品展示
-				"/product_{id}.html" + mobileHost:  mobile.Image.List,                   // 子产品
-				"/product/{id}.html" + mobileHost:  mobile.RouterBeautify.ProductDetail, // 产品详情
-				"/honor.html" + mobileHost:         mobile.RouterBeautify.Honor,         // 荣誉资质
+				"/about.html" + mobileHost:              mobile.RouterBeautify.About,              // 公司简介
+				"/contact.html" + mobileHost:            mobile.RouterBeautify.Contact,            // 联系我们
+				"/guestbook.html" + mobileHost:          mobile.RouterBeautify.Guestbook,          // 在线留言
+				"/news.html" + mobileHost:               mobile.RouterBeautify.News,               // 新闻动态
+				"/news_company.html" + mobileHost:       mobile.RouterBeautify.NewsCompany,        // 公司新闻
+				"/news_industry.html" + mobileHost:      mobile.RouterBeautify.NewsIndustry,       // 行业动态
+				"/news/{id}.html" + mobileHost:          mobile.RouterBeautify.NewsDetail,         // 新闻详情
+				"/news_company/{id}.html" + mobileHost:  mobile.RouterBeautify.NewsCompanyDetail,  // 公司新闻详情
+				"/news_industry/{id}.html" + mobileHost: mobile.RouterBeautify.NewsIndustryDetail, // 行业动态详情
+				"/product.html" + mobileHost:            mobile.RouterBeautify.Product,            // 产品展示
+				"/product_{id}.html" + mobileHost:       mobile.Image.List,                        // 子产品
+				"/product/{id}.html" + mobileHost:       mobile.RouterBeautify.ProductDetail,      // 产品详情
+				"/honor.html" + mobileHost:              mobile.RouterBeautify.Honor,              // 荣誉资质
+				"/honor/{id}.html" + mobileHost:         mobile.RouterBeautify.HonorDetail,        // 荣誉资质详情
 			})
 		}
 	})
