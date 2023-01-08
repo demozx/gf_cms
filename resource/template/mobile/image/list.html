@@ -27,7 +27,7 @@ ${include "/mobile/public/navigation.html" .}$
       ${ range $key, $item := .imagePageList.List }$
       <li class="news4" style="height: 210px;">
         <a href="${ $item.Router }$" title="${ $item.Title }$">
-          <img src="/images/loading.gif" data-original="${ $item.Thumb }$" alt="${ $item.Title }$">
+          <img src="/resource/images/loading.gif" data-original="${ $item.Thumb }$" alt="${ $item.Title }$">
           <span>${ $item.Title }$</span>
         </a>
       </li>
