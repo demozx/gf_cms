@@ -12,6 +12,7 @@ import (
 type (
 	IPageInfo interface {
 		LayUiPageInfo(ctx context.Context, total int, size int) string
+		MobilePageInfo(ctx context.Context, total int, size int) string
 		PcPageInfo(ctx context.Context, total int, size int) string
 	}
 )

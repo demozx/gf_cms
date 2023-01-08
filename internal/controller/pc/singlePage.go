@@ -80,10 +80,10 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		guestbookUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
+		guestbookChannelUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
-		chGuestbookUrl <- guestbookUrl
+		chGuestbookUrl <- guestbookChannelUrl
 		defer close(chGuestbookUrl)
 	}()
 	// 获取模板
@@ -96,13 +96,13 @@ func (c *cSinglePage) Detail(ctx context.Context, req *pc.SinglePageReq) (res *p
 		chChannelTemplate <- channelTemplate
 	}()
 	err = service.Response().View(ctx, <-chChannelTemplate, g.Map{
-		"channelInfo":      channelInfo,          // 栏目信息
-		"navigation":       <-chNavigation,       // 导航
-		"tdk":              <-chTDK,              // TDK
-		"crumbs":           <-chCrumbs,           // 面包屑导航
-		"goodsChannelList": <-chGoodsChannelList, // 产品中心栏目列表
-		"textNewsList":     <-chTextNewsList,     // 最新资讯-文字新闻
-		"guestbookUrl":     <-chGuestbookUrl,     // 在线留言栏目url
+		"channelInfo":         channelInfo,          // 栏目信息
+		"navigation":          <-chNavigation,       // 导航
+		"tdk":                 <-chTDK,              // TDK
+		"crumbs":              <-chCrumbs,           // 面包屑导航
+		"goodsChannelList":    <-chGoodsChannelList, // 产品中心栏目列表
+		"textNewsList":        <-chTextNewsList,     // 最新资讯-文字新闻
+		"guestbookChannelUrl": <-chGuestbookUrl,     // 在线留言栏目url
 	})
 	if err != nil {
 		service.Response().Status500(ctx)

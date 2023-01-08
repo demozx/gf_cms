@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <title>${ .tdk.Title }$</title>
+    <meta name="description" content="${ .tdk.Description }$"/>
+    <link rel="stylesheet" type="text/css" href="/resource/mobile/css/subpage.css"/>
+    <script type="text/javascript" src="/resource/mobile/js/jquery.js"></script>
+    <script type="text/javascript" src="/resource/mobile/js/nav.js"></script>
+    <script type="text/javascript" src="/resource/mobile/js/cart_icon.js"></script>
+    <script type="text/javascript" src="/resource/pc/layui-v2.4.5/layui/layui.js"></script>
+</head>
+<body>
+<!-- 导航开始 -->
+${include "/mobile/public/navigation.html" .}$
+<!-- 导航结束 -->
+<div class="allpage">
+    <!-- head开始 -->
+    ${include "/mobile/public/head.html" .}$
+    <!-- head结束 -->
+    <div class="content">
+        <form action="#" class="msgForm">
+            <dl class="liuyan">
+                <dt></dt>
+                <dd>
+                    <li>
+                        <div>联系人：<span>*</span></div>
+                        <input type="text" class="k" name="name" placeholder="请输入联系人姓名">
+                    </li>
+                    <div style="clear:both;"></div>
+                </dd>
+                <dd>
+                    <li>
+                        <div>电话：<span>*</span></div>
+                        <input type="text" class="k" name="tel" placeholder="请输入联系人电话">
+                    </li>
+                    <div style="clear:both;"></div>
+                </dd>
+                <dd>
+                    <li>
+                        <div>邮箱：<span>*</span></div>
+                        <input type="text" class="k" name="email" placeholder="请输入联系人邮箱">
+                    </li>
+                    <div style="clear:both;"></div>
+                </dd>
+                <dd>
+                    <li>
+                        <div>内容：<span>*</span></div>
+                        <textarea placeholder="请输入留言内容" name="content"></textarea>
+                    </li>
+                    <div style="clear:both;"></div>
+                </dd>
+                <dd><input type="button" class="t" id="tj" value="提   交"></dd>
+            </dl>
+        </form>
+        ${include "/mobile/public/foot.html" .}$
+    </div>
+
+</div>
+<script type="text/javascript">
+    layui.use('layer', function () {
+        var $ = layui.jquery, layer = layui.layer;
+        $('#tj').click(function () {
+            let url = '${ mobile_api_url `/guestbook.html` }$';
+            let data = $('.msgForm').serialize()
+            $.post(url, data, function (res) {
+                if (res.code !== 0) {
+                    layer.msg(res.message, {icon: 5, anim: 6});
+                    return false;
+                }
+                layer.msg(res.message, {icon: 6, time: 1000}, function () {
+                    window.location.reload();
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>

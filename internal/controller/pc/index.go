@@ -94,10 +94,10 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
 		startTime := gtime.TimestampMilli()
-		guestbookUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
+		guestbookChannelUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
 		endTime := gtime.TimestampMilli()
 		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
-		chGuestbookUrl <- guestbookUrl
+		chGuestbookUrl <- guestbookChannelUrl
 		defer close(chGuestbookUrl)
 	}()
 	// 产品中心栏目列表
@@ -175,7 +175,7 @@ func (c *cIndex) Index(ctx context.Context, req *pc.IndexReq) (res *pc.IndexRes,
 		"textNewsList":          <-chTextNewsList,          // 最新资讯-文字新闻
 		"picNewsList":           <-chPicNewsList,           // 最新资讯-文字新闻
 		"friendlyLinkList":      <-chFriendlyLinkList,      // 友情链接列表
-		"guestbookUrl":          <-chGuestbookUrl,          // 在线留言栏目url
+		"guestbookChannelUrl":   <-chGuestbookUrl,          // 在线留言栏目url
 	})
 	if err != nil {
 		service.Response().Status500(ctx)

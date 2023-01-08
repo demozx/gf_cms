@@ -13,7 +13,7 @@ type (
 		BackendUrl(route string) string
 		BackendApiUrl(route string) string
 		PcApiUrl(route string) string
-		MApiUrl(route string) string
+		MobileApiUrl(route string) string
 	}
 )
 

@@ -1,14 +1,13 @@
-package pc
+package mobile
 
 import (
 	"context"
-	"gf_cms/api/pc"
+	"gf_cms/api/mobile"
 	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -18,44 +17,25 @@ var (
 
 type cSearch struct{}
 
-func (c *cSearch) Index(ctx context.Context, req *pc.SearchReq) (res *pc.SearchRes, err error) {
+func (c *cSearch) Index(ctx context.Context, req *mobile.SearchReq) (res *mobile.SearchRes, err error) {
 	// 导航栏
 	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		navigation, _ := service.Channel().Navigation(ctx, 0)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
 		defer close(chNavigation)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc文章详情页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
 		defer close(chGoodsChannelList)
-	}()
-	// 最新资讯-文字新闻
-	chTextNewsList := make(chan []*model.ArticleListItem, 1)
-	go func() {
-		startTime := gtime.TimestampMilli()
-		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelId)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc文章详情页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
-		chTextNewsList <- textNewsList
-		defer close(chTextNewsList)
 	}()
 	// 在线留言栏目链接
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		guestbookChannelUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGuestbookUrl <- guestbookChannelUrl
 		defer close(chGuestbookUrl)
 	}()
@@ -70,11 +50,10 @@ func (c *cSearch) Index(ctx context.Context, req *pc.SearchReq) (res *pc.SearchR
 		total = list.Total
 		size = list.Size
 	}
-	pageInfo := service.PageInfo().PcPageInfo(ctx, total, size)
-	err = service.Response().View(ctx, "/pc/search/index.html", g.Map{
+	pageInfo := service.PageInfo().MobilePageInfo(ctx, total, size)
+	err = service.Response().View(ctx, "/mobile/search/index.html", g.Map{
 		"navigation":          <-chNavigation,       // 导航
 		"goodsChannelList":    <-chGoodsChannelList, // 产品中心栏目列表
-		"textNewsList":        <-chTextNewsList,     // 最新资讯-文字新闻
 		"guestbookChannelUrl": <-chGuestbookUrl,     // 在线留言栏目url
 		"keyword":             req.Keyword,          // 搜索关键词
 		"list":                list,                 // 搜索结果列表
@@ -88,7 +67,7 @@ func (c *cSearch) Index(ctx context.Context, req *pc.SearchReq) (res *pc.SearchR
 }
 
 // 搜索结果列表
-func (c *cSearch) searchArticleList(ctx context.Context, in *pc.SearchReq) (res *pc.SearchRes, err error) {
+func (c *cSearch) searchArticleList(ctx context.Context, in *mobile.SearchReq) (res *mobile.SearchRes, err error) {
 	var list []*model.ArticleListItem
 	m := dao.CmsArticle.Ctx(ctx).
 		Where(dao.CmsArticle.Columns().Status, 1).
@@ -113,7 +92,7 @@ func (c *cSearch) searchArticleList(ctx context.Context, in *pc.SearchReq) (res 
 		}
 		list[key].Router = url
 	}
-	res = &pc.SearchRes{
+	res = &mobile.SearchRes{
 		Page:  in.Page,
 		Size:  in.Size,
 		Total: count,

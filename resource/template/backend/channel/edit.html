@@ -157,7 +157,7 @@
                         <label class="layui-form-label">频道路由</label>
                         <div class="layui-input-block">
                             <input type="text"
-                                   placeholder="请输入频道路由"
+                                   placeholder="请输入频道路由，支持频道id变量'{id}'"
                                    autocomplete="off" class="layui-input" name="list_router" value="${.channel.ListRouter}$" />
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">详情路由</label>
                         <div class="layui-input-block">
-                            <input type="text" placeholder="请输入详情路由"
+                            <input type="text" placeholder="请输入详情路由，支持详情id变量'{id}'"
                                    autocomplete="off" class="layui-input" name="detail_router" value="${.channel.DetailRouter}$"/>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">频道模板</label>
                         <div class="layui-input-block">
-                            <input type="text" placeholder="请输入频道模板名，留空则使用默认模板‘index’"
+                            <input type="text" placeholder="请输入频道模板名，留空则使用默认模板"
                                    autocomplete="off" class="layui-input" name="list_template" value="${.channel.ListTemplate}$"/>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">详情模板</label>
                         <div class="layui-input-block">
-                            <input type="text" placeholder="请输入详情模板名，留空则使用默认模板‘index’"
+                            <input type="text" placeholder="请输入详情模板名，留空则使用默认模板"
                                    autocomplete="off" class="layui-input" name="detail_template" value="${.channel.DetailTemplate}$"/>
                         </div>
                     </div>

@@ -1,15 +1,14 @@
-package pc
+package mobile
 
 import (
 	"context"
-	"gf_cms/api/pc"
+	"gf_cms/api/mobile"
 	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -19,72 +18,40 @@ var (
 
 type cImage struct{}
 
-// List pc图集列表
-func (c *cImage) List(ctx context.Context, req *pc.ImageListReq) (res *pc.ImageListRes, err error) {
+// List mobile图集列表
+func (c *cImage) List(ctx context.Context, req *mobile.ImageListReq) (res *mobile.ImageListRes, err error) {
 	// 栏目详情
 	channelInfo, err := Image.channelInfo(ctx, req.ChannelId)
 	if err != nil {
 		return nil, err
 	}
 	// 图集列表
-	chImagePageList := make(chan *pc.ImageListRes, 1)
+	chImagePageList := make(chan *mobile.ImageListRes, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		imagePageList, _ := Image.imagePageList(ctx, req)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc图集列表分页数据耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chImagePageList <- imagePageList
 		defer close(chImagePageList)
 	}()
 	// 导航栏
 	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		navigation, _ := service.Channel().Navigation(ctx, gconv.Int(channelInfo.Id))
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
 		defer close(chNavigation)
 	}()
 	// TKD
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		tdk, _ := service.Channel().TDK(ctx, channelInfo.Id, 0)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pcTDK耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chTDK <- tdk
 		defer close(chTDK)
-	}()
-	// 面包屑导航
-	chCrumbs := make(chan []*model.ChannelCrumbs, 1)
-	go func() {
-		startTime := gtime.TimestampMilli()
-		crumbs, _ := service.Channel().Crumbs(ctx, channelInfo.Id)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc面包屑导航耗时"+gconv.String(endTime-startTime)+"毫秒")
-		chCrumbs <- crumbs
-		defer close(chCrumbs)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc栏目页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
 		defer close(chGoodsChannelList)
-	}()
-	// 最新资讯-文字新闻
-	chTextNewsList := make(chan []*model.ArticleListItem, 1)
-	go func() {
-		startTime := gtime.TimestampMilli()
-		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelId)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc栏目页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
-		chTextNewsList <- textNewsList
-		defer close(chTextNewsList)
 	}()
 	// 在线留言栏目链接
 	chGuestbookUrl := make(chan string, 1)
@@ -96,21 +63,16 @@ func (c *cImage) List(ctx context.Context, req *pc.ImageListReq) (res *pc.ImageL
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
-		channelTemplate, _ := service.Channel().PcListTemplate(ctx, channelInfo)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc获取栏目模板"+gconv.String(endTime-startTime)+"毫秒")
+		channelTemplate, _ := service.Channel().MobileListTemplate(ctx, channelInfo)
 		chChannelTemplate <- channelTemplate
 	}()
 	imagePageList := <-chImagePageList
-	pageInfo := service.PageInfo().PcPageInfo(ctx, imagePageList.Total, imagePageList.Size)
+	pageInfo := service.PageInfo().MobilePageInfo(ctx, imagePageList.Total, imagePageList.Size)
 	err = service.Response().View(ctx, <-chChannelTemplate, g.Map{
 		"channelInfo":         channelInfo,          // 栏目信息
 		"navigation":          <-chNavigation,       // 导航
 		"tdk":                 <-chTDK,              // TDK
-		"crumbs":              <-chCrumbs,           // 面包屑导航
 		"goodsChannelList":    <-chGoodsChannelList, // 产品中心栏目列表
-		"textNewsList":        <-chTextNewsList,     // 最新资讯-文字新闻
 		"imagePageList":       imagePageList,        // 图集列表
 		"pageInfo":            pageInfo,             // 页码
 		"guestbookChannelUrl": <-chGuestbookUrl,     // 在线留言栏目url
@@ -122,8 +84,8 @@ func (c *cImage) List(ctx context.Context, req *pc.ImageListReq) (res *pc.ImageL
 	return
 }
 
-// Detail pc图集详情页面
-func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.ImageDetailRes, err error) {
+// Detail mobile图集详情页面
+func (c *cImage) Detail(ctx context.Context, req *mobile.ImageDetailReq) (res *mobile.ImageDetailRes, err error) {
 	// 图集详情
 	var imageInfo *model.ImageListItem
 	err = dao.CmsImage.Ctx(ctx).
@@ -149,52 +111,23 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 	// 导航栏
 	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		navigation, _ := service.Channel().Navigation(ctx, gconv.Int(channelInfo.Id))
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc导航耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chNavigation <- navigation
 		defer close(chNavigation)
 	}()
 	// TKD
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		tdk, _ := service.Channel().TDK(ctx, gconv.Uint(imageInfo.ChannelId), gconv.Int64(imageInfo.Id))
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pcTDK耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chTDK <- tdk
 		defer close(chTDK)
-	}()
-	// 面包屑导航
-	chCrumbs := make(chan []*model.ChannelCrumbs, 1)
-	go func() {
-		startTime := gtime.TimestampMilli()
-		pcCrumbs, _ := service.Channel().Crumbs(ctx, channelInfo.Id)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc面包屑导航耗时"+gconv.String(endTime-startTime)+"毫秒")
-		chCrumbs <- pcCrumbs
-		defer close(chCrumbs)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc文章详情页产品中心栏目列表耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGoodsChannelList <- goodsChannelList
 		defer close(chGoodsChannelList)
-	}()
-	// 最新资讯-文字新闻
-	chTextNewsList := make(chan []*model.ArticleListItem, 1)
-	go func() {
-		startTime := gtime.TimestampMilli()
-		textNewsList, _ := service.Article().PcHomeTextNewsList(ctx, consts.NewsChannelId)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc文章详情页最新资讯文字新闻列表"+gconv.String(endTime-startTime)+"毫秒")
-		chTextNewsList <- textNewsList
-		defer close(chTextNewsList)
 	}()
 	// 上一篇
 	chPrevImage := make(chan *model.ImageLink, 1)
@@ -211,28 +144,20 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 	// 在线留言栏目链接
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
 		guestbookChannelUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc在线留言栏目url耗时"+gconv.String(endTime-startTime)+"毫秒")
 		chGuestbookUrl <- guestbookChannelUrl
 		defer close(chGuestbookUrl)
 	}()
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)
 	go func() {
-		startTime := gtime.TimestampMilli()
-		channelTemplate, _ := service.Channel().PcDetailTemplate(ctx, channelInfo)
-		endTime := gtime.TimestampMilli()
-		g.Log().Async().Info(ctx, "pc获取文章详情模板"+gconv.String(endTime-startTime)+"毫秒")
+		channelTemplate, _ := service.Channel().MobileDetailTemplate(ctx, channelInfo)
 		chChannelTemplate <- channelTemplate
 	}()
 	err = service.Response().View(ctx, <-chChannelTemplate, g.Map{
 		"navigation":          <-chNavigation,       // 导航
 		"tdk":                 <-chTDK,              // TDK
-		"crumbs":              <-chCrumbs,           // 面包屑导航
 		"goodsChannelList":    <-chGoodsChannelList, // 产品中心栏目列表
-		"textNewsList":        <-chTextNewsList,     // 最新资讯-文字新闻
 		"imageInfo":           imageInfo,            // 图集详情
 		"prevImage":           <-chPrevImage,        // 上一篇
 		"nextImage":           <-chNextImage,        // 下一篇
@@ -263,7 +188,7 @@ func (c *cImage) channelInfo(ctx context.Context, channelId int) (out *entity.Cm
 }
 
 // 获取文章列表分页数据
-func (c *cImage) imagePageList(ctx context.Context, in *pc.ImageListReq) (res *pc.ImageListRes, err error) {
+func (c *cImage) imagePageList(ctx context.Context, in *mobile.ImageListReq) (res *mobile.ImageListRes, err error) {
 	// 当前栏目的所有级别的子栏目id们加自己
 	childChannelIds, err := service.Channel().GetChildIds(ctx, in.ChannelId, true)
 	if err != nil {
@@ -295,7 +220,7 @@ func (c *cImage) imagePageList(ctx context.Context, in *pc.ImageListReq) (res *p
 			return nil, err
 		}
 	}
-	res = &pc.ImageListRes{
+	res = &mobile.ImageListRes{
 		List:  imageList,
 		Page:  in.Page,
 		Size:  in.Size,

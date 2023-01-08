@@ -2,7 +2,7 @@ package guestbook
 
 import (
 	"context"
-	"gf_cms/api/pcApi"
+	"gf_cms/api/mobileApi"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
@@ -11,8 +11,8 @@ import (
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
-// PcSubmit pc提交留言
-func (s *sGuestbook) PcSubmit(ctx context.Context, in *pcApi.GuestbookReq) (out *pcApi.GuestbookRes, err error) {
+// MobileSubmit mobile提交留言
+func (s *sGuestbook) MobileSubmit(ctx context.Context, in *mobileApi.GuestbookReq) (out *mobileApi.GuestbookRes, err error) {
 	var guestbook *entity.CmsGuestbook
 	err = dao.CmsGuestbook.Ctx(ctx).Where(dao.CmsGuestbook.Columns().Tel, in.Tel).Where(dao.CmsGuestbook.Columns().Status, 0).Scan(&guestbook)
 	if err != nil {
@@ -27,7 +27,7 @@ func (s *sGuestbook) PcSubmit(ctx context.Context, in *pcApi.GuestbookReq) (out 
 		dao.CmsGuestbook.Columns().Tel:     in.Tel,
 		dao.CmsGuestbook.Columns().Content: in.Email + "\n\r" + in.Content,
 		dao.CmsGuestbook.Columns().Ip:      ip,
-		dao.CmsGuestbook.Columns().From:    1,
+		dao.CmsGuestbook.Columns().From:    2,
 	}
 	lastId, err := dao.CmsGuestbook.Ctx(ctx).Data(data).InsertAndGetId()
 	if err != nil {

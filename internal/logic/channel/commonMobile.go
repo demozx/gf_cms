@@ -25,10 +25,10 @@ func (s *sChannel) MobileListTemplate(ctx context.Context, channel *entity.CmsCh
 		template = "/mobile/single_page/detail.html"
 	}
 	if len(channel.ListTemplate) > 0 {
-		// 后台配置的时候不需要加“/mobile”，程序自动找指定模块下的模板
+		// 后台配置的时候需要加“{module}”，程序自动找指定模块下的模板
 		template = channel.ListTemplate
-		if gstr.HasPrefix(template, "/mobile") {
-			template = "/mobile" + template
+		if gstr.HasPrefix(template, "{module}") {
+			template = gstr.ReplaceI(template, "{module}", "/mobile", 1)
 		}
 	}
 	return
@@ -45,10 +45,10 @@ func (s *sChannel) MobileDetailTemplate(ctx context.Context, channel *entity.Cms
 		template = "/mobile/image/detail.html"
 	}
 	if len(channel.DetailTemplate) > 0 {
-		// 后台配置的时候不需要加“/mobile”，程序自动找指定模块下的模板
+		// 后台配置的时候需要加“{module}”，程序自动找指定模块下的模板
 		template = channel.DetailTemplate
-		if gstr.HasPrefix(template, "/mobile") {
-			template = "/mobile" + template
+		if gstr.HasPrefix(template, "{module}") {
+			template = gstr.ReplaceI(template, "{module}", "/mobile", 1)
 		}
 	}
 	return

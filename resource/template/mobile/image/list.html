@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta content="yes" name="apple-mobile-web-app-capable"/>
+  <meta content="telephone=no" name="format-detection"/>
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <title>${ .tdk.Title }$</title>
+  <meta name="description" content="${ .tdk.Description }$"/>
+  <link rel="stylesheet" type="text/css" href="/resource/mobile/css/subpage.css"/>
+  <script type="text/javascript" src="/resource/mobile/js/jquery.js"></script>
+  <script type="text/javascript" src="/resource/mobile/js/nav.js"></script>
+  <script type="text/javascript" src="/resource/mobile/js/cart_icon.js"></script>
+</head>
+<body>
+<!-- 导航开始 -->
+${include "/mobile/public/navigation.html" .}$
+<!-- 导航结束 -->
+<div class="allpage">
+  <!-- head开始 -->
+  ${include "/mobile/public/head.html" .}$
+  <!-- head结束 -->
+  <div class="content">
+    <ul class="common_news" id="contentArea">
+      ${ range $key, $item := .imagePageList.List }$
+      <li class="news4" style="height: 210px;">
+        <a href="${ $item.Router }$" title="${ $item.Title }$">
+          <img src="/images/loading.gif" data-original="${ $item.Thumb }$" alt="${ $item.Title }$">
+          <span>${ $item.Title }$</span>
+        </a>
+      </li>
+      ${ end }$
+    </ul>
+    <div class="pagess">
+      <ul class="pagination">
+        ${ .pageInfo }$
+      </ul>
+    </div>
+    ${include "/mobile/public/foot.html" .}$
+  </div>
+</body>
+</html>

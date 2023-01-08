@@ -79,11 +79,15 @@ ${include "/pc/public/head.html" .}$
 
             <div class="content">
                 <ul class="news1 news3 news_indent" id="">
+                    ${ if ne .list nil }$
                     ${ range $key, $item := .list.List }$
                     <li>
                         <a href="${ $item.Router }$" title="${ $item.Title }$" class="pg-color">${ $item.Title | substr 0 40 }$</a>
                         <span>${ $item.CreatedAt }$</span>
                     </li>
+                    ${ end }$
+                    ${ else }$
+                    <li style="text-align: center">无搜索结果</li>
                     ${ end }$
                 </ul>
                 <!-- 分页开始 -->

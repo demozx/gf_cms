@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="telephone=no" name="format-detection" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <title>搜索_${ .keyword }$-${ system_setting `web_name` }$</title>
+  <link rel="stylesheet" type="text/css" href="/resource/mobile/css/subpage.css" />
+  <script type="text/javascript" src="/resource/mobile/js/jquery.js"></script>
+  <script type="text/javascript" src="/resource/mobile/js/nav.js"></script>
+  <script type="text/javascript" src="/resource/mobile/js/cart_icon.js"></script>
+</head>
+<body>
+<!-- 导航开始 -->
+${include "/mobile/public/navigation.html" .}$
+<!-- 导航结束 -->
+<div class="allpage">
+  <!-- head开始 -->
+  <div class="black-fixed commonfont1">&#xe607;</div>
+  <div class="header">
+    <div class="head"> <a href="/" title="首页" class="home-btn iconfont">&#xe607;</a>
+      <p class="top-title">${ .keyword }$</p>
+      <div class="class-btn"><span class="commonfont1">&#xe60a;</span></div>
+      <div class="nav-btn commonfont1">&#xe60b;</div>
+    </div>
+    <div class="type">
+      <h1>搜索：</h1>
+      <div class="common-pro-search">
+        <form class="am-topbar-form am-topbar-left am-form-inline am-topbar-right" role="search" action="/search.html">
+          <input type="text" class="common-text" name="keyword" placeholder="请输入搜索关键词"/>
+          <input type="button" class="common-submit commonfont1" value="&#xe602;"/>
+        </form>
+      </div>
+      <h1>产品展示分类：</h1>
+      <ul>
+        ${ range $key, $item := .goodsChannelList }$
+        <li> <a href="${ $item.ChannelRouter }$" title="${ $item.Name }$">${ $item.Name }$</a> <span class="commonfont1 class-down">&#xe60c;</span>
+          <dl></dl>
+        </li>
+        ${ end }$
+      </ul>
+    </div>
+  </div>
+  <!-- head结束 -->
+  <div class="content">
+    <ul class="common_news" id="contentArea">
+      ${ if ne .list nil }$
+      ${ range $key, $item := .list.List }$
+      <li class="news1">
+        <a href="${ $item.Router }$" title="${ $item.Title }$">
+          <span>${ $item.Title | substr 0 20 }$</span>
+          <span>${ $item.CreatedAt | date "m-d H:i" }$</span>
+        </a>
+      </li>
+      ${ end }$
+      ${ else }$
+      <div style="text-align: center">无搜索结果</div>
+      ${ end }$
+    </ul>
+    <div class="pagess">
+      <ul class="pagination">
+        ${ .pageInfo }$
+      </ul>
+      </ul>
+    </div>
+    ${include "/mobile/public/foot.html" .}$
+  </div>
+</div>
+</body>
+</html>

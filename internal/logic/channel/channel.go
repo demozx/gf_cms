@@ -194,6 +194,12 @@ func (s *sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelD
 }
 
 func (s *sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddApiReq) (out *backendApi.ChannelAddApiRes, err error) {
+	if len(in.ListTemplate) > 0 && !gstr.HasPrefix(in.ListTemplate, "{module}") {
+		return nil, gerror.New("频道模板需以'{module}'开头，以便自动获取模块")
+	}
+	if len(in.DetailTemplate) > 0 && !gstr.HasPrefix(in.DetailTemplate, "{module}") {
+		return nil, gerror.New("详情模板需以'{module}'开头，以便自动获取模块")
+	}
 	var entityData *entity.CmsChannel
 	err = gconv.Scan(in, &entityData)
 	if err != nil {
@@ -241,6 +247,12 @@ func (s *sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEdi
 	}
 	if in.Pid == in.Id {
 		return nil, gerror.New("自己不能是自己的父级分类")
+	}
+	if len(in.ListTemplate) > 0 && !gstr.HasPrefix(in.ListTemplate, "{module}") {
+		return nil, gerror.New("频道模板需以'{module}'开头，以便自动获取模块")
+	}
+	if len(in.DetailTemplate) > 0 && !gstr.HasPrefix(in.DetailTemplate, "{module}") {
+		return nil, gerror.New("详情模板需以'{module}'开头，以便自动获取模块")
 	}
 	var data *entity.CmsChannel
 	err = gconv.Scan(in, &data)
