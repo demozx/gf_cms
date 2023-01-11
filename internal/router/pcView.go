@@ -43,10 +43,13 @@ func pcViewHandle(s *ghttp.Server) {
 			"/news_industry/{id}.html" + pcHost:  pc.RouterBeautify.NewsIndustryDetail, // 行业动态详情
 			"/product_{id}.html" + pcHost:        pc.Image.List,                        // 子产品
 			"/product/{id}.html" + pcHost:        pc.RouterBeautify.ProductDetail,      // 产品详情
-			"/honor.html" + pcHost:               pc.RouterBeautify.Honor,              // 荣誉资质
+			"/honor/" + pcHost:                   pc.RouterBeautify.Honor,              // 荣誉资质
+			"/honor/index.html" + pcHost:         pc.RouterBeautify.Honor,              // 荣誉资质
 			"/honor/{id}.html" + pcHost:          pc.RouterBeautify.HonorDetail,        // 荣誉资质详情
-			"/guestbook.html" + pcHost:           pc.RouterBeautify.Guestbook,          // 在线留言
-			"/contact.html" + pcHost:             pc.RouterBeautify.Contact,            // 联系我们
+			"/guestbook/" + pcHost:               pc.RouterBeautify.Guestbook,          // 在线留言
+			"/guestbook/index.html" + pcHost:     pc.RouterBeautify.Guestbook,          // 在线留言
+			"/contact/" + pcHost:                 pc.RouterBeautify.Contact,            // 联系我们
+			"/contact/index.html" + pcHost:       pc.RouterBeautify.Contact,            // 联系我们
 		})
 	})
 }
