@@ -41,7 +41,8 @@ func pcViewHandle(s *ghttp.Server) {
 			"/news/{id}.html" + pcHost:           pc.RouterBeautify.NewsDetail,         // 新闻详情
 			"/news_company/{id}.html" + pcHost:   pc.RouterBeautify.NewsCompanyDetail,  // 公司新闻详情
 			"/news_industry/{id}.html" + pcHost:  pc.RouterBeautify.NewsIndustryDetail, // 行业动态详情
-			"/product_{id}.html" + pcHost:        pc.Image.List,                        // 子产品
+			"/product_{id}/" + pcHost:            pc.Image.List,                        // 子产品
+			"/product_{id}/index.html" + pcHost:  pc.Image.List,                        // 子产品
 			"/product/{id}.html" + pcHost:        pc.RouterBeautify.ProductDetail,      // 产品详情
 			"/honor/" + pcHost:                   pc.RouterBeautify.Honor,              // 荣誉资质
 			"/honor/index.html" + pcHost:         pc.RouterBeautify.Honor,              // 荣誉资质

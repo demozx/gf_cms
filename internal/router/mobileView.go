@@ -44,7 +44,8 @@ func mobileViewHandle(s *ghttp.Server) {
 				"/news_industry/{id}.html" + mobileHost:  mobile.RouterBeautify.NewsIndustryDetail, // 行业动态详情
 				"/product/" + mobileHost:                 mobile.RouterBeautify.Product,            // 产品展示
 				"/product/index.html" + mobileHost:       mobile.RouterBeautify.Product,            // 产品展示
-				"/product_{id}.html" + mobileHost:        mobile.Image.List,                        // 子产品
+				"/product_{id}/" + mobileHost:            mobile.Image.List,                        // 子产品
+				"/product_{id}/index.html" + mobileHost:  mobile.Image.List,                        // 子产品
 				"/product/{id}.html" + mobileHost:        mobile.RouterBeautify.ProductDetail,      // 产品详情
 				"/honor/" + mobileHost:                   mobile.RouterBeautify.Honor,              // 荣誉资质
 				"/honor/index.html" + mobileHost:         mobile.RouterBeautify.Honor,              // 荣誉资质
