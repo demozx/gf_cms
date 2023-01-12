@@ -15,7 +15,7 @@ type CmsChannel struct {
 	Id             interface{} // 频道ID
 	Pid            interface{} // 父级ID
 	Tid            interface{} // 顶级id(已经是顶级则为自己)
-	ChildrenIds    interface{} // 所有子栏目id们
+	ChildrenIds    interface{} // 所有子栏目id们(不包含自己)
 	Level          interface{} // 分类层次
 	Name           interface{} // 名称
 	Thumb          interface{} // 缩略图

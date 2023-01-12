@@ -128,7 +128,7 @@ func (s *sRole) BackendApiRoleDelete(ctx context.Context, in *backendApi.RoleDel
 
 // BackendApiRoleDeleteBatch 角色批量删除
 func (s *sRole) BackendApiRoleDeleteBatch(ctx context.Context, in *backendApi.RoleDeleteBatchReq) (out interface{}, err error) {
-	err = dao.CmsRole.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+	err = dao.CmsRole.Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
 		var err error
 		for _, id := range in.Ids {
 			var role *entity.CmsRole

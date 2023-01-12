@@ -98,7 +98,7 @@ func (s *sAdmin) GetUserByUserNamePassword(ctx context.Context, in model.AdminLo
 	}
 }
 
-//md5加密
+// md5加密
 func (s *sAdmin) passMd5(password string) string {
 	bytePassword := []byte(password)
 	md5Password := fmt.Sprintf("%x", md5.Sum(bytePassword))
@@ -174,7 +174,7 @@ func (s *sAdmin) BackendApiAdminAdd(ctx context.Context, in *backendApi.AdminAdd
 		return nil, gerror.New("邮箱号已存在")
 	}
 
-	err = dao.CmsAdmin.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+	err = dao.CmsAdmin.Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
 		var err error
 		//写入用户
 		in.Password = Admin().passMd5(in.Password)
@@ -328,7 +328,7 @@ func (s *sAdmin) BackendApiAdminDelete(ctx context.Context, in *backendApi.Admin
 
 // BackendApiAdminDeleteBatch 批量删除
 func (s *sAdmin) BackendApiAdminDeleteBatch(ctx context.Context, in *backendApi.AdminDeleteBatchReq) (out interface{}, err error) {
-	err = dao.CmsAdmin.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+	err = dao.CmsAdmin.Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
 		var err error
 		for _, id := range in.Ids {
 			var admin *entity.CmsAdmin

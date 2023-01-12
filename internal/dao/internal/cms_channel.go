@@ -23,7 +23,7 @@ type CmsChannelColumns struct {
 	Id             string // 频道ID
 	Pid            string // 父级ID
 	Tid            string // 顶级id(已经是顶级则为自己)
-	ChildrenIds    string // 所有子栏目id们
+	ChildrenIds    string // 所有子栏目id们(不包含自己)
 	Level          string // 分类层次
 	Name           string // 名称
 	Thumb          string // 缩略图
@@ -108,6 +108,6 @@ func (dao *CmsChannelDao) Ctx(ctx context.Context) *gdb.Model {
 //
 // Note that, you should not Commit or Rollback the transaction in function f
 // as it is automatically handled by this function.
-func (dao *CmsChannelDao) Transaction(ctx context.Context, f func(ctx context.Context, tx *gdb.TX) error) (err error) {
+func (dao *CmsChannelDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)
 }

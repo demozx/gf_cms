@@ -13,7 +13,7 @@ type CmsChannel struct {
 	Id             uint        `json:"id"             ` // 频道ID
 	Pid            int         `json:"pid"            ` // 父级ID
 	Tid            int         `json:"tid"            ` // 顶级id(已经是顶级则为自己)
-	ChildrenIds    string      `json:"childrenIds"    ` // 所有子栏目id们
+	ChildrenIds    string      `json:"childrenIds"    ` // 所有子栏目id们(不包含自己)
 	Level          int         `json:"level"          ` // 分类层次
 	Name           string      `json:"name"           ` // 名称
 	Thumb          string      `json:"thumb"          ` // 缩略图
