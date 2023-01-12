@@ -19,9 +19,4 @@ const (
 	ChannelModelSinglePage = "single_page"
 	// ChannelModelSinglePageDesc 单页模型描述
 	ChannelModelSinglePageDesc = "单页"
-
-	// PcHomeAdChannelId pc首页广告分类id
-	PcHomeAdChannelId = 1
-	// MobileHomeAdChannelId 移动首页广告分类id
-	MobileHomeAdChannelId = 2
 )
