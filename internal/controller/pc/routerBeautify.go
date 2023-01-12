@@ -4,7 +4,6 @@ import (
 	"context"
 	"gf_cms/api/pc"
 	"gf_cms/internal/consts"
-	"github.com/gogf/gf/v2/frame/g"
 )
 
 var (
@@ -24,7 +23,6 @@ func (c *cRouterBeautify) About(ctx context.Context, req *pc.RouterBeautifyDefau
 
 // News 路由美化-新闻动态
 func (c *cRouterBeautify) News(ctx context.Context, req *pc.RouterBeautifyPageSizeReq) (res *pc.RouterBeautifyDefaultRes, err error) {
-	g.Dump(req)
 	_, err = Article.List(ctx, &pc.ArticleListReq{ChannelId: consts.NewsChannelId, Page: req.Page, Size: req.Size})
 	if err != nil {
 		return nil, err
