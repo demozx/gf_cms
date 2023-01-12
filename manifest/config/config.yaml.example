@@ -52,8 +52,8 @@ gfcli:
     system: "darwin"
     mod: "none"
     cgo: 0
-    # packSrc: "manifest/config,resource/public,resource/template,resource/i18n"
-    packSrc: "resource,manifest"
+    packSrc: "manifest/config,resource/public/resource,resource/template,resource/i18n"
+    # packSrc: "resource,manifest"
     packDst: "internal/packed/build_pack_data.go"
     version: ""
     path: "./deploy"
