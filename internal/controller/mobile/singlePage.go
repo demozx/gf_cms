@@ -27,41 +27,42 @@ func (c *cSinglePage) Detail(ctx context.Context, req *mobile.SinglePageReq) (re
 	// 导航栏
 	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chNavigation)
 		navigation, _ := service.Channel().Navigation(ctx, req.Id)
 		chNavigation <- navigation
-		defer close(chNavigation)
 	}()
 	// TKD
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
+		defer close(chTDK)
 		pcTDK, _ := service.Channel().TDK(ctx, channelInfo.Id, 0)
 		chTDK <- pcTDK
-		defer close(chTDK)
 	}()
 	// 面包屑导航
 	chCrumbs := make(chan []*model.ChannelCrumbs, 1)
 	go func() {
+		defer close(chCrumbs)
 		crumbs, _ := service.Channel().Crumbs(ctx, channelInfo.Id)
 		chCrumbs <- crumbs
-		defer close(chCrumbs)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chGoodsChannelList)
 		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		chGoodsChannelList <- goodsChannelList
-		defer close(chGoodsChannelList)
 	}()
 	// 在线留言栏目url
 	chGuestbookChannelUrl := make(chan string, 1)
 	go func() {
+		defer close(chGuestbookChannelUrl)
 		url, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
 		chGuestbookChannelUrl <- url
-		defer close(chGuestbookChannelUrl)
 	}()
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)
 	go func() {
+		defer close(chChannelTemplate)
 		channelTemplate, _ := service.Channel().MobileListTemplate(ctx, channelInfo)
 		chChannelTemplate <- channelTemplate
 	}()

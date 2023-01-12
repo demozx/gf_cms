@@ -28,30 +28,30 @@ func (c *cImage) List(ctx context.Context, req *mobile.ImageListReq) (res *mobil
 	// 图集列表
 	chImagePageList := make(chan *mobile.ImageListRes, 1)
 	go func() {
+		defer close(chImagePageList)
 		imagePageList, _ := Image.imagePageList(ctx, req)
 		chImagePageList <- imagePageList
-		defer close(chImagePageList)
 	}()
 	// 导航栏
 	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chNavigation)
 		navigation, _ := service.Channel().Navigation(ctx, gconv.Int(channelInfo.Id))
 		chNavigation <- navigation
-		defer close(chNavigation)
 	}()
 	// TKD
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
+		defer close(chTDK)
 		tdk, _ := service.Channel().TDK(ctx, channelInfo.Id, 0)
 		chTDK <- tdk
-		defer close(chTDK)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chGoodsChannelList)
 		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		chGoodsChannelList <- goodsChannelList
-		defer close(chGoodsChannelList)
 	}()
 	// 在线留言栏目链接
 	chGuestbookUrl := make(chan string, 1)

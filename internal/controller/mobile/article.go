@@ -28,37 +28,37 @@ func (c *cArticle) List(ctx context.Context, req *mobile.ArticleListReq) (res *m
 	// 文章列表
 	chArticlePageList := make(chan *mobile.ArticleListRes, 1)
 	go func() {
+		defer close(chArticlePageList)
 		articlePageList, _ := Article.articlePageList(ctx, req)
 		chArticlePageList <- articlePageList
-		defer close(chArticlePageList)
 	}()
 	// 导航栏
 	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chNavigation)
 		navigation, _ := service.Channel().Navigation(ctx, gconv.Int(channelInfo.Id))
 		chNavigation <- navigation
-		defer close(chNavigation)
 	}()
 	// TKD
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
+		defer close(chTDK)
 		tdk, _ := service.Channel().TDK(ctx, channelInfo.Id, 0)
 		chTDK <- tdk
-		defer close(chTDK)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chGoodsChannelList)
 		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		chGoodsChannelList <- goodsChannelList
-		defer close(chGoodsChannelList)
 	}()
 	// 在线留言栏目链接
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
+		defer close(chGuestbookUrl)
 		guestbookUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
 		chGuestbookUrl <- guestbookUrl
-		defer close(chGuestbookUrl)
 	}()
 	// 获取模板
 	chChannelTemplate := make(chan string, 1)

@@ -21,23 +21,23 @@ func (c *cSearch) Index(ctx context.Context, req *mobile.SearchReq) (res *mobile
 	// 导航栏
 	chNavigation := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chNavigation)
 		navigation, _ := service.Channel().Navigation(ctx, 0)
 		chNavigation <- navigation
-		defer close(chNavigation)
 	}()
 	// 产品中心栏目列表
 	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
+		defer close(chGoodsChannelList)
 		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
 		chGoodsChannelList <- goodsChannelList
-		defer close(chGoodsChannelList)
 	}()
 	// 在线留言栏目链接
 	chGuestbookUrl := make(chan string, 1)
 	go func() {
+		defer close(chGuestbookUrl)
 		guestbookChannelUrl, _ := service.GenUrl().ChannelUrl(ctx, consts.GuestbookChannelId, "")
 		chGuestbookUrl <- guestbookChannelUrl
-		defer close(chGuestbookUrl)
 	}()
 	// 搜索结果
 	list, err := Search.searchArticleList(ctx, req)
