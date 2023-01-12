@@ -19,7 +19,23 @@ import (
 // Navigation 导航
 func (s *sChannel) Navigation(ctx context.Context, currChannelId int) (out []*model.ChannelNavigationListItem, err error) {
 	var allOpenChannel []*entity.CmsChannel
-	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Status, 1).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allOpenChannel)
+	cacheKey := util.PublicCachePreFix + ":navigation_list:all_open_channel"
+	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	if err != nil {
+		return nil, err
+	}
+	if !cached.IsEmpty() {
+		err := cached.Scan(&allOpenChannel)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Status, 1).OrderAsc(dao.CmsChannel.Columns().Sort).OrderAsc(dao.CmsChannel.Columns().Id).Scan(&allOpenChannel)
+		if err != nil {
+			return nil, err
+		}
+	}
+	_, err = g.Redis().Do(ctx, "SET", cacheKey, allOpenChannel)
 	if err != nil {
 		return nil, err
 	}
