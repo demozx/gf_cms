@@ -7,8 +7,8 @@ require (
 	github.com/casbin/casbin/v2 v2.60.0
 	github.com/gogf/gf-jwt/v2 v2.0.1
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.3.1
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.3.0
-	github.com/gogf/gf/v2 v2.3.0
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.3.1
+	github.com/gogf/gf/v2 v2.3.1
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	gitlab.com/tingshuo/go-diskstate v0.0.0-20191211131809-ee5e7223d03c
