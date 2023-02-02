@@ -23,6 +23,8 @@ var (
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			// 设置模板标签分隔符
 			g.View().SetDelimiters("${", "}$")
+			// 开启html转义
+			g.View().SetAutoEncode(true)
 			//设置服务启动时间
 			runtime.Runtime().SetServerStartAt()
 			s := g.Server()
