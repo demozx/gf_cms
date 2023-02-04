@@ -238,7 +238,7 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 	}
 	obj := casbinPolicy.CasbinPolicy().ObjBackendApi()
 	act := r.Router.Uri
-	g.Log().Notice(util.Ctx, "act", act)
+	//g.Log().Notice(util.Ctx, "act", act)
 	var backendPrefix = util.Util().BackendApiPrefix()
 	var backendApiMenus = menu.Menu().BackendApi()
 	var backendMyApis = menu.Menu().BackendMyApi(accountId)
@@ -264,13 +264,13 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 			for _, children := range menu.Children {
 				if "/"+backendPrefix+children.Route == act {
 					routePermission = children.Permission
-					g.Log().Notice(util.Ctx, "路由"+act+"的权限是："+children.Permission)
+					//g.Log().Notice(util.Ctx, "路由"+act+"的权限是："+children.Permission)
 				}
 			}
 		}
 		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
-			g.Log().Warning(util.Ctx, "没有权限"+act)
-			g.Dump("没有权限操作", accountId, obj, routePermission)
+			//g.Log().Warning(util.Ctx, "没有权限"+act)
+			//g.Dump("没有权限操作", accountId, obj, routePermission)
 			r.Response.WriteJsonExit(g.Map{
 				"code":    401,
 				"message": "没有权限操作 " + ruleName,
