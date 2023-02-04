@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/v2/errors/gcode"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/microcosm-cc/bluemonday"
 	"net/http"
 
 	"github.com/gogf/gf/v2/container/gvar"
@@ -292,4 +293,17 @@ func (s *sMiddleware) GetBackendUserID(r *ghttp.Request) string {
 	}
 	accountId := gvar.New(res["id"]).String()
 	return accountId
+}
+
+// FilterXSS 过滤xss攻击
+func (s *sMiddleware) FilterXSS(r *ghttp.Request) {
+	reqMap := r.GetRequestMap()
+	p := bluemonday.UGCPolicy()
+	for key, value := range reqMap {
+		filteredValue := p.Sanitize(gconv.String(value))
+		r.SetForm(key, filteredValue)
+		r.SetParam(key, filteredValue)
+		r.SetQuery(key, filteredValue)
+	}
+	r.Middleware.Next()
 }

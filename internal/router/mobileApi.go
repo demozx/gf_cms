@@ -11,6 +11,7 @@ func mobileApiHandle(s *ghttp.Server) {
 	s.Group(service.Util().MApiGroup(), func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
+			service.Middleware().FilterXSS,
 		)
 		mobileHost := service.Util().GetConfig("server.mobileHost")
 		if len(mobileHost) > 0 {

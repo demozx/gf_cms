@@ -8,6 +8,7 @@ import (
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/glog"
 	"github.com/gogf/gf/v2/util/gconv"
 )
 
@@ -31,7 +32,8 @@ func (s *sGuestbook) MobileSubmit(ctx context.Context, in *mobileApi.GuestbookRe
 	}
 	lastId, err := dao.CmsGuestbook.Ctx(ctx).Data(data).InsertAndGetId()
 	if err != nil {
-		return nil, err
+		glog.Error(ctx, err)
+		return nil, gerror.New("提交留言出错")
 	}
 	// 更新ip归属地
 	go func() {

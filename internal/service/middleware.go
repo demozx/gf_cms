@@ -19,6 +19,7 @@ type (
 		MobileResponse(r *ghttp.Request)
 		BackendApiCheckPolicy(r *ghttp.Request)
 		GetBackendUserID(r *ghttp.Request) string
+		FilterXSS(r *ghttp.Request)
 	}
 )
 

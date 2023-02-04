@@ -11,6 +11,7 @@ func pcApiHandle(s *ghttp.Server) {
 	s.Group(service.Util().PcApiGroup(), func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
+			service.Middleware().FilterXSS,
 		)
 		pcHost := service.Util().GetConfig("server.pcHost")
 		if len(pcHost) > 0 {

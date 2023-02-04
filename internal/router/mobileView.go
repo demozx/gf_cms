@@ -11,6 +11,7 @@ func mobileViewHandle(s *ghttp.Server) {
 	s.Group("", func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			service.Middleware().MobileResponse,
+			service.Middleware().FilterXSS,
 		)
 		mobileHost := service.Util().GetConfig("server.mobileHost")
 		if len(mobileHost) > 0 {

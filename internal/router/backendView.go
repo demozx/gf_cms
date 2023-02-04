@@ -5,6 +5,7 @@ import (
 	"gf_cms/internal/controller/backend"
 	"gf_cms/internal/logic/middleware"
 	"gf_cms/internal/logic/util"
+	"gf_cms/internal/service"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
@@ -22,6 +23,7 @@ func backendViewHandle(s *ghttp.Server) {
 	s.Group(backendGroup, func(group *ghttp.RouterGroup) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
+			service.Middleware().FilterXSS,
 		)
 		group.ALLMap(g.Map{
 			"/admin/login": backend.Admin.Login,
@@ -32,6 +34,7 @@ func backendViewHandle(s *ghttp.Server) {
 			ghttp.MiddlewareHandlerResponse,
 			middleware.Middleware().BackendAuthSession,
 			middleware.Middleware().BackendCheckPolicy,
+			service.Middleware().FilterXSS,
 		)
 		group.ALLMap(g.Map{
 			/*后台首页*/

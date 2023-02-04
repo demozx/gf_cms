@@ -4,6 +4,7 @@ import (
 	"gf_cms/internal/controller/backendApi"
 	"gf_cms/internal/logic/middleware"
 	"gf_cms/internal/logic/util"
+	"gf_cms/internal/service"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
@@ -16,6 +17,7 @@ func backendApiHandle(s *ghttp.Server) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 			middleware.Middleware().CORS,
+			service.Middleware().FilterXSS,
 		)
 		group.ALLMap(g.Map{
 			"/captcha/get": backendApi.Captcha.Get,
