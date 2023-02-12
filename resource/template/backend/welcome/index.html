@@ -56,6 +56,10 @@
                         </thead>
                         <tbody>
                         <tr>
+                            <td>GoRoutine数量</td>
+                            <td id="num_goroutine">${ .num_goroutine }$</td>
+                        </tr>
+                        <tr>
                             <td>系统端口</td>
                             <td>${ .server_address }$</td>
                         </tr>
@@ -248,6 +252,7 @@
                 }
                 KbsRecv.refresh(res.data['net']['KbsRecv'], maxKbsRecv, 0, "网速\n接收");
                 $('#server_start_duration').text(res.data['serverStartDuration']);
+                $('#num_goroutine').text(res.data['numGoroutine']);
             });
         }
 

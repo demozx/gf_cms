@@ -23,6 +23,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 	serverAddress, _ := g.Config().Get(ctx, "server.address")
 	serverStartAt := runtime2.Runtime().GetServerStartAt()
 	serverStartDuration := util.Util().FriendyTimeFormat(serverStartAt.Time(), time.Now())
+	var numGoroutine = runtime.NumGoroutine()
 	_ = g.RequestFromCtx(ctx).Response.WriteTpl("backend/welcome/index.html", g.Map{
 		"project_name":          util.ProjectName,
 		"system_root":           util.SystemRoot,
@@ -36,6 +37,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 		"server_address":        serverAddress,
 		"server_start_at":       serverStartAt,
 		"server_start_duration": serverStartDuration,
+		"num_goroutine":         numGoroutine,
 	})
 	return
 }

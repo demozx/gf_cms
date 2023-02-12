@@ -18,4 +18,5 @@ type GetRuntimeInfoApiRes struct {
 	Disk                model.Disk `json:"disk" "dc": "磁盘"`
 	Net                 model.Net  `json:"net" "dc": "网络"`
 	ServerStartDuration string     `json:"serverStartDuration" "dc": "服务运行时长"`
+	NumGoroutine        int        `json:"numGoroutine" "dc": "goroutine运行数量"`
 }

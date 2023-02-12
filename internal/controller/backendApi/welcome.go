@@ -30,6 +30,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 	if loadPercent > 100 {
 		loadPercent = gconv.Float32(100)
 	}
+	var numGoroutine = runtime.NumGoroutine()
 	res = &backendApi.GetRuntimeInfoApiRes{
 		Load:                load,
 		LoadPercent:         loadPercent,
@@ -39,6 +40,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 		Disk:                desk,
 		Net:                 net,
 		ServerStartDuration: serverStartDuration,
+		NumGoroutine:        numGoroutine,
 	}
 	return
 }
