@@ -4,16 +4,16 @@ go 1.18
 
 require (
 	github.com/Blank-Xu/sql-adapter v0.0.0-20210714092925-0bdd0d548758
-	github.com/casbin/casbin/v2 v2.61.1
+	github.com/casbin/casbin/v2 v2.63.0
 	github.com/gogf/gf-jwt/v2 v2.0.1
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.3.1
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.3.1
-	github.com/gogf/gf/v2 v2.3.1
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.3.2
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.3.2
+	github.com/gogf/gf/v2 v2.3.2
 	github.com/microcosm-cc/bluemonday v1.0.22
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	gitlab.com/tingshuo/go-diskstate v0.0.0-20191211131809-ee5e7223d03c
-	golang.org/x/net v0.6.0
+	golang.org/x/net v0.7.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
@@ -52,7 +52,7 @@ require (
 	go.opentelemetry.io/otel v1.13.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.13.0 // indirect
 	go.opentelemetry.io/otel/trace v1.13.0 // indirect
-	golang.org/x/image v0.4.0 // indirect
+	golang.org/x/image v0.5.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
