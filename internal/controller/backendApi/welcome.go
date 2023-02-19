@@ -31,16 +31,27 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 		loadPercent = gconv.Float32(100)
 	}
 	var numGoroutine = runtime.NumGoroutine()
+	var mysqlProcessNum = runtime2.Runtime().MysqlProcessNum()
+	var mySqlMaxConnectionsNum = runtime2.Runtime().MySqlMaxConnectionsNum()
+	var mySqlCurrConnectionsNum = runtime2.Runtime().MySqlCurrConnectionsNum()
+	var redisMaxClientsNum = runtime2.Runtime().RedisMaxClientsNum()
+	var redisConnectedClientsNum = runtime2.Runtime().RedisConnectedClientsNum()
+
 	res = &backendApi.GetRuntimeInfoApiRes{
-		Load:                load,
-		LoadPercent:         loadPercent,
-		Cpu:                 cpu,
-		CPUNum:              cpuNum,
-		Mem:                 mem,
-		Disk:                desk,
-		Net:                 net,
-		ServerStartDuration: serverStartDuration,
-		NumGoroutine:        numGoroutine,
+		Load:                     load,
+		LoadPercent:              loadPercent,
+		Cpu:                      cpu,
+		CPUNum:                   cpuNum,
+		Mem:                      mem,
+		Disk:                     desk,
+		Net:                      net,
+		ServerStartDuration:      serverStartDuration,
+		NumGoroutine:             numGoroutine,
+		MysqlProcessNum:          mysqlProcessNum,
+		MySqlMaxConnectionsNum:   mySqlMaxConnectionsNum,
+		MySqlCurrConnectionsNum:  mySqlCurrConnectionsNum,
+		RedisMaxClientsNum:       redisMaxClientsNum,
+		RedisConnectedClientsNum: redisConnectedClientsNum,
 	}
 	return
 }

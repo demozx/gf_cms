@@ -3,7 +3,7 @@ server:
   backendPrefix: "admin"
   address: ":8001"
   openapiPath: "/api.json"
-  swaggerPath: "/swagger"
+#  swaggerPath: "/swagger"
   serverRoot: "resource/public"
   clientMaxBodySize: "50MB"
 
@@ -15,19 +15,24 @@ database:
     prefix: "cms_"
     removePrefix: "cms_"
     charset: "utf8mb4"
-    maxIdle: "10"       #连接池最大闲置的连接数
+    maxIdle: "100"       #连接池最大闲置的连接数
     maxOpen: "100"      #连接池最大打开的连接数
     maxLifetime: "30s"  #连接对象可重复使用的时间长度
     host: "127.0.0.1"
     port: "3306"
-    user: "root"
-    pass: ""
-    name: "gf_cms"
+    user: "gfcms"
+    pass: "123456"
+    name: "gfcms"
 
 redis:
   default:
     address: 127.0.0.1:6379
+    pass: ""
     db: 0
+    minIdle: "0"   # 允许闲置的最小连接数
+    maxIdle: "0"  # 允许闲置的最大连接数(0表示不限制)
+    maxActive: "0" # 最大连接数量限制(0表示不限制)
+    idleTimeout: "30m"  # 连接最大空闲时间，使用时间字符串例如30s/1m/1d
 
 logger:
   level: "all"            # 日志输出级别
@@ -43,17 +48,18 @@ logger:
   rotateBackupCompress: 0             # 滚动切分文件的压缩比（0-9）。默认为0，表示不压缩
   rotateCheckInterval: "1h"          # 滚动切分的时间检测间隔，一般不需要设置。默认为1小时
   stdoutColorDisabled: false         # 关闭终端的颜色打印。默认开启
-  writerColorEnable: false         # 日志文件是否带上颜色。默认false，表示不带颜色
+  writerColorEnable: true         # 日志文件是否带上颜色。默认false，表示不带颜色
 
 gfcli:
   build:
     name: "gfCms"
     arch: "amd64"
-    system: "darwin"
+#    system: "darwin"
+    system: "linux"
     mod: "none"
     cgo: 0
     packSrc: "manifest/config,resource/public/resource,resource/template,resource/i18n"
-    # packSrc: "resource,manifest"
+#    packSrc: "resource,manifest"
     packDst: "internal/packed/build_pack_data.go"
     version: ""
     path: "./deploy"

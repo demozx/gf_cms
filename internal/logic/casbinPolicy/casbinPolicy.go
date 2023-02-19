@@ -7,7 +7,9 @@ import (
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/casbin/casbin/v2/model"
+	"github.com/gogf/gf/v2/util/gconv"
 	"log"
+	"time"
 
 	sqlAdapter "github.com/Blank-Xu/sql-adapter"
 	"github.com/casbin/casbin/v2"
@@ -35,7 +37,7 @@ func CasbinPolicy() *sCasbinPolicy {
 	return &insPolicy
 }
 
-//初始化casbin
+// 初始化casbin
 func initCasbin() *casbin.Enforcer {
 	var dbType = util.Util().GetConfig("database.default.type")
 	var dbUser = util.Util().GetConfig("database.default.user")
@@ -51,9 +53,9 @@ func initCasbin() *casbin.Enforcer {
 	if err = db.Ping(); err != nil {
 		panic(err)
 	}
-	//db.SetMaxOpenConns(20)
-	//db.SetMaxIdleConns(10)
-	//db.SetConnMaxLifetime(time.Minute * 10)
+	db.SetMaxOpenConns(gconv.Int(util.Util().GetConfig("database.default.maxOpen")))
+	db.SetMaxIdleConns(gconv.Int(util.Util().GetConfig("database.default.maxIdle")))
+	db.SetConnMaxLifetime(time.Second * 10)
 	a, err := sqlAdapter.NewAdapter(db, dbType, dbPrefix+"rule_permissions")
 	if err != nil {
 		panic(err)

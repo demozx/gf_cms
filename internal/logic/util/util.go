@@ -98,7 +98,7 @@ func (*sUtil) PcApiGroup() string {
 	return PcApiGroup
 }
 
-// MobileApiGroup 移动Api分组
+// MApiGroup 移动Api分组
 func (*sUtil) MApiGroup() string {
 	return MobileApiGroup
 }

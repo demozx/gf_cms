@@ -51,14 +51,40 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th colspan="2" scope="col">系统信息</th>
+                            <th>GoRoutine数量</th>
+                            <th>Redis最大连接数</th>
+                            <th>Redis当前连接数</th>
+                            <th>MySql进程数</th>
+                            <th>MySql设置最大连接数</th>
+                            <th>MySql历史最大连接数</th>
+                            <th>连接池最大打开连接数</th>
+                            <th>连接池最大闲置连接数</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>GoRoutine数量</td>
-                            <td id="num_goroutine">${ .num_goroutine }$</td>
+                            <td id="num_goroutine"></td>
+                            <td id="redis_max_clients_num"></td>
+                            <td id="redis_connected_clients_num"></td>
+                            <td id="mysql_process_num"></td>
+                            <td id="mysql_max_connections_num"></td>
+                            <td id="mysql_curr_connections_num"></td>
+                            <td>${ system_config `database.default.maxOpen` }$</td>
+                            <td>${ system_config `database.default.maxIdle` }$</td>
                         </tr>
+                        </tbody>
+                    </table>
+                    <table class="layui-table">
+                        <colgroup>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th colspan="2" scope="col">系统信息</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>系统端口</td>
                             <td>${ .server_address }$</td>
@@ -253,6 +279,11 @@
                 KbsRecv.refresh(res.data['net']['KbsRecv'], maxKbsRecv, 0, "网速\n接收");
                 $('#server_start_duration').text(res.data['serverStartDuration']);
                 $('#num_goroutine').text(res.data['numGoroutine']);
+                $('#mysql_process_num').text(res.data['mysqlProcessNum']);
+                $('#mysql_max_connections_num').text(res.data['mySqlMaxConnectionsNum']);
+                $('#mysql_curr_connections_num').text(res.data['mySqlCurrConnectionsNum']);
+                $('#redis_max_clients_num').text(res.data['redisMaxClientsNum']);
+                $('#redis_connected_clients_num').text(res.data['redisConnectedClientsNum']);
             });
         }
 

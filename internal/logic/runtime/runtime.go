@@ -5,6 +5,8 @@ import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/text/gstr"
+	"github.com/gogf/gf/v2/util/gconv"
 	"strings"
 	"time"
 
@@ -25,7 +27,7 @@ var (
 	insRuntime = sRuntime{}
 )
 
-//服务启动时间缓存key
+// 服务启动时间缓存key
 var serverStartAtCacheKey = "serverStartAt"
 
 func init() {
@@ -201,4 +203,48 @@ func (*sRuntime) SetServerStartAt() bool {
 func (*sRuntime) GetServerStartAt() *gvar.Var {
 	get, _ := gcache.Get(util.Ctx, serverStartAtCacheKey)
 	return get
+}
+
+// MysqlProcessNum MySql进程数
+func (*sRuntime) MysqlProcessNum() int {
+	query, err := g.DB().Query(util.Ctx, "show full processlist")
+	if err != nil {
+		return 0
+	}
+	return query.Len()
+}
+
+// MySqlMaxConnectionsNum MySql最大连接数
+func (*sRuntime) MySqlMaxConnectionsNum() int {
+	query, err := g.DB().Query(util.Ctx, "show variables like '%max_connections%'")
+	if err != nil {
+		return 0
+	}
+	return gconv.Int(query.Array("Value")[0])
+}
+
+// MySqlCurrConnectionsNum MySql当前连接数
+func (*sRuntime) MySqlCurrConnectionsNum() int {
+	query, err := g.DB().Query(util.Ctx, "show global status like 'Max_used_connections'")
+	if err != nil {
+		return 0
+	}
+	return gconv.Int(query.Array("Value")[0])
+}
+
+// RedisMaxClientsNum Redis最大连接数
+func (*sRuntime) RedisMaxClientsNum() int {
+	do, _ := g.Redis().Do(util.Ctx, "config", "get", "maxclients")
+	return gconv.Int(do.Array()[1])
+}
+
+// RedisConnectedClientsNum 获取Redis当前连接数
+func (*sRuntime) RedisConnectedClientsNum() int {
+	do, _ := g.Redis().Do(util.Ctx, "info", "clients")
+	res := do.String()
+	res = gstr.Nl2Br(res)
+	split := gstr.Split(res, "<br>")
+	fullConnectedClients := split[1]
+	connectedClients := gstr.Replace(fullConnectedClients, "connected_clients:", "")
+	return gconv.Int(connectedClients)
 }
