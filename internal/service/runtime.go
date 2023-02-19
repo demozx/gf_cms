@@ -21,6 +21,11 @@ type (
 		GetNetInfo() model.Net
 		SetServerStartAt() bool
 		GetServerStartAt() *gvar.Var
+		MysqlProcessNum() int
+		MySqlMaxConnectionsNum() int
+		MySqlCurrConnectionsNum() int
+		RedisMaxClientsNum() int
+		RedisConnectedClientsNum() int
 	}
 )
 
