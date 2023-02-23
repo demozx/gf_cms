@@ -273,7 +273,7 @@ func (s *sUtil) ResponsiveJump(ctx context.Context) {
 			// 当前访问的域名是手机域名，跳转pc域名对应路由
 			jumpUrl = pcHost + uri
 		} else if gstr.Contains(fullUrl, mobileHost) {
-			jumpUrl = gstr.Replace(fullUrl, mobileHost, pcHost)
+			jumpUrl = gstr.Replace(fullUrl, mobileHost, pcHost, 1)
 		}
 	}
 	if len(jumpUrl) > 0 {
