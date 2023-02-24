@@ -1,6 +1,6 @@
 module gf_cms
 
-go 1.18
+go 1.20
 
 require (
 	github.com/Blank-Xu/sql-adapter v0.0.0-20210714092925-0bdd0d548758
@@ -19,6 +19,7 @@ require (
 
 require (
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/go-faker/faker/v4 v4.0.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 )
 
