@@ -97,7 +97,7 @@ ${include "/pc/public/head_index.html" .}$
     <div class="text">
         <div class="title">${ system_setting `corporate_name` }$</div>
         <a href="${ .aboutMoreUrl }$" title="查看详细" class="more">查看详细</a>
-        <div class="msg">${ .about.Description|text|substr 0 200 }$...</div>
+        <div class="msg">${ .about.Description|text|substr 0 60 }$...</div>
     </div>
     <div class="img atm_mid">
         <img src="/resource/images/loading.gif" data-original="${ .about.Thumb }$"
