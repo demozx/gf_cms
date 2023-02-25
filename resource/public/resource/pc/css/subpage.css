@@ -63,8 +63,8 @@ body {
 }
 .product1 li>a>img, .product2 li>a>img, .product3 li img, .product4 li div a img, .product5 li div a img, .product6 li a img {
 	display: block;
-	width: 216px;
-	height: 161px;
+	/*width: 216px;*/
+	/*height: 161px;*/
 }
 .product1 li>p, .product2 li>p, .product3 li>p, .product4 li>p, .product5 li>p, .product6 li>p {
 	width: 88%;

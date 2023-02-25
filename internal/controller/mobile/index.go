@@ -66,26 +66,12 @@ func (c *cIndex) Index(ctx context.Context, req *mobile.IndexReq) (res *mobile.I
 		url, _ := service.GenUrl().ChannelUrl(ctx, consts.HonorChannelId, "")
 		chHonorChannelUrl <- url
 	}()
-	// 附件栏目url
-	chProductFuJianChannelUrl := make(chan string, 1)
+	// 产品中心栏目列表
+	chGoodsChannelList := make(chan []*model.ChannelNavigationListItem, 1)
 	go func() {
-		defer close(chProductFuJianChannelUrl)
-		url, _ := service.GenUrl().ChannelUrl(ctx, consts.ProductFujianChannelId, "")
-		chProductFuJianChannelUrl <- url
-	}()
-	// 钢背附件栏目url
-	chProductGangBeiChannelUrl := make(chan string, 1)
-	go func() {
-		defer close(chProductGangBeiChannelUrl)
-		url, _ := service.GenUrl().ChannelUrl(ctx, consts.ProductGangBeiChannelId, "")
-		chProductGangBeiChannelUrl <- url
-	}()
-	// 减震片栏目url
-	chProductJianZhenPianChannelUrl := make(chan string, 1)
-	go func() {
-		defer close(chProductJianZhenPianChannelUrl)
-		url, _ := service.GenUrl().ChannelUrl(ctx, consts.ProductJianZhenPianChannelId, "")
-		chProductJianZhenPianChannelUrl <- url
+		defer close(chGoodsChannelList)
+		goodsChannelList, _ := service.Channel().HomeGoodsChannelList(ctx, consts.GoodsChannelId)
+		chGoodsChannelList <- goodsChannelList
 	}()
 	// banner广告
 	chAdList := make(chan []*entity.CmsAd, 1)
@@ -131,22 +117,20 @@ func (c *cIndex) Index(ctx context.Context, req *mobile.IndexReq) (res *mobile.I
 	}()
 
 	err = service.Response().View(ctx, "/mobile/index/index.html", g.Map{
-		"navigation":                    <-chNavigation,                    // 导航
-		"aboutChannelUrl":               <-chAboutChannelUrl,               // 关于我们栏目url
-		"newsChannelUrl":                <-chNewsChannelUrl,                // 新闻动态栏目url
-		"productChannelUrl":             <-chProductChannelUrl,             // 产品展示栏目url
-		"contactChannelUrl":             <-chContactChannelUrl,             // 联系我们栏目url
-		"guestbookChannelUrl":           <-chGuestbookChannelUrl,           // 在线留言栏目url
-		"honorChannelUrl":               <-chHonorChannelUrl,               // 荣誉资质栏目url
-		"productFuJianChannelUrl":       <-chProductFuJianChannelUrl,       // 附件栏目url
-		"productGangBeiChannelUrl":      <-chProductGangBeiChannelUrl,      // 钢背附件栏目url
-		"productJianZhenPianChannelUrl": <-chProductJianZhenPianChannelUrl, // 减震片栏目url
-		"adList":                        <-chAdList,                        // banner广告
-		"recommendGoodsList":            <-chRecommendGoodsList,            // 产品列表
-		"aboutChannelDescription":       <-chAboutChannelDescription,       // 关于我们简介
-		"textNewsList":                  <-chTextNewsList,                  // 文字新闻
-		"picNewsList":                   <-chPicNewsList,                   // 图片新闻
-		"honorList":                     <-chHonorList,                     // 荣誉资质列表
+		"navigation":              <-chNavigation,              // 导航
+		"aboutChannelUrl":         <-chAboutChannelUrl,         // 关于我们栏目url
+		"newsChannelUrl":          <-chNewsChannelUrl,          // 新闻动态栏目url
+		"productChannelUrl":       <-chProductChannelUrl,       // 产品展示栏目url
+		"contactChannelUrl":       <-chContactChannelUrl,       // 联系我们栏目url
+		"guestbookChannelUrl":     <-chGuestbookChannelUrl,     // 在线留言栏目url
+		"honorChannelUrl":         <-chHonorChannelUrl,         // 荣誉资质栏目url
+		"goodsChannelList":        <-chGoodsChannelList,        // 产品中心列表
+		"adList":                  <-chAdList,                  // banner广告
+		"recommendGoodsList":      <-chRecommendGoodsList,      // 产品列表
+		"aboutChannelDescription": <-chAboutChannelDescription, // 关于我们简介
+		"textNewsList":            <-chTextNewsList,            // 文字新闻
+		"picNewsList":             <-chPicNewsList,             // 图片新闻
+		"honorList":               <-chHonorList,               // 荣誉资质列表
 	})
 	if err != nil {
 		return nil, err

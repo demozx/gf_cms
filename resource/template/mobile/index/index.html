@@ -75,21 +75,15 @@ ${include "/mobile/public/navigation.html" .}$
             </p>
             <div class="icon_nav">
                 <ul>
-                    <li class="la1">
-                        <a href="${ .productFuJianChannelUrl }$">
-                            <strong class=" iconfont1_ys"><span>附件</span></strong>
+                    ${ range $key, $item := .goodsChannelList }$
+                    ${ if lt $key 3  }$
+                    <li class="la${ $key | plus 1  }$">
+                        <a href="${ $item.ChannelRouter }$">
+                            <strong class=" iconfont1_ys"><span>${ $item.Name }$</span></strong>
                         </a>
                     </li>
-                    <li class="la2">
-                        <a href="${ .productGangBeiChannelUrl }$">
-                            <strong class=" iconfont1_ys"><span>钢背</span></strong>
-                        </a>
-                    </li>
-                    <li class="la3">
-                        <a href="${ .productJianZhenPianChannelUrl }$">
-                            <strong class=" iconfont1_ys"><span>减震片</span></strong>
-                        </a>
-                    </li>
+                    ${ end }$
+                    ${ end }$
                     <li class="la4">
                         <a href="${ .productChannelUrl }$"> <strong class=" iconfont1_ys  ">...</strong> </a>
                     </li>
