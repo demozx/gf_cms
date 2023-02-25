@@ -94,8 +94,8 @@ func (c *cRouterBeautify) ProductDetail(ctx context.Context, req *pc.RouterBeaut
 }
 
 // Honor 路由美化-荣誉资质
-func (c *cRouterBeautify) Honor(ctx context.Context, req *pc.RouterBeautifyDefaultReq) (res *pc.RouterBeautifyDefaultRes, err error) {
-	_, err = Image.List(ctx, &pc.ImageListReq{ChannelId: consts.HonorChannelId})
+func (c *cRouterBeautify) Honor(ctx context.Context, req *pc.RouterBeautifyPageSizeReq) (res *pc.RouterBeautifyDefaultRes, err error) {
+	_, err = Image.List(ctx, &pc.ImageListReq{ChannelId: consts.HonorChannelId, Page: req.Page, Size: req.Size})
 	if err != nil {
 		return nil, err
 	}
