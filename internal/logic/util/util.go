@@ -256,7 +256,7 @@ func (s *sUtil) ResponsiveJump(ctx context.Context) {
 	}
 	host := g.RequestFromCtx(ctx).GetHost()
 	uri := g.RequestFromCtx(ctx).RequestURI
-	fullUrl := host + uri
+	fullUrl := g.RequestFromCtx(ctx).GetUrl()
 	jumpUrl := ""
 	if service.Util().IsMobile(ctx) {
 		// 是手机访问
