@@ -123,7 +123,7 @@
                         </tr>
                         <tr>
                             <td>处理器信息</td>
-                            <td>${ .cpu_info.ModelName }$&nbsp;&nbsp;${ .cpu_num }$核</td>
+                            <td>${ .cpu_info.ModelName }$ 最高频率${ .cpu_info.Mhz }$Mhz&nbsp;${ .cpu_num }$核心</td>
                         </tr>
                         <tr>
                             <td>GoFrame版本</td>
@@ -196,7 +196,7 @@
             labelMinFontSize: 18,
             minLabelMinFontSize: 18,
             maxLabelMinFontSize: 18,
-            label: "CPU\n${ .cpu_info.Mhz }$Mhz ${ .cpu_num }$核"
+            label: "CPU\n${ .cpu_info.CurrMhz }$Mhz ${ .cpu_num }$核"
         });
         var Memory = new JustGage({
             id: "memory",
@@ -259,12 +259,13 @@
                 // console.log(res.data);
                 let load1 = parseFloat(res.data['load']['Load1']).toFixed(2);
                 let loadPercent = res.data['loadPercent'];
-                Load.refresh(loadPercent, 100, 0, "负载\n1分钟：" + load1);
-                Cpu.refresh(res.data['cpu']['UsedPercent']);
                 let memTotal = (res.data['mem']['Total'] / 1024 / 1024 / 1024).toFixed(2)
                 let memUsed = (res.data['mem']['Used'] / 1024 / 1024 / 1024).toFixed(2)
                 let diskUsed = (res.data['disk']['Used'] / 1024).toFixed(2)
                 let diskTotal = (res.data['disk']['All'] / 1024).toFixed(2)
+                let cpuCurrMhz = res.data['cpu']['CurrMhz'] + 'Mhz ' + res.data['cpuNum'] + '核'
+                Load.refresh(loadPercent, 100, 0, "负载\n1分钟：" + load1);
+                Cpu.refresh(res.data['cpu']['UsedPercent'], 100, 0, "CPU\n" + cpuCurrMhz);
                 Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, "内存\n" + memUsed + 'G/' + memTotal + 'G');
                 Disk.refresh(res.data['disk']['Usage'], 100, 0, "磁盘\n" + diskUsed + 'G/' + diskTotal + 'G');
                 let maxKbsSent = 10000;

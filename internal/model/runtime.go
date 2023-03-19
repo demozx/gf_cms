@@ -10,6 +10,7 @@ type Cpu struct {
 	Cores       int
 	ModelName   string
 	Mhz         int
+	CurrMhz     int
 	UsedPercent string
 }
 

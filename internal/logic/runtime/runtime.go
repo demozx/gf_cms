@@ -5,8 +5,11 @@ import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/container/garray"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
+	"os/exec"
+	"runtime"
 	"strings"
 	"time"
 
@@ -54,6 +57,7 @@ func (*sRuntime) GetCpuInfo() model.Cpu {
 		cpuInfo.Cores = gvar.New(ci.Cores).Int()
 		cpuInfo.ModelName = gvar.New(ci.ModelName).String()
 		cpuInfo.Mhz = gvar.New(ci.Mhz).Int()
+		cpuInfo.CurrMhz = gvar.New(ci.Mhz).Int()
 	}
 	percent, _ := cpu.Percent(0, false) // false表示CPU总使用率，true为单核
 	if len(percent) > 0 {
@@ -61,6 +65,22 @@ func (*sRuntime) GetCpuInfo() model.Cpu {
 	} else {
 		cpuInfo.UsedPercent = ""
 	}
+	if runtime.GOOS == "linux" {
+		command := exec.Command("bash", "-c", `cat /proc/cpuinfo |grep MHz`)
+		output, _ := command.CombinedOutput()
+		split := gstr.Split(gconv.String(output), "\n")
+		if len(split) > 0 {
+			from := garray.NewStrArrayFrom(split).Sort()
+			value, found := from.Get(from.Len() - 1)
+			if found {
+				row := gstr.Split(value, "\t\t:")
+				if len(row) > 1 {
+					cpuInfo.CurrMhz = gconv.Int(gstr.Trim(row[1]))
+				}
+			}
+		}
+	}
+
 	return cpuInfo
 }
 
