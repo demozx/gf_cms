@@ -19,7 +19,6 @@ require (
 
 require (
 	github.com/aymerick/douceur v0.2.0 // indirect
-	github.com/go-faker/faker/v4 v4.0.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 )
 
@@ -43,7 +42,7 @@ require (
 	github.com/lib/pq v1.10.6 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.17 // indirect; indirectk
+	github.com/mattn/go-isatty v0.0.18 // indirect; indirectk
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect

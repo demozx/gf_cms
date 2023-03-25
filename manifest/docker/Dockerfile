@@ -6,11 +6,12 @@ FROM loads/alpine:3.8
 
 ENV WORKDIR                 /app
 ADD resource                $WORKDIR/
-ADD ./temp/linux_amd64/main $WORKDIR/main
-RUN chmod +x $WORKDIR/main
+ADD config.yaml             $WORKDIR/
+ADD ./temp/linux_amd64/gfCms $WORKDIR/gfCms
+RUN chmod +x $WORKDIR/gfCms
 
 ###############################################################################
 #                                   START
 ###############################################################################
 WORKDIR $WORKDIR
-CMD ./main
+CMD ./gfCms
