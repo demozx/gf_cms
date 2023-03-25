@@ -3,12 +3,14 @@ server:
   backendPrefix: "admin"
   address: ":8001"
   openapiPath: "/api.json"
-#  swaggerPath: "/swagger"
+  #  swaggerPath: "/swagger" #使用自定义SwaggerUI,需注释该行
   serverRoot: "resource/public"
   clientMaxBodySize: "50MB"
-  dumpRouterMap:       true               # 是否在Server启动时打印所有的路由列表。默认为true
-  graceful:            false              # 是否开启平滑重启特性，开启时将会在本地增加10000的本地TCP端口用于进程间通信。默认false
-  gracefulTimeout:     2                  # 父进程在平滑重启后多少秒退出，默认2秒。若请求耗时大于该值，可能会导致请求中断
+  mobileHost: "m.gfcms.com" # 移动端域名,配置后将根据设备自动跳转,且mobile路由只能使用mobileHost域名访问
+  pcHost: "gfcms.com" # 配置移动端域名后,需要配置pc端域名,用来跳转,且pc路由只能使用pcHost域名访问
+  dumpRouterMap: true               # 是否在Server启动时打印所有的路由列表。默认为true
+  graceful: false              # 是否开启平滑重启特性，开启时将会在本地增加10000的本地TCP端口用于进程间通信。默认false
+  gracefulTimeout: 2                  # 父进程在平滑重启后多少秒退出，默认2秒。若请求耗时大于该值，可能会导致请求中断
 
 database:
   default:
@@ -18,24 +20,18 @@ database:
     prefix: "cms_"
     removePrefix: "cms_"
     charset: "utf8mb4"
-    maxIdle: "100"       #连接池最大闲置的连接数
-    maxOpen: "100"      #连接池最大打开的连接数
+    maxIdle: "0"       #连接池最大闲置的连接数
+    maxOpen: "10"      #连接池最大打开的连接数
     maxLifetime: "30s"  #连接对象可重复使用的时间长度
     host: "127.0.0.1"
     port: "3306"
-    user: "gfcms"
-    pass: "123456"
-    name: "gfcms"
-
+    user: "root"
+    pass: ""
+    name: "gf_cms"
 redis:
   default:
     address: 127.0.0.1:6379
-    pass: ""
     db: 0
-    minIdle: "0"   # 允许闲置的最小连接数
-    maxIdle: "0"  # 允许闲置的最大连接数(0表示不限制)
-    maxActive: "0" # 最大连接数量限制(0表示不限制)
-    idleTimeout: "30m"  # 连接最大空闲时间，使用时间字符串例如30s/1m/1d
 
 logger:
   level: "all"            # 日志输出级别
@@ -51,7 +47,7 @@ logger:
   rotateBackupCompress: 0             # 滚动切分文件的压缩比（0-9）。默认为0，表示不压缩
   rotateCheckInterval: "1h"          # 滚动切分的时间检测间隔，一般不需要设置。默认为1小时
   stdoutColorDisabled: false         # 关闭终端的颜色打印。默认开启
-  writerColorEnable: true         # 日志文件是否带上颜色。默认false，表示不带颜色
+  writerColorEnable: false         # 日志文件是否带上颜色。默认false，表示不带颜色
 
 gfcli:
   build:
@@ -67,3 +63,8 @@ gfcli:
     version: ""
     path: ""
     extra: ""
+  docker:
+    build: "-a amd64 -s linux -p temp -ew"
+    tagPrefixes:
+      - "demozx"
+    tagName: "gf_cms"
