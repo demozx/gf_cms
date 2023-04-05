@@ -109,9 +109,18 @@
             name: '模型',
             headerClass: 'td-model',
             colClass: 'td-model',
-            style: 'width: 20%',
+            style: 'width: 10%',
             render: function (row) {
                 return row.modelDesc;
+            }
+        },
+        {
+            name: '栏目类型',
+            headerClass: 'td-type',
+            colClass: 'td-type',
+            style: 'width: 10%',
+            render: function (row) {
+                return row.typeDesc;
             }
         },
         {

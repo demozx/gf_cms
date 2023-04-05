@@ -22,6 +22,8 @@ type ChannelBackendApiListItem struct {
 	Selected  uint8                        `json:"selected"`
 	Model     string                       `json:"model"`
 	ModelDesc string                       `json:"modelDesc"`
+	Type      string                       `json:"type"`
+	TypeDesc  string                       `json:"typeDesc"`
 	Children  []*ChannelBackendApiListItem `json:"children"`
 }
 

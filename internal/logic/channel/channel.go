@@ -67,6 +67,7 @@ func (s *sChannel) channelBackendApiListRecursion(list []*model.ChannelBackendAp
 				item.Children = make([]*model.ChannelBackendApiListItem, 0, len(list))
 			}
 			item.ModelDesc = service.Channel().BackendModelDesc(item.Model)
+			item.TypeDesc = service.Channel().BackendTypeDesc(item.Type)
 			res = append(res, item)
 		}
 	}
@@ -293,6 +294,15 @@ func (s *sChannel) BackendModelMap() map[string]string {
 	}
 }
 
+// BackendChannelTypeMap 后台栏目类型映射
+func (s *sChannel) BackendChannelTypeMap() map[string]string {
+	return map[string]string{
+		consts.ChannelTypeChannel:    consts.ChannelTypeChannelDesc,
+		consts.ChannelTypeSinglePage: consts.ChannelTypeSinglePageDesc,
+		consts.ChannelTypeLink:       consts.ChannelTypeLinkDesc,
+	}
+}
+
 // BackendModelCanAddMap 后台允许填充列表内容的数据模型映射
 func (s *sChannel) BackendModelCanAddMap() map[string]string {
 	return map[string]string{
@@ -304,6 +314,15 @@ func (s *sChannel) BackendModelCanAddMap() map[string]string {
 func (s *sChannel) BackendModelDesc(model string) string {
 	modelMap := Channel().BackendModelMap()
 	out, isOk := modelMap[model]
+	if isOk == false {
+		return ""
+	}
+	return out
+}
+
+func (s *sChannel) BackendTypeDesc(ChannelType string) string {
+	typeMap := Channel().BackendChannelTypeMap()
+	out, isOk := typeMap[ChannelType]
 	if isOk == false {
 		return ""
 	}

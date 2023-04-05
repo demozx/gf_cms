@@ -19,4 +19,17 @@ const (
 	ChannelModelSinglePage = "single_page"
 	// ChannelModelSinglePageDesc 单页模型描述
 	ChannelModelSinglePageDesc = "单页"
+
+	// ChannelTypeChannel 频道类型
+	ChannelTypeChannel = "1"
+	// ChannelTypeChannelDesc 频道类型描述
+	ChannelTypeChannelDesc = "频道"
+	// ChannelTypeSinglePage 单页类型
+	ChannelTypeSinglePage = "2"
+	// ChannelTypeSinglePageDesc 单页类型描述
+	ChannelTypeSinglePageDesc = "单页"
+	// ChannelTypeLink 链接类型
+	ChannelTypeLink = "3"
+	// ChannelTypeLinkDesc 链接类型描述
+	ChannelTypeLinkDesc = "链接"
 )
