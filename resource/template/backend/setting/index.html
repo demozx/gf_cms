@@ -91,41 +91,46 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width: 160px;">${ $config.Title }$</label>
                         <div class="layui-input-block">
-                            <input style="width: 60%;display: inline;" type="text" id="${ $config.Name }$_text" name="${ $config.Name }$" placeholder="点击上传图片按钮或手动输入图片路径" autocomplete="off" class="layui-input" value="${ system_setting $config.Name }$">
-                            <button style="margin-left: -5px;margin-bottom: 3px;" type="button" class="layui-btn" id="${ $config.Name }$_button">
+                            <input style="width: 60%;display: inline;" type="text" id="${ $config.Name }$_text"
+                                   name="${ $config.Name }$" placeholder="点击上传图片按钮或手动输入图片路径"
+                                   autocomplete="off" class="layui-input" value="${ system_setting $config.Name }$">
+                            <button style="margin-left: -5px;margin-bottom: 3px;" type="button" class="layui-btn"
+                                    id="${ $config.Name }$_button">
                                 <i class="layui-icon"></i>
                                 上传图片
-                            </button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                            </button>
+                            <input class="layui-upload-file" type="file" accept="undefined" name="file">
                             <div class="layui-upload-list" style="margin-left: 50px;">
-                                <img class="layui-upload-img" id="${ $config.Name }$_code" src="${ system_setting $config.Name }$" style="width: 100px;">
+                                <img class="layui-upload-img" id="${ $config.Name }$_code"
+                                     src="${ system_setting $config.Name }$" style="width: 100px;">
                             </div>
                         </div>
                         <script>
-                            layui.use(['upload', 'jquery'], function() {
+                            layui.use(['upload', 'jquery'], function () {
                                 var upload = layui.upload;
                                 var $ = layui.$;
                                 //执行实例
                                 var uploadInst = upload.render({
-                                    elem    : '#${ $config.Name }$_button' //绑定元素
-                                    , url   : '${ backend_api_url `/upload/single_image` }$' //上传接口
-                                    , done  : function(res) {
+                                    elem: '#${ $config.Name }$_button' //绑定元素
+                                    , url: '${ backend_api_url `/upload/single_image` }$' //上传接口
+                                    , done: function (res) {
                                         //上传完毕回调
                                         if (res.code === 0) {
                                             $('#${ $config.Name }$_code').attr('src', res.data['url']);
                                             $('#${ $config.Name }$_text').val(res.data['url']);
                                         } else {
                                             layer.msg(res.message, {
-                                                time : 3000,
-                                                icon : 5
+                                                time: 3000,
+                                                icon: 5
                                             });
                                         }
                                     }
-                                    , error : function() {
+                                    , error: function () {
                                         //请求异常回调
                                     }
                                 });
                                 /*图片放大预览*/
-                                $('body').on('mouseenter','.layui-upload-img',function () {
+                                $('body').on('mouseenter', '.layui-upload-img', function () {
                                     //console.log('显示大图');
                                     var index = layer.open({
                                         type: 1,
@@ -135,12 +140,13 @@
                                         skin: 'layui-layer-nobg', //没有背景色
                                         shade: false,
                                         shadeClose: true,
-                                        content: "<img style='max-width:600px;' src='"+$(this).prop('src')+"'>"
+                                        content: "<img style='max-width:600px;' src='" + $(this).prop('src') + "'>"
                                     });
                                 });
-                                $('body').on('mouseleave','.layui-upload-img',function () {
+                                $('body').on('mouseleave', '.layui-upload-img', function () {
                                     //console.log('取消显示大图');
-                                    layer.close(layer.index);
+                                    // layer.close(layer.index);
+                                    layer.closeAll();
                                 });
                             });
                         </script>
