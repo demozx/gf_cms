@@ -39,6 +39,15 @@ func (c *cArticle) List(ctx context.Context, req *pc.ArticleListReq) (res *pc.Ar
 		navigation, _ := service.Channel().Navigation(ctx, gconv.Int(channelInfo.Id))
 		chNavigation <- navigation
 	}()
+	navigation := <-chNavigation
+	// 子栏目
+	chChildrenNavigation := make(chan []*model.ChannelNavigationListItem, 1)
+	go func() {
+		defer close(chChildrenNavigation)
+		childrenNavigation, _ := service.Channel().ChildrenNavigation(ctx, navigation, gconv.Int(channelInfo.Id))
+		chChildrenNavigation <- childrenNavigation
+	}()
+	childrenNavigation := <-chChildrenNavigation
 	// TKD
 	chTDK := make(chan *model.ChannelTDK, 1)
 	go func() {
@@ -85,7 +94,8 @@ func (c *cArticle) List(ctx context.Context, req *pc.ArticleListReq) (res *pc.Ar
 	pageInfo := service.PageInfo().PcPageInfo(ctx, articlePageList.Total, articlePageList.Size)
 	err = service.Response().View(ctx, <-chChannelTemplate, g.Map{
 		"channelInfo":         channelInfo,          // 栏目信息
-		"navigation":          <-chNavigation,       // 导航
+		"navigation":          navigation,           // 导航
+		"childrenNavigation":  childrenNavigation,   // 子栏目
 		"tdk":                 <-chTDK,              // TDK
 		"crumbs":              <-chCrumbs,           // 面包屑导航
 		"goodsChannelList":    <-chGoodsChannelList, // 产品中心栏目列表

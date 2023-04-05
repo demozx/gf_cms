@@ -43,6 +43,16 @@ func (s *sChannel) Navigation(ctx context.Context, currChannelId int) (out []*mo
 	return
 }
 
+// ChildrenNavigation 获取当前栏目的子栏目
+func (s *sChannel) ChildrenNavigation(ctx context.Context, navigation []*model.ChannelNavigationListItem, currChannelId int) (out []*model.ChannelNavigationListItem, err error) {
+	for _, item := range navigation {
+		if gconv.Int(item.Id) == currChannelId && len(item.Children) > 0 {
+			return item.Children, nil
+		}
+	}
+	return
+}
+
 // 递归生成导航
 func (s *sChannel) navigationListRecursion(ctx context.Context, list []*entity.CmsChannel, pid int, currChannelId int) (out []*model.ChannelNavigationListItem, err error) {
 	var res []*model.ChannelNavigationListItem

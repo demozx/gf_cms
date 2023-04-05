@@ -32,6 +32,7 @@ type (
 		UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error)
 		GetChildIds(ctx context.Context, belongChannelId int, andMe bool) (arrAllIds []int, err error)
 		Navigation(ctx context.Context, currChannelId int) (out []*model.ChannelNavigationListItem, err error)
+		ChildrenNavigation(ctx context.Context, navigation []*model.ChannelNavigationListItem, currChannelId int) (out []*model.ChannelNavigationListItem, err error)
 		Crumbs(ctx context.Context, channelId uint) (out []*model.ChannelCrumbs, err error)
 		TDK(ctx context.Context, channelId uint, detailId int64) (out *model.ChannelTDK, err error)
 		MobileListTemplate(ctx context.Context, channel *entity.CmsChannel) (template string, err error)
