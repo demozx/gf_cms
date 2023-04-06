@@ -262,6 +262,7 @@ func (c *cArticle) articlePageList(ctx context.Context, in *pc.ArticleListReq) (
 			return nil, err
 		}
 		articleList[key].Router = url
+		articleList[key].Thumb = service.Util().ImageOrDefaultUrl(item.Thumb)
 	}
 	res = &pc.ArticleListRes{
 		List:  articleList,
