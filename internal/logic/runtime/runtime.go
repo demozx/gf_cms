@@ -10,7 +10,6 @@ import (
 	"github.com/gogf/gf/v2/util/gconv"
 	"os/exec"
 	"runtime"
-	"strings"
 	"time"
 
 	"github.com/gogf/gf/v2/container/gvar"
@@ -167,7 +166,7 @@ func (*sRuntime) GetDiskInfo() model.Disk {
 
 // GetNetInfo 网络信息
 func (*sRuntime) GetNetInfo() model.Net {
-	netIOs, err := net.IOCounters(true)
+	netIOs, err := net.IOCounters(false)
 	if err != nil {
 		fmt.Println("get net io counters failed: ", err)
 	}
@@ -177,11 +176,11 @@ func (*sRuntime) GetNetInfo() model.Net {
 	)
 	//fmt.Printf("%v", netIOs)
 	for _, netIO := range netIOs {
-		if strings.HasPrefix(netIO.Name, "en") {
-			//fmt.Println(netIO) // 打印每张网卡信息
-			kbsSent = int(netIO.BytesSent/1024) + kbsSent
-			kbsRecv = int(netIO.BytesRecv/1024) + kbsRecv
-		}
+		//if strings.HasPrefix(netIO.Name, "en") {
+		//fmt.Println(netIO) // 打印每张网卡信息
+		kbsSent = int(netIO.BytesSent/1024) + kbsSent
+		kbsRecv = int(netIO.BytesRecv/1024) + kbsRecv
+		//}
 	}
 	//fmt.Println(kbsSent, kbsRecv)
 
