@@ -79,6 +79,10 @@ backend:
               value: 1
             - title: 关闭
               value: 0
+        - title: 图片质量压缩
+          type: text
+          name: image_quality
+          tip: 图片质量压缩级别(0-100)，数值越大质量越好，体积越大
 
     - title: 文章设置
       children:

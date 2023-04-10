@@ -5,7 +5,9 @@ import (
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
+	"github.com/fishtailstudio/imgo"
 	"github.com/gogf/gf/v2/os/gtime"
+	"github.com/gogf/gf/v2/util/gconv"
 	"os"
 )
 
@@ -39,6 +41,11 @@ func (*sUpload) SingleUploadFile(ctx context.Context, in model.FileUploadInput, 
 		return nil, err
 	}
 	url := fullUploadDir + "/" + filename
+	// 图片质量压缩
+	imageQuality := gconv.Int(service.Util().GetSetting("image_quality"))
+	if imageQuality >= 1 && imageQuality <= 100 {
+		imgo.Load(serverRoot+url).Save(serverRoot+url, imageQuality)
+	}
 	out = &backendApi.UploadFileRes{
 		Name: filename,
 		Url:  url,
