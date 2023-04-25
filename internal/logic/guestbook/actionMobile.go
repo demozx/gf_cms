@@ -38,6 +38,7 @@ func (s *sGuestbook) MobileSubmit(ctx context.Context, in *mobileApi.GuestbookRe
 	// 更新ip归属地
 	go func() {
 		g.Log().Debug(ctx, "留言：更新ip归属地")
+		ctx := context.Background()
 		address, err := service.Guestbook().GetAddressByIp(ctx, ip)
 		_, err = dao.CmsGuestbook.Ctx(ctx).Where(dao.CmsGuestbook.Columns().Id, lastId).Data(g.Map{
 			dao.CmsGuestbook.Columns().Address: address,

@@ -333,6 +333,7 @@ func (s *sChannel) BackendTypeDesc(ChannelType string) string {
 func (s *sChannel) UpdateRelation(ctx context.Context, originChannelId int) (out interface{}, err error) {
 	var chUpdateRelation = make(chan int, 2)
 	go func() {
+		ctx := context.Background()
 		_, err := Channel().updateTid(ctx, originChannelId, 0)
 		if err != nil {
 			return
@@ -349,6 +350,7 @@ func (s *sChannel) UpdateRelation(ctx context.Context, originChannelId int) (out
 		channelTid = value.Int()
 	}
 	go func() {
+		ctx := context.Background()
 		_, err := Channel().updateChildren(ctx, channelTid, []int{}, []int{}, 0)
 		if err != nil {
 			return
