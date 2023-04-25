@@ -37,6 +37,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 	if adminInfo.IsSystem == 1 {
 		//给系统角色赋予全部的权限
 		go func() {
+			ctx := context.Background()
 			var systemRole *entity.CmsRole
 			err = dao.CmsRole.Ctx(ctx).Where(do.CmsRole{IsSystem: 1}).Scan(&systemRole)
 			if err != nil {
