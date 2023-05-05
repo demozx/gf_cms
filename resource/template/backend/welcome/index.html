@@ -94,6 +94,10 @@
                             <td>${ .project_name }$</td>
                         </tr>
                         <tr>
+                            <td>Pid</td>
+                            <td id="pid">${ .pid }$</td>
+                        </tr>
+                        <tr>
                             <td>服务器名称</td>
                             <td>${ .host_info.Hostname }$</td>
                         </tr>
@@ -285,6 +289,7 @@
                 $('#mysql_curr_connections_num').text(res.data['mySqlCurrConnectionsNum']);
                 $('#redis_max_clients_num').text(res.data['redisMaxClientsNum']);
                 $('#redis_connected_clients_num').text(res.data['redisConnectedClientsNum']);
+                $('#pid').text(res.data['pid']);
             });
         }
 

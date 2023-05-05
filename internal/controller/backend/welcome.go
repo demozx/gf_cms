@@ -6,6 +6,7 @@ import (
 	runtime2 "gf_cms/internal/logic/runtime"
 	"gf_cms/internal/logic/util"
 	"github.com/gogf/gf/v2"
+	"github.com/gogf/gf/v2/os/gproc"
 	"runtime"
 	"time"
 
@@ -38,6 +39,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 		"server_start_at":       serverStartAt,
 		"server_start_duration": serverStartDuration,
 		"num_goroutine":         numGoroutine,
+		"pid":                   gproc.Pid(),
 	})
 	return
 }

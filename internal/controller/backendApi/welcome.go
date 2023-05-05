@@ -5,6 +5,7 @@ import (
 	"gf_cms/api/backendApi"
 	runtime2 "gf_cms/internal/logic/runtime"
 	"gf_cms/internal/logic/util"
+	"github.com/gogf/gf/v2/os/gproc"
 	"runtime"
 	"time"
 
@@ -52,6 +53,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 		MySqlCurrConnectionsNum:  mySqlCurrConnectionsNum,
 		RedisMaxClientsNum:       redisMaxClientsNum,
 		RedisConnectedClientsNum: redisConnectedClientsNum,
+		Pid:                      gproc.Pid(),
 	}
 	return
 }
