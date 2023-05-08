@@ -7,9 +7,9 @@ require (
 	github.com/casbin/casbin/v2 v2.68.0
 	github.com/fishtailstudio/imgo v0.0.3
 	github.com/gogf/gf-jwt/v2 v2.0.1
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.4.0
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.4.0
-	github.com/gogf/gf/v2 v2.4.0
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.4.1
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.4.1
+	github.com/gogf/gf/v2 v2.4.1
 	github.com/microcosm-cc/bluemonday v1.0.23
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/shirou/gopsutil v3.21.11+incompatible
@@ -52,11 +52,11 @@ require (
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
-	go.opentelemetry.io/otel v1.14.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.14.0 // indirect
-	go.opentelemetry.io/otel/trace v1.14.0 // indirect
+	go.opentelemetry.io/otel v1.15.1 // indirect
+	go.opentelemetry.io/otel/sdk v1.15.1 // indirect
+	go.opentelemetry.io/otel/trace v1.15.1 // indirect
 	golang.org/x/image v0.7.0 // indirect
-	golang.org/x/sys v0.7.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
