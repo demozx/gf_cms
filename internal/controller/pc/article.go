@@ -129,7 +129,7 @@ func (c *cArticle) Detail(ctx context.Context, req *pc.ArticleDetailReq) (res *p
 	articleInfo.ClickNum++
 	// 更新点击量
 	go func() {
-		ctx := context.Background()
+		//ctx := context.Background()
 		_, err = dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, articleInfo.Id).Increment(dao.CmsArticle.Columns().ClickNum, 1)
 	}()
 	// 栏目详情
