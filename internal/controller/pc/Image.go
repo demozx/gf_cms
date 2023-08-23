@@ -118,7 +118,7 @@ func (c *cImage) Detail(ctx context.Context, req *pc.ImageDetailReq) (res *pc.Im
 	imageInfo.ClickNum++
 	// 更新点击量
 	go func() {
-		//ctx := context.Background()
+		ctx := context.Background()
 		_, err = dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, imageInfo.Id).Increment(dao.CmsImage.Columns().ClickNum, 1)
 	}()
 	// 栏目详情

@@ -37,7 +37,7 @@ func (s *sGuestbook) PcSubmit(ctx context.Context, in *pcApi.GuestbookReq) (out 
 	}
 	// 更新ip归属地
 	go func() {
-		//ctx := context.Background()
+		ctx := context.Background()
 		g.Log().Debug(ctx, "留言：更新ip归属地")
 		address, err := service.Guestbook().GetAddressByIp(ctx, ip)
 		_, err = dao.CmsGuestbook.Ctx(ctx).Where(dao.CmsGuestbook.Columns().Id, lastId).Data(g.Map{

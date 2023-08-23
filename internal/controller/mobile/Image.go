@@ -101,7 +101,7 @@ func (c *cImage) Detail(ctx context.Context, req *mobile.ImageDetailReq) (res *m
 	imageInfo.ClickNum++
 	// 更新点击量
 	go func() {
-		//ctx := context.Background()
+		ctx := context.Background()
 		_, err = dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, imageInfo.Id).Increment(dao.CmsImage.Columns().ClickNum, 1)
 	}()
 	// 栏目详情
@@ -133,7 +133,7 @@ func (c *cImage) Detail(ctx context.Context, req *mobile.ImageDetailReq) (res *m
 	// 上一篇
 	chPrevImage := make(chan *model.ImageLink, 1)
 	go func() {
-		//ctx := context.Background()
+		ctx := context.Background()
 		prevImage, _ := service.Image().PcPrevImage(ctx, imageInfo.ChannelId, imageInfo.Id)
 		chPrevImage <- prevImage
 	}()
