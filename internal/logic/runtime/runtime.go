@@ -254,7 +254,7 @@ func (*sRuntime) MySqlCurrConnectionsNum() int {
 // RedisMaxClientsNum Redis最大连接数
 func (*sRuntime) RedisMaxClientsNum() int {
 	do, _ := g.Redis().Do(util.Ctx, "config", "get", "maxclients")
-	return gconv.Int(do.Array()[1])
+	return gconv.Int(do.Array()[0])
 }
 
 // RedisConnectedClientsNum 获取Redis当前连接数
