@@ -34,6 +34,7 @@ func (*sViewBindFun) Register() {
 		"backend_api_url": ViewBindFun().BackendApiUrl,
 		"pc_api_url":      ViewBindFun().PcApiUrl,
 		"mobile_api_url":  ViewBindFun().MobileApiUrl,
+		"dry_run":         ViewBindFun().DryRun,
 	})
 }
 
@@ -65,4 +66,8 @@ func (*sViewBindFun) PcApiUrl(route string) string {
 // MobileApiUrl 生成MApi发的路由
 func (*sViewBindFun) MobileApiUrl(route string) string {
 	return util.MobileApiGroup + route
+}
+
+func (*sViewBindFun) DryRun() bool {
+	return util.DryRun
 }

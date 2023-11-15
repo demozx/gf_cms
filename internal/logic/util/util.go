@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/text/gstr"
+	"github.com/gogf/gf/v2/util/gconv"
 	"math"
 	"net"
 	"os"
@@ -32,6 +33,7 @@ var (
 	MobileApiGroup    string
 	PublicCachePreFix string
 	ServerRoot        *gvar.Var
+	DryRun            bool
 )
 
 func init() {
@@ -53,6 +55,9 @@ func init() {
 	SystemRoot, _ = os.Getwd()
 	//服务目录
 	ServerRoot, _ = g.Cfg().Get(Ctx, "server.serverRoot")
+	//空跑模式
+	dryRun, _ := g.Cfg().Get(Ctx, "database.default.dryRun")
+	DryRun = gconv.Bool(dryRun)
 }
 
 func New() *sUtil {
@@ -61,6 +66,11 @@ func New() *sUtil {
 
 func Util() *sUtil {
 	return &insUtil
+}
+
+// DryRun 获取空跑模式
+func (*sUtil) DryRun() bool {
+	return DryRun
 }
 
 // ProjectName 获取ProjectName

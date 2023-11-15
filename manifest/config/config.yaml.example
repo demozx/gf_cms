@@ -16,7 +16,7 @@ database:
   default:
     type: "mysql"
     debug: "true"
-    dryRun: 0
+    dryRun: "false"
     prefix: "cms_"
     removePrefix: "cms_"
     charset: "utf8mb4"

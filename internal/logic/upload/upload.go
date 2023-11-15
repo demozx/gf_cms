@@ -6,6 +6,7 @@ import (
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
 	"github.com/fishtailstudio/imgo"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
 	"os"
@@ -31,6 +32,10 @@ func Upload() *sUpload {
 
 // SingleUploadFile 上传文件
 func (*sUpload) SingleUploadFile(ctx context.Context, in model.FileUploadInput, dir string) (out *backendApi.UploadFileRes, err error) {
+	dryRun := service.Util().DryRun()
+	if dryRun == true {
+		return nil, gerror.New("空跑模式禁止上传")
+	}
 	serverRoot := service.Util().ServerRoot()
 	os.MkdirAll(serverRoot, 0755)
 	os.Chmod(serverRoot, 0755)
