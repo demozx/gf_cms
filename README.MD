@@ -1,9 +1,9 @@
 # 基于GoFrameV2 的网站内容管理系统
-> 前台演示地址：demo-pc.linklink.fun （自动跳转移动端）
+> 前台演示地址：[demo-pc.linklink.fun](http://demo-pc.linklink.fun) （自动跳转移动端）
 
-> 移动演示地址：demo-m.linklink.fun
+> 移动演示地址：[demo-m.linklink.fun](http://demo-m.linklink.fun)
 
-> 后台演示地址：demo-pc.linklink.fun/admin
+> 后台演示地址：[demo-pc.linklink.fun/admin](http://demo-pc.linklink.fun/admin)
 
 ``
 用户名：admin
