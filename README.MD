@@ -17,6 +17,7 @@
 > 截图
 - 后台
 ![image](./README/backend.jpg)
+![image](./README/channel.png)
 - PC
 ![image](./README/pc.jpg)
 
