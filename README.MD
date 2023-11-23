@@ -6,9 +6,9 @@
 > 后台演示地址：[demo-pc.linklink.fun/admin](http://demo-pc.linklink.fun/admin)
 >
 > 
-> 用户名：admin
+> 用户名：<code>admin</code>
 >
-> 密码：123456
+> 密码：<code>123456</code>
 
 > 📱 新增部署在arm架构手机内的演示地址：[mi8-gfcms.linklink.fun/admin](http://mi8-gfcms.linklink.fun/admin)
 >
