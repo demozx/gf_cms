@@ -34,9 +34,9 @@
 > 4、修改config.yaml域名绑定，mobileHost为移动端绑定域名，pcHost为PC端绑定域名，
 > mobileHost留空不自动跳转移动端，mobileHost和pcHost都留空则使用IP加端口号访问
 > 
-> 5、下载演示站图片资源，将解压后的uploads文件夹放到项目resource/public文件夹下
+> 5、下载演示站图片资源，将解压后的uploads文件夹放到项目resource/public文件夹下（不在乎无法显示图片的可以不下载）
 > 
-> 下载地址：http://pan.linklink.fun/#s/932wYqlg 访问密码：C2Gq7
+> 下载地址：http://pan.linklink.fun/#s/932wYqlg 访问密码：<code>C2Gq7</code>
 > 
 > 6、编译项目
 > 
