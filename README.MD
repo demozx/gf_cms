@@ -5,13 +5,10 @@
 
 > 后台演示地址：[demo-pc.linklink.fun/admin](http://demo-pc.linklink.fun/admin)
 >
-> ``
+> 
 > 用户名：admin
-> ``
 >
-> ``
 > 密码：123456
-> ``
 
 > 📱 新增部署在arm架构手机内的演示地址：[mi8-gfcms.linklink.fun/admin](http://mi8-gfcms.linklink.fun/admin)
 >
@@ -27,7 +24,9 @@
 >
 > 2、复制配置文件
 >
-> <code>cp manifest/config/config.yaml.example manifest/config/config.yaml</code>
+> ```shell
+> cp manifest/config/config.yaml.example manifest/config/config.yaml
+> ```
 > 
 > 3、修改config.yaml的数据库配置、redis配置
 >
@@ -40,13 +39,22 @@
 > 
 > 6、编译项目
 > 
-> 已安装 [gf-cli](https://github.com/gogf/gf-cli) 工具（推荐、开发时必备）<code>gf run main.go</code>
+> 已安装 [gf-cli](https://github.com/gogf/gf-cli) 工具（推荐、开发时必备
+> 
+> ```shell
+> gf run main.go
+> ```
 >
-> 未安装工具 <code>go build -0 ./main main.go</code>
+> 未安装工具
+> ```shell
+> go build -0 ./main main.go
+> ```
 > 
 > 7、启动项目
 > 
-> <code>./main</code>
+> ```shell
+> ./main
+> ```
 
 > 目前支持的模型：
 > - 文章
