@@ -47,7 +47,7 @@
 >
 > 未安装工具
 > ```shell
-> go build -0 ./main main.go
+> go build -o ./main main.go
 > ```
 > 
 > 7、启动项目
