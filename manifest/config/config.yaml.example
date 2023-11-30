@@ -28,6 +28,7 @@ database:
     user: "root"
     pass: ""
     name: "gf_cms"
+    timezone: "Local"
 redis:
   default:
     address: 127.0.0.1:6379

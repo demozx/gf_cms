@@ -60,6 +60,10 @@
 > - 文章
 > - 图集
 
+> GitHub地址：https://github.com/demozx/gf_cms
+>
+> Gitee地址：https://gitee.com/demozx/gf_cms
+
 > 截图
 - 后台
 ![image](./README/backend.jpg)
@@ -69,3 +73,5 @@
 
 - 移动
 ![image](./README/mobile.jpg)
+
+
