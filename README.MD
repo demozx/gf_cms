@@ -39,7 +39,7 @@
 > 
 > 6、编译项目
 > 
-> 已安装 [gf-cli](https://github.com/gogf/gf-cli) 工具（推荐、开发时必备
+> 已安装 [gf-cli](https://github.com/gogf/gf-cli) 工具（推荐、开发时必备）
 > 
 > ```shell
 > gf run main.go
