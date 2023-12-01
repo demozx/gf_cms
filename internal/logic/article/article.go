@@ -203,7 +203,7 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 	if err != nil {
 		return nil, err
 	}
-	id, err := dao.CmsArticle.Ctx(ctx).Data(g.Map{
+	id, err := dao.CmsArticle.Ctx(ctx).Unscoped().Data(g.Map{
 		"title":       in.Title,
 		"channelId":   in.ChannelId,
 		"keyword":     keyword,
@@ -213,6 +213,7 @@ func (s *sArticle) Add(ctx context.Context, in *backendApi.ArticleAddReq) (out i
 		"thumb":       in.Thumb,
 		"copyFrom":    in.CopyFrom,
 		"clickNum":    in.ClickNum,
+		"createdAt":   in.CreatedAt,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -268,7 +269,7 @@ func (s *sArticle) Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out
 	if err != nil {
 		return nil, err
 	}
-	_, err = dao.CmsArticle.Ctx(ctx).Where(dao.CmsArticle.Columns().Id, in.Id).Data(g.Map{
+	_, err = dao.CmsArticle.Ctx(ctx).Unscoped().Where(dao.CmsArticle.Columns().Id, in.Id).Data(g.Map{
 		"title":       in.Title,
 		"channelId":   in.ChannelId,
 		"keyword":     keyword,
@@ -278,6 +279,7 @@ func (s *sArticle) Edit(ctx context.Context, in *backendApi.ArticleEditReq) (out
 		"thumb":       in.Thumb,
 		"copyFrom":    in.CopyFrom,
 		"clickNum":    in.ClickNum,
+		"CreatedAt":   in.CreatedAt,
 	}).Update()
 	if err != nil {
 		return nil, err

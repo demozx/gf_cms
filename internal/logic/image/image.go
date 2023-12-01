@@ -178,7 +178,7 @@ func (s *sImage) Add(ctx context.Context, in *backendApi.ImageAddReq) (out inter
 	if err != nil {
 		return nil, err
 	}
-	_, err = dao.CmsImage.Ctx(ctx).Data(g.Map{
+	_, err = dao.CmsImage.Ctx(ctx).Unscoped().Data(g.Map{
 		"channelId":   in.ChannelId,
 		"title":       in.Title,
 		"images":      imagesArr,
@@ -186,6 +186,7 @@ func (s *sImage) Add(ctx context.Context, in *backendApi.ImageAddReq) (out inter
 		"flag":        flagStr,
 		"status":      in.Status,
 		"clickNum":    in.ClickNum,
+		"createdAt":   in.CreatedAt,
 	}).Insert()
 	if err != nil {
 		return nil, err
@@ -204,7 +205,7 @@ func (s *sImage) Edit(ctx context.Context, in *backendApi.ImageEditReq) (out int
 	if err != nil {
 		return nil, err
 	}
-	affected, err := dao.CmsImage.Ctx(ctx).Where(dao.CmsImage.Columns().Id, in.Id).Data(g.Map{
+	affected, err := dao.CmsImage.Ctx(ctx).Unscoped().Where(dao.CmsImage.Columns().Id, in.Id).Data(g.Map{
 		"channelId":   in.ChannelId,
 		"title":       in.Title,
 		"images":      imagesArr,
@@ -212,6 +213,7 @@ func (s *sImage) Edit(ctx context.Context, in *backendApi.ImageEditReq) (out int
 		"flag":        flagStr,
 		"status":      in.Status,
 		"clickNum":    in.ClickNum,
+		"createdAt":   in.CreatedAt,
 	}).UpdateAndGetAffected()
 	if err != nil {
 		return nil, err
