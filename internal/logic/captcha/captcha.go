@@ -34,7 +34,7 @@ func (s *sCaptcha) Get() (string, string) {
 	c := base64Captcha.NewCaptcha(driver, store)
 
 	// 获取
-	id, b64s, err := c.Generate()
+	id, b64s, _, err := c.Generate()
 	if err != nil {
 		fmt.Println("Register GetCaptchaPhoto get base64Captcha has err:", err)
 		return "", ""

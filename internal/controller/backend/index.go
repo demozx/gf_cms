@@ -6,10 +6,8 @@ import (
 	"gf_cms/internal/consts"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
-
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/util/gconv"
 )
 
 var (
@@ -32,7 +30,7 @@ func (c *cIndex) Index(ctx context.Context, req *backend.IndexReq) (res *backend
 		return nil, err
 	}
 	_ = g.RequestFromCtx(ctx).Response.WriteTpl("backend/index/index.html", g.Map{
-		"admin_session": gconv.Map(adminSession),
+		"admin_session": adminSession.Map(),
 		"backend_menu":  backendMenu,
 		"shortcutList":  shortcutList,
 		"can": g.Map{
