@@ -39,8 +39,12 @@
 > 
 > 6、编译项目
 > 
-> 已安装 [gf-cli](https://github.com/gogf/gf-cli) 工具（推荐、开发时必备）
+> 安装 [gf-cli] 工具（推荐、开发时必备）
 > 
+> ```shell
+> wget -O gf https://github.com/gogf/gf/releases/latest/download/gf_$(go env GOOS)_$(go env GOARCH) && chmod +x gf && ./gf install -y && rm ./gf
+
+> 已安装 [gf-cli] 工具
 > ```shell
 > gf run main.go
 > ```
