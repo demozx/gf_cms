@@ -62,7 +62,7 @@ gfcli:
 #    packSrc: "resource,manifest"
     packDst: "internal/packed/build_pack_data.go"
     version: ""
-    path: ""
+    path: "temp"
     extra: ""
   docker:
     build: "-a amd64 -s linux -p temp -ew"
