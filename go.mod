@@ -7,9 +7,9 @@ require (
 	github.com/casbin/casbin/v2 v2.80.0
 	github.com/fishtailstudio/imgo v0.0.3
 	github.com/gogf/gf-jwt/v2 v2.1.0
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.6.0
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.6.0
-	github.com/gogf/gf/v2 v2.6.0
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.6.1
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.6.1
+	github.com/gogf/gf/v2 v2.6.1
 	github.com/microcosm-cc/bluemonday v1.0.26
 	github.com/mojocn/base64Captcha v1.3.6
 	github.com/shirou/gopsutil v3.21.11+incompatible
@@ -35,7 +35,7 @@ require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/go-logr/logr v1.3.0 // indirect
+	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
