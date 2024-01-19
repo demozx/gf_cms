@@ -17,15 +17,15 @@ import (
 
 var (
 	Main = gcmd.Command{
-		Name:  "main",
-		Usage: "main",
+		Name:  util.Util().ProjectName(),
+		Usage: util.Util().ProjectName(),
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			// 设置模板标签分隔符
 			g.View().SetDelimiters("${", "}$")
 			//设置服务启动时间
 			runtime.Runtime().SetServerStartAt()
-			s := g.Server()
+			s := g.Server(util.Util().ProjectName())
 			//session使用redis
 			_ = s.SetConfigWithMap(g.Map{
 				// session一天过期
