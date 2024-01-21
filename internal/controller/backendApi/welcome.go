@@ -5,6 +5,9 @@ import (
 	"gf_cms/api/backendApi"
 	runtime2 "gf_cms/internal/logic/runtime"
 	"gf_cms/internal/logic/util"
+	"gf_cms/internal/service"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gproc"
 	"runtime"
 	"time"
@@ -55,5 +58,17 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 		RedisConnectedClientsNum: redisConnectedClientsNum,
 		Pid:                      gproc.Pid(),
 	}
+	return
+}
+
+func (c *cWelcome) RestartServer(ctx context.Context, req *backendApi.RestartServerReq) (res *backendApi.RestartServerRes, err error) {
+	if service.Util().GetConfig("server.graceful") != "true" {
+		return nil, gerror.New("未开启平滑重启特性")
+	}
+	err = ghttp.RestartAllServer(ctx, "")
+	if err != nil {
+		return nil, err
+	}
+	service.Response().SuccessJsonDefaultMessage(ctx, "重启成功")
 	return
 }

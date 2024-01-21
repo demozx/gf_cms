@@ -178,3 +178,8 @@ backend_api:
           slug: friendly_link.batch_delete
         - title: 站点配置-保存
           slug: setting.save
+    - title: 系统信息
+      slug: welcome
+      permissions:
+        - title: 重启服务
+          slug: welcome.restart_server

@@ -1,300 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>系统信息</title>
-    <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="/resource/backend/css/font.css">
-    <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
-    <script type="text/javascript" src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/resource/backend/lib/raphael-min.js"></script>
-    <script type="text/javascript" src="/resource/backend/lib/justgage.min.js"></script>
+  <meta charset="UTF-8">
+  <title>系统信息</title>
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+  <link rel="stylesheet" href="/resource/backend/css/font.css">
+  <link rel="stylesheet" href="/resource/backend/css/weadmin.css">
+  <script type="text/javascript" src="/resource/backend/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="/resource/backend/lib/raphael-min.js"></script>
+  <script type="text/javascript" src="/resource/backend/lib/justgage.min.js"></script>
 </head>
 <body>
 <div class="weadmin-body">
 
-    <div class="layui-col-lg12 layui-collapse" style="border: none;">
-        <div class="layui-col-lg12 layui-col-md12">
-            <fieldset class="layui-elem-field" style="padding: 10px;">
-                <div class="dashboard" style="height:152px;">
-                    <div class="layui-row">
-                        <div class="layui-col-xs2">
-                            <div id="load"></div>
-                        </div>
-                        <div class="layui-col-xs2">
-                            <div id="cpu"></div>
-                        </div>
-                        <div class="layui-col-xs2">
-                            <div id="memory"></div>
-                        </div>
-                        <div class="layui-col-xs2">
-                            <div id="disk"></div>
-                        </div>
-                        <div class="layui-col-xs2">
-                            <div id="kbsSent"></div>
-                        </div>
-                        <div class="layui-col-xs2">
-                            <div id="kbsRecv"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-form">
-                    <table class="layui-table">
-                        <colgroup>
-                            <col>
-                            <col>
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th>GoRoutine数量</th>
-                            <th>Redis当前连接数</th>
-                            <th>Redis最大连接数</th>
-                            <th>MySql进程数</th>
-                            <th>MySql历史最大连接数</th>
-                            <th>MySql最大连接数</th>
-                            <th>连接池最大打开连接数</th>
-                            <th>连接池最大闲置连接数</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td id="num_goroutine"></td>
-                            <td id="redis_connected_clients_num"></td>
-                            <td id="redis_max_clients_num"></td>
-                            <td id="mysql_process_num"></td>
-                            <td id="mysql_curr_connections_num"></td>
-                            <td id="mysql_max_connections_num"></td>
-                            <td>${ system_config `database.default.maxOpen` }$</td>
-                            <td>${ system_config `database.default.maxIdle` }$</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="layui-table">
-                        <colgroup>
-                            <col>
-                            <col>
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th colspan="2" scope="col">系统信息</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>系统端口</td>
-                            <td>${ .server_address }$</td>
-                        </tr>
-                        <tr>
-                            <td>项目标识</td>
-                            <td>${ .project_name }$</td>
-                        </tr>
-                        <tr>
-                            <td>Pid</td>
-                            <td id="pid">${ .pid }$</td>
-                        </tr>
-                        <tr>
-                            <td>服务器名称</td>
-                            <td>${ .host_info.Hostname }$</td>
-                        </tr>
-                        <tr>
-                            <td>服务器IP</td>
-                            <td>${ .ip }$</td>
-                        </tr>
-                        <tr>
-                            <td>系统内核</td>
-                            <td>${ .host_info.OS }$</td>
-                        </tr>
-                        <tr>
-                            <td>内核版本</td>
-                            <td>${ .host_info.KernelVersion }$</td>
-                        </tr>
-                        <tr>
-                            <td>系统平台</td>
-                            <td>${ .host_info.Platform }$</td>
-                        </tr>
-                        <tr>
-                            <td>平台版本</td>
-                            <td>${ .host_info.PlatformVersion }$</td>
-                        </tr>
-                        <tr>
-                            <td>系统架构</td>
-                            <td>${ .host_info.KernelArch }$</td>
-                        </tr>
-                        <tr>
-                            <td>处理器信息</td>
-                            <td>${ .cpu_info.ModelName }$ 最高频率${ .cpu_info.Mhz }$Mhz&nbsp;${ .cpu_num }$核心</td>
-                        </tr>
-                        <tr>
-                            <td>GoFrame版本</td>
-                            <td>${ .gf_version }$</td>
-                        </tr>
-                        <tr>
-                            <td>Golang版本</td>
-                            <td>${ .go_version }$</td>
-                        </tr>
-                        <tr>
-                            <td>环境路径</td>
-                            <td>${ .go_root }$</td>
-                        </tr>
-                        <tr>
-                            <td>项目路径</td>
-                            <td>${ .system_root }$</td>
-                        </tr>
-                        <tr>
-                            <td>上传文件限制</td>
-                            <td>${ system_config `server.clientMaxBodySize` }$</td>
-                        </tr>
-                        <tr>
-                            <td>启动时间</td>
-                            <td>${ .server_start_at|date "Y-m-d H:i:s" }$</td>
-                        </tr>
-                        <tr>
-                            <td>运行时长</td>
-                            <td id="server_start_duration">${ .server_start_duration }$</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </fieldset>
+  <div class="layui-col-lg12 layui-collapse" style="border: none;">
+    <div class="layui-col-lg12 layui-col-md12">
+      <fieldset class="layui-elem-field" style="padding: 10px;">
+        <div class="dashboard" style="height:152px;">
+          <div class="layui-row">
+            <div class="layui-col-xs2">
+              <div id="load"></div>
+            </div>
+            <div class="layui-col-xs2">
+              <div id="cpu"></div>
+            </div>
+            <div class="layui-col-xs2">
+              <div id="memory"></div>
+            </div>
+            <div class="layui-col-xs2">
+              <div id="disk"></div>
+            </div>
+            <div class="layui-col-xs2">
+              <div id="kbsSent"></div>
+            </div>
+            <div class="layui-col-xs2">
+              <div id="kbsRecv"></div>
+            </div>
+          </div>
         </div>
+        <div class="layui-form">
+          <table class="layui-table">
+            <colgroup>
+              <col>
+              <col>
+            </colgroup>
+            <thead>
+            <tr>
+              <th>GoRoutine数量</th>
+              <th>Redis当前连接数</th>
+              <th>Redis最大连接数</th>
+              <th>MySql进程数</th>
+              <th>MySql历史最大连接数</th>
+              <th>MySql最大连接数</th>
+              <th>连接池最大打开连接数</th>
+              <th>连接池最大闲置连接数</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td id="num_goroutine"></td>
+              <td id="redis_connected_clients_num"></td>
+              <td id="redis_max_clients_num"></td>
+              <td id="mysql_process_num"></td>
+              <td id="mysql_curr_connections_num"></td>
+              <td id="mysql_max_connections_num"></td>
+              <td>${ system_config `database.default.maxOpen` }$</td>
+              <td>${ system_config `database.default.maxIdle` }$</td>
+            </tr>
+            </tbody>
+          </table>
+          <table class="layui-table">
+            <colgroup>
+              <col>
+              <col>
+            </colgroup>
+            <thead>
+            <tr>
+              <th colspan="2" scope="col">系统信息</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>系统端口</td>
+              <td>${ .server_address }$</td>
+            </tr>
+            <tr>
+              <td>项目标识</td>
+              <td>${ .project_name }$</td>
+            </tr>
+            <tr>
+              <td>Pid</td>
+              <td>
+                <span id="pid">${ .pid }$</span>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" style="margin-top: -4px;margin-left: 4px;"
+                   href="javascript:;" id="restartServer">平滑重启</a>
+              </td>
+            </tr>
+            <tr>
+              <td>服务器名称</td>
+              <td>${ .host_info.Hostname }$</td>
+            </tr>
+            <tr>
+              <td>服务器IP</td>
+              <td>${ .ip }$</td>
+            </tr>
+            <tr>
+              <td>系统内核</td>
+              <td>${ .host_info.OS }$</td>
+            </tr>
+            <tr>
+              <td>内核版本</td>
+              <td>${ .host_info.KernelVersion }$</td>
+            </tr>
+            <tr>
+              <td>系统平台</td>
+              <td>${ .host_info.Platform }$</td>
+            </tr>
+            <tr>
+              <td>平台版本</td>
+              <td>${ .host_info.PlatformVersion }$</td>
+            </tr>
+            <tr>
+              <td>系统架构</td>
+              <td>${ .host_info.KernelArch }$</td>
+            </tr>
+            <tr>
+              <td>处理器信息</td>
+              <td>${ .cpu_info.ModelName }$ 最高频率${ .cpu_info.Mhz }$Mhz&nbsp;${ .cpu_num }$核心</td>
+            </tr>
+            <tr>
+              <td>GoFrame版本</td>
+              <td>${ .gf_version }$</td>
+            </tr>
+            <tr>
+              <td>Golang版本</td>
+              <td>${ .go_version }$</td>
+            </tr>
+            <tr>
+              <td>环境路径</td>
+              <td>${ .go_root }$</td>
+            </tr>
+            <tr>
+              <td>项目路径</td>
+              <td>${ .system_root }$</td>
+            </tr>
+            <tr>
+              <td>上传文件限制</td>
+              <td>${ system_config `server.clientMaxBodySize` }$</td>
+            </tr>
+            <tr>
+              <td>启动时间</td>
+              <td>${ .server_start_at|date "Y-m-d H:i:s" }$</td>
+            </tr>
+            <tr>
+              <td>运行时长</td>
+              <td id="server_start_duration">${ .server_start_duration }$</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
     </div>
+  </div>
 </div>
 
 <script>
-    layui.extend({
-        admin: '/resource/backend/js/admin'
+  layui.extend({
+    admin: '/resource/backend/js/admin'
+  });
+  layui.use(['form', 'admin', 'jquery'], function () {
+    var form = layui.form
+      , admin = layui.admin
+      , $ = layui.$;
+    var Load = new JustGage({
+      id: "load",
+      value: 0,
+      min: 0,
+      max: 100,
+      decimals: 2,
+      pointer: true,
+      counter: true,
+      donut: true,
+      gaugeWidthScale: 0.6,
+      symbol: '%',
+      label: "负载\n1分钟"
     });
-    layui.use(['form', 'admin', 'jquery'], function () {
-        var form = layui.form
-            , admin = layui.admin
-            , $ = layui.$;
-        var Load = new JustGage({
-            id: "load",
-            value: 0,
-            min: 0,
-            max: 100,
-            decimals: 2,
-            pointer: true,
-            counter: true,
-            donut: true,
-            gaugeWidthScale: 0.6,
-            symbol: '%',
-            label: "负载\n1分钟"
-        });
-        var Cpu = new JustGage({
-            id: "cpu",
-            value: 0,
-            min: 0,
-            max: 100,
-            decimals: 2,
-            pointer: true,
-            counter: true,
-            donut: true,
-            gaugeWidthScale: 0.6,
-            symbol: '%',
-            labelMinFontSize: 18,
-            minLabelMinFontSize: 18,
-            maxLabelMinFontSize: 18,
-            label: "CPU\n${ .cpu_info.CurrMhz }$Mhz ${ .cpu_num }$核"
-        });
-        var Memory = new JustGage({
-            id: "memory",
-            value: 0,
-            min: 0,
-            max: 100,
-            decimals: 2,
-            pointer: true,
-            counter: true,
-            donut: true,
-            gaugeWidthScale: 0.6,
-            symbol: '%',
-            label: "内存"
-        });
-        var Disk = new JustGage({
-            id: "disk",
-            value: 0,
-            min: 0,
-            max: 100,
-            decimals: 2,
-            pointer: true,
-            counter: true,
-            donut: true,
-            gaugeWidthScale: 0.6,
-            symbol: '%',
-            label: "磁盘"
-        });
-        var KbsSent = new JustGage({
-            id: "kbsSent",
-            value: 0,
-            min: 0,
-            max: 10000,
-            decimals: 0,
-            pointer: true,
-            counter: true,
-            donut: true,
-            gaugeWidthScale: 0.6,
-            symbol: 'Kb',
-            label: "网速\n发送"
-        });
-        var KbsRecv = new JustGage({
-            id: "kbsRecv",
-            value: 0,
-            min: 0,
-            max: 10000,
-            decimals: 0,
-            pointer: true,
-            counter: true,
-            donut: true,
-            gaugeWidthScale: 0.6,
-            symbol: 'Kb',
-            label: "网速\n接收"
-        });
-        setInterval(function () {
-            getRuntimeInfo()
-        }, 3000);
+    var Cpu = new JustGage({
+      id: "cpu",
+      value: 0,
+      min: 0,
+      max: 100,
+      decimals: 2,
+      pointer: true,
+      counter: true,
+      donut: true,
+      gaugeWidthScale: 0.6,
+      symbol: '%',
+      labelMinFontSize: 18,
+      minLabelMinFontSize: 18,
+      maxLabelMinFontSize: 18,
+      label: "CPU\n${ .cpu_info.CurrMhz }$Mhz ${ .cpu_num }$核"
+    });
+    var Memory = new JustGage({
+      id: "memory",
+      value: 0,
+      min: 0,
+      max: 100,
+      decimals: 2,
+      pointer: true,
+      counter: true,
+      donut: true,
+      gaugeWidthScale: 0.6,
+      symbol: '%',
+      label: "内存"
+    });
+    var Disk = new JustGage({
+      id: "disk",
+      value: 0,
+      min: 0,
+      max: 100,
+      decimals: 2,
+      pointer: true,
+      counter: true,
+      donut: true,
+      gaugeWidthScale: 0.6,
+      symbol: '%',
+      label: "磁盘"
+    });
+    var KbsSent = new JustGage({
+      id: "kbsSent",
+      value: 0,
+      min: 0,
+      max: 10000,
+      decimals: 0,
+      pointer: true,
+      counter: true,
+      donut: true,
+      gaugeWidthScale: 0.6,
+      symbol: 'Kb',
+      label: "网速\n发送"
+    });
+    var KbsRecv = new JustGage({
+      id: "kbsRecv",
+      value: 0,
+      min: 0,
+      max: 10000,
+      decimals: 0,
+      pointer: true,
+      counter: true,
+      donut: true,
+      gaugeWidthScale: 0.6,
+      symbol: 'Kb',
+      label: "网速\n接收"
+    });
+    setInterval(function () {
+      getRuntimeInfo()
+    }, 3000);
 
-        function getRuntimeInfo() {
-            $.post('${ backend_api_url "/welcome/index" }$', {}, function (res) {
-                // console.log(res.data);
-                let load1 = parseFloat(res.data['load']['Load1']).toFixed(2);
-                let loadPercent = res.data['loadPercent'];
-                let memTotal = (res.data['mem']['Total'] / 1024 / 1024 / 1024).toFixed(2)
-                let memUsed = (res.data['mem']['Used'] / 1024 / 1024 / 1024).toFixed(2)
-                let diskUsed = (res.data['disk']['Used'] / 1024).toFixed(2)
-                let diskTotal = (res.data['disk']['All'] / 1024).toFixed(2)
-                let cpuCurrMhz = res.data['cpu']['CurrMhz'] + 'Mhz ' + res.data['cpuNum'] + '核'
-                Load.refresh(loadPercent, 100, 0, "负载\n1分钟：" + load1);
-                Cpu.refresh(res.data['cpu']['UsedPercent'], 100, 0, "CPU\n" + cpuCurrMhz);
-                Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, "内存\n" + memUsed + 'G/' + memTotal + 'G');
-                Disk.refresh(res.data['disk']['Usage'], 100, 0, "磁盘\n" + diskUsed + 'G/' + diskTotal + 'G');
-                let maxKbsSent = 10000;
-                let maxKbsRecv = 10000;
-                if (res.data['net']['KbsSent'] > maxKbsSent) {
-                    maxKbsSent = res.data['net']['KbsSent']
-                }
-                KbsSent.refresh(res.data['net']['KbsSent'], maxKbsSent, 0, "网速\n发送");
-                if (res.data['net']['KbsRecv'] > maxKbsRecv) {
-                    maxKbsRecv = res.data['net']['KbsRecv']
-                }
-                KbsRecv.refresh(res.data['net']['KbsRecv'], maxKbsRecv, 0, "网速\n接收");
-                $('#server_start_duration').text(res.data['serverStartDuration']);
-                $('#num_goroutine').text(res.data['numGoroutine']);
-                $('#mysql_process_num').text(res.data['mysqlProcessNum']);
-                $('#mysql_max_connections_num').text(res.data['mySqlMaxConnectionsNum']);
-                $('#mysql_curr_connections_num').text(res.data['mySqlCurrConnectionsNum']);
-                $('#redis_max_clients_num').text(res.data['redisMaxClientsNum']);
-                $('#redis_connected_clients_num').text(res.data['redisConnectedClientsNum']);
-                $('#pid').text(res.data['pid']);
-            });
+    function getRuntimeInfo() {
+      $.post('${ backend_api_url "/welcome/index" }$', {}, function (res) {
+        // console.log(res.data);
+        let load1 = parseFloat(res.data['load']['Load1']).toFixed(2);
+        let loadPercent = res.data['loadPercent'];
+        let memTotal = (res.data['mem']['Total'] / 1024 / 1024 / 1024).toFixed(2)
+        let memUsed = (res.data['mem']['Used'] / 1024 / 1024 / 1024).toFixed(2)
+        let diskUsed = (res.data['disk']['Used'] / 1024).toFixed(2)
+        let diskTotal = (res.data['disk']['All'] / 1024).toFixed(2)
+        let cpuCurrMhz = res.data['cpu']['CurrMhz'] + 'Mhz ' + res.data['cpuNum'] + '核'
+        Load.refresh(loadPercent, 100, 0, "负载\n1分钟：" + load1);
+        Cpu.refresh(res.data['cpu']['UsedPercent'], 100, 0, "CPU\n" + cpuCurrMhz);
+        Memory.refresh(res.data['mem']['UsedPercent'], 100, 0, "内存\n" + memUsed + 'G/' + memTotal + 'G');
+        Disk.refresh(res.data['disk']['Usage'], 100, 0, "磁盘\n" + diskUsed + 'G/' + diskTotal + 'G');
+        let maxKbsSent = 10000;
+        let maxKbsRecv = 10000;
+        if (res.data['net']['KbsSent'] > maxKbsSent) {
+          maxKbsSent = res.data['net']['KbsSent']
         }
+        KbsSent.refresh(res.data['net']['KbsSent'], maxKbsSent, 0, "网速\n发送");
+        if (res.data['net']['KbsRecv'] > maxKbsRecv) {
+          maxKbsRecv = res.data['net']['KbsRecv']
+        }
+        KbsRecv.refresh(res.data['net']['KbsRecv'], maxKbsRecv, 0, "网速\n接收");
+        $('#server_start_duration').text(res.data['serverStartDuration']);
+        $('#num_goroutine').text(res.data['numGoroutine']);
+        $('#mysql_process_num').text(res.data['mysqlProcessNum']);
+        $('#mysql_max_connections_num').text(res.data['mySqlMaxConnectionsNum']);
+        $('#mysql_curr_connections_num').text(res.data['mySqlCurrConnectionsNum']);
+        $('#redis_max_clients_num').text(res.data['redisMaxClientsNum']);
+        $('#redis_connected_clients_num').text(res.data['redisConnectedClientsNum']);
+        $('#pid').text(res.data['pid']);
+      });
+    }
 
-        getRuntimeInfo();
+    getRuntimeInfo();
+
+    $('#restartServer').click(function () {
+      if (confirm("确认重启服务？")) {
+        $.post('${ backend_api_url "/welcome/restart_server" }$', {}, function (res) {
+          layer.msg(res.message);
+        });
+      }
     });
+  });
 </script>
 </body>
 </html>

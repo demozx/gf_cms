@@ -30,8 +30,9 @@ func backendApiHandle(s *ghttp.Server) {
 			middleware.Middleware().BackendApiCheckPolicy,
 		)
 		group.ALLMap(g.Map{
-			"/welcome/index": backendApi.Welcome.Index, //欢迎页面
-			"/setting/save":  backendApi.Setting.Save,  //保存系统设置
+			"/welcome/index":          backendApi.Welcome.Index,         //欢迎页面
+			"/welcome/restart_server": backendApi.Welcome.RestartServer, //平滑重启服务
+			"/setting/save":           backendApi.Setting.Save,          //保存系统设置
 			/*管理员*/
 			"/admin/logout":       backendApi.Admin.Logout,      //退出登录
 			"/admin/clear_cache":  backendApi.Admin.ClearCache,  //清理缓存

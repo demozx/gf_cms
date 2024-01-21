@@ -235,3 +235,8 @@ backend_api:
         - title: 站点配置-保存
           route: /setting/save
           permission: setting.setting.save
+    - title: 系统信息
+      children:
+        - title: 平滑重启服务
+          route: /welcome/restart_server
+          permission: welcome.welcome.restart_server

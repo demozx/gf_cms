@@ -26,3 +26,9 @@ type GetRuntimeInfoApiRes struct {
 	RedisConnectedClientsNum int        `json:"redisConnectedClientsNum" dc:"Redis当前连接数"`
 	Pid                      int        `json:"pid" dc:"服务Pid"`
 }
+
+type RestartServerReq struct {
+	g.Meta `tags:"BackendApi" method:"post" summary:"平滑重启"`
+}
+type RestartServerRes struct {
+}
