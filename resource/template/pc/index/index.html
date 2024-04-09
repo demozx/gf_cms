@@ -175,8 +175,8 @@ ${include "/pc/public/head_index.html" .}$
             ${ if eq $key 0 }$
             <div class="fir">
                 <div class="time">
-                    <div class="day">${ $item.CreatedAt | date "d" }$</div>
-                    <div class="year">${ $item.CreatedAt | date "Y-m" }$</div>
+                    <div class="day">${ $item.CreatedAt.Format "d" }$</div>
+                    <div class="year">${ $item.CreatedAt.Format "Y-m" }$</div>
                 </div>
                 <div class="info">
                     <div class="title"><a href="${ $item.Router }$">${ $item.Title | substr 0 40 }$</a></div>
@@ -186,7 +186,7 @@ ${include "/pc/public/head_index.html" .}$
             ${ else }$
             <div class="item">
                 <a href="${ $item.Router }$" title="${ $item.Title }$" class="title">${ $item.Title | substr 0 60 }$</a>
-                <div class="time">${ $item.CreatedAt | date "Y/m/d"  }$</div>
+                <div class="time">${ $item.CreatedAt.Format "Y/m/d"  }$</div>
             </div>
             ${ end }$
             ${ end }$

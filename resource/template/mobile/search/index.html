@@ -52,7 +52,7 @@ ${include "/mobile/public/navigation.html" .}$
       <li class="news1">
         <a href="${ $item.Router }$" title="${ $item.Title }$">
           <span>${ $item.Title | substr 0 20 }$</span>
-          <span>${ $item.CreatedAt | date "m-d H:i" }$</span>
+          <span>${ $item.CreatedAt.Format "m-d H:i" }$</span>
         </a>
       </li>
       ${ end }$
