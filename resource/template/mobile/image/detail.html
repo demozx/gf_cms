@@ -1,50 +1,51 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-    <meta content="yes" name="apple-mobile-web-app-capable"/>
-    <meta content="telephone=no" name="format-detection"/>
-    <meta http-equiv="Cache-Control" content="no-transform"/>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <title>${ .tdk.Title }$</title>
-    <meta name="description" content="${ .tdk.Description }$"/>
-    <meta name="keywords" content="${ .tdk.Keywords }$"/>
-    <link rel="stylesheet" type="text/css" href="/resource/mobile/css/subpage.css"/>
-    <script type="text/javascript" src="/resource/mobile/js/jquery.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta content="yes" name="apple-mobile-web-app-capable"/>
+  <meta content="telephone=no" name="format-detection"/>
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <title>${ .tdk.Title }$</title>
+  <meta name="description" content="${ .tdk.Description }$"/>
+  <meta name="keywords" content="${ .tdk.Keywords }$"/>
+  <link rel="stylesheet" type="text/css" href="/resource/mobile/css/subpage.css"/>
+  <script type="text/javascript" src="/resource/mobile/js/jquery.js"></script>
 
-    <script type="text/javascript" src="/resource/mobile/js/nav.js"></script>
-    <script type="text/javascript" src="/resource/mobile/js/cart_icon.js"></script>
+  <script type="text/javascript" src="/resource/mobile/js/nav.js"></script>
+  <script type="text/javascript" src="/resource/mobile/js/cart_icon.js"></script>
 </head>
 <body>
 <!-- 导航开始 -->
 ${include "/mobile/public/navigation.html" .}$
 <!-- 导航结束 -->
 <div class="allpage">
-    <!-- head开始 -->
-    ${include "/mobile/public/head.html" .}$
-    <!-- head结束 -->
-    <div class="content">
-        <div class="about">
-            <h1>${ .imageInfo.Title }$</h1>
-            <p style="text-align:center;font-size:14px;color:#666">发布时间：${ .imageInfo.CreatedAt }$</p>
-            <p style="text-align:center;font-size:14px;color:#666">
-                点击量：${ .imageInfo.ClickNum }$
-            </p>
-            <span class="picContent">
-				<div>
-					 ${ range $key, $image:= .imageInfo.Images }$
+  <!-- head开始 -->
+  ${include "/mobile/public/head.html" .}$
+  <!-- head结束 -->
+  <div class="content">
+    <div class="about">
+      <h1>${ .imageInfo.Title }$</h1>
+      <p style="text-align:center;font-size:14px;color:#666">发布时间：${ .imageInfo.CreatedAt }$</p>
+      <p style="text-align:center;font-size:14px;color:#666">
+        点击量：${ .imageInfo.ClickNum }$
+      </p>
+      <span class="picContent">
+				 ${ range $key, $image:= .imageInfo.Images }$
                      <img src="${ $image }$">
                      ${ end }$
-				</div>
 			</span>
-            <p class="xia">上一图集：<a href='${ .prevImage.Router }$'>${ .prevImage.Title|substr 0 30 }$</a></p>
-            <p class="xia">下一图集：<a href='${ .nextImage.Router }$'>${ .nextImage.Title|substr 0 30 }$</a></p>
+      <div>
+        ${ .imageInfo.Description }$
+      </div>
+      <p class="xia">上一图集：<a href='${ .prevImage.Router }$'>${ .prevImage.Title|substr 0 30 }$</a></p>
+      <p class="xia">下一图集：<a href='${ .nextImage.Router }$'>${ .nextImage.Title|substr 0 30 }$</a></p>
 
-        </div>
-        ${include "/mobile/public/foot.html" .}$
     </div>
+    ${include "/mobile/public/foot.html" .}$
+  </div>
 
 </div>
 </body>

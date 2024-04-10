@@ -1,29 +1,29 @@
 <!doctype html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta http-equiv="Cache-Control" content="no-transform"/>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <title>${ .tdk.Title }$</title>
-    <meta name="description" content="${ .tdk.Description }$"/>
-    <meta name="keywords" content="${ .tdk.Keywords }$"/>
-    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_cart.css"/>
-    <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_atm.css"/>
-    <link rel="stylesheet" type="text/css" href="/resource/pc/css/master.css"/>
-    <link rel="stylesheet" type="text/css" href="/resource/pc/css/subpage.css"/>
-    <script type="text/javascript" src="/resource/pc/js/jquery.js"></script>
-    <script type="text/javascript" src="/resource/pc/js/child_atm.js"></script>
-    <script type="text/javascript" src="/resource/pc/js/lihe.js"></script>
-    <script type="text/javascript" src="/resource/pc/js/superslide.js"></script>
-    <script type="text/javascript" src="/resource/pc/js/select_beauty.js"></script>
-    <!--[if IE 6]>
-    <script type="text/javascript" src="/resource/pc/js/png.js"></script>
-    <script>DD_belatedPNG.fix('div,img,span,li,a,a:hover,dd,p,input,select')</script>
-    <![endif]-->
-    <script type="text/javascript" src="/resource/pc/js/zoom.js"></script>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <title>${ .tdk.Title }$</title>
+  <meta name="description" content="${ .tdk.Description }$"/>
+  <meta name="keywords" content="${ .tdk.Keywords }$"/>
+  <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_cart.css"/>
+  <link rel="stylesheet" type="text/css" href="/resource/pc/css/child_atm.css"/>
+  <link rel="stylesheet" type="text/css" href="/resource/pc/css/master.css"/>
+  <link rel="stylesheet" type="text/css" href="/resource/pc/css/subpage.css"/>
+  <script type="text/javascript" src="/resource/pc/js/jquery.js"></script>
+  <script type="text/javascript" src="/resource/pc/js/child_atm.js"></script>
+  <script type="text/javascript" src="/resource/pc/js/lihe.js"></script>
+  <script type="text/javascript" src="/resource/pc/js/superslide.js"></script>
+  <script type="text/javascript" src="/resource/pc/js/select_beauty.js"></script>
+  <!--[if IE 6]>
+  <script type="text/javascript" src="/resource/pc/js/png.js"></script>
+  <script>DD_belatedPNG.fix('div,img,span,li,a,a:hover,dd,p,input,select')</script>
+  <![endif]-->
+  <script type="text/javascript" src="/resource/pc/js/zoom.js"></script>
 </head>
 
 <!-- 头部 -->
@@ -32,84 +32,85 @@ ${include "/pc/public/head.html" .}$
 
 <!-- banner -->
 <div class="child_top">
-    <div class="sear_b">
-        <div class="head">
-            <div class="title_b">
-                <div class="a">产品中心</div>
-                <div class="b">PRODUCT CENTER</div>
-            </div>
-            <!-- search -->
-            <div class="search">
-                <form name="formsearch" action="/search.html" id='search_form'>
-                    <div class="s_c">
-                        <input type="text" name="keyword" id="q" value="" class="search_text"
-                               placeholder="请输入关键词！"/>
-                    </div>
-                    <input type="button" class="search_submit" value=''/>
-                </form>
-            </div>
-            <!-- search end -->
-            <div class="phone_b">
-                <div>
-                    <div class="top_msg">全国客服电话</div>
-                    <div class="num">${ system_setting `tel` }$</div>
-
-                </div>
-            </div>
+  <div class="sear_b">
+    <div class="head">
+      <div class="title_b">
+        <div class="a">产品中心</div>
+        <div class="b">PRODUCT CENTER</div>
+      </div>
+      <!-- search -->
+      <div class="search">
+        <form name="formsearch" action="/search.html" id='search_form'>
+          <div class="s_c">
+            <input type="text" name="keyword" id="q" value="" class="search_text"
+                   placeholder="请输入关键词！"/>
+          </div>
+          <input type="button" class="search_submit" value=''/>
+        </form>
+      </div>
+      <!-- search end -->
+      <div class="phone_b">
+        <div>
+          <div class="top_msg">全国客服电话</div>
+          <div class="num">${ system_setting `tel` }$</div>
 
         </div>
-    </div>
+      </div>
 
-    <a href="javascript:;" class="random_pic">
-        <img src="/resource/pc/images/fu_banner.jpg" width="1600" height="330">
-    </a>
+    </div>
+  </div>
+
+  <a href="javascript:;" class="random_pic">
+    <img src="/resource/pc/images/fu_banner.jpg" width="1600" height="330">
+  </a>
 
 </div>
 <!-- banner -->
 <!-- 图标导航 -->
 <!-- 图标导航 end-->
 <div class="main_c">
-    <div class="main" id="content">
-        <!-- 左侧部分 -->
-        ${include "/pc/public/left.html" .}$
-        <!-- 左侧部分 end-->
-        <!-- 内容部分 -->
-        <div class="sp_content" id="contentRight">
-            <div class="content_com_title">
-                <h2>${ .channelInfo.Name }$</h2>
-                <div class="bread"> 当前位置：
-                    <a href='/'>网站首页</a>
-                    ${ range $key, $item := .crumbs }$
-                    > <a href="${ $item.Router }$">${ $item.Name }$</a>
-                    ${ end }$
-                </div>
-            </div>
-            <div class="content">
-                <div class="view">
-                    <h1 class="view-title">${ .imageInfo.Title }$</h1>
-                    <div class="view-date">
-                        <span>发布时间：${ .imageInfo.CreatedAt }$</span>
-                        <span>点击量：
+  <div class="main" id="content">
+    <!-- 左侧部分 -->
+    ${include "/pc/public/left.html" .}$
+    <!-- 左侧部分 end-->
+    <!-- 内容部分 -->
+    <div class="sp_content" id="contentRight">
+      <div class="content_com_title">
+        <h2>${ .channelInfo.Name }$</h2>
+        <div class="bread"> 当前位置：
+          <a href='/'>网站首页</a>
+          ${ range $key, $item := .crumbs }$
+          > <a href="${ $item.Router }$">${ $item.Name }$</a>
+          ${ end }$
+        </div>
+      </div>
+      <div class="content">
+        <div class="view">
+          <h1 class="view-title">${ .imageInfo.Title }$</h1>
+          <div class="view-date">
+            <span>发布时间：${ .imageInfo.CreatedAt }$</span>
+            <span>点击量：
 							<span id="clicksArea">
                               ${ .imageInfo.ClickNum }$
 							</span>
 						</span>
-                    </div>
-                    <div class="boxcen">
-                        ${ range $key, $image:= .imageInfo.Images }$
-                        <img src="${ $image }$">
-                        ${ end }$
-                    </div>
-                    <div class="page">
-                        <p>上一图集：<a href='${ .prevImage.Router }$'>${ .prevImage.Title }$</a></p>
-                        <p>下一图集：<a href='${ .nextImage.Router }$'>${ .nextImage.Title }$</a></p>
-                        <a href="javascript:void(0);" title="返回" class="back" onclick="javascript:history.back(-1);">返回</a>
-                    </div>
-                </div>
-            </div>
+          </div>
+          <div class="boxcen">
+            ${ range $key, $image:= .imageInfo.Images }$
+            <img src="${ $image }$">
+            ${ end }$
+          </div>
+          <div class="boxcen">${ .imageInfo.Description }$</div>
+          <div class="page">
+            <p>上一图集：<a href='${ .prevImage.Router }$'>${ .prevImage.Title }$</a></p>
+            <p>下一图集：<a href='${ .nextImage.Router }$'>${ .nextImage.Title }$</a></p>
+            <a href="javascript:void(0);" title="返回" class="back" onclick="javascript:history.back(-1);">返回</a>
+          </div>
         </div>
-        <!-- 内容部分 end-->
+      </div>
     </div>
+    <!-- 内容部分 end-->
+  </div>
 </div>
 
 <!-- footer -->
