@@ -6,7 +6,7 @@ toolchain go1.22rc2
 
 require (
 	github.com/Blank-Xu/sql-adapter v1.0.0
-	github.com/casbin/casbin/v2 v2.81.0
+	github.com/casbin/casbin/v2 v2.87.1
 	github.com/fishtailstudio/imgo v0.0.3
 	github.com/gogf/gf-jwt/v2 v2.1.0
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.0
