@@ -226,7 +226,7 @@ func (s *sPermission) BackendGetUserFromSession(ctx context.Context) (out *entit
 	return cmsAdmin, nil
 }
 
-//判断slug是否在model.PermissionGroups数组中
+// 判断slug是否在model.PermissionGroups数组中
 func (*sPermission) slugInModelPermissionGroups(slug string, permissionGroups []model.PermissionGroups) bool {
 	for _, item := range permissionGroups {
 		if slug == item.Slug {
@@ -236,7 +236,7 @@ func (*sPermission) slugInModelPermissionGroups(slug string, permissionGroups []
 	return false
 }
 
-//判断slug是否在model.PermissionAllItem数组中
+// 判断slug是否在model.PermissionAllItem数组中
 func (*sPermission) slugInModelPermissionAllItem(slug string, permissionGroups []model.PermissionAllItem) bool {
 	for _, item := range permissionGroups {
 		if slug == item.Slug {
