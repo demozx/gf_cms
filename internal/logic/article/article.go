@@ -136,7 +136,11 @@ func (s *sArticle) Status(ctx context.Context, ids []int) (out interface{}, err 
 func (s *sArticle) Delete(ctx context.Context, ids []int) (out interface{}, err error) {
 	mArticle := dao.CmsArticle.Ctx(ctx).WhereIn(dao.CmsArticle.Columns().Id, ids)
 	mBody := dao.CmsArticleBody.Ctx(ctx).WhereIn(dao.CmsArticleBody.Columns().ArticleId, ids)
-	if service.Util().GetSetting("recycle_bin") == "1" {
+	setting, err := service.Util().GetSetting("recycle_bin")
+	if err != nil {
+		return nil, err
+	}
+	if setting == "1" {
 		_, err = mArticle.Delete()
 		_, err = mBody.Delete()
 	} else {
@@ -326,7 +330,7 @@ func (s *sArticle) getDescriptionByBody(ctx context.Context, body string) (descr
 
 func (s *sArticle) getThumbByBody(ctx context.Context, body string) (thumb string, err error) {
 	// 自动获取文章缩略图
-	autoArtPic := service.Util().GetSetting("auto_art_pic")
+	autoArtPic, err := service.Util().GetSetting("auto_art_pic")
 	// 功能未开启
 	if autoArtPic != "1" {
 		return

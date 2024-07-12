@@ -139,7 +139,11 @@ func (s *sImage) Status(ctx context.Context, ids []int) (out interface{}, err er
 
 func (s *sImage) Delete(ctx context.Context, ids []int) (out interface{}, err error) {
 	m := dao.CmsImage.Ctx(ctx).WhereIn(dao.CmsImage.Columns().Id, ids)
-	if service.Util().GetSetting("recycle_bin") == "1" {
+	setting, err := service.Util().GetSetting("recycle_bin")
+	if err != nil {
+		return nil, err
+	}
+	if setting == "1" {
 		_, err = m.Delete()
 	} else {
 		_, err = m.Unscoped().Delete()

@@ -13,7 +13,7 @@ var (
 	insSetting = sSetting{}
 )
 
-//设置
+// 设置
 type sSetting struct{}
 
 func init() {
@@ -41,26 +41,26 @@ func (*sSetting) readYaml(ctx context.Context) (conf *model.SettingConfig, err e
 }
 
 // BackendViewAll 获取所有后台菜单
-func (*sSetting) BackendViewAll() []model.SettingGroups {
+func (*sSetting) BackendViewAll() (backendAll []model.SettingGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":settings:backend_all"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	if !result.IsEmpty() {
 		var settingGroups []model.SettingGroups
 		if err = result.Structs(&settingGroups); err != nil {
-			panic(err)
+			return nil, err
 		}
-		return settingGroups
+		return settingGroups, nil
 	}
 	conf, _ := Setting().readYaml(util.Ctx)
-	backendAll := conf.Backend.Groups
+	backendAll = conf.Backend.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendAll)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return backendAll
+	return backendAll, nil
 }
 
 // Save 保存设置
@@ -72,7 +72,7 @@ func (*sSetting) Save(forms map[string]interface{}) (res bool, err error) {
 		names = append(names, name)
 		one, err := g.Model(settingModel).Where("group", group).Where("name", name).One()
 		if err != nil {
-			panic(err)
+			return false, err
 		}
 		if one.IsEmpty() {
 			_, err := g.Model(settingModel).Data(g.Map{

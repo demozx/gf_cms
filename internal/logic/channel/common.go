@@ -132,7 +132,11 @@ func (s *sChannel) navigationListRecursion(ctx context.Context, list []*entity.C
 func (s *sChannel) channelTitleRecursion(ctx context.Context, channelPid uint, title string) (out string, err error) {
 	// 顶级，返回
 	if channelPid == 0 {
-		return title + "-" + service.Util().GetSetting("web_name"), nil
+		setting, err := service.Util().GetSetting("web_name")
+		if err != nil {
+			return "", err
+		}
+		return title + "-" + setting, nil
 	}
 	var channelInfo *entity.CmsChannel
 	err = dao.CmsChannel.Ctx(ctx).Where(dao.CmsChannel.Columns().Id, channelPid).Scan(&channelInfo)
@@ -210,12 +214,24 @@ func (s *sChannel) crumbsRecursion(ctx context.Context, channelId uint, crumbs [
 func (s *sChannel) TDK(ctx context.Context, channelId uint, detailId int64) (out *model.ChannelTDK, err error) {
 	// 首页
 	if channelId == 0 {
-		out = &model.ChannelTDK{
-			Title:       service.Util().GetSetting("web_name"),
-			Description: service.Util().GetSetting("description"),
-			Keywords:    service.Util().GetSetting("keywords"),
+		webName, err := service.Util().GetSetting("web_name")
+		if err != nil {
+			return nil, err
 		}
-		return
+		description, err := service.Util().GetSetting("description")
+		if err != nil {
+			return nil, err
+		}
+		keywords, err := service.Util().GetSetting("keywords")
+		if err != nil {
+			return nil, err
+		}
+		out = &model.ChannelTDK{
+			Title:       webName,
+			Description: description,
+			Keywords:    keywords,
+		}
+		return out, nil
 	}
 	cacheKey := util.PublicCachePreFix + ":tdk:channel_" + gconv.String(channelId) + "_detail_" + gconv.String(detailId)
 	cached, err := g.Redis().Do(ctx, "GET", cacheKey)

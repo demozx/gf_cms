@@ -12,6 +12,7 @@ import (
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/database/gdb"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 )
@@ -48,9 +49,15 @@ func (*sPermission) readYaml(ctx context.Context) (conf *model.PermissionConfig,
 }
 
 // BackendAll 获取后台全部权限（view和api）
-func (*sPermission) BackendAll() []model.PermissionAllItem {
-	backendViewAll := service.Permission().BackendViewAll()
-	backendApiAll := service.Permission().BackendApiAll()
+func (*sPermission) BackendAll() (res []model.PermissionAllItem, err error) {
+	backendViewAll, err := service.Permission().BackendViewAll()
+	if err != nil {
+		return nil, err
+	}
+	backendApiAll, err := service.Permission().BackendApiAll()
+	if err != nil {
+		return nil, err
+	}
 	var permissionAll []model.PermissionAllItem
 	for _, viewItem := range backendViewAll {
 		// 只有视图的slug在permissionAll中不存在，直接将只有视图的权限放进去
@@ -84,94 +91,97 @@ func (*sPermission) BackendAll() []model.PermissionAllItem {
 			}
 		}
 	}
-	return permissionAll
+	return permissionAll, nil
 }
 
 // BackendViewAll Backend 获取全部后台权限
-func (*sPermission) BackendViewAll() []model.PermissionGroups {
+func (*sPermission) BackendViewAll() (res []model.PermissionGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":permissions:backend_view_all"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	if !result.IsEmpty() {
 		var permissionGroups []model.PermissionGroups
 		if err = result.Structs(&permissionGroups); err != nil {
-			panic(err)
+			return nil, err
 		}
-		return permissionGroups
+		return permissionGroups, nil
 	}
 	conf, _ := Permission().readYaml(util.Ctx)
 	backendViewAll := conf.BackendView.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendViewAll)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return backendViewAll
+	return backendViewAll, nil
 }
 
 // BackendApiAll Backend 获取全部后台接口权限
-func (*sPermission) BackendApiAll() []model.PermissionGroups {
+func (*sPermission) BackendApiAll() (res []model.PermissionGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":permissions:backend_api_all"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	if !result.IsEmpty() {
 		var permissionGroups []model.PermissionGroups
 		if err = result.Structs(&permissionGroups); err != nil {
-			panic(err)
+			return nil, err
 		}
-		return permissionGroups
+		return permissionGroups, nil
 	}
 	conf, _ := Permission().readYaml(util.Ctx)
 	backendApiAll := conf.BackendApi.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendApiAll)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return backendApiAll
+	return backendApiAll, nil
 }
 
 // BackendMyView 获取我的所有后台视图权限
-func (*sPermission) BackendMyView(accountId string) []gdb.Value {
-	roleIds := admin.Admin().GetRoleIdsByAccountId(accountId)
+func (*sPermission) BackendMyView(accountId string) (myPermissions []gdb.Value, err error) {
+	roleIds, err := admin.Admin().GetRoleIdsByAccountId(accountId)
 	if len(roleIds) == 0 {
-		panic("用户无任何角色")
+		return nil, gerror.New("用户无任何角色")
 	}
-	myPermissions, err := dao.CmsRulePermissions.Ctx(util.Ctx).
+	myPermissions, err = dao.CmsRulePermissions.Ctx(util.Ctx).
 		Where("p_type", "p").
 		WhereIn("v0", roleIds).
 		Where("v1", "backend").
 		Fields("v2").
 		Array()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return myPermissions
+	return myPermissions, nil
 }
 
 // BackendMyApi 获取我的所有后台接口权限
-func (*sPermission) BackendMyApi(accountId string) []gdb.Value {
-	roleIds := admin.Admin().GetRoleIdsByAccountId(accountId)
+func (*sPermission) BackendMyApi(accountId string) (myPermissions []gdb.Value, err error) {
+	roleIds, err := admin.Admin().GetRoleIdsByAccountId(accountId)
 	if len(roleIds) == 0 {
-		panic("用户无任何角色")
+		return nil, gerror.New("用户无任何角色")
 	}
-	myPermissions, err := dao.CmsRulePermissions.Ctx(util.Ctx).
+	myPermissions, err = dao.CmsRulePermissions.Ctx(util.Ctx).
 		Where("p_type", "p").
 		WhereIn("v0", roleIds).
 		Where("v1", "backend_api").
 		Fields("v2").
 		Array()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return myPermissions
+	return myPermissions, nil
 }
 
 // GetAllViewPermissionsArray 获取全部视图权限数组
-func (*sPermission) GetAllViewPermissionsArray() []string {
-	backendViewAllPermissions := service.Permission().BackendViewAll()
+func (*sPermission) GetAllViewPermissionsArray() (res []string, err error) {
+	backendViewAllPermissions, err := service.Permission().BackendViewAll()
+	if err != nil {
+		return nil, err
+	}
 	var permissionsArray = make([]string, 0, len(backendViewAllPermissions))
 	for _, _item := range backendViewAllPermissions {
 		for _, _permission := range _item.Permissions {
@@ -179,12 +189,15 @@ func (*sPermission) GetAllViewPermissionsArray() []string {
 			permissionsArray = append(permissionsArray, permission)
 		}
 	}
-	return permissionsArray
+	return permissionsArray, nil
 }
 
 // GetAllApiPermissionsArray 获取全部接口权限数组
-func (*sPermission) GetAllApiPermissionsArray() []string {
-	backendApiAllPermissions := service.Permission().BackendApiAll()
+func (*sPermission) GetAllApiPermissionsArray() (res []string, err error) {
+	backendApiAllPermissions, err := service.Permission().BackendApiAll()
+	if err != nil {
+		return nil, err
+	}
 	var permissionsArray = make([]string, 0, len(backendApiAllPermissions))
 	for _, _item := range backendApiAllPermissions {
 		for _, _permission := range _item.Permissions {
@@ -192,7 +205,7 @@ func (*sPermission) GetAllApiPermissionsArray() []string {
 			permissionsArray = append(permissionsArray, permission)
 		}
 	}
-	return permissionsArray
+	return permissionsArray, nil
 }
 
 // BackendUserViewCan 检测后台用户有无视图的操作权限

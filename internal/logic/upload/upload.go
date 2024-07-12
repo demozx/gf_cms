@@ -47,7 +47,11 @@ func (*sUpload) SingleUploadFile(ctx context.Context, in model.FileUploadInput, 
 	}
 	url := fullUploadDir + "/" + filename
 	// 图片质量压缩
-	imageQuality := gconv.Int(service.Util().GetSetting("image_quality"))
+	setting, err := service.Util().GetSetting("image_quality")
+	if err != nil {
+		return nil, err
+	}
+	imageQuality := gconv.Int(setting)
 	if imageQuality >= 1 && imageQuality <= 100 {
 		imgo.Load(serverRoot+url).Save(serverRoot+url, imageQuality)
 	}

@@ -82,13 +82,22 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 
 // BackendCheckPolicy 检测后台页面用户有无某个请求权限
 func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
-	accountId := Middleware().GetBackendUserID(r)
+	accountId, err := Middleware().GetBackendUserID(r)
+	if err != nil {
+		return
+	}
 	obj := casbinPolicy.CasbinPolicy().ObjBackend()
 	act := r.Router.Uri
 	//g.Log().Notice(util.Ctx, "act", act)
 	var backendPrefix = util.Util().BackendPrefix()
-	var backendViewMenus = menu.Menu().BackendView()
-	var backendMyMenus = menu.Menu().BackendMyMenu(accountId)
+	backendViewMenus, err := menu.Menu().BackendView()
+	if err != nil {
+		return
+	}
+	backendMyMenus, err := menu.Menu().BackendMyMenu(accountId)
+	if err != nil {
+		return
+	}
 	var routeHit = false
 	for _, menuGroup := range backendViewMenus {
 		for _, children := range menuGroup.Children {
@@ -240,8 +249,14 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 	act := r.Router.Uri
 	//g.Log().Notice(util.Ctx, "act", act)
 	var backendPrefix = util.Util().BackendApiPrefix()
-	var backendApiMenus = menu.Menu().BackendApi()
-	var backendMyApis = menu.Menu().BackendMyApi(accountId)
+	backendApiMenus, err := menu.Menu().BackendApi()
+	if err != nil {
+		return
+	}
+	backendMyApis, err := menu.Menu().BackendMyApi(accountId)
+	if err != nil {
+		return
+	}
 	//g.Dump("backendApiMenus", backendApiMenus)
 	//g.Dump("backendMyApis", backendMyApis)
 	var routeHit = false
@@ -281,18 +296,18 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 }
 
 // GetBackendUserID 获取后台用户ID
-func (s *sMiddleware) GetBackendUserID(r *ghttp.Request) string {
+func (s *sMiddleware) GetBackendUserID(r *ghttp.Request) (accountId string, err error) {
 	var adminSession, _ = r.Session.Get(consts.AdminSessionKeyPrefix)
 	var admin *entity.CmsAdmin
-	err := adminSession.Scan(&admin)
+	err = adminSession.Scan(&admin)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	var res = g.Map{
 		"id": admin.Id,
 	}
-	accountId := gvar.New(res["id"]).String()
-	return accountId
+	accountId = gvar.New(res["id"]).String()
+	return accountId, nil
 }
 
 // FilterXSS 过滤xss攻击
