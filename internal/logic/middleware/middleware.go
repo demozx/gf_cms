@@ -38,6 +38,7 @@ func Middleware() *sMiddleware {
 
 func (s *sMiddleware) CORS(r *ghttp.Request) {
 	r.Response.CORSDefault()
+	r.SetCtx(r.GetNeverDoneCtx()) // 设置请求上下文，避免请求被取消，出现context canceled报错
 	r.Middleware.Next()
 	r.Response.Header().Set("Content-Type", "application/json;charset=utf-8")
 }
