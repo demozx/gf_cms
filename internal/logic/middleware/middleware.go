@@ -71,9 +71,9 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 		codeMsg = gcode.CodeInternalError.Message()
 	}
 	if err != nil {
-		err := r.Response.WriteTpl("tpl/error.html", g.Map{
+		err = r.Response.WriteTpl("tpl/error.html", g.Map{
 			"code":    codeNum,
-			"message": codeMsg + "：" + err.Error(),
+			"message": codeMsg,
 		})
 		if err != nil {
 			return
@@ -123,7 +123,7 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 		}
 		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
 			g.Log().Warning(util.Ctx, "没有权限"+act)
-			err := r.Response.WriteTpl("tpl/error.html", g.Map{
+			err = r.Response.WriteTpl("tpl/error.html", g.Map{
 				"code":    401,
 				"message": "无权访问",
 			})
