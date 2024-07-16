@@ -64,16 +64,16 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 		err     = r.GetError()
 		code    = gerror.Code(err)
 		codeNum = gcode.CodeNil.Code()
-		codeMsg = gcode.CodeNil.Message()
+		//codeMsg = gcode.CodeNil.Message()
 	)
 	if code == gcode.CodeNil && err != nil {
 		codeNum = gcode.CodeInternalError.Code()
-		codeMsg = gcode.CodeInternalError.Message()
+		//codeMsg = gcode.CodeInternalError.Message()
 	}
 	if err != nil {
 		err = r.Response.WriteTpl("tpl/error.html", g.Map{
 			"code":    codeNum,
-			"message": codeMsg,
+			"message": "出错了，请稍后重试",
 		})
 		if err != nil {
 			return
@@ -178,7 +178,7 @@ func (s *sMiddleware) PcResponse(r *ghttp.Request) {
 
 	r.Response.WriteTpl("tpl/error.html", g.Map{
 		"code":    code.Code(),
-		"message": msg,
+		"message": "出错了，请稍后重试",
 		"res":     res,
 	})
 }
@@ -225,7 +225,7 @@ func (s *sMiddleware) MobileResponse(r *ghttp.Request) {
 
 	r.Response.WriteTpl("tpl/error.html", g.Map{
 		"code":    code.Code(),
-		"message": msg,
+		"message": "出错了，请稍后重试",
 		"res":     res,
 	})
 }
