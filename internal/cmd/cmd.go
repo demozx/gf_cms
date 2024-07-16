@@ -46,8 +46,10 @@ var (
 					r.Response.ClearBuffer()
 				},
 				500: func(r *ghttp.Request) {
-					// 只清除缓冲区数据
-					r.Response.ClearBuffer()
+					err = r.Response.WriteTpl("tpl/error.html", g.Map{
+						"code":    500,
+						"message": "出错了，请稍后重试",
+					})
 				},
 			})
 			s.Run()
