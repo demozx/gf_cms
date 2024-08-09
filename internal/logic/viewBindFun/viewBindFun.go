@@ -39,8 +39,12 @@ func (*sViewBindFun) Register() {
 }
 
 // SystemSetting 获取系统配置信息
-func (*sViewBindFun) SystemSetting(name string) string {
-	return service.Util().GetSetting(name)
+func (*sViewBindFun) SystemSetting(name string) (setting string, err error) {
+	setting, err = service.Util().GetSetting(name)
+	if err != nil {
+		return "", err
+	}
+	return setting, nil
 }
 
 // SystemConfig 获取系统配置

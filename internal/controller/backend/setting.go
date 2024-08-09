@@ -16,7 +16,7 @@ type cSetting struct{}
 
 // Index 后台设置
 func (c *cSetting) Index(ctx context.Context, req *backend.SettingReq) (res *backend.SettingRes, err error) {
-	backendViewAll := setting.Setting().BackendViewAll()
+	backendViewAll, err := setting.Setting().BackendViewAll()
 	_ = g.RequestFromCtx(ctx).Response.WriteTpl("backend/setting/index.html", g.Map{
 		"settings": backendViewAll,
 	})

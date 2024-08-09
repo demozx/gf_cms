@@ -48,8 +48,14 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 			if err != nil {
 				return
 			}
-			allViewPermissionsArray := service.Permission().GetAllViewPermissionsArray()
-			allApiPermissionsArray := service.Permission().GetAllApiPermissionsArray()
+			allViewPermissionsArray, err := service.Permission().GetAllViewPermissionsArray()
+			if err != nil {
+				return
+			}
+			allApiPermissionsArray, err := service.Permission().GetAllApiPermissionsArray()
+			if err != nil {
+				return
+			}
 			insertData := make([]interface{}, 0, len(allViewPermissionsArray)+len(allApiPermissionsArray))
 			for _, permission := range allViewPermissionsArray {
 				row := g.Map{
@@ -69,7 +75,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backendApi.AdminLoginReq) (res 
 				}
 				insertData = append(insertData, row)
 			}
-			_, err := dao.CmsRulePermissions.Ctx(ctx).Data(insertData).Insert()
+			_, err = dao.CmsRulePermissions.Ctx(ctx).Data(insertData).Insert()
 			if err != nil {
 				return
 			}

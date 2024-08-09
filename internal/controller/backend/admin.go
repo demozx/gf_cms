@@ -34,7 +34,7 @@ func (c *cAdmin) Login(ctx context.Context, req *backend.AdminLoginReq) (res *ba
 
 	err = g.RequestFromCtx(ctx).Response.WriteTpl("backend/admin/login.html")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	return
 }

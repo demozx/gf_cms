@@ -33,6 +33,7 @@ redis:
   default:
     address: 127.0.0.1:6379
     db: 0
+    maxActive: 50 #最大连接数量限制(0表示不限制)
 
 logger:
   level: "all"            # 日志输出级别

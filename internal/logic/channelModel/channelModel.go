@@ -38,7 +38,13 @@ func (s *sChannelModel) ModelArticle(ctx context.Context, in *backend.ChannelMod
 		return nil, err
 	}
 	channelTree, err := service.Channel().BackendChannelModelTree(ctx, in.Type, in.ChannelId)
-	recycleBin := service.Util().GetSetting("recycle_bin")
+	if err != nil {
+		return nil, err
+	}
+	recycleBin, err := service.Util().GetSetting("recycle_bin")
+	if err != nil {
+		return nil, err
+	}
 	err = service.Response().View(ctx, "backend/channel_model/article/index.html", g.Map{
 		"channelTree": channelTree,
 		"modelType":   in.Type,
@@ -47,6 +53,9 @@ func (s *sChannelModel) ModelArticle(ctx context.Context, in *backend.ChannelMod
 		"withTab":     in.WithTab,
 		"deleteType":  recycleBin,
 	})
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 

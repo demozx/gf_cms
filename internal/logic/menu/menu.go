@@ -14,7 +14,7 @@ var (
 	insMenu = sMenu{}
 )
 
-//菜单
+// 菜单
 type sMenu struct{}
 
 func init() {
@@ -42,58 +42,64 @@ func (*sMenu) readYaml(ctx context.Context) (conf *model.MenuConfig, err error) 
 }
 
 // BackendView 获取全部后台菜单
-func (*sMenu) BackendView() []model.MenuGroups {
+func (*sMenu) BackendView() (backendView []model.MenuGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":menus:backend_view"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	if !result.IsEmpty() {
 		var menuGroups []model.MenuGroups
 		if err = result.Structs(&menuGroups); err != nil {
-			panic(err)
+			return nil, err
 		}
-		return menuGroups
+		return menuGroups, nil
 	}
 	conf, _ := Menu().readYaml(util.Ctx)
-	backendView := conf.Backend.Groups
+	backendView = conf.Backend.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendView)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return backendView
+	return backendView, nil
 }
 
 // BackendApi 获取全部后台菜单接口
-func (*sMenu) BackendApi() []model.MenuGroups {
+func (*sMenu) BackendApi() (res []model.MenuGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":menus:backend_api"
 	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	if !result.IsEmpty() {
 		var menuGroups []model.MenuGroups
 		if err = result.Structs(&menuGroups); err != nil {
-			panic(err)
+			return nil, err
 		}
-		return menuGroups
+		return menuGroups, nil
 	}
 	conf, _ := Menu().readYaml(util.Ctx)
 	backendApi := conf.BackendApi.Groups
 	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendApi)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return backendApi
+	return backendApi, nil
 }
 
 // BackendMyMenu 我的后台菜单
-func (*sMenu) BackendMyMenu(accountId string) []model.MenuGroups {
+func (*sMenu) BackendMyMenu(accountId string) (backendMyMenus []model.MenuGroups, err error) {
 	//accountId := Middleware().GetAdminUserID(r)
-	backendMyPermissions := permission.Permission().BackendMyView(accountId)
+	backendMyPermissions, err := permission.Permission().BackendMyView(accountId)
+	if err != nil {
+		return nil, err
+	}
 	//g.Log().Info(Ctx, "backendMyPermissions", backendMyPermissions)
-	backendViewMenus := Menu().BackendView()
-	var backendMyMenus []model.MenuGroups
+	backendViewMenus, err := Menu().BackendView()
+	if err != nil {
+		return nil, err
+	}
+	//var backendMyMenus []model.MenuGroups
 
 	for _, menu := range backendViewMenus {
 		var title = menu.Title
@@ -120,14 +126,20 @@ func (*sMenu) BackendMyMenu(accountId string) []model.MenuGroups {
 	}
 	//g.Log().Info(Ctx, "backendAllMenus", backendAllMenus)
 	//g.Log().Info(Ctx, "backendMyMenus", backendMyMenus)
-	return backendMyMenus
+	return backendMyMenus, err
 }
 
-func (*sMenu) BackendMyApi(accountId string) []model.MenuGroups {
+func (*sMenu) BackendMyApi(accountId string) (backendMyMenus []model.MenuGroups, err error) {
 	//accountId := Middleware().GetAdminUserID(r)
-	backendMyPermissions := permission.Permission().BackendMyApi(accountId)
-	backendApiMenus := Menu().BackendApi()
-	var backendMyMenus []model.MenuGroups
+	backendMyPermissions, err := permission.Permission().BackendMyApi(accountId)
+	if err != nil {
+		return nil, err
+	}
+	backendApiMenus, err := Menu().BackendApi()
+	if err != nil {
+		return nil, err
+	}
+	//var backendMyMenus []model.MenuGroups
 	for _, menu := range backendApiMenus {
 		var title = menu.Title
 		var children = menu.Children
@@ -152,5 +164,5 @@ func (*sMenu) BackendMyApi(accountId string) []model.MenuGroups {
 	}
 	//g.Log().Info(Ctx, "backendAllMenus", backendAllMenus)
 	//g.Log().Info(Ctx, "backendMyMenus", backendMyMenus)
-	return backendMyMenus
+	return backendMyMenus, err
 }

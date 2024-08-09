@@ -23,8 +23,14 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 		Page: req.Page,
 		Size: req.Size,
 	})
-	backendViewAllPermissions := service.Permission().BackendViewAll()
-	backendApiAllPermissions := service.Permission().BackendApiAll()
+	backendViewAllPermissions, err := service.Permission().BackendViewAll()
+	if err != nil {
+		return nil, err
+	}
+	backendApiAllPermissions, err := service.Permission().BackendApiAll()
+	if err != nil {
+		return nil, err
+	}
 
 	listData := list.List
 	for key, item := range listData {
@@ -69,7 +75,10 @@ func (c *cRole) Index(ctx context.Context, req *backend.RoleIndexReq) (res *back
 
 // Add 添加角色
 func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.RoleAddRes, err error) {
-	backendAllPermissions := service.Permission().BackendAll()
+	backendAllPermissions, err := service.Permission().BackendAll()
+	if err != nil {
+		return nil, err
+	}
 	err = service.Response().View(ctx, "backend/role/add.html", g.Map{
 		"backendAllPermissions": backendAllPermissions,
 	})
@@ -81,7 +90,10 @@ func (c *cRole) Add(ctx context.Context, req *backend.RoleAddReq) (res *backend.
 
 // Edit 编辑角色
 func (c *cRole) Edit(ctx context.Context, req *backend.RoleEditReq) (res *backend.RoleEditRes, err error) {
-	backendAllPermissions := service.Permission().BackendAll()
+	backendAllPermissions, err := service.Permission().BackendAll()
+	if err != nil {
+		return nil, err
+	}
 	role, err := service.Role().BackendRoleGetOne(ctx, req)
 	if err != nil {
 		return nil, err
