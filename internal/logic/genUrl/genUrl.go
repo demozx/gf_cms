@@ -99,7 +99,7 @@ func (s *sGenUrl) DetailUrl(ctx context.Context, model string, detailId int) (ne
 	cacheKey := util.PublicCachePreFix + ":detail_url:" + model + ":" + gconv.String(detailId)
 	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	if !cached.IsEmpty() {
 		return cached.String(), nil

@@ -41,6 +41,16 @@ var (
 					// 输出pc端404页面
 					_ = r.Response.WriteTpl(consts.Pc404Page)
 				},
+				403: func(r *ghttp.Request) {
+					// 只清除缓冲区数据
+					r.Response.ClearBuffer()
+				},
+				500: func(r *ghttp.Request) {
+					err = r.Response.WriteTpl("tpl/error.html", g.Map{
+						"code":    500,
+						"message": "出错了，请稍后重试",
+					})
+				},
 			})
 			s.Run()
 			return nil

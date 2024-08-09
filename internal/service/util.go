@@ -37,7 +37,7 @@ type (
 		// GetConfig 获取配置文件的配置信息
 		GetConfig(node string) string
 		// GetSetting 获取设置
-		GetSetting(name string) string
+		GetSetting(name string) (setting string, err error)
 		// ClearPublicCache 清除公共缓存
 		ClearPublicCache() (*gvar.Var, error)
 		// ClearSystemSettingCache 清除后台设置缓存

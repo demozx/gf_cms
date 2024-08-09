@@ -22,10 +22,13 @@ func (c *cIndex) Index(ctx context.Context, req *backend.IndexReq) (res *backend
 	var cmsAdmin *entity.CmsAdmin
 	err = adminSession.Scan(&cmsAdmin)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	accountId := gvar.New(cmsAdmin.Id).String()
-	var backendMenu = service.Menu().BackendMyMenu(accountId)
+	backendMenu, err := service.Menu().BackendMyMenu(accountId)
+	if err != nil {
+		return nil, err
+	}
 	shortcutList, err := service.Shortcut().BackendIndex(ctx)
 	if err != nil {
 		return nil, err

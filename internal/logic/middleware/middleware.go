@@ -38,6 +38,7 @@ func Middleware() *sMiddleware {
 
 func (s *sMiddleware) CORS(r *ghttp.Request) {
 	r.Response.CORSDefault()
+	r.SetCtx(r.GetNeverDoneCtx()) // 设置请求上下文，避免请求被取消，出现context canceled报错
 	r.Middleware.Next()
 	r.Response.Header().Set("Content-Type", "application/json;charset=utf-8")
 }
@@ -63,16 +64,16 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 		err     = r.GetError()
 		code    = gerror.Code(err)
 		codeNum = gcode.CodeNil.Code()
-		codeMsg = gcode.CodeNil.Message()
+		//codeMsg = gcode.CodeNil.Message()
 	)
 	if code == gcode.CodeNil && err != nil {
 		codeNum = gcode.CodeInternalError.Code()
-		codeMsg = gcode.CodeInternalError.Message()
+		//codeMsg = gcode.CodeInternalError.Message()
 	}
 	if err != nil {
-		err := r.Response.WriteTpl("tpl/error.html", g.Map{
+		err = r.Response.WriteTpl("tpl/error.html", g.Map{
 			"code":    codeNum,
-			"message": codeMsg + "：" + err.Error(),
+			"message": "出错了，请稍后重试",
 		})
 		if err != nil {
 			return
@@ -82,13 +83,22 @@ func (s *sMiddleware) BackendAuthSession(r *ghttp.Request) {
 
 // BackendCheckPolicy 检测后台页面用户有无某个请求权限
 func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
-	accountId := Middleware().GetBackendUserID(r)
+	accountId, err := Middleware().GetBackendUserID(r)
+	if err != nil {
+		return
+	}
 	obj := casbinPolicy.CasbinPolicy().ObjBackend()
 	act := r.Router.Uri
 	//g.Log().Notice(util.Ctx, "act", act)
 	var backendPrefix = util.Util().BackendPrefix()
-	var backendViewMenus = menu.Menu().BackendView()
-	var backendMyMenus = menu.Menu().BackendMyMenu(accountId)
+	backendViewMenus, err := menu.Menu().BackendView()
+	if err != nil {
+		return
+	}
+	backendMyMenus, err := menu.Menu().BackendMyMenu(accountId)
+	if err != nil {
+		return
+	}
 	var routeHit = false
 	for _, menuGroup := range backendViewMenus {
 		for _, children := range menuGroup.Children {
@@ -113,7 +123,7 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 		}
 		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
 			g.Log().Warning(util.Ctx, "没有权限"+act)
-			err := r.Response.WriteTpl("tpl/error.html", g.Map{
+			err = r.Response.WriteTpl("tpl/error.html", g.Map{
 				"code":    401,
 				"message": "无权访问",
 			})
@@ -168,7 +178,7 @@ func (s *sMiddleware) PcResponse(r *ghttp.Request) {
 
 	r.Response.WriteTpl("tpl/error.html", g.Map{
 		"code":    code.Code(),
-		"message": msg,
+		"message": "出错了，请稍后重试",
 		"res":     res,
 	})
 }
@@ -215,7 +225,7 @@ func (s *sMiddleware) MobileResponse(r *ghttp.Request) {
 
 	r.Response.WriteTpl("tpl/error.html", g.Map{
 		"code":    code.Code(),
-		"message": msg,
+		"message": "出错了，请稍后重试",
 		"res":     res,
 	})
 }
@@ -240,8 +250,14 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 	act := r.Router.Uri
 	//g.Log().Notice(util.Ctx, "act", act)
 	var backendPrefix = util.Util().BackendApiPrefix()
-	var backendApiMenus = menu.Menu().BackendApi()
-	var backendMyApis = menu.Menu().BackendMyApi(accountId)
+	backendApiMenus, err := menu.Menu().BackendApi()
+	if err != nil {
+		return
+	}
+	backendMyApis, err := menu.Menu().BackendMyApi(accountId)
+	if err != nil {
+		return
+	}
 	//g.Dump("backendApiMenus", backendApiMenus)
 	//g.Dump("backendMyApis", backendMyApis)
 	var routeHit = false
@@ -281,18 +297,18 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 }
 
 // GetBackendUserID 获取后台用户ID
-func (s *sMiddleware) GetBackendUserID(r *ghttp.Request) string {
+func (s *sMiddleware) GetBackendUserID(r *ghttp.Request) (accountId string, err error) {
 	var adminSession, _ = r.Session.Get(consts.AdminSessionKeyPrefix)
 	var admin *entity.CmsAdmin
-	err := adminSession.Scan(&admin)
+	err = adminSession.Scan(&admin)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	var res = g.Map{
 		"id": admin.Id,
 	}
-	accountId := gvar.New(res["id"]).String()
-	return accountId
+	accountId = gvar.New(res["id"]).String()
+	return accountId, nil
 }
 
 // FilterXSS 过滤xss攻击

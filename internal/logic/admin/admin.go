@@ -106,12 +106,12 @@ func (s *sAdmin) passMd5(password string) string {
 }
 
 // GetRoleIdsByAccountId 获取用户的所有角色id
-func (s *sAdmin) GetRoleIdsByAccountId(accountId string) []gdb.Value {
-	roleIds, err := dao.CmsRoleAccount.Ctx(util.Ctx).Where("account_id", accountId).Fields("role_id").Array()
+func (s *sAdmin) GetRoleIdsByAccountId(accountId string) (roleIds []gdb.Value, err error) {
+	roleIds, err = dao.CmsRoleAccount.Ctx(util.Ctx).Where("account_id", accountId).Fields("role_id").Array()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return roleIds
+	return roleIds, nil
 }
 
 // BackendAdminGetList 后台获取管理员列表

@@ -12,7 +12,7 @@ import (
 type (
 	ISetting interface {
 		// BackendViewAll 获取所有后台菜单
-		BackendViewAll() []model.SettingGroups
+		BackendViewAll() (backendAll []model.SettingGroups, err error)
 		// Save 保存设置
 		Save(forms map[string]interface{}) (res bool, err error)
 	}

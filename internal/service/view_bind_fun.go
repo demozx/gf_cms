@@ -10,7 +10,7 @@ type (
 		// Register 注册视图绑定方法
 		Register()
 		// SystemSetting 获取系统配置信息
-		SystemSetting(name string) string
+		SystemSetting(name string) (setting string, err error)
 		// SystemConfig 获取系统配置
 		SystemConfig(name string) string
 		// BackendUrl 生成后台view的url

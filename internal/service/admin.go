@@ -21,7 +21,7 @@ type (
 		LoginVerify(ctx context.Context, in model.AdminLoginInput) (admin *entity.CmsAdmin, err error)
 		GetUserByUserNamePassword(ctx context.Context, in model.AdminLoginInput) g.Map
 		// GetRoleIdsByAccountId 获取用户的所有角色id
-		GetRoleIdsByAccountId(accountId string) []gdb.Value
+		GetRoleIdsByAccountId(accountId string) (roleIds []gdb.Value, err error)
 		// BackendAdminGetList 后台获取管理员列表
 		BackendAdminGetList(ctx context.Context, in model.AdminGetListInput) (out *model.AdminGetListOutput, err error)
 		// BackendApiAdminAdd 添加管理员

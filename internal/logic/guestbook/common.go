@@ -35,25 +35,43 @@ func (s *sGuestbook) GetAddressByIp(ctx context.Context, ip string) (address str
 // SendEmail 发送留言邮件
 func (s *sGuestbook) SendEmail(ctx context.Context, guestbookId int64) (out interface{}, err error) {
 	g.Log().Debug(ctx, "留言：邮件提醒")
-	emailNotice := service.Util().GetSetting("guestbook_email_notice")
-	adminEmails := service.Util().GetSetting("admin_emails")
+	emailNotice, err := service.Util().GetSetting("guestbook_email_notice")
+	if err != nil {
+		return nil, err
+	}
+	adminEmails, err := service.Util().GetSetting("admin_emails")
+	if err != nil {
+		return nil, err
+	}
 	if emailNotice != "1" {
 		g.Log().Error(ctx, "留言邮件提醒管理员未开启")
-		return
+		return nil, gerror.New("留言邮件提醒管理员未开启")
 	}
 	if adminEmails == "" {
 		g.Log().Error(ctx, "管理员邮箱未填写")
-		return
+		return nil, gerror.New("管理员邮箱未填写")
 	}
 	var guestbook *entity.CmsGuestbook
 	err = dao.CmsGuestbook.Ctx(ctx).Where(dao.CmsGuestbook.Columns().Id, guestbookId).Scan(&guestbook)
 	if err != nil {
 		return nil, err
 	}
-	host := service.Util().GetSetting("smtp_server")
-	port := service.Util().GetSetting("smtp_port")
-	from := service.Util().GetSetting("smtp_email_from")
-	password := service.Util().GetSetting("smtp_pass")
+	host, err := service.Util().GetSetting("smtp_server")
+	if err != nil {
+		return nil, err
+	}
+	port, err := service.Util().GetSetting("smtp_port")
+	if err != nil {
+		return nil, err
+	}
+	from, err := service.Util().GetSetting("smtp_email_from")
+	if err != nil {
+		return nil, err
+	}
+	password, err := service.Util().GetSetting("smtp_pass")
+	if err != nil {
+		return nil, err
+	}
 	if host == "" || port == "" || from == "" || password == "" {
 		g.Log().Error(ctx, "邮件服务器配置缺失")
 		return
