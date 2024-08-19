@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"gf_cms/internal/logic/admin"
+	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
 	"time"
@@ -33,8 +34,8 @@ func init() {
 	service.RegisterAuth(New())
 
 	auth := jwt.New(&jwt.GfJWTMiddleware{
-		Realm:           "test zone",
-		Key:             []byte("secret key"),
+		Realm:           util.Util().ProjectName() + "_backend",
+		Key:             []byte(util.Util().JwtKey()),
 		Timeout:         time.Minute * 5,
 		MaxRefresh:      time.Minute * 5,
 		IdentityKey:     "id",
