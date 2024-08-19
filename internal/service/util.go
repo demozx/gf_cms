@@ -18,6 +18,8 @@ type (
 		DryRun() bool
 		// ProjectName 获取ProjectName
 		ProjectName() string
+		// JwtKey 获取JwtKey
+		JwtKey() string
 		// SystemRoot 获取SystemRoot
 		SystemRoot() string
 		// BackendPrefix 后台入口前缀
