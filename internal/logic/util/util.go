@@ -78,6 +78,15 @@ func (*sUtil) ProjectName() string {
 	return ProjectName.String()
 }
 
+// JwtKey 获取JwtKey
+func (*sUtil) JwtKey() string {
+	jwtKey := Util().GetConfig("server.jwtKey")
+	if jwtKey == "" {
+		return ProjectName.String()
+	}
+	return jwtKey
+}
+
 // SystemRoot 获取SystemRoot
 func (*sUtil) SystemRoot() string {
 	return SystemRoot

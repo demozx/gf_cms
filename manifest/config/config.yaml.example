@@ -2,6 +2,7 @@ server:
   projectName: "gf_cms"
   backendPrefix: "admin"
   address: ":8001"
+  jwtKey: "" # jwt密钥，不配置将使用projectName，为了安全一定要配置
   openapiPath: "/api.json"
   #  swaggerPath: "/swagger" #使用自定义SwaggerUI,需注释该行
   serverRoot: "resource/public"
