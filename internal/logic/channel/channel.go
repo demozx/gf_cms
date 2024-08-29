@@ -5,6 +5,7 @@ import (
 	"gf_cms/api/backendApi"
 	"gf_cms/internal/consts"
 	"gf_cms/internal/dao"
+	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
@@ -165,6 +166,10 @@ func (s *sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelS
 	if err != nil {
 		return nil, err
 	}
+	_, err = util.Util().ClearPublicCache()
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 
@@ -188,6 +193,10 @@ func (s *sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelD
 	}
 	// todo 栏目下有内容也不能删除
 	_, err = m.Delete()
+	if err != nil {
+		return nil, err
+	}
+	_, err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -220,6 +229,10 @@ func (s *sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddA
 		return nil, err
 	}
 	_, err = service.Channel().UpdateRelation(ctx, gconv.Int(id))
+	if err != nil {
+		return nil, err
+	}
+	_, err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -267,6 +280,10 @@ func (s *sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEdi
 		return nil, err
 	}
 	_, err = service.Channel().UpdateRelation(ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	_, err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -390,6 +407,10 @@ func (s *sChannel) updateTid(ctx context.Context, originChannelId int, pid int) 
 			return nil, err
 		}
 	}
+	_, err = util.Util().ClearPublicCache()
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 
@@ -447,6 +468,10 @@ func (s *sChannel) updateChildren(ctx context.Context, channelTid int, lastBatch
 		if err != nil {
 			return nil, err
 		}
+	}
+	_, err = util.Util().ClearPublicCache()
+	if err != nil {
+		return nil, err
 	}
 	return
 }
