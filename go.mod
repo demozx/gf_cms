@@ -1,17 +1,17 @@
 module gf_cms
 
-go 1.21
+go 1.22
 
-toolchain go1.22rc2
+toolchain go1.22.2
 
 require (
 	github.com/Blank-Xu/sql-adapter v1.0.0
-	github.com/casbin/casbin/v2 v2.99.0
+	github.com/casbin/casbin/v2 v2.100.0
 	github.com/fishtailstudio/imgo v0.0.3
 	github.com/gogf/gf-jwt/v2 v2.1.0
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.3
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.3
-	github.com/gogf/gf/v2 v2.7.3
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.7.4
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.7.4
+	github.com/gogf/gf/v2 v2.7.4
 	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/mojocn/base64Captcha v1.3.6
 	github.com/shirou/gopsutil v3.21.11+incompatible
@@ -31,7 +31,7 @@ require (
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/redis/go-redis/v9 v9.6.1 // indirect
-	go.opentelemetry.io/otel/metric v1.29.0 // indirect
+	go.opentelemetry.io/otel/metric v1.30.0 // indirect
 )
 
 require (
@@ -58,9 +58,9 @@ require (
 	github.com/tklauser/go-sysconf v0.3.14 // indirect
 	github.com/tklauser/numcpus v0.8.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	go.opentelemetry.io/otel v1.29.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.29.0 // indirect
-	go.opentelemetry.io/otel/trace v1.29.0 // indirect
+	go.opentelemetry.io/otel v1.30.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.30.0 // indirect
+	go.opentelemetry.io/otel/trace v1.30.0 // indirect
 	golang.org/x/image v0.20.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
