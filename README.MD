@@ -10,11 +10,19 @@
 >
 > 密码：<code>123456</code>
 
-> 📱 新增部署在arm架构手机内的演示地址：[mi8-gfcms.linklink.fun/admin](http://mi8-gfcms.linklink.fun/admin)
+> 📱 新增部署在arm架构手机内的演示地址：
+> 
+> 前台：[mi8-gfcms.linklink.fun](http://mi8-gfcms.linklink.fun)
+> 
+> 后台：[mi8-gfcms.linklink.fun/admin](http://mi8-gfcms.linklink.fun/admin)
+>
+>
+> 用户名：<code>admin</code>
+>
+> 密码：<code>123456</code>
 >
 > 部署环境为：小米8手机 -> LinuxDeploy容器 -> CentOS7
 >
-> PC和移动端地址同上，用户名密码同上
 > 
 > 手机不可能随时开机并运行项目，无法访问请提交issue联系我
 
