@@ -12,6 +12,7 @@ server:
   dumpRouterMap: true               # 是否在Server启动时打印所有的路由列表。默认为true
   graceful: false              # 是否开启平滑重启特性，开启时将会在本地增加10000的本地TCP端口用于进程间通信。默认false
   gracefulTimeout: 2                  # 父进程在平滑重启后多少秒退出，默认2秒。若请求耗时大于该值，可能会导致请求中断
+  cacheDriver: "redis"                # 缓存驱动方式，支持redis和memory两种，默认memory
 
 database:
   default:

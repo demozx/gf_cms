@@ -47,7 +47,7 @@ var (
 				},
 				500: func(r *ghttp.Request) {
 					err = r.Response.WriteTpl("tpl/error.html", g.Map{
-						"code":    500,
+						"code":    r.Response.Status,
 						"message": "出错了，请稍后重试",
 					})
 				},

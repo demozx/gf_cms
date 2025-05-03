@@ -10,6 +10,7 @@ import (
 	_ "gf_cms/internal/logic/admin"
 	_ "gf_cms/internal/logic/article"
 	_ "gf_cms/internal/logic/auth"
+	_ "gf_cms/internal/logic/cache"
 	_ "gf_cms/internal/logic/captcha"
 	_ "gf_cms/internal/logic/casbinPolicy"
 	_ "gf_cms/internal/logic/channel"
