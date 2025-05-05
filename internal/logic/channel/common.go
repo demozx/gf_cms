@@ -11,7 +11,6 @@ import (
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/encoding/ghtml"
 	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 )
@@ -20,7 +19,7 @@ import (
 func (s *sChannel) Navigation(ctx context.Context, currChannelId int) (out []*model.ChannelNavigationListItem, err error) {
 	var allOpenChannel []*entity.CmsChannel
 	cacheKey := util.PublicCachePreFix + ":navigation_list:all_open_channel"
-	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	cached, err := service.Cache().GetCacheInstance().Get(ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +34,7 @@ func (s *sChannel) Navigation(ctx context.Context, currChannelId int) (out []*mo
 			return nil, err
 		}
 	}
-	_, err = g.Redis().Do(ctx, "SET", cacheKey, allOpenChannel)
+	err = service.Cache().GetCacheInstance().Set(ctx, cacheKey, allOpenChannel, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +56,7 @@ func (s *sChannel) ChildrenNavigation(ctx context.Context, navigation []*model.C
 func (s *sChannel) navigationListRecursion(ctx context.Context, list []*entity.CmsChannel, pid int, currChannelId int) (out []*model.ChannelNavigationListItem, err error) {
 	var res []*model.ChannelNavigationListItem
 	cacheKey := util.PublicCachePreFix + ":navigation_list:pid_" + gconv.String(pid) + "_curr_channel_id_" + gconv.String(currChannelId)
-	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	cached, err := service.Cache().GetCacheInstance().Get(ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +120,7 @@ func (s *sChannel) navigationListRecursion(ctx context.Context, list []*entity.C
 			}
 		}
 	}
-	_, err = g.Redis().Do(ctx, "SET", cacheKey, res)
+	err = service.Cache().GetCacheInstance().Set(ctx, cacheKey, res, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +158,7 @@ func (s *sChannel) channelTitleRecursion(ctx context.Context, channelPid uint, t
 // detailId  内容页id
 func (s *sChannel) Crumbs(ctx context.Context, channelId uint) (out []*model.ChannelCrumbs, err error) {
 	cacheKey := util.PublicCachePreFix + ":crumbs:channel_" + gconv.String(channelId)
-	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	cached, err := service.Cache().GetCacheInstance().Get(ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +173,10 @@ func (s *sChannel) Crumbs(ctx context.Context, channelId uint) (out []*model.Cha
 	if err != nil {
 		return nil, err
 	}
-	_, err = g.Redis().Do(ctx, "SET", cacheKey, out)
+	err = service.Cache().GetCacheInstance().Set(ctx, cacheKey, out, 0)
+	if err != nil {
+		return nil, err
+	}
 	return
 }
 
@@ -234,7 +236,7 @@ func (s *sChannel) TDK(ctx context.Context, channelId uint, detailId int64) (out
 		return out, nil
 	}
 	cacheKey := util.PublicCachePreFix + ":tdk:channel_" + gconv.String(channelId) + "_detail_" + gconv.String(detailId)
-	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	cached, err := service.Cache().GetCacheInstance().Get(ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -295,7 +297,7 @@ func (s *sChannel) TDK(ctx context.Context, channelId uint, detailId int64) (out
 		Keywords:    keywords,
 		Description: description,
 	}
-	_, err = g.Redis().Do(ctx, "SET", cacheKey, out)
+	err = service.Cache().GetCacheInstance().Set(ctx, cacheKey, out, 0)
 	if err != nil {
 		return nil, err
 	}

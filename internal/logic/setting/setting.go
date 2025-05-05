@@ -43,7 +43,7 @@ func (*sSetting) readYaml(ctx context.Context) (conf *model.SettingConfig, err e
 // BackendViewAll 获取所有后台菜单
 func (*sSetting) BackendViewAll() (backendAll []model.SettingGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":settings:backend_all"
-	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
+	result, err := service.Cache().GetCacheInstance().Get(util.Ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (*sSetting) BackendViewAll() (backendAll []model.SettingGroups, err error) 
 	}
 	conf, _ := Setting().readYaml(util.Ctx)
 	backendAll = conf.Backend.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendAll)
+	err = service.Cache().GetCacheInstance().Set(util.Ctx, cacheKey, backendAll, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func (*sSetting) Save(forms map[string]interface{}) (res bool, err error) {
 	if err != nil {
 		return false, err
 	}
-	_, err = util.Util().ClearSystemSettingCache()
+	err = util.Util().ClearSystemSettingCache()
 	if err != nil {
 		return false, err
 	}

@@ -7,6 +7,7 @@ import (
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/logic/viewBindFun"
 	"gf_cms/internal/router"
+	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"time"
 
@@ -26,11 +27,16 @@ var (
 			//设置服务启动时间
 			runtime.Runtime().SetServerStartAt()
 			s := g.Server(util.Util().ProjectName())
-			//session使用redis
+			//session使用memory
+			sessionStore := gsession.NewStorageMemory().StorageBase
+			if service.Cache().GetCacheDriver() == consts.CacheDriverRedis {
+				//session使用redis
+				sessionStore = gsession.NewStorageRedis(g.Redis(), util.Util().ProjectName()+":"+consts.AdminSessionKeyPrefix+":").StorageBase
+			}
 			_ = s.SetConfigWithMap(g.Map{
 				// session一天过期
 				"SessionMaxAge":  time.Hour * 24,
-				"SessionStorage": gsession.NewStorageRedis(g.Redis(), util.Util().ProjectName()+":"+consts.AdminSessionKeyPrefix+":"),
+				"SessionStorage": sessionStore,
 			})
 			//给模板视图全局绑定方法
 			viewBindFun.ViewBindFun().Register()

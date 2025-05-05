@@ -97,7 +97,7 @@ func (*sPermission) BackendAll() (res []model.PermissionAllItem, err error) {
 // BackendViewAll Backend 获取全部后台权限
 func (*sPermission) BackendViewAll() (res []model.PermissionGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":permissions:backend_view_all"
-	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
+	result, err := service.Cache().GetCacheInstance().Get(util.Ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +110,7 @@ func (*sPermission) BackendViewAll() (res []model.PermissionGroups, err error) {
 	}
 	conf, _ := Permission().readYaml(util.Ctx)
 	backendViewAll := conf.BackendView.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendViewAll)
+	err = service.Cache().GetCacheInstance().Set(util.Ctx, cacheKey, backendViewAll, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (*sPermission) BackendViewAll() (res []model.PermissionGroups, err error) {
 // BackendApiAll Backend 获取全部后台接口权限
 func (*sPermission) BackendApiAll() (res []model.PermissionGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":permissions:backend_api_all"
-	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
+	result, err := service.Cache().GetCacheInstance().Get(util.Ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func (*sPermission) BackendApiAll() (res []model.PermissionGroups, err error) {
 	}
 	conf, _ := Permission().readYaml(util.Ctx)
 	backendApiAll := conf.BackendApi.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendApiAll)
+	err = service.Cache().GetCacheInstance().Set(util.Ctx, cacheKey, backendApiAll, 0)
 	if err != nil {
 		return nil, err
 	}

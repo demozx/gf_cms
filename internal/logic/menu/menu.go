@@ -44,7 +44,7 @@ func (*sMenu) readYaml(ctx context.Context) (conf *model.MenuConfig, err error) 
 // BackendView 获取全部后台菜单
 func (*sMenu) BackendView() (backendView []model.MenuGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":menus:backend_view"
-	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
+	result, err := service.Cache().GetCacheInstance().Get(util.Ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (*sMenu) BackendView() (backendView []model.MenuGroups, err error) {
 	}
 	conf, _ := Menu().readYaml(util.Ctx)
 	backendView = conf.Backend.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendView)
+	err = service.Cache().GetCacheInstance().Set(util.Ctx, cacheKey, backendView, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (*sMenu) BackendView() (backendView []model.MenuGroups, err error) {
 // BackendApi 获取全部后台菜单接口
 func (*sMenu) BackendApi() (res []model.MenuGroups, err error) {
 	cacheKey := util.PublicCachePreFix + ":menus:backend_api"
-	result, err := g.Redis().Do(util.Ctx, "GET", cacheKey)
+	result, err := service.Cache().GetCacheInstance().Get(util.Ctx, cacheKey)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func (*sMenu) BackendApi() (res []model.MenuGroups, err error) {
 	}
 	conf, _ := Menu().readYaml(util.Ctx)
 	backendApi := conf.BackendApi.Groups
-	_, err = g.Redis().Do(util.Ctx, "SET", cacheKey, backendApi)
+	err = service.Cache().GetCacheInstance().Set(util.Ctx, cacheKey, backendApi, 0)
 	if err != nil {
 		return nil, err
 	}

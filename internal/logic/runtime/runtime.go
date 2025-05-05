@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"fmt"
+	"gf_cms/internal/consts"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model"
 	"gf_cms/internal/service"
@@ -253,12 +254,22 @@ func (*sRuntime) MySqlCurrConnectionsNum() int {
 
 // RedisMaxClientsNum Redis最大连接数
 func (*sRuntime) RedisMaxClientsNum() int {
+	cacheDriver := service.Cache().GetCacheDriver()
+	if cacheDriver == consts.CacheDriverMemory {
+		// 内存缓存默认返回0
+		return 0
+	}
 	do, _ := g.Redis().Do(util.Ctx, "config", "get", "maxclients")
 	return gconv.Int(do.Array()[0])
 }
 
 // RedisConnectedClientsNum 获取Redis当前连接数
 func (*sRuntime) RedisConnectedClientsNum() int {
+	cacheDriver := service.Cache().GetCacheDriver()
+	if cacheDriver == consts.CacheDriverMemory {
+		// 内存缓存默认返回0
+		return 0
+	}
 	do, _ := g.Redis().Do(util.Ctx, "info", "clients")
 	res := do.String()
 	res = gstr.Nl2Br(res)

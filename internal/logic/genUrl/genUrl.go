@@ -9,7 +9,6 @@ import (
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 )
@@ -46,15 +45,11 @@ func (s *sGenUrl) ChannelUrl(ctx context.Context, channelId int, router string) 
 	} else {
 		var channel *model.ChannelNavigationListItem
 		cacheKey := util.PublicCachePreFix + ":channel_url:" + gconv.String(channelId)
-		exists, err := g.Redis().Do(ctx, "EXISTS", cacheKey)
+		cached, err := service.Cache().GetCacheInstance().Get(ctx, cacheKey)
 		if err != nil {
 			return "", err
 		}
-		if exists.Bool() {
-			cached, err := g.Redis().Do(ctx, "GET", cacheKey)
-			if err != nil {
-				return "", err
-			}
+		if !cached.IsNil() {
 			if cached.String() == "" {
 				return "", gerror.New("栏目不存在")
 			}
@@ -86,7 +81,7 @@ func (s *sGenUrl) ChannelUrl(ctx context.Context, channelId int, router string) 
 		default:
 			return "", gerror.New("栏目类型错误")
 		}
-		_, err = g.Redis().Do(ctx, "SET", cacheKey, newRouter)
+		err = service.Cache().GetCacheInstance().Set(ctx, cacheKey, newRouter, 0)
 		if err != nil {
 			return "", err
 		}
@@ -97,7 +92,7 @@ func (s *sGenUrl) ChannelUrl(ctx context.Context, channelId int, router string) 
 // DetailUrl 生成pc详情页url
 func (s *sGenUrl) DetailUrl(ctx context.Context, model string, detailId int) (newRouter string, err error) {
 	cacheKey := util.PublicCachePreFix + ":detail_url:" + model + ":" + gconv.String(detailId)
-	cached, err := g.Redis().Do(ctx, "GET", cacheKey)
+	cached, err := service.Cache().GetCacheInstance().Get(ctx, cacheKey)
 	if err != nil {
 		return "", err
 	}
@@ -141,7 +136,7 @@ func (s *sGenUrl) DetailUrl(ctx context.Context, model string, detailId int) (ne
 	} else {
 		newRouter = channel.DetailRouter
 	}
-	_, err = g.Redis().Do(ctx, "SET", cacheKey, newRouter)
+	err = service.Cache().GetCacheInstance().Set(ctx, cacheKey, newRouter, 0)
 	if err != nil {
 		return "", err
 	}

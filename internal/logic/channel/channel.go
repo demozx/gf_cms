@@ -166,7 +166,7 @@ func (s *sChannel) BackendApiStatus(ctx context.Context, in *backendApi.ChannelS
 	if err != nil {
 		return nil, err
 	}
-	_, err = util.Util().ClearPublicCache()
+	err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +196,7 @@ func (s *sChannel) BackendApiDelete(ctx context.Context, in *backendApi.ChannelD
 	if err != nil {
 		return nil, err
 	}
-	_, err = util.Util().ClearPublicCache()
+	err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -232,7 +232,7 @@ func (s *sChannel) BackendApiAdd(ctx context.Context, in *backendApi.ChannelAddA
 	if err != nil {
 		return nil, err
 	}
-	_, err = util.Util().ClearPublicCache()
+	err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -283,7 +283,7 @@ func (s *sChannel) BackendApiEdit(ctx context.Context, in *backendApi.ChannelEdi
 	if err != nil {
 		return nil, err
 	}
-	_, err = util.Util().ClearPublicCache()
+	err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +407,7 @@ func (s *sChannel) updateTid(ctx context.Context, originChannelId int, pid int) 
 			return nil, err
 		}
 	}
-	_, err = util.Util().ClearPublicCache()
+	err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}
@@ -469,7 +469,7 @@ func (s *sChannel) updateChildren(ctx context.Context, channelTid int, lastBatch
 			return nil, err
 		}
 	}
-	_, err = util.Util().ClearPublicCache()
+	err = util.Util().ClearPublicCache()
 	if err != nil {
 		return nil, err
 	}

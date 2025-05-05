@@ -136,54 +136,60 @@ func (*sUtil) GetConfig(node string) string {
 // GetSetting 获取设置
 func (*sUtil) GetSetting(name string) (setting string, err error) {
 	cacheKey := PublicCachePreFix + ":system_setting:" + name
-	exists, err := g.Redis().Do(Ctx, "EXISTS", cacheKey)
+	cached, err := service.Cache().GetCacheInstance().Get(Ctx, cacheKey)
 	if err != nil {
 		return "", err
 	}
 	//存在缓存key
-	if exists.Bool() {
-		value, err := g.Redis().Do(Ctx, "GET", cacheKey)
-		if err != nil {
-			return "", err
-		}
-		return value.String(), nil
+	if !cached.IsNil() {
+		return cached.String(), nil
 	}
 	//不存在缓存key，从数据库读取
 	val, _ := g.Model("system_setting").Where("name", name).Value("value")
-	g.Redis().Do(Ctx, "SET", cacheKey, val.String())
+	err = service.Cache().GetCacheInstance().Set(Ctx, cacheKey, val.String(), 0)
+	if err != nil {
+		return "", err
+	}
 	return val.String(), nil
 }
 
 // ClearPublicCache 清除公共缓存
-func (*sUtil) ClearPublicCache() (*gvar.Var, error) {
-	cacheKey := PublicCachePreFix + ":*"
-	keys, err := g.Redis().Do(Ctx, "KEYS", cacheKey)
+func (*sUtil) ClearPublicCache() (err error) {
+	cachePreFix := PublicCachePreFix + ":"
+	keys, err := service.Cache().GetCacheInstance().Keys(Ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	for _, key := range keys.Array() {
-		_, err := g.Redis().Do(Ctx, "DEL", key)
-		if err != nil {
-			return nil, err
+	//g.Dump("keys", keys)
+	for _, key := range keys {
+		keyStr := gvar.New(key).String()
+		if gstr.HasPrefix(keyStr, cachePreFix) {
+			_, err = service.Cache().GetCacheInstance().Remove(Ctx, keyStr)
+			if err != nil {
+				return err
+			}
 		}
 	}
-	return nil, err
+	return nil
 }
 
 // ClearSystemSettingCache 清除后台设置缓存
-func (*sUtil) ClearSystemSettingCache() (*gvar.Var, error) {
-	cacheKey := PublicCachePreFix + ":system_setting:*"
-	keys, err := g.Redis().Do(Ctx, "KEYS", cacheKey)
+func (*sUtil) ClearSystemSettingCache() (err error) {
+	cachePreFix := PublicCachePreFix + ":system_setting:"
+	keys, err := service.Cache().GetCacheInstance().Keys(Ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	for _, key := range keys.Array() {
-		_, err := g.Redis().Do(Ctx, "DEL", key)
-		if err != nil {
-			return nil, err
+	for _, key := range keys {
+		keyStr := gvar.New(key).String()
+		if gstr.HasPrefix(keyStr, cachePreFix) {
+			_, err = service.Cache().GetCacheInstance().Remove(Ctx, keyStr)
+			if err != nil {
+				return err
+			}
 		}
 	}
-	return nil, err
+	return nil
 }
 
 // GetLocalIP 获取ip

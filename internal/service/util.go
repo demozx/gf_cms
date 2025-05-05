@@ -8,8 +8,6 @@ package service
 import (
 	"context"
 	"time"
-
-	"github.com/gogf/gf/v2/container/gvar"
 )
 
 type (
@@ -41,9 +39,9 @@ type (
 		// GetSetting 获取设置
 		GetSetting(name string) (setting string, err error)
 		// ClearPublicCache 清除公共缓存
-		ClearPublicCache() (*gvar.Var, error)
+		ClearPublicCache() (err error)
 		// ClearSystemSettingCache 清除后台设置缓存
-		ClearSystemSettingCache() (*gvar.Var, error)
+		ClearSystemSettingCache() (err error)
 		// GetLocalIP 获取ip
 		GetLocalIP() (ip string, err error)
 		// FriendyTimeFormat 计算时间差，并以"XXd XXh XXm XXs"返回

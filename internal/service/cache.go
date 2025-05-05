@@ -6,18 +6,14 @@
 package service
 
 import (
-	"context"
-	"time"
-
-	"github.com/gogf/gf/v2/container/gvar"
+	"github.com/gogf/gf/v2/os/gcache"
 )
 
 type (
 	ICache interface {
-		// Set 设置缓存
-		Set(ctx context.Context, key string, value interface{}, duration time.Duration) (err error)
-		// Get 获取缓存
-		Get(ctx context.Context, key string) (get *gvar.Var, err error)
+		GetCacheInstance() *gcache.Cache
+		InitDriver()
+		GetCacheDriver() string
 	}
 )
 

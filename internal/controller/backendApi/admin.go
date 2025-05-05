@@ -120,7 +120,7 @@ func (c *cAdmin) Logout(ctx context.Context, req *backendApi.AdminLogoutReq) (re
 
 // ClearCache 清除公共缓存
 func (c *cAdmin) ClearCache(ctx context.Context, req *backendApi.AdminClearCacheReq) (res *backendApi.AdminClearCacheRes, err error) {
-	_, err = util.Util().ClearPublicCache()
+	err = util.Util().ClearPublicCache()
 	if err != nil {
 		g.RequestFromCtx(ctx).Response.WriteJson(g.Map{
 			"code":    1,
