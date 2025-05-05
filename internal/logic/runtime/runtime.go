@@ -188,18 +188,16 @@ func (*sRuntime) GetNetInfo() model.Net {
 	var kbsSentCacheKey = util.Util().ProjectName() + ":net_info:kbs_sent"
 	var kbsRecvCacheKey = util.Util().ProjectName() + ":net_info:kbs_recv"
 	var kbsTimeCacheKey = util.Util().ProjectName() + ":net_info:kbs_time"
-	conn, err := g.Redis().Conn(util.Ctx)
-	kbsSentCached, _ := conn.Do(util.Ctx, "GET", kbsSentCacheKey)
-	kbsRecvCached, _ := conn.Do(util.Ctx, "GET", kbsRecvCacheKey)
-	kbsTimeCached, _ := conn.Do(util.Ctx, "GET", kbsTimeCacheKey)
-
+	kbsSentCached, _ := service.Cache().GetCacheInstance().Get(util.Ctx, kbsSentCacheKey)
+	kbsRecvCached, _ := service.Cache().GetCacheInstance().Get(util.Ctx, kbsRecvCacheKey)
+	kbsTimeCached, _ := service.Cache().GetCacheInstance().Get(util.Ctx, kbsTimeCacheKey)
 	//fmt.Println("kbsSentCached", kbsSentCached)
 	//fmt.Println("kbsRecvCached", kbsRecvCached)
 	//fmt.Println("kbsTimeCached", kbsTimeCached)
 
-	conn.Do(util.Ctx, "SET", kbsSentCacheKey, kbsSent)
-	conn.Do(util.Ctx, "SET", kbsRecvCacheKey, kbsRecv)
-	conn.Do(util.Ctx, "SET", kbsTimeCacheKey, time.Now().Unix())
+	service.Cache().GetCacheInstance().Set(util.Ctx, kbsSentCacheKey, kbsSent, 0)
+	service.Cache().GetCacheInstance().Set(util.Ctx, kbsRecvCacheKey, kbsRecv, 0)
+	service.Cache().GetCacheInstance().Set(util.Ctx, kbsTimeCacheKey, time.Now().Unix(), 0)
 	var netInfo model.Net
 	var seconds = gvar.New(time.Now().Unix()).Int() - kbsTimeCached.Int()
 	if seconds > 0 {
@@ -209,7 +207,6 @@ func (*sRuntime) GetNetInfo() model.Net {
 		netInfo.KbsSent = 0
 		netInfo.KbsRecv = 0
 	}
-	defer conn.Close(util.Ctx)
 	return netInfo
 }
 

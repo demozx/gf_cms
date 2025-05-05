@@ -28,16 +28,25 @@ var (
 			runtime.Runtime().SetServerStartAt()
 			s := g.Server(util.Util().ProjectName())
 			//session使用memory
-			sessionStore := gsession.NewStorageMemory().StorageBase
-			if service.Cache().GetCacheDriver() == consts.CacheDriverRedis {
-				//session使用redis
-				sessionStore = gsession.NewStorageRedis(g.Redis(), util.Util().ProjectName()+":"+consts.AdminSessionKeyPrefix+":").StorageBase
-			}
-			_ = s.SetConfigWithMap(g.Map{
+			memorySessionStore := gsession.NewStorageMemory()
+			cache := service.Cache()
+			cache.GetCacheInstance()
+			cacheDriver := cache.GetCacheDriver()
+			sessionConfig := g.Map{
 				// session一天过期
 				"SessionMaxAge":  time.Hour * 24,
-				"SessionStorage": sessionStore,
-			})
+				"SessionStorage": memorySessionStore,
+			}
+			if cacheDriver == consts.CacheDriverRedis {
+				//session使用redis
+				redisSessionStore := gsession.NewStorageRedis(g.Redis(), util.Util().ProjectName()+":"+consts.AdminSessionKeyPrefix+":")
+				sessionConfig = g.Map{
+					// session一天过期
+					"SessionMaxAge":  time.Hour * 24,
+					"SessionStorage": redisSessionStore,
+				}
+			}
+			_ = s.SetConfigWithMap(sessionConfig)
 			//给模板视图全局绑定方法
 			viewBindFun.ViewBindFun().Register()
 			//路由
