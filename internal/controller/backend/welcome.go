@@ -5,6 +5,7 @@ import (
 	"gf_cms/api/backend"
 	runtime2 "gf_cms/internal/logic/runtime"
 	"gf_cms/internal/logic/util"
+	"gf_cms/internal/service"
 	"github.com/gogf/gf/v2"
 	"github.com/gogf/gf/v2/os/gproc"
 	"runtime"
@@ -25,7 +26,9 @@ func (c *cWelcome) Index(ctx context.Context, req *backend.WelcomeReq) (res *bac
 	serverStartAt := runtime2.Runtime().GetServerStartAt()
 	serverStartDuration := util.Util().FriendyTimeFormat(serverStartAt.Time(), time.Now())
 	var numGoroutine = runtime.NumGoroutine()
+	cacheDriver := service.Cache().GetCacheDriver()
 	_ = g.RequestFromCtx(ctx).Response.WriteTpl("backend/welcome/index.html", g.Map{
+		"cache_driver":          cacheDriver,
 		"project_name":          util.ProjectName,
 		"system_root":           util.SystemRoot,
 		"host_info":             runtime2.Runtime().GetHostInfo(),

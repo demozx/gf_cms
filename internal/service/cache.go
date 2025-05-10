@@ -13,6 +13,7 @@ type (
 	ICache interface {
 		GetCacheInstance() *gcache.Cache
 		InitDriver()
+		// GetCacheDriver 获取驱动方式
 		GetCacheDriver() string
 	}
 )

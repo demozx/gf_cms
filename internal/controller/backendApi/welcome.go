@@ -40,6 +40,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 	var mySqlCurrConnectionsNum = runtime2.Runtime().MySqlCurrConnectionsNum()
 	var redisMaxClientsNum = runtime2.Runtime().RedisMaxClientsNum()
 	var redisConnectedClientsNum = runtime2.Runtime().RedisConnectedClientsNum()
+	cacheKeysCount, _ := service.Cache().GetCacheInstance().Size(ctx)
 
 	res = &backendApi.GetRuntimeInfoApiRes{
 		Load:                     load,
@@ -57,6 +58,7 @@ func (c *cWelcome) Index(ctx context.Context, req *backendApi.GetRuntimeInfoApiR
 		RedisMaxClientsNum:       redisMaxClientsNum,
 		RedisConnectedClientsNum: redisConnectedClientsNum,
 		Pid:                      gproc.Pid(),
+		CacheKeysCount:           cacheKeysCount,
 	}
 	return
 }

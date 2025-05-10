@@ -51,6 +51,8 @@
             </colgroup>
             <thead>
             <tr>
+              <th>缓存驱动</th>
+              <th>缓存key数量</th>
               <th>GoRoutine数量</th>
               <th>Redis当前连接数</th>
               <th>Redis最大连接数</th>
@@ -63,6 +65,8 @@
             </thead>
             <tbody>
             <tr>
+              <td>${ .cache_driver }$</td>
+              <td id="cache_key_count"></td>
               <td id="num_goroutine"></td>
               <td id="redis_connected_clients_num"></td>
               <td id="redis_max_clients_num"></td>
@@ -294,6 +298,7 @@
         $('#redis_max_clients_num').text(res.data['redisMaxClientsNum']);
         $('#redis_connected_clients_num').text(res.data['redisConnectedClientsNum']);
         $('#pid').text(res.data['pid']);
+        $('#cache_key_count').text(res.data['cacheKeysCount']);
       });
     }
 

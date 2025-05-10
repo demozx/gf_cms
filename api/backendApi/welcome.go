@@ -25,6 +25,7 @@ type GetRuntimeInfoApiRes struct {
 	RedisMaxClientsNum       int        `json:"redisMaxClientsNum" dc:"Redis最大连接数"`
 	RedisConnectedClientsNum int        `json:"redisConnectedClientsNum" dc:"Redis当前连接数"`
 	Pid                      int        `json:"pid" dc:"服务Pid"`
+	CacheKeysCount           int        `json:"cacheKeysCount" dc:"缓存key"`
 }
 
 type RestartServerReq struct {

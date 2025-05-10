@@ -15,7 +15,6 @@ import (
 
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gcache"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/load"
@@ -212,13 +211,13 @@ func (*sRuntime) GetNetInfo() model.Net {
 
 // SetServerStartAt 设置服务启动时间
 func (*sRuntime) SetServerStartAt() bool {
-	gcache.Set(util.Ctx, serverStartAtCacheKey, time.Now().Unix(), 0)
+	service.Cache().GetCacheInstance().Set(util.Ctx, serverStartAtCacheKey, time.Now().Unix(), 0)
 	return true
 }
 
 // GetServerStartAt 获取服务启动时间
 func (*sRuntime) GetServerStartAt() *gvar.Var {
-	get, _ := gcache.Get(util.Ctx, serverStartAtCacheKey)
+	get, _ := service.Cache().GetCacheInstance().Get(util.Ctx, serverStartAtCacheKey)
 	return get
 }
 
