@@ -30,10 +30,10 @@
 > 
 > 1、导入gfcms_demo.sql到数据库
 >
-> 2、复制配置文件
+> 2、复制配置文件到项目根目录，生产环境部署时将该配置文件放置到可执行文件同目录下
 >
 > ```shell
-> cp manifest/config/config.yaml.example manifest/config/config.yaml
+> cp manifest/config/config.yaml.example config.yaml
 > ```
 > 
 > 3、修改config.yaml的数据库配置、redis配置
