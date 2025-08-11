@@ -371,9 +371,9 @@ func (s *sAdmin) InitAdminUser(ctx context.Context) {
 	}
 
 	if !systemRoleOne.IsEmpty() && !systemAdminOne.IsEmpty() {
-		g.Log("InitAdminUser").Notice(ctx, "┌────────────────────────────┐")
-		g.Log("InitAdminUser").Notice(ctx, "│无需初始化系统管理员，已跳过│")
-		g.Log("InitAdminUser").Notice(ctx, "└────────────────────────────┘")
+		g.Log("InitAdminUser").Line(true).Async(true).Notice(ctx, "┌────────────────────────────┐")
+		g.Log("InitAdminUser").Line(true).Async(true).Notice(ctx, "│无需初始化系统管理员，已跳过│")
+		g.Log("InitAdminUser").Line(true).Async(true).Notice(ctx, "└────────────────────────────┘")
 	}
 
 	//没有系统角色
@@ -390,9 +390,9 @@ func (s *sAdmin) InitAdminUser(ctx context.Context) {
 		if err != nil {
 			return
 		}
-		g.Log("InitAdminUser").Warning(ctx, "┌────────────────────────────")
-		g.Log("InitAdminUser").Warning(ctx, "│自动初始化系统角色ID："+gconv.String(roleId)+"")
-		g.Log("InitAdminUser").Warning(ctx, "└────────────────────────────")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "┌────────────────────────────")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "│自动初始化系统角色ID："+gconv.String(roleId)+"")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "└────────────────────────────")
 	}
 	// 没有系统管理员
 	if systemAdminOne.IsEmpty() {
@@ -420,11 +420,11 @@ func (s *sAdmin) InitAdminUser(ctx context.Context) {
 			return
 		}
 
-		g.Log("InitAdminUser").Warning(ctx, "┌────────────────────────────────────────────────────")
-		g.Log("InitAdminUser").Warning(ctx, "│自动初始化系统管理员ID："+gconv.String(adminId)+"")
-		g.Log("InitAdminUser").Warning(ctx, "│请使用如下信息登录后台，并修改密码")
-		g.Log("InitAdminUser").Warning(ctx, "│用户名："+gconv.String(username)+"")
-		g.Log("InitAdminUser").Warning(ctx, "│密码："+gconv.String(password)+"")
-		g.Log("InitAdminUser").Warning(ctx, "└────────────────────────────────────────────────────")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "┌────────────────────────────────────────────────────")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "│自动初始化系统管理员ID："+gconv.String(adminId)+"")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "│请使用如下信息登录后台，并修改密码")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "│用户名："+gconv.String(username)+"")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "│密码："+gconv.String(password)+"")
+		g.Log("InitAdminUser").Line(true).Async(true).Warning(ctx, "└────────────────────────────────────────────────────")
 	}
 }

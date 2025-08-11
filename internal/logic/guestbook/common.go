@@ -34,7 +34,7 @@ func (s *sGuestbook) GetAddressByIp(ctx context.Context, ip string) (address str
 
 // SendEmail 发送留言邮件
 func (s *sGuestbook) SendEmail(ctx context.Context, guestbookId int64) (out interface{}, err error) {
-	g.Log().Debug(ctx, "留言：邮件提醒")
+	g.Log().Line(true).Async(true).Debug(ctx, "留言：邮件提醒")
 	emailNotice, err := service.Util().GetSetting("guestbook_email_notice")
 	if err != nil {
 		return nil, err
@@ -44,11 +44,11 @@ func (s *sGuestbook) SendEmail(ctx context.Context, guestbookId int64) (out inte
 		return nil, err
 	}
 	if emailNotice != "1" {
-		g.Log().Error(ctx, "留言邮件提醒管理员未开启")
+		g.Log().Line(true).Async(true).Error(ctx, "留言邮件提醒管理员未开启")
 		return nil, gerror.New("留言邮件提醒管理员未开启")
 	}
 	if adminEmails == "" {
-		g.Log().Error(ctx, "管理员邮箱未填写")
+		g.Log().Line(true).Async(true).Error(ctx, "管理员邮箱未填写")
 		return nil, gerror.New("管理员邮箱未填写")
 	}
 	var guestbook *entity.CmsGuestbook
@@ -73,7 +73,7 @@ func (s *sGuestbook) SendEmail(ctx context.Context, guestbookId int64) (out inte
 		return nil, err
 	}
 	if host == "" || port == "" || from == "" || password == "" {
-		g.Log().Error(ctx, "邮件服务器配置缺失")
+		g.Log().Line(true).Async(true).Error(ctx, "邮件服务器配置缺失")
 		return
 	}
 	emails := gstr.SplitAndTrim(adminEmails, ",")

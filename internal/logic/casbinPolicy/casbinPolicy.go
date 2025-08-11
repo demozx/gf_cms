@@ -97,10 +97,10 @@ func (*sCasbinPolicy) CheckByRoleId(roleId, obj, act string) bool {
 	has, err := initCasbin().Enforce(roleId, obj, act)
 	if err != nil {
 		log.Println("Enforce failed, err: ", err)
-		g.Log().Error(util.Ctx, "Enforce failed, err: ", err)
+		g.Log().Line(true).Async(true).Error(util.Ctx, "Enforce failed, err: ", err)
 	}
 	if !has {
-		g.Log().Warning(util.Ctx, "没有操作权限："+roleId+","+obj+","+act)
+		g.Log().Line(true).Async(true).Warning(util.Ctx, "没有操作权限："+roleId+","+obj+","+act)
 	} else {
 		return true
 	}
@@ -155,7 +155,7 @@ func (*sCasbinPolicy) CheckByAccountId(AccountId, obj, act string) bool {
 func (*sCasbinPolicy) AddByRoleId(roleId, obj, act string) bool {
 	_, err := initCasbin().AddPolicy(roleId, obj, act)
 	if err != nil {
-		g.Log().Error(util.Ctx, "增加权限失败："+roleId+","+obj+","+act)
+		g.Log().Line(true).Line(true).Async(true).Async(true).Error(util.Ctx, "增加权限失败："+roleId+","+obj+","+act)
 		panic(err)
 	}
 	return true

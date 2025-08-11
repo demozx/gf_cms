@@ -9,6 +9,8 @@ import (
 
 	_ "github.com/gogf/gf/contrib/nosql/redis/v2"
 
+	_ "go.uber.org/automaxprocs"
+
 	"gf_cms/internal/cmd"
 
 	"github.com/gogf/gf/v2/os/gctx"

@@ -117,12 +117,12 @@ func (s *sMiddleware) BackendCheckPolicy(r *ghttp.Request) {
 			for _, children := range menu.Children {
 				if "/"+backendPrefix+children.Route == act {
 					routePermission = children.Permission
-					g.Log().Notice(util.Ctx, "路由"+act+"的权限是："+children.Permission)
+					g.Log().Line(true).Async(true).Notice(util.Ctx, "路由"+act+"的权限是："+children.Permission)
 				}
 			}
 		}
 		if !casbinPolicy.CasbinPolicy().CheckByAccountId(accountId, obj, routePermission) {
-			g.Log().Warning(util.Ctx, "没有权限"+act)
+			g.Log().Line(true).Async(true).Warning(util.Ctx, "没有权限"+act)
 			err = r.Response.WriteTpl("tpl/error.html", g.Map{
 				"code":    401,
 				"message": "无权访问",
@@ -270,7 +270,7 @@ func (s *sMiddleware) BackendApiCheckPolicy(r *ghttp.Request) {
 			}
 		}
 	}
-	g.Log().Notice(util.Ctx, "backendApiRouteHit："+act, routeHit)
+	g.Log().Line(true).Async(true).Notice(util.Ctx, "backendApiRouteHit："+act, routeHit)
 	if routeHit == false {
 		//路由不在权限中，不拦截
 		r.Middleware.Next()

@@ -14,8 +14,10 @@ require (
 	github.com/gogf/gf/v2 v2.9.0
 	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/mojocn/base64Captcha v1.3.8
+	github.com/panjf2000/ants/v2 v2.11.3
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	gitlab.com/tingshuo/go-diskstate v0.0.0-20191211131809-ee5e7223d03c
+	go.uber.org/automaxprocs v1.6.0
 	golang.org/x/net v0.39.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
@@ -33,6 +35,7 @@ require (
 	github.com/redis/go-redis/v9 v9.8.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/otel/metric v1.35.0 // indirect
+	golang.org/x/sync v0.13.0 // indirect
 )
 
 require (
