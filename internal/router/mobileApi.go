@@ -3,6 +3,7 @@ package router
 import (
 	"gf_cms/internal/controller/mobileApi"
 	"gf_cms/internal/service"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 )
@@ -12,6 +13,7 @@ func mobileApiHandle(s *ghttp.Server) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 			service.Middleware().FilterXSS,
+			ghttp.MiddlewareGzip,
 		)
 		mobileHost := service.Util().GetConfig("server.mobileHost")
 		if len(mobileHost) > 0 {

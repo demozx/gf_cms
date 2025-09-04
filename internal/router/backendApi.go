@@ -18,6 +18,7 @@ func backendApiHandle(s *ghttp.Server) {
 			ghttp.MiddlewareHandlerResponse,
 			middleware.Middleware().CORS,
 			service.Middleware().FilterXSS,
+			ghttp.MiddlewareGzip,
 		)
 		group.ALLMap(g.Map{
 			"/captcha/get": backendApi.Captcha.Get,

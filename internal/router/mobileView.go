@@ -3,6 +3,7 @@ package router
 import (
 	"gf_cms/internal/controller/mobile"
 	"gf_cms/internal/service"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/text/gstr"
@@ -29,6 +30,7 @@ func mobileViewHandle(s *ghttp.Server) {
 		group.Middleware(
 			service.Middleware().MobileResponse,
 			service.Middleware().FilterXSS,
+			ghttp.MiddlewareGzip,
 		)
 		// mobile路由
 		group.ALLMap(g.Map{

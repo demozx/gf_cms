@@ -24,6 +24,7 @@ func backendViewHandle(s *ghttp.Server) {
 		group.Middleware(
 			ghttp.MiddlewareHandlerResponse,
 			service.Middleware().FilterXSS,
+			ghttp.MiddlewareGzip,
 		)
 		group.ALLMap(g.Map{
 			"/admin/login": backend.Admin.Login,
@@ -35,6 +36,7 @@ func backendViewHandle(s *ghttp.Server) {
 			middleware.Middleware().BackendAuthSession,
 			middleware.Middleware().BackendCheckPolicy,
 			service.Middleware().FilterXSS,
+			ghttp.MiddlewareGzip,
 		)
 		group.ALLMap(g.Map{
 			/*后台首页*/

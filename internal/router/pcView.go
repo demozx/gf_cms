@@ -3,6 +3,7 @@ package router
 import (
 	"gf_cms/internal/controller/pc"
 	"gf_cms/internal/service"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 )
@@ -12,6 +13,7 @@ func pcViewHandle(s *ghttp.Server) {
 		group.Middleware(
 			service.Middleware().PcResponse,
 			service.Middleware().FilterXSS,
+			ghttp.MiddlewareGzip,
 		)
 		pcHost := service.Util().GetConfig("server.pcHost")
 		if len(pcHost) > 0 {
