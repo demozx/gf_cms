@@ -2,17 +2,19 @@ package casbinPolicy
 
 import (
 	"database/sql"
+	"fmt"
 	"gf_cms/internal/dao"
 	"gf_cms/internal/logic/util"
 	"gf_cms/internal/model/entity"
 	"gf_cms/internal/service"
-	"github.com/casbin/casbin/v2/model"
 	"github.com/gogf/gf/v2/util/gconv"
 	"log"
+	"sync"
 	"time"
 
 	sqlAdapter "github.com/Blank-Xu/sql-adapter"
-	"github.com/casbin/casbin/v2"
+	"github.com/casbin/casbin/v3"
+	"github.com/casbin/casbin/v3/model"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -21,6 +23,10 @@ var (
 	insPolicy            = sCasbinPolicy{}
 	ObjBackend    string = "backend"
 	ObjBackendApi string = "backend_api"
+
+	casbinOnce      sync.Once
+	casbinEnforcer  *casbin.Enforcer
+	casbinInitError error
 )
 
 type sCasbinPolicy struct{}
@@ -39,6 +45,16 @@ func CasbinPolicy() *sCasbinPolicy {
 
 // 初始化casbin
 func initCasbin() *casbin.Enforcer {
+	casbinOnce.Do(func() {
+		casbinEnforcer, casbinInitError = newCasbinEnforcer()
+	})
+	if casbinInitError != nil {
+		panic(casbinInitError)
+	}
+	return casbinEnforcer
+}
+
+func newCasbinEnforcer() (*casbin.Enforcer, error) {
 	var dbType = util.Util().GetConfig("database.default.type")
 	var dbUser = util.Util().GetConfig("database.default.user")
 	var dbPass = util.Util().GetConfig("database.default.pass")
@@ -46,40 +62,55 @@ func initCasbin() *casbin.Enforcer {
 	var dbPort = util.Util().GetConfig("database.default.port")
 	var dbName = util.Util().GetConfig("database.default.name")
 	var dbPrefix = util.Util().GetConfig("database.default.prefix")
+
 	db, err := sql.Open(dbType, dbUser+":"+dbPass+"@tcp("+dbHost+":"+dbPort+")/"+dbName)
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("open db: %w", err)
 	}
+
 	if err = db.Ping(); err != nil {
-		panic(err)
+		return nil, fmt.Errorf("ping db: %w", err)
 	}
+
 	db.SetMaxOpenConns(gconv.Int(util.Util().GetConfig("database.default.maxOpen")))
 	db.SetMaxIdleConns(gconv.Int(util.Util().GetConfig("database.default.maxIdle")))
 	db.SetConnMaxLifetime(time.Second * 10)
+
 	a, err := sqlAdapter.NewAdapter(db, dbType, dbPrefix+"rule_permissions")
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("create casbin sql adapter: %w", err)
 	}
+	if err = sanitizeCasbinRuleTable(db, dbPrefix+"rule_permissions"); err != nil {
+		return nil, fmt.Errorf("sanitize casbin rule table: %w", err)
+	}
+
 	m := model.NewModel()
 	m.AddDef("r", "r", "sub, obj, act")
 	m.AddDef("p", "p", "sub, obj, act")
 	m.AddDef("g", "g", "_, _")
 	m.AddDef("e", "e", "some(where (p.eft == allow))")
 	m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act")
+
 	e, err := casbin.NewEnforcer(m, a)
 	if err != nil {
-		log.Fatalf("NewEnforecer failed:%v\n", err)
+		return nil, fmt.Errorf("new enforcer: %w", err)
 	}
-	if err != nil {
-		panic(err)
-	}
+
 	// Load the policy from DB.
 	if err = e.LoadPolicy(); err != nil {
 		log.Println("LoadPolicy failed, err: ", err)
 	}
-	//defer db.Close()
-	db.Close()
-	return e
+
+	return e, nil
+}
+
+func sanitizeCasbinRuleTable(db *sql.DB, tableName string) error {
+	query := fmt.Sprintf(
+		"UPDATE %s SET p_type=COALESCE(p_type,''), v0=COALESCE(v0,''), v1=COALESCE(v1,''), v2=COALESCE(v2,''), v3=COALESCE(v3,''), v4=COALESCE(v4,''), v5=COALESCE(v5,'') WHERE p_type IS NULL OR v0 IS NULL OR v1 IS NULL OR v2 IS NULL OR v3 IS NULL OR v4 IS NULL OR v5 IS NULL",
+		tableName,
+	)
+	_, err := db.Exec(query)
+	return err
 }
 
 // ObjBackend 获取后台obj
